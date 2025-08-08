@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
+  <metta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Hilux 3D • AURUM8</title>
   <link rel="stylesheet" href="style.css" />
@@ -15,52 +15,110 @@
     model-viewer{width:100%;height:55vh;max-height:600px;}
     .table{width:100%;border-collapse:collapse}
     .table th,.table td{border:1px solid #333;padding:.6rem;text-align:left}
+    .badge{display:inline-block;padding:.2rem .5rem;border:1px solid #666;border-radius:6px;font-size:.8rem}
   </style>
 </head>
 <body>
-  <header class="top">
-    <h1>AURUM∞</h1>
-    <nav>
-      <a href="index.html">Inicio</a>
-      <a href="modulos.html" class="active">Módulos</a>
-      <a href="contacto.html">Contacto</a>
-    </nav>
-  </header>
+<header class="top">
+  <h1>AURUM∞</h1>
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="modulos.html" class="active">Módulos</a>
+    <a href="contacto.html">Contacto</a>
+  </nav>
+</header>
 
-  <main class="container">
-    <h2>Hilux 3D • Checklist</h2>
-    <p>Visualiza la camioneta y revisa los ítems de inspección. (El modelo cargará desde <code>hilux.glb</code>).</p>
+<main class="container">
+  <h2>Checklist Técnico Hilux 3D</h2>
+  <p>Visualiza el modelo 3D y registra el estado de cada ítem de inspección.</p>
 
-    <!-- VISOR 3D -->
-    <div class="viewer-wrap">
-      <model-viewer
-        id="viewer"
-        src="hilux.glb"              <!-- pon aquí la ruta real cuando lo subas -->
-        alt="Toyota Hilux"
-        camera-controls
-        auto-rotate
-        shadow-intensity="1"
-        exposure="1.2"
-        ar
-        ar-modes="webxr scene-viewer quick-look">
-      </model-viewer>
-    </div>
+  <!-- VISOR 3D -->
+  <div class="viewer-wrap">
+    <model-viewer
+      src="hilux.glb"
+      alt="Toyota Hilux AURUM∞"
+      camera-controls
+      auto-rotate
+      shadow-intensity="1">
+    </model-viewer>
+  </div>
 
-    <!-- TABLA CHECKLIST (ejemplo inicial) -->
-    <table class="table">
-      <thead>
-        <tr><th>Ítem</th><th>Estado</th><th>Notas</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Niveles de fluidos</td><td>Pendiente</td><td></td></tr>
-        <tr><td>Luces y señalización</td><td>Pendiente</td><td></td></tr>
-        <tr><td>Neumáticos</td><td>Pendiente</td><td></td></tr>
-        <tr><td>Frenos</td><td>Pendiente</td><td></td></tr>
-        <tr><td>Batería / Bornes</td><td>Pendiente</td><td></td></tr>
-      </tbody>
-    </table>
-  </main>
+  <!-- TABLA CHECKLIST (50 ÍTEMS) -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th># / Ítem</th>
+        <th>Estado</th>
+        <th>Notas</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1. Aceite de motor (nivel/estado)</td><td>Pendiente</td><td></td></tr>
+      <tr><td>2. Fugas de aceite motor</td><td>Pendiente</td><td></td></tr>
+      <tr><td>3. Filtro de aceite</td><td>Pendiente</td><td></td></tr>
+      <tr><td>4. Refrigerante (nivel/mezcla)</td><td>Pendiente</td><td></td></tr>
+      <tr><td>5. Radiador/tapas/mangueras</td><td>Pendiente</td><td></td></tr>
+      <tr><td>6. Correas (tensión/estado)</td><td>Pendiente</td><td></td></tr>
+      <tr><td>7. Batería (carga/sujeción)</td><td>Pendiente</td><td></td></tr>
+      <tr><td>8. Bornes y cables batería</td><td>Pendiente</td><td></td></tr>
+      <tr><td>9. Alternador (carga)</td><td>Pendiente</td><td></td></tr>
+      <tr><td>10. Motor de arranque</td><td>Pendiente</td><td></td></tr>
 
-  <footer class="foot">© AURUM8</footer>
+      <tr><td>11. Filtro de aire</td><td>Pendiente</td><td></td></tr>
+      <tr><td>12. Admisión/manguitos</td><td>Pendiente</td><td></td></tr>
+      <tr><td>13. Fugas de combustible</td><td>Pendiente</td><td></td></tr>
+      <tr><td>14. Filtro de combustible</td><td>Pendiente</td><td></td></tr>
+      <tr><td>15. Turbo (juego/fugas)</td><td>Pendiente</td><td></td></tr>
+
+      <tr><td>16. EGR / DPF (estado visual)</td><td>Pendiente</td><td></td></tr>
+      <tr><td>17. Nivel líquido de frenos</td><td>Pendiente</td><td></td></tr>
+      <tr><td>18. Pastillas y discos delanteros</td><td>Pendiente</td><td></td></tr>
+      <tr><td>19. Pastillas y discos traseros / campanas</td><td>Pendiente</td><td></td></tr>
+      <tr><td>20. Fugas en circuito de frenos</td><td>Pendiente</td><td></td></tr>
+
+      <tr><td>21. Freno de estacionamiento</td><td>Pendiente</td><td></td></tr>
+      <tr><td>22. ABS (testigo/arneses)</td><td>Pendiente</td><td></td></tr>
+      <tr><td>23. Dirección (juego/brazos)</td><td>Pendiente</td><td></td></tr>
+      <tr><td>24. Rótulas/terminales</td><td>Pendiente</td><td></td></tr>
+      <tr><td>25. Amortiguadores (fugas)</td><td>Pendiente</td><td></td></tr>
+
+      <tr><td>26. Ballestas/espirales/bujes</td><td>Pendiente</td><td></td></tr>
+      <tr><td>27. Neumáticos – del. izq. (presión/desgaste)</td><td>Pendiente</td><td></td></tr>
+      <tr><td>28. Neumáticos – del. der. (presión/desgaste)</td><td>Pendiente</td><td></td></tr>
+      <tr><td>29. Neumáticos – tras. izq. (presión/desgaste)</td><td>Pendiente</td><td></td></tr>
+      <tr><td>30. Neumáticos – tras. der. (presión/desgaste)</td><td>Pendiente</td><td></td></tr>
+
+      <tr><td>31. Neumático de repuesto / gato / llave</td><td>Pendiente</td><td></td></tr>
+      <tr><td>32. Alineación/balanceo (signos de desgaste)</td><td>Pendiente</td><td></td></tr>
+      <tr><td>33. Luces bajas/altas</td><td>Pendiente</td><td></td></tr>
+      <tr><td>34. Señalizadores y balizas</td><td>Pendiente</td><td></td></tr>
+      <tr><td>35. Luces de freno y retroceso</td><td>Pendiente</td><td></td></tr>
+
+      <tr><td>36. Neblineros/auxiliares</td><td>Pendiente</td><td></td></tr>
+      <tr><td>37. Bocina</td><td>Pendiente</td><td></td></tr>
+      <tr><td>38. Limpiaparabrisas/plumillas</td><td>Pendiente</td><td></td></tr>
+      <tr><td>39. Líquido limpia parabrisas</td><td>Pendiente</td><td></td></tr>
+      <tr><td>40. Cinturones (anclajes/funcionamiento)</td><td>Pendiente</td><td></td></tr>
+
+      <tr><td>41. Testigos airbag/OBD (lectura básica)</td><td>Pendiente</td><td></td></tr>
+      <tr><td>42. Sistema de escape/soportes</td><td>Pendiente</td><td></td></tr>
+      <tr><td>43. Chasis/estructura (grietas/corrosión)</td><td>Pendiente</td><td></td></tr>
+      <tr><td>44. Carrocería/puertas/cerraduras</td><td>Pendiente</td><td></td></tr>
+      <tr><td>45. Vidrios/espejos</td><td>Pendiente</td><td></td></tr>
+
+      <tr><td>46. Aire acondicionado/calefacción</td><td>Pendiente</td><td></td></tr>
+      <tr><td>47. Sistema 4x4 (acople)</td><td>Pendiente</td><td></td></tr>
+      <tr><td>48. Caja de transferencia (nivel/fugas)</td><td>Pendiente</td><td></td></tr>
+      <tr><td>49. Diferenciales del/tras (nivel/fugas)</td><td>Pendiente</td><td></td></tr>
+      <tr><td>50. Prueba de ruta (ruidos/vibraciones)</td><td>Pendiente</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <p class="badge">Estados sugeridos: OK / Pendiente / Observación</p>
+</main>
+
+<footer class="container" style="margin:2rem 0;">
+  <a href="modulos.html">← Volver a Módulos</a>
+</footer>
 </body>
 </html>
