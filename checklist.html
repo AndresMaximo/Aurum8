@@ -2,19 +2,44 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Checklist 3D · AURUM8</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checklist 3D • AURUM8</title>
   <link rel="stylesheet" href="style.css" />
 
-  <!-- model-viewer dentro del HEAD -->
-  <script type="module"
-    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
-  </script>
+  <!-- Librería del visor 3D -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
-  <!-- estilos mínimos para el visor (opcional) -->
+  <!-- Estilos para el visor -->
   <style>
-    .viewer-wrap{width:100%;margin:1rem 0 2rem;background:#111;border-radius:12px;overflow:hidden;border:1px solid #222;}
-    model-viewer{width:100%;height:55vh;max-height:600px;}
+    .viewer-wrap {
+      width: 100%;
+      margin: 1rem 0 2rem;
+      background: #111;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #222;
+    }
+    model-viewer {
+      width: 100%;
+      height: 55vh; /* altura adaptable en móvil */
+      max-height: 600px; /* límite en pantallas grandes */
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 0.5rem;
+      border: 1px solid #333;
+    }
+    th {
+      background: #222;
+      color: #fff;
+    }
+    td {
+      background: #111;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -29,12 +54,12 @@
 
 <main class="container">
   <h2>Checklist Técnico 3D</h2>
-  <p>Página de ejemplo. Aquí irá el visor/flujo 3D y el checklist.</p>
+  <p>Visualiza el modelo 3D y revisa los ítems de inspección.</p>
 
   <!-- VISOR 3D -->
   <div class="viewer-wrap">
-    <!-- cambia el src cuando subas tu archivo -->
-    <model-viewer src="ch440.glb"
+    <model-viewer
+      src="ch440.glb"
       alt="Chancador CH440"
       camera-controls
       auto-rotate
@@ -42,10 +67,14 @@
     </model-viewer>
   </div>
 
-  <!-- TABLA -->
+  <!-- TABLA CHECKLIST -->
   <table class="table">
     <thead>
-      <tr><th>Ítem</th><th>Estado</th><th>Notas</th></tr>
+      <tr>
+        <th>Ítem</th>
+        <th>Estado</th>
+        <th>Notas</th>
+      </tr>
     </thead>
     <tbody>
       <tr>
@@ -62,6 +91,8 @@
   </table>
 </main>
 
-<footer class="foot">© AURUM8</footer>
+<footer class="foot">
+  © AURUM8
+</footer>
 </body>
 </html>
