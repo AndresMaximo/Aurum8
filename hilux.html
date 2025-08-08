@@ -3,46 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hilux 3D · AURUM∞</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Hilux 3D • AURUM∞</title>
 
-  <!-- Librería del visor 3D -->
+  <!-- Estilos base del proyecto + tema Lemuriano -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="lemuria.css">
+
+  <!-- Visor 3D -->
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-
-  <!-- Estilos mínimos para el visor -->
-  <style>
-    .viewer-wrap {
-      width: 100%;
-      margin: 1rem 0 2rem;
-      background: #111;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #222;
-    }
-    model-viewer {
-      width: 100%;
-      height: 55vh; /* altura adaptable en móvil */
-      max-height: 600px; /* límite en pantallas grandes */
-    }
-    .table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .table th, .table td {
-      border: 1px solid #333;
-      padding: .6rem;
-      text-align: left;
-    }
-    .badge {
-      display: inline-block;
-      padding: .2rem .5rem;
-      border: 1px solid #666;
-      border-radius: 6px;
-      font-size: .8rem;
-    }
-  </style>
 </head>
-<body>
+<body class="lemuria">
   <header class="top">
     <h1>AURUM∞</h1>
     <nav>
@@ -53,47 +23,146 @@
   </header>
 
   <main class="container">
-    <h2>Checklist Toyota Hilux 3D</h2>
-    <p>Visualiza el modelo 3D de la Hilux y revisa los ítems de inspección.</p>
+    <h2>Checklist Técnico 3D — Toyota Hilux</h2>
+    <p class="lead">Toca los nodos para ver cada ítem. Estética Lemuriana activada 🌊✨.</p>
 
-    <!-- VISOR 3D -->
-    <div class="viewer-wrap">
-      <model-viewer 
-        src="hilux.glb" 
-        alt="Toyota Hilux" 
-        camera-controls 
-        auto-rotate 
-        shadow-intensity="1">
+    <section class="viewer-wrap">
+      <!-- ⚠️ Reemplaza src con la ruta real del modelo -->
+      <model-viewer id="viewer"
+        src="assets/hilux.glb"
+        camera-controls
+        touch-action="pan-y"
+        shadow-intensity="1"
+        exposure="0.9"
+        ar ar-modes="webxr scene-viewer quick-look"
+        environment-image="neutral"
+        skybox-color="#06141A"
+        poster=""
+        style="background:transparent">
+
+        <!-- Hotspots de ejemplo (puedes dejar estos 3 y el script añade el resto) -->
+        <button class="hotspot" slot="hotspot-1" data-item="filtro-aire"
+                data-position="0.25m 1.35m 0.6m" data-normal="0m 1m 0m"
+                aria-label="Filtro de aire"></button>
+
+        <button class="hotspot" slot="hotspot-2" data-item="neumatico-del-izq"
+                data-position="0.85m 0.45m 0.95m" data-normal="0m 1m 0m"
+                aria-label="Neumático Del. Izq."></button>
+
+        <button class="hotspot" slot="hotspot-3" data-item="aceite-motor"
+                data-position="0.15m 1.25m 0.4m" data-normal="0m 1m 0m"
+                aria-label="Aceite Motor"></button>
       </model-viewer>
-    </div>
+    </section>
 
-    <!-- TABLA CHECKLIST -->
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Ítem</th>
-          <th>Estado</th>
-          <th>Notas</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Motor</td>
-          <td class="badge">Pendiente</td>
-          <td>Revisión de aceite y filtros</td>
-        </tr>
-        <tr>
-          <td>Neumáticos</td>
-          <td class="badge">Correcto</td>
-          <td>Presión revisada</td>
-        </tr>
-        <tr>
-          <td>Luces</td>
-          <td class="badge">Pendiente</td>
-          <td>Foco trasero derecho no enciende</td>
-        </tr>
-      </tbody>
-    </table>
+    <aside class="panel" id="panel">
+      <div class="panel-head">
+        <h3 id="p-title">Selecciona un punto</h3>
+        <span id="p-status" class="badge neutral">—</span>
+      </div>
+
+      <dl class="kv">
+        <dt>Última revisión</dt><dd id="p-date">—</dd>
+        <dt>Observaciones</dt><dd id="p-notes">—</dd>
+        <dt>Foto</dt>
+        <dd><input type="file" id="p-photo" accept="image/*"></dd>
+      </dl>
+
+      <div class="panel-actions">
+        <button id="btn-ok" class="btn success">Aprobado</button>
+        <button id="btn-att" class="btn warning">Observación</button>
+        <button id="btn-fail" class="btn danger">Rechazado</button>
+        <a class="btn ghost" href="checklist.html">Generar checklist</a>
+      </div>
+    </aside>
+
+    <section class="summary">
+      <div class="chip"><span id="cnt-total">0</span> Ítems</div>
+      <div class="chip ok"><span id="cnt-ok">0</span> Aprobados</div>
+      <div class="chip att"><span id="cnt-att">0</span> Con obs.</div>
+      <div class="chip fail"><span id="cnt-fail">0</span> Rechazados</div>
+    </section>
   </main>
+
+  <footer class="foot">© AURUM8</footer>
+
+  <script>
+    // -------- Datos (puedes extender a 50 ítems) ----------
+    const items = {
+      "filtro-aire": {
+        titulo: "Filtro de aire",
+        fecha: "06/07/2025",
+        notas: "Energenlá en balance",
+        estado: "ok"
+      },
+      "neumatico-del-izq": {
+        titulo: "Neumático Delantero Izquierdo",
+        fecha: "06/07/2025",
+        notas: "Presión 33 PSI",
+        estado: "ok"
+      },
+      "aceite-motor": {
+        titulo: "Aceite de Motor",
+        fecha: "06/07/2025",
+        notas: "Nivel correcto",
+        estado: "ok"
+      }
+      // 👉 Agrega aquí el resto hasta 50 con clave única
+    };
+
+    // -------- UI/Estado ----------
+    const $ = sel => document.querySelector(sel);
+    const panel = $("#panel");
+    const pTitle = $("#p-title"), pStatus = $("#p-status"),
+          pDate = $("#p-date"), pNotes = $("#p-notes");
+    const cntOk = $("#cnt-ok"), cntAtt = $("#cnt-att"),
+          cntFail = $("#cnt-fail"), cntTotal = $("#cnt-total");
+
+    function refreshCounters(){
+      const vals = Object.values(items);
+      cntTotal.textContent = vals.length;
+      cntOk.textContent    = vals.filter(i=>i.estado==="ok").length;
+      cntAtt.textContent   = vals.filter(i=>i.estado==="att").length;
+      cntFail.textContent  = vals.filter(i=>i.estado==="fail").length;
+    }
+
+    function setBadge(el, state){
+      el.className = "badge " + (state||"neutral");
+      el.textContent = state==="ok" ? "Aprobado"
+                     : state==="att"? "Observación"
+                     : state==="fail"?"Rechazado" : "—";
+    }
+
+    function loadItem(id){
+      const it = items[id];
+      if(!it) return;
+      panel.dataset.id = id;
+      pTitle.textContent = it.titulo;
+      pDate.textContent = it.fecha || "—";
+      pNotes.textContent = it.notas || "—";
+      setBadge(pStatus, it.estado);
+    }
+
+    // Hotspots -> seleccionar
+    document.querySelectorAll(".hotspot").forEach(btn=>{
+      btn.addEventListener("click", ()=> loadItem(btn.dataset.item));
+    });
+
+    // Acciones
+    $("#btn-ok").onclick   = ()=> updateState("ok");
+    $("#btn-att").onclick  = ()=> updateState("att");
+    $("#btn-fail").onclick = ()=> updateState("fail");
+
+    function updateState(state){
+      const id = panel.dataset.id;
+      if(!id) return;
+      items[id].estado = state;
+      setBadge(pStatus, state);
+      refreshCounters();
+    }
+
+    // Init
+    refreshCounters();
+  </script>
 </body>
 </html>
