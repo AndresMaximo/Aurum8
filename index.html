@@ -3,53 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AURUM∞ • Checklist 3D</title>
-
-  <!-- Tu hoja de estilos global -->
+  <title>AURUM∞ • Inicio</title>
   <link rel="stylesheet" href="style.css" />
-
-  <!-- Estilos mínimos de esta página (opcional) -->
-  <style>
-    .viewer-wrap {
-      width: 100%;
-      margin: 1rem 0 2rem;
-      background: #111;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #222;
-    }
-    model-viewer {
-      width: 100%;
-      height: 55vh;           /* alto adaptable en móvil */
-      max-height: 600px;      /* techo en pantallas grandes */
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #111;
-      border: 1px solid #222;
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    thead th {
-      text-align: left;
-      padding: 12px 16px;
-      background: #151515;
-      border-bottom: 1px solid #222;
-      font-weight: 700;
-    }
-    tbody td {
-      padding: 14px 16px;
-      border-top: 1px solid #222;
-      vertical-align: top;
-    }
-  </style>
 </head>
 <body>
   <header class="top">
     <h1>AURUM∞</h1>
     <nav>
-      <a href="index.html">Inicio</a>
+      <a href="index.html" class="active">Inicio</a>
       <a href="modulos.html">Módulos</a>
       <a href="contacto.html">Contacto</a>
     </nav>
@@ -57,63 +18,28 @@
 
   <main class="container">
     <section>
-      <h2>Checklist Técnico 3D</h2>
-      <p>Página de ejemplo. Aquí irá el visor/flujo 3D y el checklist.</p>
-
-      <div class="viewer-wrap">
-        <!-- Cambia la ruta si tu modelo no está junto a este archivo -->
-        <model-viewer
-          id="mv"
-          src="ch440.glb"
-          alt="Chancador CH440"
-          camera-controls
-          auto-rotate
-          ar
-          shadow-intensity="1"
-          exposure="1"
-          interaction-prompt="auto">
-        </model-viewer>
-      </div>
+      <h2>Bienvenido a AURUM∞</h2>
+      <p>Integrando tecnología, conciencia y energía para un futuro evolutivo.</p>
     </section>
 
     <section>
-      <table>
-        <thead>
-          <tr>
-            <th>Ítem</th>
-            <th>Estado</th>
-            <th>Notas</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Chancador CH440</td>
-            <td>Pendiente</td>
-            <td>Agregar puntos de inspección.</td>
-          </tr>
-          <tr>
-            <td>Fajas</td>
-            <td>OK</td>
-            <td>—</td>
-          </tr>
-        </tbody>
-      </table>
+      <h2>Visión del Proyecto</h2>
+      <p>Crear una plataforma unificada que combine trazabilidad técnica, calibración energética y conciencia vibracional.</p>
+    </section>
+
+    <section>
+      <h2>Módulos en desarrollo</h2>
+      <ul>
+        <li><a href="checklist.html">Checklist Técnico 3D</a></li>
+        <li><a href="trazabilidad.html">Módulo de Trazabilidad Energética</a></li>
+        <li><a href="numerologia.html">Numerología Vibracional</a></li>
+        <li><a href="ot.html">Órdenes de Trabajo Interactivas</a></li>
+      </ul>
     </section>
   </main>
 
   <footer class="footer">
     <small>© 2025 AURUM∞</small>
   </footer>
-
-  <!-- Librería del visor 3D (requerida) -->
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-
-  <!-- Aviso simple si el GLB no carga -->
-  <script>
-    const mv = document.getElementById('mv');
-    mv.addEventListener('error', () => {
-      console.warn('No se pudo cargar ch440.glb. Verifica nombre y ubicación.');
-    });
-  </script>
 </body>
 </html>
