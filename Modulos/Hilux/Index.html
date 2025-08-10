@@ -1,54 +1,71 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Toyota Hilux 3D • AURUM8</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toyota Hilux 3D • AURUM∞</title>
 
-  <!-- Estilos globales del sitio y del módulo -->
-  <link rel="stylesheet" href="../../style.css" />
-  <link rel="stylesheet" href="./Hilux.css" />
-
-  <!-- model-viewer -->
+  <!-- model-viewer (visor 3D) -->
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-  <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
+
+  <!-- Estilos rápidos (puedes quitarlos si ya usas tu Hilux.css) -->
+  <style>
+    :root{
+      --bg:#0d0d0d; --panel:#111; --text:#f5f5f5; --brand:#ffd700;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui, Arial, sans-serif;background:var(--bg);color:var(--text)}
+    header{padding:14px 18px;background:linear-gradient(90deg,#b8860b,#ffd700);color:#0d0d0d;font-weight:700}
+    header h1{margin:0;font-size:1.15rem;letter-spacing:.5px}
+    main{max-width:1200px;margin:20px auto;padding:0 16px}
+    .viewer-wrap{width:100%;height:min(78vh,820px);background:#1a1a1a;border-radius:18px;overflow:hidden}
+    model-viewer{width:100%;height:100%}
+    .legend{margin:18px 6px 0;font-size:.95rem;line-height:1.6;color:#ddd}
+    .legend h3{color:var(--brand);margin:.2rem 0 .6rem}
+    code{background:#222;border:1px solid #333;border-radius:6px;padding:.15rem .35rem}
+  </style>
 </head>
 <body>
-  <header class="top">
-    <h1>Hilux 3D</h1>
-    <nav>
-      <a href="../../index.html">Inicio</a>
-      <a href="../../modulos.html" class="active">Módulos</a>
-      <a href="../../contacto.html">Contacto</a>
-    </nav>
+
+  <header>
+    <h1>Hilux 3D • AURUM∞</h1>
   </header>
 
-  <main class="container">
-    <section class="viewer-wrap">
-      <model-viewer id="visor3d"
-        src="./hilux.glb"
+  <main>
+    <div class="viewer-wrap">
+      <!-- Visor 3D -->
+      <model-viewer
+        id="visorHilux"
+        src="hilux.glb"              <!-- cuando lo tengas, deja el archivo aquí mismo -->
         alt="Modelo 3D Toyota Hilux"
-        ar ar-modes="webxr scene-viewer quick-look"
+        ar
         camera-controls
-        disable-zoom
-        auto-rotate
+        interaction-prompt="auto"
+
+        <!-- ZOOM y órbitas -->
+        camera-orbit="0deg 75deg 3.5m"
+        min-camera-orbit="auto auto 1.2m"
+        max-camera-orbit="auto auto 7m"
+        min-field-of-view="15deg"
+        max-field-of-view="60deg"
+
+        exposure="1"
         shadow-intensity="1"
-        exposure="1.1"
         environment-image="neutral"
-        style="width:100%; height: 70vh;">
-      </model-viewer>
-    </section>
+        poster=""
+      ></model-viewer>
+    </div>
 
     <section class="legend">
       <h3>Indicaciones</h3>
       <ul>
-        <li>El archivo <strong>hilux.glb</strong> debe estar en <code>Modulos/Hilux/</code>.</li>
-        <li>Puedes rotar el modelo con el dedo o el mouse. El zoom está desactivado (lo habilitamos si lo necesitas).</li>
-        <li>Cuando recibamos la versión final del GLB, solo reemplazamos el archivo y listo.</li>
+        <li>El archivo <strong>hilux.glb</strong> debe ir en <code>Modulos/Hilux/</code> (junto a este <code>Index.html</code>).</li>
+        <li>Gira con el dedo/mouse y usa scroll/pinch para <strong>zoom</strong>.</li>
+        <li>Si quieres desactivar el zoom más adelante, elimina el atributo <code>camera-controls</code> o ajusta los límites.</li>
       </ul>
     </section>
   </main>
 
-  <footer class="foot">© AURUM8</footer>
+  <noscript>Activa JavaScript para ver el visor 3D.</noscript>
 </body>
 </html>
