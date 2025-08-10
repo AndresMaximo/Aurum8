@@ -1,14 +1,358 @@
-<!DOCTYPE html><html lang="es"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Trazabilidad Energética • AURUM8</title><link rel="stylesheet" href="style.css">
-</head><body>
-<header class="top"><h1>AURUM8</h1>
-  <nav><a href="index.html">Inicio</a><a href="modulos.html" class="active">Módulos</a><a href="contacto.html">Contacto</a></nav>
-</header>
-<main class="container">
-  <h2>Trazabilidad Energética</h2>
-  <p>Placeholder para dashboard de energía, lecturas y reportes.</p>
-  <ul class="check"><li>Registrar fuentes</li><li>Calcular huella</li><li>Exportar reporte</li></ul>
-</main>
-<footer class="foot">© AURUM8</footer>
-</body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AURUM∞ – Trazabilidad</title>
+  <link rel="stylesheet" href="lemuria/lemuria.css"/>
+
+  <style>
+    .container { max-width: 1160px; margin: 0 auto; padding: 1.25rem; }
+    .grid { display: grid; gap: 1rem; }
+    @media (min-width: 960px){ .grid-2 { grid-template-columns: 1.1fr .9fr; } }
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 1rem; box-shadow: var(--shadow-soft); }
+    .card h3 { margin: .25rem 0 1rem; }
+    .field { display: grid; gap:.35rem; margin-bottom: .7rem; }
+    label { font-size:.92rem; color: var(--text-dim); }
+    input, select, textarea {
+      background: var(--panel-2); color: var(--text);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: .7rem .9rem; outline: none;
+    }
+    textarea { min-height: 78px; resize: vertical; }
+    .row { display:flex; gap:.6rem; flex-wrap: wrap; align-items: center; }
+    .btn { background: var(--accent); color:#fff; border:0; border-radius:12px; padding:.65rem .9rem; cursor:pointer; }
+    .btn-ghost { background:transparent; border:1px solid var(--accent); color:var(--accent); }
+    .tag { background: var(--panel-2); border-radius:999px; padding:.25rem .6rem; font-size:.8rem; }
+    .timeline { position: relative; padding-left: 1.25rem; }
+    .timeline::before { content:""; position:absolute; left:.45rem; top:.25rem; bottom:.25rem; width:2px; background: var(--border); }
+    .event { position:relative; margin: .75rem 0 .75rem 0; padding-left:.75rem; }
+    .event::before { content:""; position:absolute; left:-.05rem; top:.35rem; width:.6rem; height:.6rem; border-radius:50%; background: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent); }
+    .muted { color: var(--text-dim); font-size:.9rem; }
+    .pill { display:inline-flex; gap:.4rem; align-items:center; padding:.2rem .55rem; border-radius:999px; background: var(--panel-2); border:1px solid var(--border); font-size:.8rem; }
+    .table { width: 100%; border-collapse: collapse; }
+    .table th, .table td { border-bottom: 1px solid var(--border); padding: .55rem .4rem; font-size: .92rem; }
+    .table th { text-align: left; color: var(--text-dim); font-weight: 600; }
+    .files { display:flex; gap:.5rem; flex-wrap: wrap; }
+    .file { border:1px dashed var(--border); padding:.45rem .6rem; border-radius:10px; font-size:.85rem; background: var(--panel-2); }
+    .hint { font-size:.85rem; color: var(--text-dim); }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  </style>
+</head>
+<body class="lemurian-bg">
+
+  <!-- Header -->
+  <header class="site-header glass">
+    <div class="container">
+      <nav class="navbar">
+        <a class="brand" href="index.html">
+          <img src="lemuria/aurum8_mark.svg" alt="AURUM∞" height="28">
+          <span>AURUM∞</span>
+        </a>
+        <ul class="menu">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a class="active" href="trazabilidad.html">Trazabilidad</a></li>
+          <li><a href="modulos.html">Módulos</a></li>
+          <li><a href="ot.html">Órdenes de Trabajo</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="container grid grid-2">
+    <!-- Panel IZQ: Identidad & Acciones -->
+    <section class="card">
+      <h3>Trazabilidad de Activo / Intervención</h3>
+
+      <div class="grid">
+        <div class="field">
+          <label>ID Activo (QR / Código interno)</label>
+          <div class="row">
+            <input id="qr" class="mono" placeholder="Ej: HILUX-A8-001" />
+            <button class="btn" id="btnCargar">Cargar</button>
+            <button class="btn-ghost" id="btnNuevo">Nuevo</button>
+          </div>
+          <div class="hint">Puedes pegar el texto leído desde QR o escribir el código manualmente.</div>
+        </div>
+
+        <div class="field">
+          <label>Nombre / Descripción</label>
+          <input id="nombre" placeholder="Toyota Hilux – Check 50 pts / Intervención" />
+        </div>
+
+        <div class="field">
+          <label>Estado</label>
+          <div class="row">
+            <select id="estado">
+              <option>Pendiente</option>
+              <option>En progreso</option>
+              <option>En revisión</option>
+              <option>Finalizado</option>
+              <option>Observado</option>
+            </select>
+            <button class="btn" id="btnEstado">Actualizar estado</button>
+          </div>
+          <div class="hint">Cada cambio de estado se registra como evento en la línea de tiempo.</div>
+        </div>
+
+        <div class="field">
+          <label>Ubicación (GPS)</label>
+          <div class="row">
+            <button class="btn-ghost" id="btnGeo">Obtener ubicación</button>
+            <span id="gps" class="pill">Lat: —, Lng: —</span>
+          </div>
+          <div class="hint">Se almacena la última posición registrada para este activo.</div>
+        </div>
+
+        <div class="field">
+          <label>Adjuntar evidencia (imágenes, PDFs)</label>
+          <input id="fileInput" type="file" multiple />
+          <div id="fileList" class="files"></div>
+          <div class="hint">Se listan los nombres y se guardan referencias; el archivo real no se sube (modo demo).</div>
+        </div>
+
+        <div class="row">
+          <button class="btn" id="btnAgregar">Añadir evento</button>
+          <button class="btn-ghost" id="btnExportJson">Exportar JSON</button>
+          <button class="btn-ghost" id="btnExportCsv">Exportar CSV</button>
+          <label class="btn-ghost" for="importJson" style="cursor:pointer;">Importar JSON</label>
+          <input id="importJson" type="file" accept="application/json" style="display:none;">
+        </div>
+      </div>
+    </section>
+
+    <!-- Panel DER: Timeline y tabla -->
+    <section class="card">
+      <h3>Historial de Eventos</h3>
+
+      <div class="field">
+        <label>Nuevo evento (comentario)</label>
+        <textarea id="comentario" placeholder="Ej: Check visual completado / Se detecta desgaste menor en neumático delantero derecho."></textarea>
+      </div>
+
+      <div class="timeline" id="timeline"></div>
+
+      <h3 style="margin-top:1.25rem;">Bitácora</h3>
+      <table class="table" id="tabla">
+        <thead>
+          <tr>
+            <th>Fecha/Hora</th>
+            <th>Tipo</th>
+            <th>Detalle</th>
+            <th>GPS</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 AURUM∞. Trazabilidad integral de activos y trabajos.</p>
+    </div>
+  </footer>
+
+  <!-- Script -->
+  <script>
+    // ======= Estado en memoria (localStorage) =======
+    const KEY = "AURUM8_TRAZA_V1";
+    let store = JSON.parse(localStorage.getItem(KEY) || "{}"); // { [id]: { nombre, estado, gps, files:[], eventos:[] } }
+    let currentId = "";
+
+    // ======= Helpers =======
+    const $ = (id)=>document.getElementById(id);
+    const fmtDate = (d)=> new Date(d).toLocaleString();
+    const getGPS = (gps)=> gps ? `Lat ${gps.lat.toFixed(5)}, Lng ${gps.lng.toFixed(5)}` : "—";
+    const save = ()=> localStorage.setItem(KEY, JSON.stringify(store));
+
+    function ensureRecord(id){
+      if(!store[id]){
+        store[id] = { nombre:"", estado:"Pendiente", gps:null, files:[], eventos:[] };
+      }
+    }
+
+    function setUIFromRecord(rec){
+      $("nombre").value = rec.nombre || "";
+      $("estado").value = rec.estado || "Pendiente";
+      $("gps").textContent = rec.gps ? `Lat: ${rec.gps.lat.toFixed(5)}, Lng: ${rec.gps.lng.toFixed(5)}` : "Lat: —, Lng: —";
+      renderFiles(rec.files || []);
+      renderTimeline(rec.eventos || []);
+      renderTable(rec.eventos || []);
+    }
+
+    function renderFiles(files){
+      const box = $("fileList");
+      box.innerHTML = "";
+      files.forEach(f=>{
+        const div = document.createElement("div");
+        div.className = "file";
+        div.textContent = f.name + (f.size ? ` (${f.size})` : "");
+        box.appendChild(div);
+      });
+    }
+
+    function renderTimeline(eventos){
+      const tl = $("timeline");
+      tl.innerHTML = "";
+      [...eventos].reverse().forEach(e=>{
+        const wrap = document.createElement("div"); wrap.className = "event";
+        const h = document.createElement("div");
+        h.innerHTML = `<strong>${e.tipo}</strong> <span class="muted">— ${fmtDate(e.ts)}</span>`;
+        const p = document.createElement("div");
+        p.className = "muted";
+        const gps = e.gps ? ` · <span class="mono">${getGPS(e.gps)}</span>` : "";
+        p.innerHTML = `${e.detalle || ""}${gps}`;
+        wrap.appendChild(h); wrap.appendChild(p);
+        tl.appendChild(wrap);
+      });
+    }
+
+    function renderTable(eventos){
+      const body = $("tabla").querySelector("tbody");
+      body.innerHTML = "";
+      [...eventos].reverse().forEach(e=>{
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${fmtDate(e.ts)}</td>
+          <td>${e.tipo}</td>
+          <td>${(e.detalle||"")}</td>
+          <td class="mono">${e.gps ? getGPS(e.gps) : "—"}</td>
+        `;
+        body.appendChild(tr);
+      });
+    }
+
+    function addEvent(tipo, detalle){
+      if(!currentId) return alert("Primero ingresa un ID de activo y presiona Cargar.");
+      const rec = store[currentId];
+      const ev = { ts: Date.now(), tipo, detalle: detalle||"", gps: rec.gps || null };
+      rec.eventos.push(ev);
+      save();
+      setUIFromRecord(rec);
+    }
+
+    function toCSV(rows){
+      const esc = (s)=>('"'+String(s??"").replace(/"/g,'""')+'"');
+      const header = ["fecha","tipo","detalle","lat","lng"];
+      const out = [header.join(",")];
+      rows.forEach(r=>{
+        out.push([
+          esc(fmtDate(r.ts)),
+          esc(r.tipo),
+          esc(r.detalle || ""),
+          r.gps ? r.gps.lat : "",
+          r.gps ? r.gps.lng : ""
+        ].join(","));
+      });
+      return out.join("\n");
+    }
+
+    function download(filename, content, type="text/plain"){
+      const blob = new Blob([content], {type});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = filename; a.click();
+      setTimeout(()=>URL.revokeObjectURL(url), 500);
+    }
+
+    // ======= Listeners =======
+    $("btnNuevo").addEventListener("click", ()=>{
+      $("qr").value = "";
+      currentId = "";
+      setUIFromRecord({nombre:"",estado:"Pendiente",gps:null,files:[],eventos:[]});
+    });
+
+    $("btnCargar").addEventListener("click", ()=>{
+      const id = $("qr").value.trim();
+      if(!id) return alert("Ingresa un ID/QR.");
+      currentId = id;
+      ensureRecord(currentId);
+      setUIFromRecord(store[currentId]);
+      addEvent("CARGA", "Se abrió la ficha del activo.");
+    });
+
+    $("btnEstado").addEventListener("click", ()=>{
+      if(!currentId) return alert("Primero carga un activo.");
+      const rec = store[currentId];
+      rec.nombre = $("nombre").value.trim();
+      rec.estado = $("estado").value;
+      save();
+      addEvent("ESTADO", `Actualizado a: ${rec.estado}`);
+    });
+
+    $("btnAgregar").addEventListener("click", ()=>{
+      const txt = $("comentario").value.trim();
+      if(!currentId) return alert("Primero carga un activo.");
+      if(!txt) return alert("Escribe un comentario para el evento.");
+      addEvent("EVENTO", txt);
+      $("comentario").value = "";
+    });
+
+    $("btnGeo").addEventListener("click", ()=>{
+      if(!currentId) return alert("Primero carga un activo.");
+      if(!navigator.geolocation) return alert("Geolocalización no soportada en este dispositivo.");
+      navigator.geolocation.getCurrentPosition(pos=>{
+        const {latitude, longitude} = pos.coords;
+        const rec = store[currentId];
+        rec.gps = { lat: latitude, lng: longitude, ts: Date.now() };
+        save();
+        $("gps").textContent = `Lat: ${latitude.toFixed(5)}, Lng: ${longitude.toFixed(5)}`;
+        addEvent("GPS", "Ubicación actualizada.");
+      }, err=> alert("No se pudo obtener ubicación: " + err.message), { enableHighAccuracy:true, timeout:10000 });
+    });
+
+    $("fileInput").addEventListener("change", (e)=>{
+      if(!currentId) return alert("Primero carga un activo.");
+      const files = [...e.target.files].map(f=>({ name: f.name, size: f.size }));
+      const rec = store[currentId];
+      rec.files = (rec.files || []).concat(files);
+      save();
+      renderFiles(rec.files);
+      addEvent("EVIDENCIA", `Se adjuntaron ${files.length} archivo(s).`);
+      e.target.value = ""; // reset
+    });
+
+    $("btnExportJson").addEventListener("click", ()=>{
+      if(!currentId) return alert("Primero carga un activo.");
+      download(`traza_${currentId}.json`, JSON.stringify(store[currentId], null, 2), "application/json");
+    });
+
+    $("btnExportCsv").addEventListener("click", ()=>{
+      if(!currentId) return alert("Primero carga un activo.");
+      const rec = store[currentId];
+      const csv = toCSV(rec.eventos || []);
+      download(`traza_${currentId}.csv`, csv, "text/csv");
+    });
+
+    $("importJson").addEventListener("change", (e)=>{
+      if(!currentId) return alert("Primero carga un activo (ID) para asociar la importación.");
+      const file = e.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev)=>{
+        try{
+          const data = JSON.parse(ev.target.result);
+          store[currentId] = data;
+          save();
+          setUIFromRecord(store[currentId]);
+          addEvent("IMPORT", "Ficha importada desde JSON.");
+        }catch(err){
+          alert("JSON inválido: " + err.message);
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = "";
+    });
+
+    // Estado inicial vacío amigable
+    setUIFromRecord({nombre:"",estado:"Pendiente",gps:null,files:[],eventos:[]});
+  </script>
+
+  <script src="lemuria/lemuria.js"></script>
+</body>
+</html>
