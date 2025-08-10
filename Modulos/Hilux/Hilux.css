@@ -1,73 +1,69 @@
-/* --- Tema Lemuriano + ajustes del módulo Hilux --- */
-:root{
-  --aurum-bg:#0b0b0b;
-  --aurum-panel:#141414;
-  --aurum-ink:#f7c35a;
-  --aurum-ink-soft:#ffd98a;
-  --aurum-line:#2a2a2a;
+/* Tema del módulo Hilux */
+:root {
+  --aurum-bg: #0b0b0b;
+  --aurum-ink: #e0e0e0;
+  --aurum-accent: #ffb400;
+  --panel: #141414;
+  --line: #2a2a2a;
 }
 
-html,body{background:var(--aurum-bg);color:#ddd}
-main{max-width:1200px;margin:auto;padding:1.25rem}
-
-/* Tarjeta del visor */
-.viewer-wrap{
-  background:linear-gradient(180deg,#0e0e0e, #111 60%);
-  border:1px solid var(--aurum-line);
-  border-radius:14px;
-  overflow:hidden;
-  box-shadow:0 10px 25px rgba(0,0,0,.35);
+html, body {
+  margin: 0;
+  background: var(--aurum-bg);
+  color: var(--aurum-ink);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
 }
 
-/* <model-viewer> responsivo */
-model-viewer{
-  width:100%;
-  height:min(72vh,680px);
-  --progress-bar-color: var(--aurum-ink);
-  --poster-color: #0e0e0e;
+.top {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 20px;
 }
 
-/* Bloque de ayuda / leyenda */
-.legend{
-  background:var(--aurum-panel);
-  border:1px solid var(--aurum-line);
-  border-radius:12px;
-  padding:1rem 1.15rem;
-  margin-top:1rem;
-}
-.legend h3{
-  color:var(--aurum-ink); margin:0 0 .5rem 0; font-weight:700; letter-spacing:.3px;
-}
-.legend ul{margin:.25rem 0 0 1.1rem}
-.legend li{margin:.3rem 0}
-
-/* Badges de info (si los usas) */
-.badge{
-  display:inline-block;
-  padding:.25rem .6rem;
-  background:#1b1b1b;
-  border:1px solid var(--aurum-line);
-  border-radius:999px;
-  font-size:.82rem;
-  color:#bbb;
+.top h1 {
+  margin: 0 0 8px 0;
+  font-weight: 700;
+  letter-spacing: .3px;
 }
 
-/* Botón AR nativo */
-model-viewer::part(default-ar-button){
-  background:var(--aurum-ink);
-  color:#1a1300;
-  border:none;
-  border-radius:999px;
-  padding:.6rem 1rem;
-  font-weight:700;
-  box-shadow:0 6px 18px rgba(247,195,90,.35);
+.top nav a {
+  color: var(--aurum-ink);
+  opacity: .9;
+  margin-right: 16px;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
 }
-model-viewer::part(default-ar-button):hover{
-  filter:brightness(1.05);
+.top nav a.active,
+.top nav a:hover { border-bottom-color: var(--aurum-accent); }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 20px 40px;
 }
 
-/* Pequeños */
-@media (max-width: 640px){
-  main{padding:.85rem}
-  model-viewer{height:60vh}
+.viewer-wrap {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.legend {
+  margin-top: 18px;
+  padding: 16px;
+  background: #111;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.legend h3 {
+  margin: 0 0 8px 0;
+  color: var(--aurum-accent);
+}
+
+.foot {
+  padding: 24px 20px 40px;
+  text-align: center;
+  color: #8a8a8a;
 }
