@@ -3,166 +3,101 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Hilux 3D • AURUM∞</title>
+  <title>Toyota Hilux 3D · AURUM∞</title>
 
-  <!-- Estilos base del proyecto + tema Lemuriano -->
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="lemuria.css">
+  <!-- Estilos base + tema Lemuriano -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="lemuria.css" />
 
   <!-- Visor 3D -->
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+  <style>
+    .viewer-wrap{
+      width:100%;
+      max-width:1200px;
+      margin:20px auto;
+      background:var(--bg-card);
+      border:1px solid var(--gold);
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+    model-viewer{
+      width:100%;
+      height:70vh;
+      min-height:420px;
+      background:#111;
+    }
+    .legend{
+      max-width:900px;
+      margin:0 auto 32px;
+      background:var(--bg-card);
+      border:1px solid var(--gold);
+      border-radius:12px;
+      padding:16px 20px;
+      box-shadow:var(--shadow);
+    }
+    .legend h3{ color:var(--gold); margin:0 0 8px; }
+    .legend code{ background:#00000033; padding:.1rem .35rem; border-radius:6px; }
+  </style>
 </head>
-<body class="lemuria">
+<body class="theme-lemuria">
+
   <header class="top">
     <h1>AURUM∞</h1>
     <nav>
       <a href="index.html">Inicio</a>
-      <a href="modulos.html" class="active">Módulos</a>
+      <a href="vision.html">Visión</a>
+      <a href="modulos.html">Módulos</a>
+      <a class="active" href="hilux.html">Hilux 3D</a>
       <a href="contacto.html">Contacto</a>
     </nav>
   </header>
 
   <main class="container">
-    <h2>Checklist Técnico 3D — Toyota Hilux</h2>
-    <p class="lead">Toca los nodos para ver cada ítem. Estética Lemuriana activada 🌊✨.</p>
+    <h2>Toyota Hilux 3D</h2>
 
-    <section class="viewer-wrap">
-      <!-- ⚠️ Reemplaza src con la ruta real del modelo -->
-      <model-viewer id="viewer"
-        src="assets/hilux.glb"
+    <div class="viewer-wrap">
+      <model-viewer id="hilux3d"
+        src="Modulos/Hilux/hilux.glb"
+        poster="Modulos/Hilux/poster.jpg"
+        alt="Modelo 3D Toyota Hilux"
+        loading="eager"
+        reveal="auto"
+
         camera-controls
+        interaction-prompt="auto"
         touch-action="pan-y"
+
+        camera-orbit="0deg 75deg 3.5m"
+        min-camera-orbit="auto auto 1.2m"
+        max-camera-orbit="auto auto 7m"
+        min-field-of-view="15deg"
+        max-field-of-view="60deg"
+
+        exposure="1"
         shadow-intensity="1"
-        exposure="0.9"
-        ar ar-modes="webxr scene-viewer quick-look"
         environment-image="neutral"
-        skybox-color="#06141A"
-        poster=""
-        style="background:transparent">
 
-        <!-- Hotspots de ejemplo (puedes dejar estos 3 y el script añade el resto) -->
-        <button class="hotspot" slot="hotspot-1" data-item="filtro-aire"
-                data-position="0.25m 1.35m 0.6m" data-normal="0m 1m 0m"
-                aria-label="Filtro de aire"></button>
-
-        <button class="hotspot" slot="hotspot-2" data-item="neumatico-del-izq"
-                data-position="0.85m 0.45m 0.95m" data-normal="0m 1m 0m"
-                aria-label="Neumático Del. Izq."></button>
-
-        <button class="hotspot" slot="hotspot-3" data-item="aceite-motor"
-                data-position="0.15m 1.25m 0.4m" data-normal="0m 1m 0m"
-                aria-label="Aceite Motor"></button>
+        ar
+        ar-modes="webxr scene-viewer quick-look"
+        autoplay>
       </model-viewer>
-    </section>
+    </div>
 
-    <aside class="panel" id="panel">
-      <div class="panel-head">
-        <h3 id="p-title">Selecciona un punto</h3>
-        <span id="p-status" class="badge neutral">—</span>
-      </div>
-
-      <dl class="kv">
-        <dt>Última revisión</dt><dd id="p-date">—</dd>
-        <dt>Observaciones</dt><dd id="p-notes">—</dd>
-        <dt>Foto</dt>
-        <dd><input type="file" id="p-photo" accept="image/*"></dd>
-      </dl>
-
-      <div class="panel-actions">
-        <button id="btn-ok" class="btn success">Aprobado</button>
-        <button id="btn-att" class="btn warning">Observación</button>
-        <button id="btn-fail" class="btn danger">Rechazado</button>
-        <a class="btn ghost" href="checklist.html">Generar checklist</a>
-      </div>
-    </aside>
-
-    <section class="summary">
-      <div class="chip"><span id="cnt-total">0</span> Ítems</div>
-      <div class="chip ok"><span id="cnt-ok">0</span> Aprobados</div>
-      <div class="chip att"><span id="cnt-att">0</span> Con obs.</div>
-      <div class="chip fail"><span id="cnt-fail">0</span> Rechazados</div>
+    <section class="legend">
+      <h3>Indicaciones</h3>
+      <ul>
+        <li>Coloca <code>hilux.glb</code> en <code>Modulos/Hilux/</code> (junto a este <code>hilux.html</code>).</li>
+        <li>Usa el dedo o mouse para rotar; pellizca/scroll para <strong>zoom</strong>.</li>
+        <li>Si quieres limitar más el zoom, ajusta <code>min/max-camera-orbit</code> y
+          <code>min/max-field-of-view</code>.</li>
+        <li>AR está activado: en móviles compatibles verás la opción <em>Ver en tu espacio</em>.</li>
+      </ul>
     </section>
   </main>
 
-  <footer class="foot">© AURUM8</footer>
-
-  <script>
-    // -------- Datos (puedes extender a 50 ítems) ----------
-    const items = {
-      "filtro-aire": {
-        titulo: "Filtro de aire",
-        fecha: "06/07/2025",
-        notas: "Energenlá en balance",
-        estado: "ok"
-      },
-      "neumatico-del-izq": {
-        titulo: "Neumático Delantero Izquierdo",
-        fecha: "06/07/2025",
-        notas: "Presión 33 PSI",
-        estado: "ok"
-      },
-      "aceite-motor": {
-        titulo: "Aceite de Motor",
-        fecha: "06/07/2025",
-        notas: "Nivel correcto",
-        estado: "ok"
-      }
-      // 👉 Agrega aquí el resto hasta 50 con clave única
-    };
-
-    // -------- UI/Estado ----------
-    const $ = sel => document.querySelector(sel);
-    const panel = $("#panel");
-    const pTitle = $("#p-title"), pStatus = $("#p-status"),
-          pDate = $("#p-date"), pNotes = $("#p-notes");
-    const cntOk = $("#cnt-ok"), cntAtt = $("#cnt-att"),
-          cntFail = $("#cnt-fail"), cntTotal = $("#cnt-total");
-
-    function refreshCounters(){
-      const vals = Object.values(items);
-      cntTotal.textContent = vals.length;
-      cntOk.textContent    = vals.filter(i=>i.estado==="ok").length;
-      cntAtt.textContent   = vals.filter(i=>i.estado==="att").length;
-      cntFail.textContent  = vals.filter(i=>i.estado==="fail").length;
-    }
-
-    function setBadge(el, state){
-      el.className = "badge " + (state||"neutral");
-      el.textContent = state==="ok" ? "Aprobado"
-                     : state==="att"? "Observación"
-                     : state==="fail"?"Rechazado" : "—";
-    }
-
-    function loadItem(id){
-      const it = items[id];
-      if(!it) return;
-      panel.dataset.id = id;
-      pTitle.textContent = it.titulo;
-      pDate.textContent = it.fecha || "—";
-      pNotes.textContent = it.notas || "—";
-      setBadge(pStatus, it.estado);
-    }
-
-    // Hotspots -> seleccionar
-    document.querySelectorAll(".hotspot").forEach(btn=>{
-      btn.addEventListener("click", ()=> loadItem(btn.dataset.item));
-    });
-
-    // Acciones
-    $("#btn-ok").onclick   = ()=> updateState("ok");
-    $("#btn-att").onclick  = ()=> updateState("att");
-    $("#btn-fail").onclick = ()=> updateState("fail");
-
-    function updateState(state){
-      const id = panel.dataset.id;
-      if(!id) return;
-      items[id].estado = state;
-      setBadge(pStatus, state);
-      refreshCounters();
-    }
-
-    // Init
-    refreshCounters();
-  </script>
+  <footer class="foot">© AURUM∞</footer>
 </body>
 </html>
