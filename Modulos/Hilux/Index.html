@@ -1,50 +1,54 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Hilux 3D · AURUM∞</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Toyota Hilux 3D • AURUM8</title>
 
-    <!-- Estilos base + tema Lemuriano + estilos propios Hilux -->
-    <link rel="stylesheet" href="../../style.css">
-    <link rel="stylesheet" href="../../lemuria.css">
-    <link rel="stylesheet" href="./Hilux.css">
+  <!-- Estilos globales del sitio y del módulo -->
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="./Hilux.css" />
 
-    <!-- Visor 3D -->
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <!-- model-viewer -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
 </head>
-<body class="lemuria">
-    <header class="top">
-        <h1>AURUM∞</h1>
-        <nav>
-            <a href="../../index.html">Inicio</a>
-            <a href="../../modulos.html" class="active">Módulos</a>
-            <a href="../../contacto.html">Contacto</a>
-        </nav>
-    </header>
+<body>
+  <header class="top">
+    <h1>Hilux 3D</h1>
+    <nav>
+      <a href="../../index.html">Inicio</a>
+      <a href="../../modulos.html" class="active">Módulos</a>
+      <a href="../../contacto.html">Contacto</a>
+    </nav>
+  </header>
 
-    <main class="principal">
-        <h2>Modelo 3D Toyota Hilux</h2>
+  <main class="container">
+    <section class="viewer-wrap">
+      <model-viewer id="visor3d"
+        src="./hilux.glb"
+        alt="Modelo 3D Toyota Hilux"
+        ar ar-modes="webxr scene-viewer quick-look"
+        camera-controls
+        disable-zoom
+        auto-rotate
+        shadow-intensity="1"
+        exposure="1.1"
+        environment-image="neutral"
+        style="width:100%; height: 70vh;">
+      </model-viewer>
+    </section>
 
-        <div class="viewer-wrap">
-            <model-viewer 
-                src="hilux.glb"
-                camera-controls 
-                disable-zoom
-                ar
-                ar-modes="webxr scene-viewer quick-look"
-                alt="Modelo 3D Toyota Hilux">
-            </model-viewer>
-        </div>
+    <section class="legend">
+      <h3>Indicaciones</h3>
+      <ul>
+        <li>El archivo <strong>hilux.glb</strong> debe estar en <code>Modulos/Hilux/</code>.</li>
+        <li>Puedes rotar el modelo con el dedo o el mouse. El zoom está desactivado (lo habilitamos si lo necesitas).</li>
+        <li>Cuando recibamos la versión final del GLB, solo reemplazamos el archivo y listo.</li>
+      </ul>
+    </section>
+  </main>
 
-        <section class="legend">
-            <h3>Indicaciones</h3>
-            <ul>
-                <li>El archivo <strong>hilux.glb</strong> debe estar en <code>Modulos/Hilux/</code>.</li>
-                <li>Puedes girar el modelo con el dedo o el mouse. El zoom está desactivado (se puede habilitar cuando lo pidas).</li>
-                <li>Cuando recibamos la versión final del GLB, solo reemplazamos el archivo y listo.</li>
-            </ul>
-        </section>
-    </main>
+  <footer class="foot">© AURUM8</footer>
 </body>
 </html>
