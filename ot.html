@@ -1,14 +1,165 @@
-<!DOCTYPE html><html lang="es"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Órdenes de Trabajo • AURUM8</title><link rel="stylesheet" href="style.css">
-</head><body>
-<header class="top"><h1>AURUM8</h1>
-  <nav><a href="index.html">Inicio</a><a href="modulos.html" class="active">Módulos</a><a href="contacto.html">Contacto</a></nav>
-</header>
-<main class="container">
-  <h2>Órdenes de Trabajo Interactivas</h2>
-  <p>Listado y flujo simple a implementar (placeholder).</p>
-  <ol><li>Crear OT</li><li>Asignar</li><li>Completar</li></ol>
-</main>
-<footer class="foot">© AURUM8</footer>
-</body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURUM∞ – Órdenes de Trabajo</title>
+  <link rel="stylesheet" href="lemuria/lemuria.css">
+
+  <style>
+    .container { max-width: 1080px; margin: 0 auto; padding: 1.25rem; }
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 1rem; box-shadow: var(--shadow-soft); margin-bottom: 1rem; }
+    .card h3 { margin-top: 0; }
+    .field { display: grid; gap: .35rem; margin-bottom: .75rem; }
+    label { font-size: .925rem; color: var(--text-dim); }
+    input, select, textarea {
+      background: var(--panel-2); color: var(--text);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: .7rem .9rem; outline: none;
+    }
+    textarea { min-height: 100px; resize: vertical; }
+    .actions { display: flex; gap: .75rem; flex-wrap: wrap; }
+    .btn { background: var(--accent); color: white; border: 0; border-radius: 12px; padding: .7rem 1rem; cursor: pointer; }
+    .btn-ghost { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+    .photo-preview { max-width: 100%; border-radius: 8px; margin-top: .5rem; }
+    .tag { display: inline-block; background: var(--panel-2); padding: .3rem .6rem; border-radius: 999px; font-size: .825rem; }
+  </style>
+</head>
+<body class="lemurian-bg">
+
+  <!-- Header -->
+  <header class="site-header glass">
+    <div class="container">
+      <nav class="navbar">
+        <a class="brand" href="index.html">
+          <img src="lemuria/aurum8_mark.svg" alt="AURUM∞" height="28">
+          <span>AURUM∞</span>
+        </a>
+        <ul class="menu">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="modulos.html">Módulos</a></li>
+          <li><a class="active" href="ot.html">Órdenes de Trabajo</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="container">
+    <section class="card">
+      <h3>Crear nueva Orden de Trabajo</h3>
+
+      <div class="field">
+        <label>Tipo de Orden</label>
+        <select id="tipo">
+          <option value="">— Selecciona —</option>
+          <option>Mantenimiento</option>
+          <option>Reparación</option>
+          <option>Inspección</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Estado</label>
+        <select id="estado">
+          <option>Pendiente</option>
+          <option>En progreso</option>
+          <option>Finalizada</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Equipo</label>
+        <input type="text" id="equipo" placeholder="Ej: Toyota Hilux AURUM8-001">
+      </div>
+
+      <div class="field">
+        <label>Funcionario Responsable</label>
+        <input type="text" id="funcionario" placeholder="Nombre completo">
+      </div>
+
+      <div class="field">
+        <label>RUT</label>
+        <input type="text" id="rut" placeholder="Ej: 12.345.678-9">
+      </div>
+
+      <div class="field">
+        <label>Cargo</label>
+        <input type="text" id="cargo" placeholder="Ej: Mecánico">
+      </div>
+
+      <div class="field">
+        <label>Foto Antes</label>
+        <input type="file" id="fotoAntes" accept="image/*">
+        <img id="previewAntes" class="photo-preview" style="display:none;">
+      </div>
+
+      <div class="field">
+        <label>Foto Después</label>
+        <input type="file" id="fotoDespues" accept="image/*">
+        <img id="previewDespues" class="photo-preview" style="display:none;">
+      </div>
+
+      <div class="field">
+        <label>Observaciones Técnicas</label>
+        <textarea id="observaciones" placeholder="Describe el trabajo realizado..."></textarea>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="guardar">Guardar Orden</button>
+        <span class="tag" id="duracion">Duración: —</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 AURUM∞. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Script -->
+  <script>
+    let horaInicio = null;
+
+    document.getElementById("fotoAntes").addEventListener("change", function(e) {
+      const file = e.target.files[0];
+      if(file){
+        horaInicio = new Date();
+        document.getElementById("duracion").textContent = "Duración: en curso...";
+        const reader = new FileReader();
+        reader.onload = function(ev){
+          const img = document.getElementById("previewAntes");
+          img.src = ev.target.result;
+          img.style.display = "block";
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+
+    document.getElementById("fotoDespues").addEventListener("change", function(e) {
+      const file = e.target.files[0];
+      if(file && horaInicio){
+        const horaFin = new Date();
+        const diff = Math.round((horaFin - horaInicio)/60000);
+        document.getElementById("duracion").textContent = `Duración: ${diff} minutos`;
+        const reader = new FileReader();
+        reader.onload = function(ev){
+          const img = document.getElementById("previewDespues");
+          img.src = ev.target.result;
+          img.style.display = "block";
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+
+    document.getElementById("guardar").addEventListener("click", function(){
+      alert("Orden de Trabajo guardada (simulación). En producción, se enviará a la base de datos.");
+    });
+  </script>
+
+  <script src="lemuria/lemuria.js"></script>
+</body>
+</html>
