@@ -1,42 +1,157 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visión - AURUM8</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>AURUM∞ – Visión</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="lemuria/lemuria.css"/>
+  <style>
+    .container { max-width: 1160px; margin: 0 auto; padding: 1.25rem; }
+    .hero { text-align: center; padding: 4rem 1rem; }
+    .hero h1 { font-size: clamp(1.8rem, 4vw, 3rem); margin: 0 0 .5rem; }
+    .hero p { color: var(--text-dim); max-width: 820px; margin: .75rem auto 0; }
+    .grid { display: grid; gap: 1rem; }
+    @media (min-width: 960px){ .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 960px){ .grid-2 { grid-template-columns: 1.2fr .8fr; } }
+    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 1rem 1.1rem; box-shadow: var(--shadow-soft); }
+    .card h3 { margin: .25rem 0 .75rem; }
+    .badge { display:inline-block; padding:.28rem .6rem; border-radius:999px; background: var(--panel-2); border:1px solid var(--border); font-size:.8rem; }
+    .list { display:grid; gap:.5rem; }
+    .list li { display:flex; gap:.6rem; align-items:flex-start; }
+    .dot { width:.55rem; height:.55rem; border-radius:50%; background: var(--accent); margin-top:.45rem; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent); }
+    .cta { text-align:center; padding: 2rem 0 3rem; }
+    .btn { background: var(--accent); color:#fff; border:0; border-radius:12px; padding:.8rem 1.1rem; cursor:pointer; }
+    .btn-ghost { background:transparent; border:1px solid var(--accent); color:var(--accent); border-radius:12px; padding:.8rem 1.1rem; }
+    .pill { display:inline-flex; gap:.4rem; align-items:center; padding:.2rem .55rem; border-radius:999px; background: var(--panel-2); border:1px solid var(--border); font-size:.8rem; }
+    .muted { color: var(--text-dim); }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  </style>
 </head>
-<body>
-    <header>
-        <h1>AURUM8</h1>
-        <nav>
-            <a href="index.html">Inicio</a>
-            <a href="vision.html">Visión</a>
-            <a href="modulos.html">Módulos</a>
-            <a href="contacto.html">Contacto</a>
-        </nav>
-    </header>
+<body class="lemurian-bg">
 
-    <main>
-        <section>
-            <h2>Nuestra Visión</h2>
-            <p>
-                En AURUM8 buscamos integrar tecnología, conciencia y energía
-                para crear un futuro evolutivo. Nuestra meta es desarrollar un
-                ecosistema digital y energético que potencie la salud vibracional,
-                optimice el mantenimiento industrial y promueva la conexión
-                con energías limpias y sostenibles.
-            </p>
-            <p>
-                Este proyecto no solo es una herramienta tecnológica, sino una
-                puerta hacia una nueva forma de interactuar con el mundo, donde
-                cada acción está alineada con la vibración del ser.
-            </p>
-        </section>
-    </main>
+  <!-- Header -->
+  <header class="site-header glass">
+    <div class="container">
+      <nav class="navbar">
+        <a class="brand" href="index.html">
+          <img src="lemuria/aurum8_mark.svg" alt="AURUM∞" height="28">
+          <span>AURUM∞</span>
+        </a>
+        <ul class="menu">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a class="active" href="vision.html">Visión</a></li>
+          <li><a href="modulos.html">Módulos</a></li>
+          <li><a href="trazabilidad.html">Trazabilidad</a></li>
+          <li><a href="ot.html">Órdenes de Trabajo</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-    <footer>
-        <p>© 2025 AURUM8 - Todos los derechos reservados.</p>
-    </footer>
+  <!-- Hero -->
+  <section class="hero container">
+    <span class="badge">Hoja de ruta · Principios · Propósito</span>
+    <h1>Visión AURUM∞</h1>
+    <p>
+      Unir tecnología operativa, trazabilidad energética y conciencia humana para
+      elevar la seguridad, la productividad y el bienestar de las personas en faena.
+      AURUM∞ es un puente entre la precisión del dato y la intuición del equipo.
+    </p>
+  </section>
+
+  <!-- Principios + Propósito -->
+  <section class="container grid grid-2" style="align-items:start;">
+    <div class="card">
+      <h3>Propósito</h3>
+      <p class="muted">
+        Convertir cada jornada en una experiencia más consciente, segura y eficiente.
+        Desde una camioneta con checklist 3D y QR, hasta la trazabilidad completa
+        de equipos mayores: todo conectado, auditable y humano.
+      </p>
+      <div class="row" style="display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.6rem;">
+        <span class="pill">Seguridad</span>
+        <span class="pill">Eficiencia</span>
+        <span class="pill">Conciencia</span>
+        <span class="pill">Trazabilidad</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Principios Lemurianos</h3>
+      <ul class="list">
+        <li><span class="dot"></span><div><strong>Unidad</strong><br><span class="muted">Todo módulo dialoga con el resto: datos una sola vez, valor en todas partes.</span></div></li>
+        <li><span class="dot"></span><div><strong>Armonía</strong><br><span class="muted">Interfaz serena, mínima fricción. Lo importante siempre primero.</span></div></li>
+        <li><span class="dot"></span><div><strong>Verdad</strong><br><span class="muted">Datos íntegros, trazables y exportables. Decisiones claras.</span></div></li>
+        <li><span class="dot"></span><div><strong>Servicio</strong><br><span class="muted">Herramientas que facilitan el trabajo y cuidan a las personas.</span></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Roadmap -->
+  <section class="container" style="margin-top:1rem;">
+    <div class="card">
+      <h3>Hoja de Ruta</h3>
+      <div class="grid grid-3">
+        <div class="card">
+          <h4>Fase 1 · Base Operativa</h4>
+          <ul class="list">
+            <li><span class="dot"></span><div>Site estático navegable (Index, Módulos, Visión, Contacto).</div></li>
+            <li><span class="dot"></span><div>Checklist técnico (estructura) y OT básicas.</div></li>
+            <li><span class="dot"></span><div>Trazabilidad local (JSON/CSV, GPS) sin backend.</div></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Fase 2 · 3D & Energía</h4>
+          <ul class="list">
+            <li><span class="dot"></span><div>Hilux 3D (GLB) con 50 ítems, QR y galería.</div></li>
+            <li><span class="dot"></span><div>Feeder/Correas: modelo 3D y hotspots por placa.</div></li>
+            <li><span class="dot"></span><div>Módulo numerología + fases lunares integrado a RR.HH.</div></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Fase 3 · Integraciones</h4>
+          <ul class="list">
+            <li><span class="dot"></span><div>Usuarios/roles y base de datos (cloud).</div></li>
+            <li><span class="dot"></span><div>Almacenamiento de evidencias y auditoría.</div></li>
+            <li><span class="dot"></span><div>API OT/ERP y firmas digitales.</div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Valor -->
+  <section class="container grid grid-3" style="margin-top:1rem;">
+    <div class="card">
+      <h3>Valor para Operaciones</h3>
+      <p class="muted">Menos fricción para ejecutar, visualizar y cerrar tareas críticas. Más tiempo en terreno, menos pérdidas.</p>
+    </div>
+    <div class="card">
+      <h3>Valor para Mantenimiento</h3>
+      <p class="muted">Trazas claras: quién, cuándo, dónde, con qué evidencia. Exportación inmediata a CSV/JSON.</p>
+    </div>
+    <div class="card">
+      <h3>Valor para Personas</h3>
+      <p class="muted">Bienestar + foco: numerología y ciclos como soporte cultural para jornadas más conscientes.</p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="container cta">
+    <div class="row" style="display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap;">
+      <a class="btn" href="modulos.html">Explorar módulos</a>
+      <a class="btn-ghost" href="contacto.html">Agendar una demo</a>
+    </div>
+    <p class="muted" style="margin-top:.75rem;">Build: <span class="mono">AURUM∞ / Vision.html</span></p>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 AURUM∞. Visión y propósito en acción.</p>
+    </div>
+  </footer>
+
+  <script src="lemuria/lemuria.js"></script>
 </body>
 </html>
