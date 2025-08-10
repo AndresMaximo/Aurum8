@@ -1,1 +1,73 @@
+/* --- Tema Lemuriano + ajustes del módulo Hilux --- */
+:root{
+  --aurum-bg:#0b0b0b;
+  --aurum-panel:#141414;
+  --aurum-ink:#f7c35a;
+  --aurum-ink-soft:#ffd98a;
+  --aurum-line:#2a2a2a;
+}
 
+html,body{background:var(--aurum-bg);color:#ddd}
+main{max-width:1200px;margin:auto;padding:1.25rem}
+
+/* Tarjeta del visor */
+.viewer-wrap{
+  background:linear-gradient(180deg,#0e0e0e, #111 60%);
+  border:1px solid var(--aurum-line);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 10px 25px rgba(0,0,0,.35);
+}
+
+/* <model-viewer> responsivo */
+model-viewer{
+  width:100%;
+  height:min(72vh,680px);
+  --progress-bar-color: var(--aurum-ink);
+  --poster-color: #0e0e0e;
+}
+
+/* Bloque de ayuda / leyenda */
+.legend{
+  background:var(--aurum-panel);
+  border:1px solid var(--aurum-line);
+  border-radius:12px;
+  padding:1rem 1.15rem;
+  margin-top:1rem;
+}
+.legend h3{
+  color:var(--aurum-ink); margin:0 0 .5rem 0; font-weight:700; letter-spacing:.3px;
+}
+.legend ul{margin:.25rem 0 0 1.1rem}
+.legend li{margin:.3rem 0}
+
+/* Badges de info (si los usas) */
+.badge{
+  display:inline-block;
+  padding:.25rem .6rem;
+  background:#1b1b1b;
+  border:1px solid var(--aurum-line);
+  border-radius:999px;
+  font-size:.82rem;
+  color:#bbb;
+}
+
+/* Botón AR nativo */
+model-viewer::part(default-ar-button){
+  background:var(--aurum-ink);
+  color:#1a1300;
+  border:none;
+  border-radius:999px;
+  padding:.6rem 1rem;
+  font-weight:700;
+  box-shadow:0 6px 18px rgba(247,195,90,.35);
+}
+model-viewer::part(default-ar-button):hover{
+  filter:brightness(1.05);
+}
+
+/* Pequeños */
+@media (max-width: 640px){
+  main{padding:.85rem}
+  model-viewer{height:60vh}
+}
