@@ -1,13 +1,97 @@
-<!DOCTYPE html><html lang="es"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Contacto • AURUM8</title><link rel="stylesheet" href="style.css">
-</head><body>
-<header class="top"><h1>AURUM8</h1>
-  <nav><a href="index.html">Inicio</a><a href="vision.html">Visión</a><a href="modulos.html">Módulos</a><a href="contacto.html" class="active">Contacto</a></nav>
-</header>
-<main class="container">
-  <h2>Contacto</h2>
-  <p>Escríbenos: <a href="mailto:contacto@aurum8.cl">contacto@aurum8.cl</a></p>
-</main>
-<footer class="foot">© AURUM8</footer>
-</body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contacto · AURUM∞</title>
+
+    <!-- Estilos base del proyecto + tema Lemuriano -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="lemuria.css">
+
+    <style>
+        .contacto {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--gold);
+            box-shadow: var(--shadow);
+        }
+
+        h2 {
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: var(--gold);
+            color: var(--bg);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: var(--gold-light);
+        }
+    </style>
+</head>
+<body class="theme-lemuria">
+
+    <header class="top">
+        <h1>AURUM∞</h1>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="vision.html">Visión</a>
+            <a href="modulos.html">Módulos</a>
+            <a href="contacto.html" class="active">Contacto</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="contacto">
+            <h2>Contacto</h2>
+            <form action="mailto:tu-correo@ejemplo.com" method="post" enctype="text/plain">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" required>
+
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="mensaje">Mensaje</label>
+                <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="foot">
+        © AURUM∞
+    </footer>
+
+</body>
+</html>
