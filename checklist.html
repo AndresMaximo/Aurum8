@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="lemuria.css">
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Checklist Técnico 3D · AURUM∞</title>
@@ -32,33 +31,44 @@
 
         p {
             text-align: center;
-            color: var(--text);
+            font-size: 1.1rem;
         }
     </style>
 </head>
-<body class="lemuria">
+<body class="theme-lemuria">
+
     <header class="top">
         <h1>AURUM∞</h1>
         <nav>
             <a href="index.html">Inicio</a>
-            <a href="modulos.html" class="active">Módulos</a>
+            <a href="vision.html">Visión</a>
+            <a href="modulos.html">Módulos</a>
             <a href="contacto.html">Contacto</a>
         </nav>
     </header>
 
     <main class="container">
         <h2>Checklist Técnico 3D</h2>
-        <p>Visualiza el modelo 3D y revisa los ítems de inspección.</p>
-
         <div class="viewer-wrap">
-            <!-- Aquí irá el modelo 3D de la Hilux -->
-            <model-viewer src="hilux.glb" alt="Modelo 3D Hilux"
-                camera-controls auto-rotate rotation-per-second="20deg"
-                shadow-intensity="1" exposure="1">
+            <model-viewer src="hilux.glb"
+                camera-controls
+                auto-rotate
+                camera-orbit="0deg 75deg 3.5m"
+                min-camera-orbit="auto auto 1.2m"
+                max-camera-orbit="auto auto 7m"
+                min-field-of-view="15deg"
+                max-field-of-view="60deg"
+                exposure="1"
+                shadow-intensity="1"
+                environment-image="neutral">
             </model-viewer>
         </div>
+        <p>Utiliza el mouse o el dedo para rotar y hacer zoom en el modelo.</p>
     </main>
 
-    <footer class="foot">© AURUM∞</footer>
+    <footer class="foot">
+        © AURUM∞
+    </footer>
+
 </body>
 </html>
