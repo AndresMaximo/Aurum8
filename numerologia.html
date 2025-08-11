@@ -3,323 +3,201 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AURUM∞ – Numerología & Fases Lunares</title>
+  <title>Numerología Vibracional · AURUM∞</title>
 
-  <!-- Estética Lemuriana -->
-  <link rel="stylesheet" href="lemuria/lemuria.css" />
+  <!-- Estilos base + tema Lemuriano -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="lemuria.css">
 
   <style>
-    /* Ajustes locales mínimos */
-    .container { max-width: 1080px; margin: 0 auto; padding: 1.25rem; }
-    .grid { display: grid; gap: 1rem; }
-    .grid-2 { grid-template-columns: 1fr; }
-    @media (min-width: 900px){ .grid-2 { grid-template-columns: 1fr 1fr; } }
-
-    .card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 1rem; box-shadow: var(--shadow-soft); }
-    .card h3 { margin: 0 0 .5rem; font-weight: 600; }
-
-    .field { display: grid; gap: .35rem; margin-bottom: .75rem; }
-    label { font-size: .925rem; color: var(--text-dim); }
-    input, select, textarea {
-      background: var(--panel-2); color: var(--text);
-      border: 1px solid var(--border); border-radius: 12px;
-      padding: .7rem .9rem; outline: none;
-    }
-    textarea { min-height: 120px; resize: vertical; }
-    .actions { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: .5rem; }
-    .btn {
-      background: var(--accent); color: white; border: 0; border-radius: 12px;
-      padding: .7rem 1rem; cursor: pointer; transition: transform .05s ease;
-    }
-    .btn:active { transform: translateY(1px); }
-    .btn-ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
-    .tag { display:inline-block; padding:.3rem .6rem; border-radius:999px; background:var(--panel-2); border:1px solid var(--border); font-size:.825rem; }
-
-    .result { white-space: pre-wrap; line-height: 1.5; }
-    .pill { display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .7rem; border-radius:999px; border:1px solid var(--border); background:var(--panel-2); }
+    main{max-width:1000px;margin:20px auto;padding:0 16px}
+    .grid{display:grid;gap:14px}
+    @media (min-width:900px){ .grid.cols-2{grid-template-columns:1fr 1fr} }
+    .card{background:var(--bg-card);border:1px solid var(--gold-20);
+      border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+    .field{display:flex;flex-direction:column;gap:6px}
+    .field input{background:#0f1e21;border:1px solid var(--gold-20);
+      border-radius:10px;color:var(--text);padding:12px 14px;font-size:1rem}
+    .hint{opacity:.75}
+    .kpi{display:flex;align-items:center;gap:10px;margin:6px 0}
+    .kpi .n{font-size:2rem;font-weight:800;color:var(--gold);min-width:2.8ch;text-align:center}
+    button{background:linear-gradient(90deg,#b8860b,#ffd700);color:#0d0d0d;
+      font-weight:700;border:none;border-radius:12px;padding:12px 16px;cursor:pointer}
+    .pill{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:999px;
+      background:#0f1e21;border:1px solid var(--gold-20)}
+    table{width:100%;border-collapse:collapse;margin-top:8px;font-size:.95rem}
+    th,td{border-bottom:1px dashed var(--gold-20);padding:8px 6px;text-align:left}
+    th{color:var(--gold)}
+    .mapping{font-variant-numeric:tabular-nums}
   </style>
 </head>
-<body class="lemurian-bg">
-
-  <!-- Header / Nav -->
-  <header class="site-header glass">
-    <div class="container">
-      <nav class="navbar">
-        <a class="brand" href="index.html">
-          <img src="lemuria/aurum8_mark.svg" alt="AURUM∞" height="28" />
-          <span>AURUM∞</span>
-        </a>
-        <ul class="menu">
-          <li><a href="index.html">Inicio</a></li>
-          <li><a href="modulos.html">Módulos</a></li>
-          <li><a class="active" href="numerologia.html">Numerología & Luna</a></li>
-          <li><a href="checklist.html">Checklist</a></li>
-          <li><a href="hilux.html">Hilux</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
-        </ul>
-      </nav>
-    </div>
+<body>
+  <header class="top">
+    <h1>AURUM∞</h1>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="vision.html">Visión</a>
+      <a href="modulos.html">Módulos</a>
+      <a class="active" href="numerologia.html">Numerología</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
   </header>
 
-  <!-- Hero -->
-  <section class="hero soft-glow">
-    <div class="container">
-      <h1>Numerología & Ciclos Lunares</h1>
-      <p class="subtitle">Lectura diaria personalizada y trazabilidad de bienestar para cada trabajador.</p>
-      <div class="actions">
-        <span class="pill">Línea VIDA-TRABAJO</span>
-        <span class="pill">Enlace con RR.HH.</span>
-        <span class="pill">Entregas diarias automáticas</span>
-      </div>
-    </div>
-  </section>
+  <main>
+    <h2 class="gold">Numerología Vibracional</h2>
+    <p class="hint">
+      Introduce tu <strong>nombre completo</strong> (tal como te presentas) y tu <strong>fecha de nacimiento</strong>.
+      Calculamos números Pythagóricos conservando maestros <strong>11/22/33</strong>.
+    </p>
 
-  <!-- Main -->
-  <main class="container">
-    <div class="grid grid-2">
-      <!-- Formulario -->
-      <section class="card">
-        <h3>Datos de la persona</h3>
+    <div class="grid cols-2">
+      <div class="card">
         <div class="field">
-          <label for="nombre">Nombre completo</label>
-          <input id="nombre" type="text" placeholder="Ej: Andrés Marcelo Bello Moraga" autocomplete="name">
+          <label for="fullName" class="gold">Nombre completo</label>
+          <input id="fullName" type="text" placeholder="Tu Nombre Aquí" />
+        </div>
+        <div class="field" style="margin-top:10px">
+          <label for="dob" class="gold">Fecha de nacimiento</label>
+          <input id="dob" type="date" />
+        </div>
+        <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+          <button id="calc">Calcular</button>
+          <span class="pill"><small>Formato nombre:</small> Pythagorean (A=1… I=9, J=1…)</span>
         </div>
 
-        <div class="grid" style="grid-template-columns: 1fr 1fr; gap:.75rem">
-          <div class="field">
-            <label for="fecha">Fecha de nacimiento</label>
-            <input id="fecha" type="date">
+        <details style="margin-top:14px">
+          <summary class="gold">Mapa de letras ↔ números</summary>
+          <div class="mapping hint" style="margin-top:8px">
+            1: A J S · 2: B K T · 3: C L U · 4: D M V · 5: E N W · 6: F O X · 7: G P Y · 8: H Q Z · 9: I R
           </div>
-          <div class="field">
-            <label for="hora">Hora (opcional)</label>
-            <input id="hora" type="time">
-          </div>
-        </div>
+        </details>
+      </div>
 
-        <div class="grid" style="grid-template-columns: 1fr 1fr; gap:.75rem">
-          <div class="field">
-            <label for="lugar">Lugar (ciudad/país)</label>
-            <input id="lugar" type="text" placeholder="Ej: Limache, Chile" autocomplete="off">
-          </div>
-          <div class="field">
-            <label for="turno">Turno</label>
-            <select id="turno">
-              <option value="">— Selecciona turno —</option>
-              <option>Día</option>
-              <option>Noche</option>
-              <option>Mixto</option>
-              <option>Administrativo</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="actions">
-          <button class="btn" id="btnGenerar">Generar lectura de hoy</button>
-          <button class="btn btn-ghost" id="btnLimpiar">Limpiar</button>
-        </div>
-      </section>
-
-      <!-- Resultado -->
-      <section class="card">
-        <h3>Lectura de hoy</h3>
-        <div id="chips" style="display:flex; gap:.5rem; flex-wrap:wrap; margin:.35rem 0 .75rem">
-          <span class="tag" id="tag-dia">Día personal: —</span>
-          <span class="tag" id="tag-luna">Fase lunar: —</span>
-          <span class="tag" id="tag-signo">Luna en: —</span>
-        </div>
-        <div class="result" id="salida">Completa los datos y presiona “Generar”.</div>
-
-        <hr style="border:0; border-top:1px solid var(--border); margin:1rem 0" />
-
-        <h3>Indicaciones de seguridad y foco</h3>
-        <ul id="tips" style="margin:.5rem 0 0 1rem; line-height:1.6">
-          <li>—</li>
-        </ul>
-
-        <div class="actions" style="margin-top:1rem">
-          <button class="btn" id="btnGuardar">Guardar en carpeta del trabajador</button>
-          <span class="tag">Se archiva en: <strong>/informes/diagnosticos/</strong></span>
-        </div>
-      </section>
+      <div class="card">
+        <h3 class="gold">Resultados</h3>
+        <div class="kpi"><span class="n" id="nLife">–</span> <div><strong>Camino de Vida</strong><br><span class="hint" id="tLife">—</span></div></div>
+        <div class="kpi"><span class="n" id="nExpr">–</span> <div><strong>Expresión / Destino (Nombre completo)</strong><br><span class="hint" id="tExpr">—</span></div></div>
+        <div class="kpi"><span class="n" id="nSoul">–</span> <div><strong>Alma / Deseo (Vocales)</strong><br><span class="hint" id="tSoul">—</span></div></div>
+        <div class="kpi"><span class="n" id="nPers">–</span> <div><strong>Personalidad (Consonantes)</strong><br><span class="hint" id="tPers">—</span></div></div>
+        <div class="kpi"><span class="n" id="nYear">–</span> <div><strong>Año Personal</strong><br><span class="hint" id="tYear">—</span></div></div>
+      </div>
     </div>
 
-    <!-- Bitácora -->
-    <section class="card" style="margin-top:1rem">
-      <h3>Bitácora del día</h3>
-      <div class="field">
-        <label for="bitacora">Anotaciones (operador / supervisor)</label>
-        <textarea id="bitacora" placeholder="Observaciones de ánimo, descanso, foco, eventos relevantes…"></textarea>
-      </div>
-      <div class="actions">
-        <button class="btn" id="btnBitacora">Adjuntar a diagnóstico</button>
-        <span id="msg" class="tag">—</span>
-      </div>
-    </section>
+    <div class="card">
+      <h3 class="gold">Desglose del nombre</h3>
+      <table>
+        <thead><tr><th>Segmento</th><th>Texto</th><th>Suma</th><th>Reducción</th></tr></thead>
+        <tbody id="tbl"></tbody>
+      </table>
+    </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="foot-grid">
-        <div>
-          <strong>AURUM∞</strong><br />
-          Integración tecnológica, humana y energética.
-        </div>
-        <div>
-          <a href="contacto.html">Contacto</a><br />
-          <a href="modulos.html">Módulos</a>
-        </div>
-      </div>
-      <p class="copy">© 2025 AURUM∞. Todos los derechos reservados.</p>
-    </div>
+  <footer>
+    <small>© AURUM∞ · Lemurian UI</small>
   </footer>
 
-  <!-- Lógica -->
   <script>
-    // Utilidades simples
-    const $ = (id) => document.getElementById(id);
-    const clamp = (n, min, max) => Math.max(min, Math.min(n, max));
+    // --- Helpers ---
+    const VOWELS = 'AEIOUYÁÉÍÓÚÄËÏÖÜ';
+    const MAP = {A:1,J:1,S:1,B:2,K:2,T:2,C:3,L:3,U:3,D:4,M:4,V:4,E:5,N:5,W:5,F:6,O:6,X:6,G:7,P:7,Y:7,H:8,Q:8,Z:8,I:9,R:9};
+    const clean = s => (s||'').toUpperCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+        .replace(/[^A-ZÁÉÍÓÚÄËÏÖÜÑ\s]/g,'').trim();
+    const isVowel = ch => VOWELS.includes(ch);
+    const digits = n => String(n).split('').map(Number);
 
-    // Día personal (numerología pitagórica básica)
-    function sumaDigital(n) {
-      n = String(n).replace(/[^0-9]/g,'').split('').reduce((a,b)=>a+Number(b),0);
-      while (n > 9 && ![11,22,33].includes(n)) {
-        n = String(n).split('').reduce((a,b)=>a+Number(b),0);
+    function reduceNum(n, keepMasters=true){
+      if(keepMasters && (n===11 || n===22 || n===33)) return n;
+      while(n>9){
+        const d = digits(n).reduce((a,b)=>a+b,0);
+        if(keepMasters && (d===11||d===22||d===33)){ n=d; break; }
+        n = d;
       }
       return n;
     }
-    function diaPersonal(fechaISO) {
-      if (!fechaISO) return null;
-      const d = new Date(fechaISO + 'T12:00:00');
-      const hoy = new Date();
-      const f = [hoy.getFullYear(), hoy.getMonth()+1, hoy.getDate()].join('');
-      const nNac = [d.getFullYear(), d.getMonth()+1, d.getDate()].join('');
-      return sumaDigital(f + nNac);
-    }
 
-    // Fase lunar (aprox) y signo lunar (mock simple por fecha)
-    function faseLunar(fecha = new Date()) {
-      // Algoritmo aproximado de Conway / simplificado
-      const lp = 2551443; // segundos del ciclo sinódico
-      const new_moon = new Date(Date.UTC(1970,0,7,20,35,0)); // referencia
-      const phase = ((fecha - new_moon) / 1000) % lp;
-      const frac = phase / lp;
-      if (frac < 0.03 || frac > 0.97) return "Luna Nueva";
-      if (frac < 0.22) return "Creciente Inicial";
-      if (frac < 0.28) return "Cuarto Creciente";
-      if (frac < 0.47) return "Gibosa Creciente";
-      if (frac < 0.53) return "Luna Llena";
-      if (frac < 0.72) return "Gibosa Menguante";
-      if (frac < 0.78) return "Cuarto Menguante";
-      return "Menguante Final";
-    }
-    function signoLunarAprox(fecha = new Date()) {
-      // Rotación ficticia por 2.5 días por signo (solo para guiar al usuario)
-      const signos = ["Aries","Tauro","Géminis","Cáncer","Leo","Virgo","Libra","Escorpio","Sagitario","Capricornio","Acuario","Piscis"];
-      const ref = new Date(Date.UTC(2025,0,1));
-      const dias = Math.floor((fecha - ref) / 86400000);
-      const idx = ((Math.floor(dias / 2.5)) % 12 + 12) % 12;
-      return signos[idx];
-    }
-
-    // Mensajes por día personal
-    function textoDiaPersonal(n) {
-      const map = {
-        1: "Inicios y liderazgo. Buen día para tomar decisiones y ordenar prioridades.",
-        2: "Cooperación. Conversa, alinea expectativas, pide apoyo y apoya a tu equipo.",
-        3: "Comunicación y creatividad. Documenta y comparte mejoras.",
-        4: "Estructura y método. Excelente para checklist y estándares.",
-        5: "Cambios y adaptabilidad. Mantén flexibilidad ante imprevistos.",
-        6: "Cuidado y servicio. Revisa seguridad de pares y housekeeping.",
-        7: "Análisis y aprendizaje. Evalúa datos, corrige y mejora.",
-        8: "Gestión y resultados. Cierra temas y deja evidencia.",
-        9: "Cierre y depuración. Termina pendientes y libera carga.",
-        11: "Intuición elevada. Escucha ‘corazonadas’ y valida datos.",
-        22: "Construcción mayor. Piensa en grande, ejecuta en simple.",
-        33: "Servicio maestro. Inspira con ejemplo, cuida la energía del grupo."
+    function sumName(str){
+      let sumAll=0,sumV=0,sumC=0;
+      for(const ch of clean(str)){
+        if(ch===' ') continue;
+        const v = MAP[ch]||0;
+        sumAll+=v;
+        if(isVowel(ch)) sumV+=v; else sumC+=v;
+      }
+      return {
+        all:{raw:sumAll,red:reduceNum(sumAll)},
+        vow:{raw:sumV,red:reduceNum(sumV)},
+        con:{raw:sumC,red:reduceNum(sumC)}
       };
-      return map[n] || "Día de balance. Ajusta según terreno.";
     }
 
-    function tipsSeguridad(n, fase) {
-      const base = [
-        "Verifica EPP antes de iniciar.",
-        "Respira 3 veces antes de operaciones críticas.",
-        "Checklist al 100% y evidencia con foto.",
-        "Si algo no cuadra: detén, reporta, corrige."
-      ];
-      if (fase.includes("Llena")) base.push("Alta emocionalidad: doble control de bloqueo y señales.");
-      if (n === 4) base.push("Orden 5S en área: elimina obstáculos y mejora flujos.");
-      if (n === 5) base.push("Revisa anclajes y protecciones antes de reubicar equipos.");
-      if (n === 8) base.push("Revisa costos de reproceso: prevén retrabajos.");
-      return base;
+    function lifePathFromDate(iso){
+      if(!iso) return {raw:null,red:null};
+      const d = iso.replace(/-/g,'');
+      const raw = d.split('').reduce((a,b)=>a+Number(b),0);
+      return {raw,red:reduceNum(raw)};
     }
 
-    // Eventos
-    $("btnGenerar").addEventListener("click", () => {
-      const nombre = $("nombre").value.trim() || "—";
-      const fecha = $("fecha").value;
-      const turno = $("turno").value || "—";
+    function personalYear(iso){
+      if(!iso) return {year:null,n:null};
+      const b = new Date(iso+'T00:00:00');
+      const now = new Date();
+      const year = now.getFullYear();
+      // Año personal: día + mes de nacimiento + año actual
+      const sum = reduceNum(b.getUTCDate() + reduceNum(b.getUTCMonth()+1) + reduceNum(year));
+      return {year, n: sum};
+    }
 
-      const n = diaPersonal(fecha);
-      const luna = faseLunar(new Date());
-      const signo = signoLunarAprox(new Date());
+    // --- UI ---
+    const $ = s => document.querySelector(s);
+    const fullName = $('#fullName');
+    const dob = $('#dob');
 
-      $("tag-dia").textContent = "Día personal: " + (n ?? "—");
-      $("tag-luna").textContent = "Fase lunar: " + luna;
-      $("tag-signo").textContent = "Luna en: " + signo;
+    // Persistencia simple
+    fullName.value = localStorage.getItem('num:name') || '';
+    dob.value = localStorage.getItem('num:dob') || '';
 
-      const texto =
-`👤 ${nombre}
-📅 Nacimiento: ${fecha || "—"}
-🕑 Turno: ${turno}
+    $('#calc').addEventListener('click', ()=>{
+      const name = fullName.value.trim();
+      const birth = dob.value;
 
-🔢 Enfoque numerológico (día personal ${n ?? "—"}):
-${textoDiaPersonal(n)}
+      if(!name){ alert('Escribe tu nombre completo.'); return; }
+      if(!birth){ alert('Selecciona tu fecha de nacimiento.'); return; }
 
-🌙 Ciclo lunar:
-Fase: ${luna}
-Luna en: ${signo}
+      localStorage.setItem('num:name', name);
+      localStorage.setItem('num:dob', birth);
 
-🎯 Recomendación:
-Alinea tu energía con la tarea crítica del día.
-Documenta 1 mejora y compártela con tu equipo.`;
+      // Cálculos
+      const s = sumName(name);
+      const life = lifePathFromDate(birth);
+      const pYear = personalYear(birth);
 
-      $("salida").textContent = texto;
+      // Pintar KPIs
+      $('#nLife').textContent = life.red ?? '–';
+      $('#tLife').textContent = 'Camino según fecha de nacimiento';
 
-      const li = tipsSeguridad(n ?? 0, luna).map(t => `<li>${t}</li>`).join("");
-      $("tips").innerHTML = li || "<li>—</li>";
-    });
+      $('#nExpr').textContent = s.all.red;
+      $('#tExpr').textContent = `Suma del nombre (${s.all.raw}) → ${s.all.red}`;
 
-    $("btnLimpiar").addEventListener("click", () => {
-      ["nombre","fecha","hora","lugar"].forEach(id => $(id).value = "");
-      $("turno").selectedIndex = 0;
-      $("salida").textContent = "Completa los datos y presiona “Generar”.";
-      $("tips").innerHTML = "<li>—</li>";
-      $("tag-dia").textContent = "Día personal: —";
-      $("tag-luna").textContent = "Fase lunar: —";
-      $("tag-signo").textContent = "Luna en: —";
-      $("msg").textContent = "—";
-    });
+      $('#nSoul').textContent = s.vow.red;
+      $('#tSoul').textContent = `Vocales (${s.vow.raw}) → ${s.vow.red}`;
 
-    $("btnGuardar").addEventListener("click", () => {
-      // Simulación de guardado local. En producción, enviar a backend o Drive/SharePoint.
-      const blob = new Blob([$("salida").textContent], { type: "text/plain;charset=utf-8" });
-      const a = document.createElement("a");
-      const nombre = ($("nombre").value.trim() || "diagnostico") + "_"+ new Date().toISOString().slice(0,10) + ".txt";
-      a.href = URL.createObjectURL(blob);
-      a.download = nombre;
-      a.click();
-    });
+      $('#nPers').textContent = s.con.red;
+      $('#tPers').textContent = `Consonantes (${s.con.raw}) → ${s.con.red}`;
 
-    $("btnBitacora").addEventListener("click", () => {
-      const txt = $("bitacora").value.trim();
-      if (!txt) { $("msg").textContent = "Escribe algo en la bitácora."; return; }
-      $("msg").textContent = "Bitácora adjunta (se unirá al PDF/registro al exportar).";
+      $('#nYear').textContent = pYear.n ?? '–';
+      $('#tYear').textContent = pYear.year ? `Año personal para ${pYear.year}` : '—';
+
+      // Tabla
+      const parts = clean(name).split(/\s+/).filter(Boolean);
+      const rows = parts.map(p=>{
+        const ss = sumName(p);
+        return `<tr><td>${p}</td><td>${p}</td><td>${ss.all.raw}</td><td>${ss.all.red}</td></tr>`;
+      }).join('');
+      $('#tbl').innerHTML =
+        rows +
+        `<tr><td><strong>Total</strong></td><td></td><td><strong>${s.all.raw}</strong></td><td><strong>${s.all.red}</strong></td></tr>`;
     });
   </script>
-
-  <!-- JS Lemuriano general (si lo tienes) -->
-  <script src="lemuria/lemuria.js"></script>
 </body>
 </html>
