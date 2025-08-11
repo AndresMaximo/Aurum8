@@ -1,74 +1,429 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Checklist Técnico 3D · AURUM∞</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AURUM∞ – Checklist Hilux (50 Puntos)</title>
+<style>
+  :root{
+    --bg:#0a0f16;
+    --card:#111827cc;
+    --ink:#e6f0ff;
+    --muted:#96a0b6;
+    --accent1:#6ee7ff;
+    --accent2:#a78bfa;
+    --ok:#20c997;
+    --warn:#ffb020;
+    --crit:#ef4444;
+  }
+  html,body{margin:0;background:radial-gradient(1200px 1200px at 20% 10%, #122033, #0b1120 60%, #05070c); color:var(--ink); font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,Arial; }
+  header{
+    position:sticky; top:0; z-index:4;
+    background:linear-gradient(90deg, #0b1120 0%, #0e1030 35%, #171347 100%);
+    border-bottom:1px solid #20263a; padding:10px 16px;
+    display:flex; align-items:center; gap:14px;
+  }
+  .logo{font-weight:700; letter-spacing:.8px}
+  .lemur{font-size:12px; color:var(--muted)}
+  main{max-width:1200px; margin:18px auto 80px; padding:0 16px;}
+  .toolbar{
+    display:grid; gap:10px; grid-template-columns:repeat(12,1fr);
+    align-items:end; margin-bottom:14px;
+  }
+  .card{background:var(--card); border:1px solid #1e2742; border-radius:16px; backdrop-filter: blur(6px);}
+  .head{
+    padding:14px 16px; border-bottom:1px solid #1e2742; display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  .head h2{margin:0; font-size:18px; letter-spacing:.4px}
+  .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; padding:14px 16px;}
+  .grid-2{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; padding:14px 16px;}
+  .grid-1{display:grid; grid-template-columns:1fr; gap:10px; padding:14px 16px;}
+  label{font-size:12px; color:var(--muted); display:block; margin-bottom:6px;}
+  input[type="text"], input[type="date"], input[type="time"], input[type="number"], select, textarea{
+    width:100%; padding:10px 12px; border-radius:12px; border:1px solid #26304d; background:#0b1326; color:var(--ink); outline:none;
+  }
+  textarea{min-height:64px; resize:vertical;}
+  .pill{
+    display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; font-size:12px; border:1px solid #2a3558; background:#0a142b;
+  }
+  .btn{
+    padding:10px 14px; border-radius:12px; border:1px solid #2a3558; background:#0b142c;
+    color:var(--ink); cursor:pointer; font-weight:600;
+  }
+  .btn:hover{border-color:#355089}
+  .btn.primary{background:linear-gradient(135deg, #1f2c4d, #1c1c4f); border-color:#3a3f7a}
+  .btn.accent{background:linear-gradient(135deg, #173a4a, #2a2260); border-color:#41678d}
+  .score{
+    display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:12px; border:1px solid #2a3558; background:#0a142b;
+  }
+  .score .dot{width:10px; height:10px; border-radius:50%;}
+  .dot.ok{background:var(--ok)} .dot.warn{background:var(--warn)} .dot.crit{background:var(--crit)}
+  /* Tabla de checklist */
+  .table{padding:0 0 10px;}
+  table{width:100%; border-collapse:collapse; }
+  thead th{
+    position:sticky; top:64px; background:#0c142a; z-index:3; border-bottom:1px solid #1e2742; padding:12px 10px; text-align:left; font-size:12px; color:#b6c0d8;
+  }
+  tbody td{border-bottom:1px dashed #1a2441; padding:10px;}
+  .cat{font-weight:700; color:#c8d5ff; border-top:2px solid #273155; background:#0b1226}
+  .status{
+    display:flex; gap:6px; flex-wrap:wrap;
+  }
+  .chip{
+    border:1px solid #2a3558; background:#0b142c; color:var(--ink);
+    padding:6px 10px; border-radius:999px; cursor:pointer; font-size:12px;
+  }
+  .chip[data-val="OK"].active{border-color:var(--ok); box-shadow:0 0 0 1px var(--ok) inset}
+  .chip[data-val="Atención"].active{border-color:var(--warn); box-shadow:0 0 0 1px var(--warn) inset}
+  .chip[data-val="Crítico"].active{border-color:var(--crit); box-shadow:0 0 0 1px var(--crit) inset}
+  .foot{display:flex; gap:8px; flex-wrap:wrap; padding:12px 16px; border-top:1px solid #1e2742;}
+  .note{font-size:12px; color:var(--muted); padding:0 16px 14px}
+  .geom{
+    position:fixed; inset:auto auto 20px 20px; width:120px; height:120px; opacity:.16; background:
+      radial-gradient(circle at 50% 50%, #70e1ff22 0 40%, transparent 41% 100%),
+      conic-gradient(from 0deg, #a78bfa22, #6ee7ff22, #a78bfa22);
+    border-radius:50%;
+    filter:blur(1px);
+    pointer-events:none;
+  }
+  @media (max-width: 960px){
+    .grid-3{grid-template-columns:1fr}
+    .toolbar{grid-template-columns:1fr}
+    thead th{top:112px}
+  }
 
-    <!-- Estilos base del proyecto + tema Lemuriano -->
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="lemuria.css">
-
-    <!-- Librería para el visor 3D -->
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-
-    <style>
-        .viewer-wrap {
-            width: 100%;
-            margin: 1rem 0 2rem;
-            background: var(--bg-card);
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--gold);
-            box-shadow: var(--shadow);
-        }
-
-        h2 {
-            color: var(--gold);
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        p {
-            text-align: center;
-            font-size: 1.1rem;
-        }
-    </style>
+  /* Print */
+  @media print{
+    header, .foot, .geom, .note, .toolbar{display:none!important}
+    body{background:#fff; color:#000}
+    .card{border:none}
+    thead th{position:static; background:#fff; color:#000; border-bottom:2px solid #000}
+    tbody td{border-bottom:1px solid #ddd}
+    .chip{border:1px solid #000}
+  }
+</style>
 </head>
-<body class="theme-lemuria">
+<body>
+<header>
+  <div>
+    <div class="logo">AURUM∞ <span class="lemur">• Checklist Hilux</span></div>
+    <div class="lemur">Estética Lemuriana · Geometría & Flujo</div>
+  </div>
+</header>
 
-    <header class="top">
-        <h1>AURUM∞</h1>
-        <nav>
-            <a href="index.html">Inicio</a>
-            <a href="vision.html">Visión</a>
-            <a href="modulos.html">Módulos</a>
-            <a href="contacto.html">Contacto</a>
-        </nav>
-    </header>
+<main>
+  <!-- Información general -->
+  <section class="card">
+    <div class="head">
+      <h2>Datos de Inspección</h2>
+      <div class="pill">Versión: v1.0 (sin 3D)</div>
+    </div>
+    <div class="grid-3">
+      <div>
+        <label>Patente / ID Vehículo</label>
+        <input id="patente" type="text" placeholder="Ej: ABCD-12" />
+      </div>
+      <div>
+        <label>Kilometraje</label>
+        <input id="km" type="number" placeholder="Ej: 128450" />
+      </div>
+      <div>
+        <label>Inspector(a)</label>
+        <input id="inspector" type="text" placeholder="Tu nombre completo" />
+      </div>
+    </div>
+    <div class="grid-3">
+      <div>
+        <label>Fecha</label>
+        <input id="fecha" type="date" />
+      </div>
+      <div>
+        <label>Hora</label>
+        <input id="hora" type="time" />
+      </div>
+      <div class="score" id="scoreBox">
+        <div class="dot ok"></div><div class="dot warn"></div><div class="dot crit"></div>
+        <div><strong>Indice:</strong> <span id="scoreTxt">—</span></div>
+      </div>
+    </div>
+    <div class="grid-1">
+      <div>
+        <label>Observación general</label>
+        <textarea id="obsGeneral" placeholder="Comentarios globales, hallazgos relevantes, restricciones de operación..."></textarea>
+      </div>
+    </div>
+  </section>
 
-    <main class="container">
-        <h2>Checklist Técnico 3D</h2>
-        <div class="viewer-wrap">
-            <model-viewer src="hilux.glb"
-                camera-controls
-                auto-rotate
-                camera-orbit="0deg 75deg 3.5m"
-                min-camera-orbit="auto auto 1.2m"
-                max-camera-orbit="auto auto 7m"
-                min-field-of-view="15deg"
-                max-field-of-view="60deg"
-                exposure="1"
-                shadow-intensity="1"
-                environment-image="neutral">
-            </model-viewer>
-        </div>
-        <p>Utiliza el mouse o el dedo para rotar y hacer zoom en el modelo.</p>
-    </main>
+  <!-- Checklist -->
+  <section class="card" style="margin-top:14px;">
+    <div class="head">
+      <h2>Checklist Operativo – 50 Puntos</h2>
+      <div class="pill">Estados: OK / Atención / Crítico</div>
+    </div>
+    <div class="table">
+      <table id="tbl">
+        <thead>
+          <tr>
+            <th style="width:34%;">Ítem</th>
+            <th style="width:24%;">Estado</th>
+            <th style="width:26%;">Nota</th>
+            <th style="width:16%;">Evidencia (URL)</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <!-- filas generadas por JS -->
+        </tbody>
+      </table>
+    </div>
+    <div class="note">Tip: puedes pegar enlaces a fotos (Drive/Dropbox/SharePoint) en “Evidencia”.</div>
+  </section>
 
-    <footer class="foot">
-        © AURUM∞
-    </footer>
+  <!-- Acciones -->
+  <section class="card" style="margin-top:14px;">
+    <div class="head">
+      <h2>Acciones</h2>
+      <div class="pill">Autosave manual</div>
+    </div>
+    <div class="foot">
+      <button class="btn accent" onclick="calcScore()">Recalcular Índice</button>
+      <button class="btn" onclick="guardar()">Guardar (local)</button>
+      <button class="btn" onclick="cargar()">Cargar (por patente)</button>
+      <button class="btn primary" onclick="window.print()">Exportar PDF</button>
+      <span class="lemur" id="saveMsg"></span>
+    </div>
+  </section>
+</main>
 
+<div class="geom" aria-hidden="true"></div>
+
+<script>
+/* ============ Definición de los 50 puntos ============ */
+const grupos = [
+  { nombre: "EXTERIOR Y ESTRUCTURA", items: [
+    "Carrocería general (abolladuras, fijaciones, corrosión)",
+    "Parachoques y puntos de remolque",
+    "Espejos retrovisores y soportes",
+    "Vidrios y parabrisas (grietas, visibilidad)",
+    "Limpiaparabrisas y depósito de agua",
+    "Puertas (bisagras, cierres, seguros)",
+    "Capot y cierre de seguridad",
+    "Pick-up / batea (anclajes, estrobos, carga suelta)",
+    "Chasis inferior (fisuras, pernos sueltos)",
+    "Protecciones inferiores / skid plates"
+  ]},
+  { nombre: "MOTOR Y FLUIDOS", items: [
+    "Nivel de aceite motor",
+    "Nivel refrigerante / fugas visibles",
+    "Correas auxiliares (tensión y desgaste)",
+    "Filtro de aire (condición / obstrucción)",
+    "Fugas en mangueras o conexiones",
+    "Batería (bornes, sujeción, sulfato)",
+    "Filtro de combustible (signos de agua/suciedad)",
+    "Sistema de escape (fugas, soportes)",
+    "Arranque en frío (sonidos anómalos)",
+    "Ralentí estable y sin códigos de falla"
+  ]},
+  { nombre: "NEUMÁTICOS Y SUSPENSIÓN", items: [
+    "Neumático delantero izquierdo (desgaste / presión)",
+    "Neumático delantero derecho (desgaste / presión)",
+    "Neumático trasero izquierdo (desgaste / presión)",
+    "Neumático trasero derecho (desgaste / presión)",
+    "Repuesto (estado / presión)",
+    "Torsión de pernos / tuercas ruedas",
+    "Amortiguadores (fugas / ruido / sujeción)",
+    "Bieletas / rótulas / holguras",
+    "Alineación perceptible (tironeo, vibración)",
+    "Altura libre y guardapolvos"
+  ]},
+  { nombre: "SISTEMA ELÉCTRICO / ILUMINACIÓN", items: [
+    "Luces bajas / altas",
+    "Intermitentes y balizas",
+    "Luz de freno y marcha atrás",
+    "Bocina y claxon de retroceso (si aplica)",
+    "Toma 12V / USB / radio",
+    "Indicadores tablero (sin testigos rojos)",
+    "GPS/AVL (si aplica) encendido y reporte",
+    "Cargador portátil / linterna (si aplica)",
+    "Corte de batería / master (si aplica)",
+    "Cables expuestos o empalmes no autorizados"
+  ]},
+  { nombre: "CABINA / SEGURIDAD", items: [
+    "Cinturones (todos los asientos) y traba",
+    "Airbags (testigo inactivo)",
+    "Extintor (carga y vigencia)",
+    "Botiquín / triángulos / baliza portátil",
+    "Asientos y rieles (fijación)",
+    "Alfombras (no interfieren pedales)",
+    "Cerraduras / pestillos / alarma",
+    "Cámara de retroceso / sensores (si aplica)",
+    "Ventilación / calefacción / A/C",
+    "Limpieza general y orden de cabina"
+  ]},
+  { nombre: "DOCUMENTACIÓN Y VARIOS", items: [
+    "Permiso circulación / Revisión técnica",
+    "Seguro / SOAP / Póliza minera",
+    "Tarjeta verde / padrón / manual",
+    "Check de pre-uso firmado",
+    "Checklist anterior y OT asociada cerrada",
+    "QR / ID vehículo visible y operativo",
+    "Herramientas / gata / llave de ruedas",
+    "Estado general post-prueba de manejo",
+    "Restricción de uso (si aplica) comunicada",
+    "Observación final registrada"
+  ]}
+];
+
+const tbody = document.getElementById('tbody');
+let rows = []; // almacena referencias a los controles de cada fila
+let totalItems = 0;
+
+/* Render dinámico de la tabla */
+function render(){
+  let idx = 0;
+  grupos.forEach(g=>{
+    const trc = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan=4; td.textContent = g.nombre;
+    td.className='cat';
+    trc.appendChild(td);
+    tbody.appendChild(trc);
+
+    g.items.forEach(item=>{
+      idx++;
+      const tr = document.createElement('tr');
+
+      // Col 1: texto del item
+      const td1 = document.createElement('td');
+      td1.textContent = `${idx}. ${item}`;
+      tr.appendChild(td1);
+
+      // Col 2: estado chips
+      const td2 = document.createElement('td');
+      const box = document.createElement('div'); box.className='status';
+      ["OK","Atención","Crítico"].forEach(val=>{
+        const b = document.createElement('button');
+        b.type='button'; b.className='chip'; b.dataset.val=val; b.textContent=val;
+        b.addEventListener('click',()=>{
+          // toggle exclusivo
+          Array.from(box.children).forEach(ch=>ch.classList.remove('active'));
+          b.classList.add('active');
+          calcScore(); // recalcula índice en vivo
+        });
+        box.appendChild(b);
+      });
+      td2.appendChild(box);
+      tr.appendChild(td2);
+
+      // Col 3: nota
+      const td3 = document.createElement('td');
+      const ta = document.createElement('textarea');
+      ta.placeholder="Observación breve…";
+      td3.appendChild(ta);
+      tr.appendChild(td3);
+
+      // Col 4: evidencia (url)
+      const td4 = document.createElement('td');
+      const ev = document.createElement('input');
+      ev.type='text'; ev.placeholder="https://… (foto/drive)";
+      td4.appendChild(ev);
+      tr.appendChild(td4);
+
+      tbody.appendChild(tr);
+      rows.push({ stateBox:box, note:ta, ev:ev, label:item });
+    });
+  });
+  totalItems = rows.length;
+}
+render();
+
+/* Índice y semáforo */
+function calcScore(){
+  let ok=0, warn=0, crit=0, none=0;
+  rows.forEach(r=>{
+    const active = r.stateBox.querySelector('.active');
+    if(!active){ none++; return; }
+    const v = active.dataset.val;
+    if(v==="OK") ok++; else if(v==="Atención") warn++; else crit++;
+  });
+  // Puntuación simple: OK=1, Atención=0.5, Crítico=0
+  const points = ok*1 + warn*0.5;
+  const score = Math.round((points/totalItems)*100);
+  const txt = `${score}% · OK:${ok} · Aten:${warn} · Crít:${crit} · S/E:${none}`;
+  document.getElementById('scoreTxt').textContent = txt;
+
+  const box = document.getElementById('scoreBox');
+  box.style.outline = (crit>0) ? `2px solid var(--crit)` :
+                      (warn>0) ? `2px solid var(--warn)` : `2px solid var(--ok)`;
+}
+
+/* Guardar/Cargar */
+function key(){
+  const p = (document.getElementById('patente').value || 'HILUX-DEMO').trim().toUpperCase();
+  return `AURUM8_CHECK_${p}`;
+}
+
+function guardar(){
+  const data = {
+    patente: document.getElementById('patente').value,
+    km: document.getElementById('km').value,
+    inspector: document.getElementById('inspector').value,
+    fecha: document.getElementById('fecha').value,
+    hora: document.getElementById('hora').value,
+    obs: document.getElementById('obsGeneral').value,
+    items: rows.map(r=>{
+      const active = r.stateBox.querySelector('.active');
+      return {
+        label: r.label,
+        estado: active ? active.dataset.val : "",
+        nota: r.note.value,
+        ev: r.ev.value
+      }
+    })
+  };
+  localStorage.setItem(key(), JSON.stringify(data));
+  msg("Guardado ✅");
+}
+
+function cargar(){
+  const raw = localStorage.getItem(key());
+  if(!raw){ msg("No hay datos guardados para esta patente."); return; }
+  const data = JSON.parse(raw);
+  document.getElementById('patente').value = data.patente || '';
+  document.getElementById('km').value = data.km || '';
+  document.getElementById('inspector').value = data.inspector || '';
+  document.getElementById('fecha').value = data.fecha || '';
+  document.getElementById('hora').value = data.hora || '';
+  document.getElementById('obsGeneral').value = data.obs || '';
+  // limpia estados
+  rows.forEach((r,i)=>{
+    Array.from(r.stateBox.children).forEach(ch=>ch.classList.remove('active'));
+    const val = data.items?.[i]?.estado || "";
+    if(val){
+      const btn = Array.from(r.stateBox.children).find(ch=>ch.dataset.val===val);
+      if(btn) btn.classList.add('active');
+    }
+    r.note.value = data.items?.[i]?.nota || '';
+    r.ev.value = data.items?.[i]?.ev || '';
+  });
+  calcScore();
+  msg("Cargado ✅");
+}
+
+function msg(t){
+  const el = document.getElementById('saveMsg');
+  el.textContent = t;
+  setTimeout(()=> el.textContent = "", 2500);
+}
+
+/* Valores por defecto */
+(function boot(){
+  const f = document.getElementById('fecha');
+  const h = document.getElementById('hora');
+  const now = new Date();
+  f.value = now.toISOString().slice(0,10);
+  h.value = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  calcScore();
+})();
+</script>
 </body>
 </html>
