@@ -1,348 +1,418 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>AURUM∞ · Órdenes de Trabajo</title>
+<link rel="stylesheet" href="style.css">
 <style>
-:root{
-  --bg1:#0a0f1a; --bg2:#121a2b; --iris:#8ad9ff; --aqua:#39f1c5; --gold:#ffe083;
-  --violet:#b99cff; --rose:#ff9ad6; --text:#ecf3ff; --muted:#9fb0c9;
-  --card:#0f1524cc; --card2:#0d1220e6; --ok:#38d39f; --warn:#ffd36b; --danger:#ff7b7b;
-}
-body{margin:0;color:var(--text);background:radial-gradient(1200px 800px at 20% 10%,#1b2847 0%,var(--bg2) 40%,var(--bg1) 85%);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial}
-.stars,.nebula{position:fixed;inset:0;pointer-events:none;z-index:-1}
-.stars{background-image:radial-gradient(2px 2px at 10% 20%,#ffffff66 30%,transparent 31%),radial-gradient(1.5px 1.5px at 70% 30%,#ffffff55 30%,transparent 31%),radial-gradient(1.5px 1.5px at 30% 70%,#ffffff55 30%,transparent 31%),radial-gradient(1px 1px at 80% 80%,#ffffff33 30%,transparent 31%)}
-.nebula{background:radial-gradient(600px 400px at 75% 20%,#7ef7ff12,transparent 60%),radial-gradient(500px 350px at 20% 80%,#a47bff14,transparent 60%),radial-gradient(350px 250px at 50% 50%,#ffb3e614,transparent 60%)}
-header{position:sticky;top:0;z-index:5;backdrop-filter:blur(8px);background:linear-gradient(180deg,#0b1020ee,#0b1020cc 60%,transparent);border-bottom:1px solid #ffffff12}
-.container{max-width:1200px;margin:0 auto;padding:20px 16px}
-.brand{display:flex;align-items:center;gap:12px}
-.brand .sigil{width:40px;height:40px;border-radius:50%;background:conic-gradient(from 220deg,var(--aqua),var(--violet),var(--rose),var(--aqua));box-shadow:0 0 20px #8ad9ff55,inset 0 0 18px #ffffff22;display:grid;place-items:center;color:#001923;font-weight:800}
-.brand h1{font-size:20px;margin:0;letter-spacing:.08em}
-nav a{color:var(--muted);text-decoration:none;margin-right:16px}
-nav a:hover{color:var(--aqua)}
-.grid{display:grid;gap:18px;grid-template-columns:1fr}
-@media(min-width:1000px){.grid{grid-template-columns:1.1fr 1fr}}
-.card{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid #ffffff1a;border-radius:16px;padding:18px;box-shadow:0 10px 30px #0008,inset 0 1px 0 #fff1}
-h2{margin:0 0 10px 0;font-size:20px;letter-spacing:.06em}
-.sub{color:var(--muted);font-size:13px;margin-bottom:12px}
-label{font-size:13px;color:var(--muted)}
-.row{display:grid;gap:12px;grid-template-columns:1fr}
-@media(min-width:700px){.row{grid-template-columns:repeat(3,1fr)}}
-input,select,textarea,button{width:100%;padding:12px;border-radius:12px;border:1px solid #ffffff22;background:#0d1322;color:var(--text);outline:none}
-textarea{min-height:90px;resize:vertical}
-input:focus,select:focus,textarea:focus{border-color:#7ef7ff55;box-shadow:0 0 0 3px #39f1c51f}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-.btn{cursor:pointer;border:1px solid #39f1c544;background:linear-gradient(180deg,#1a2742,#121b34)}
-.btn.primary{border-color:#39f1c588;background:linear-gradient(180deg,#1b3344,#10263b)}
-.btn.gold{border-color:#ffd36b66;background:linear-gradient(180deg,#3a2b14,#231b0d)}
-.btn.red{border-color:#ff7b7b66;background:linear-gradient(180deg,#402020,#2b1212)}
-.table{width:100%;border-collapse:collapse;margin-top:8px}
-.table th,.table td{border-bottom:1px solid #ffffff14;padding:10px 8px;font-size:14px;text-align:left}
-.badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;border:1px solid #ffffff22;color:#cfe9ff}
-.b-ok{border-color:#38d39f66;color:#bff3e1}
-.b-warn{border-color:#ffd36b66;color:#ffe9b8}
-.b-danger{border-color:#ff7b7b66;color:#ffc9c9}
-.kv{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.pill{border:1px solid #ffffff1f;border-radius:12px;padding:10px;background:#0b1222}
-footer.note{color:#94a7c5;font-size:12px;margin-top:10px}
-@media print{header,.no-print{display:none}body{background:#fff;color:#111}.card{box-shadow:none;border:1px solid #ccc;background:#fff}.stars,.nebula{display:none}}
+  /* —— Estética Lemuriana / Oscuro cristalino —— */
+  :root{
+    --bg:#0a0f16; --panel:#101827; --ink:#e6f0ff; --muted:#9fb0c9;
+    --acc1:#7bd6ff; --acc2:#a48bff; --acc3:#08ffc6; --danger:#ff6b6b; --ok:#3bd671;
+  }
+  body{background:radial-gradient(1200px 800px at 20% -10%, #16213544, transparent),
+                 radial-gradient(1000px 700px at 120% 10%, #1b103844, transparent),
+                 var(--bg); color:var(--ink); margin:0; font-family:system-ui,Segoe UI,Roboto,Inter,sans-serif;}
+  header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid #223047;background:#0b121d99;backdrop-filter:blur(6px);position:sticky;top:0;z-index:50}
+  header h1{margin:0;font-size:20px;letter-spacing:.08em}
+  nav ul{list-style:none;display:flex;gap:14px;margin:0;padding:0}
+  nav a{color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:8px}
+  nav a:hover, nav a.active{color:var(--ink);background:#ffffff0f}
+
+  main{max-width:1100px;margin:24px auto;padding:0 16px}
+  h2{letter-spacing:.08em;margin:10px 0 16px}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:14px 0 18px}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .btn{background:linear-gradient(135deg, #23304a, #1a2440);border:1px solid #2a3a59;color:var(--ink);
+       padding:9px 12px;border-radius:10px;cursor:pointer}
+  .btn:hover{box-shadow:0 0 0 2px #ffffff10 inset, 0 0 18px #7bd6ff20}
+  .btn.acc{border-color:#345b7a; background:linear-gradient(135deg,#173048,#0e213a); color:#cfeaff}
+  .btn.ok{border-color:#245c47;background:linear-gradient(135deg,#103b2f,#0f2e28);color:#d9ffe8}
+  .btn.bad{border-color:#6b2b2b;background:linear-gradient(135deg,#3a1414,#2a0e0e);color:#ffdede}
+
+  .panel{background:linear-gradient(180deg, #0f1624 0%, #0d1320 100%); border:1px solid #223047; border-radius:14px; padding:14px}
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  @media (max-width:900px){ .grid{grid-template-columns:1fr} }
+
+  /* Formulario */
+  form .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  form .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  input, select, textarea{
+    width:100%; background:#0b1220; border:1px solid #26334e; color:var(--ink);
+    padding:10px 12px; border-radius:10px; outline:none
+  }
+  input:focus, select:focus, textarea:focus{border-color:#39507a; box-shadow:0 0 0 3px #7bd6ff22}
+  label{font-size:12px; color:var(--muted); display:block; margin:6px 0}
+  textarea{min-height:96px; resize:vertical}
+
+  /* Tabla / Lista */
+  .table{width:100%; border-collapse:collapse; margin-top:8px}
+  .table th,.table td{padding:10px 10px; border-bottom:1px solid #1f2a41; text-align:left; font-size:14px}
+  .table th{color:#cfe0ff; font-weight:600; letter-spacing:.04em}
+  .status{padding:3px 8px; border-radius:999px; font-size:12px; border:1px solid #28405f; display:inline-block}
+  .status.abierta{border-color:#3b5d8f; color:#bfe1ff}
+  .status.proceso{border-color:#7a5df0; color:#e1d7ff}
+  .status.cerrada{border-color:#2f6b4f; color:#ccffe6}
+  .tag{font-size:12px;color:#a6c8ff;background:#22324a;border:1px solid #2b4771;padding:2px 6px;border-radius:8px}
+
+  .filters .row > *{min-width:160px}
+  .right{margin-left:auto}
+
+  .empty{color:var(--muted);text-align:center;padding:26px}
+  .muted{color:var(--muted)}
+  .badge{background:linear-gradient(135deg,#1c2845,#232a55);border:1px solid #39507a;color:#cfe0ff;padding:2px 8px;border-radius:999px;font-size:12px}
+
+  /* Print */
+  @media print{
+    header, .toolbar, .filters, .form-wrap, .actions{display:none !important}
+    body{background:white;color:black}
+    .panel{border:0}
+    .table th,.table td{border-color:#ddd;color:black}
+  }
 </style>
 </head>
 <body>
-<div class="stars"></div><div class="nebula"></div>
 <header>
-  <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:16px">
-    <div class="brand"><div class="sigil">∞</div><h1>AURUM∞ · Órdenes de Trabajo</h1></div>
-    <nav>
-      <a href="/index.html">Inicio</a>
-      <a href="/modulos.html">Módulos</a>
-      <a href="/numerologia.html">Numerología</a>
-      <a href="/contacto.html">Contacto</a>
-    </nav>
-  </div>
+  <h1>AURUM∞</h1>
+  <nav>
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="vision.html">Visión</a></li>
+      <li><a href="modulos.html">Módulos</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+  </nav>
 </header>
 
-<main class="container grid">
-  <!-- Formulario -->
-  <section class="card">
-    <h2>Nueva / Editar OT</h2>
-    <div class="sub">Completa los datos y guarda. Se almacena localmente (sin servidor) y puedes exportar CSV o imprimir PDF.</div>
-    <input type="hidden" id="otId"/>
+<main>
+  <h2>Órdenes de Trabajo <span class="badge" id="countBadge">0</span></h2>
+
+  <!-- Herramientas -->
+  <div class="toolbar">
     <div class="row">
-      <div>
-        <label>Código OT</label>
-        <input id="codigo" placeholder="Ej: OT-2025-001"/>
-      </div>
-      <div>
-        <label>Fecha</label>
-        <input id="fecha" type="date"/>
-      </div>
-      <div>
-        <label>Solicitante</label>
-        <input id="solicitante" placeholder="Nombre quien solicita"/>
-      </div>
+      <button class="btn acc" id="newBtn">+ Nueva OT</button>
+      <button class="btn" id="exportBtn">Exportar CSV</button>
+      <button class="btn" id="printBtn">Imprimir</button>
     </div>
     <div class="row">
-      <div>
-        <label>Equipo</label>
-        <input id="equipo" placeholder="Ej: Toyota Hilux / Chancador CH440 / Bomba SRH"/>
-      </div>
-      <div>
-        <label>Ubicación</label>
-        <input id="ubicacion" placeholder="Planta / Frente / Faja..."/>
-      </div>
-      <div>
-        <label>Prioridad</label>
-        <select id="prioridad">
-          <option value="Alta">Alta</option>
-          <option value="Media" selected>Media</option>
-          <option value="Baja">Baja</option>
-        </select>
-      </div>
+      <input id="q" type="search" placeholder="Buscar por título / equipo / solicitante…" />
     </div>
-    <div class="row">
-      <div style="grid-column:1/-1">
-        <label>Descripción / Síntoma</label>
-        <textarea id="descripcion" placeholder="Describe el problema, condición o requerimiento"></textarea>
-      </div>
-    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="panel filters" style="margin-bottom:14px">
     <div class="row">
       <div>
         <label>Estado</label>
-        <select id="estado">
-          <option value="Abierta" selected>Abierta</option>
-          <option value="En Ejecución">En Ejecución</option>
-          <option value="En Espera">En Espera</option>
+        <select id="fEstado">
+          <option value="">Todos</option>
+          <option value="Abierta">Abierta</option>
+          <option value="En Proceso">En Proceso</option>
           <option value="Cerrada">Cerrada</option>
         </select>
       </div>
       <div>
-        <label>Responsable</label>
-        <input id="responsable" placeholder="Técnico / Cuadrilla"/>
-      </div>
-      <div>
-        <label>Fecha Cierre (si aplica)</label>
-        <input id="fechaCierre" type="date"/>
-      </div>
-    </div>
-    <div class="row">
-      <div style="grid-column:1/-1">
-        <label>Trabajo realizado / Observaciones</label>
-        <textarea id="observaciones" placeholder="Se detalla lo ejecutado, repuestos, tiempos, pruebas..."></textarea>
-      </div>
-    </div>
-    <div class="actions no-print">
-      <button class="btn primary" onclick="guardarOT()">Guardar</button>
-      <button class="btn" onclick="limpiarFormulario()">Limpiar</button>
-      <button class="btn gold" onclick="imprimirOT()">Imprimir / PDF</button>
-    </div>
-    <footer class="note">Sugerencia: usa un formato consistente de <b>Código OT</b> (p.ej. OT-YYYY-###) para facilitar búsquedas.</footer>
-  </section>
-
-  <!-- Lista / Filtros -->
-  <section class="card">
-    <h2>Órdenes de Trabajo</h2>
-    <div class="sub">Buscar y filtrar. Toca una fila para cargarla en el formulario y editarla.</div>
-    <div class="row">
-      <div><label>Buscar</label><input id="q" placeholder="Código, equipo, solicitante..." oninput="renderTabla()"/></div>
-      <div>
-        <label>Estado</label>
-        <select id="fEstado" onchange="renderTabla()">
-          <option value="">Todos</option>
-          <option>Abierta</option><option>En Ejecución</option><option>En Espera</option><option>Cerrada</option>
-        </select>
-      </div>
-      <div>
         <label>Prioridad</label>
-        <select id="fPrioridad" onchange="renderTabla()">
-          <option value="">Todas</option><option>Alta</option><option selected>Media</option><option>Baja</option>
+        <select id="fPrioridad">
+          <option value="">Todas</option>
+          <option value="Alta">Alta</option>
+          <option value="Media">Media</option>
+          <option value="Baja">Baja</option>
         </select>
       </div>
-    </div>
-    <div style="overflow:auto;max-height:480px;margin-top:8px;border:1px solid #ffffff14;border-radius:12px">
-      <table class="table" id="tablaOT">
-        <thead>
-          <tr>
-            <th>Código</th><th>Fecha</th><th>Equipo</th><th>Solicitante</th><th>Prioridad</th><th>Estado</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-    <div class="actions no-print">
-      <button class="btn" onclick="exportCSV()">Exportar CSV</button>
-      <button class="btn red" onclick="eliminarSeleccionada()">Eliminar seleccionada</button>
-      <button class="btn" onclick="marcarCerrada()">Marcar como Cerrada</button>
-    </div>
-
-    <!-- Vista rápida -->
-    <div id="detalle" style="margin-top:10px;display:none">
-      <h3 style="margin:10px 0 6px 0">Detalle</h3>
-      <div class="kv">
-        <div class="pill"><b>Código:</b> <span id="dCod"></span></div>
-        <div class="pill"><b>Fecha:</b> <span id="dFec"></span></div>
-        <div class="pill"><b>Equipo:</b> <span id="dEq"></span></div>
-        <div class="pill"><b>Ubicación:</b> <span id="dUb"></span></div>
-        <div class="pill"><b>Prioridad:</b> <span id="dPri"></span></div>
-        <div class="pill"><b>Estado:</b> <span id="dEst"></span></div>
-        <div class="pill"><b>Responsable:</b> <span id="dResp"></span></div>
-        <div class="pill"><b>Fecha Cierre:</b> <span id="dCie"></span></div>
+      <div>
+        <label>Equipo</label>
+        <input id="fEquipo" placeholder="Hilux / Feeder / Bomba …">
       </div>
-      <div class="pill" style="margin-top:8px"><b>Descripción:</b><br><span id="dDesc"></span></div>
-      <div class="pill" style="margin-top:8px"><b>Trabajo realizado / Observaciones:</b><br><span id="dObs"></span></div>
+      <div class="right">
+        <label>&nbsp;</label>
+        <button class="btn" id="clearFilters">Limpiar filtros</button>
+      </div>
     </div>
-  </section>
+  </div>
+
+  <!-- Formulario -->
+  <div class="panel form-wrap" id="formWrap" style="display:none">
+    <form id="otForm">
+      <input type="hidden" id="otId">
+      <div class="three">
+        <div>
+          <label>Título</label>
+          <input id="titulo" required placeholder="Ej: Mantención preventiva – Hilux"/>
+        </div>
+        <div>
+          <label>Equipo</label>
+          <input id="equipo" required placeholder="Hilux / Feeder / Bomba…"/>
+        </div>
+        <div>
+          <label>Prioridad</label>
+          <select id="prioridad" required>
+            <option value="Media">Media</option>
+            <option value="Alta">Alta</option>
+            <option value="Baja">Baja</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="three">
+        <div>
+          <label>Estado</label>
+          <select id="estado">
+            <option>Abierta</option>
+            <option>En Proceso</option>
+            <option>Cerrada</option>
+          </select>
+        </div>
+        <div>
+          <label>Solicitante</label>
+          <input id="solicitante" placeholder="Nombre quien solicita"/>
+        </div>
+        <div>
+          <label>Responsable</label>
+          <input id="responsable" placeholder="Técnico / Supervisor asignado"/>
+        </div>
+      </div>
+
+      <div class="two">
+        <div>
+          <label>Fecha programada</label>
+          <input type="date" id="fecha"/>
+        </div>
+        <div>
+          <label>Ubicación</label>
+          <input id="ubicacion" placeholder="Planta / Faena / Área"/>
+        </div>
+      </div>
+
+      <div>
+        <label>Descripción</label>
+        <textarea id="descripcion" placeholder="Trabajo a realizar, insumos, riesgos, bloqueo, EPP…"></textarea>
+      </div>
+
+      <div class="row actions" style="margin-top:10px">
+        <button class="btn ok" type="submit" id="saveBtn">Guardar OT</button>
+        <button class="btn" type="button" id="cancelBtn">Cancelar</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Lista -->
+  <div class="panel">
+    <table class="table" id="list">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Título</th>
+          <th>Equipo</th>
+          <th>Prioridad</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+          <th>Responsable</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+        <tr><td colspan="8" class="empty">Sin registros aún.</td></tr>
+      </tbody>
+    </table>
+  </div>
 </main>
 
+<footer>
+  <p class="muted" style="text-align:center;padding:16px 10px">&copy; 2025 AURUM∞</p>
+</footer>
+
 <script>
-/* Storage */
-const KEY='AURUM_OT';
-let data = JSON.parse(localStorage.getItem(KEY) || '[]');
-let selectedId = null;
+/* --------------------- Estado / Datos --------------------- */
+const key = "aurum_ot";
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const store = {
+  all(){ try{ return JSON.parse(localStorage.getItem(key))||[] }catch{ return [] } },
+  save(list){ localStorage.setItem(key, JSON.stringify(list)) }
+};
+let data = store.all();
+let editingId = null;
 
-/* Helpers */
-const byId = id => document.getElementById(id);
-function hoyISO(){ const d=new Date(); return d.toISOString().slice(0,10); }
-function badgeEstado(e){
-  const cls = e==='Cerrada' ? 'b-ok' : (e==='En Espera'?'b-warn': (e==='En Ejecución'?'':'b-danger'));
-  return `<span class="badge ${cls}">${e}</span>`;
-}
-function badgePri(p){
-  const cls = p==='Alta'?'b-danger':(p==='Baja'?'b-ok':'b-warn');
-  return `<span class="badge ${cls}">${p}</span>`;
-}
+/* --------------------- Utilidades --------------------- */
+const uid = () => Math.floor(Date.now()/1000) + "-" + Math.random().toString(36).slice(2,7);
+const fmt = d => d ? new Date(d+"T00:00:00").toLocaleDateString() : "";
+const byId = id => data.find(x=>x.id===id);
 
-/* Form ops */
-function limpiarFormulario(){
-  selectedId=null; byId('otId').value='';
-  ['codigo','fecha','solicitante','equipo','ubicacion','descripcion','responsable','observaciones','fechaCierre'].forEach(id=>byId(id).value='');
-  byId('prioridad').value='Media'; byId('estado').value='Abierta';
-}
-function validar(){
-  const req=['codigo','fecha','solicitante','equipo','prioridad','estado'];
-  for(const id of req){ if(!byId(id).value.trim()){ alert('Completa: '+id); return false; } }
-  return true;
-}
-function guardarOT(){
-  if(!validar()) return;
-  const rec={
-    id: selectedId || crypto.randomUUID(),
-    codigo: byId('codigo').value.trim(),
-    fecha: byId('fecha').value || hoyISO(),
-    solicitante: byId('solicitante').value.trim(),
-    equipo: byId('equipo').value.trim(),
-    ubicacion: byId('ubicacion').value.trim(),
-    prioridad: byId('prioridad').value,
-    descripcion: byId('descripcion').value.trim(),
-    estado: byId('estado').value,
-    responsable: byId('responsable').value.trim(),
-    fechaCierre: byId('fechaCierre').value || '',
-    observaciones: byId('observaciones').value.trim(),
-    ts: Date.now()
-  };
-  const i = data.findIndex(x=>x.id===rec.id);
-  if(i>=0) data[i]=rec; else data.unshift(rec);
-  localStorage.setItem(KEY, JSON.stringify(data));
-  selectedId = rec.id; byId('otId').value=rec.id;
-  renderTabla();
-  alert('OT guardada.');
-}
-function imprimirOT(){ window.print(); }
+/* --------------------- Render --------------------- */
+function render(){
+  const q = $("#q").value.trim().toLowerCase();
+  const fe = $("#fEstado").value;
+  const fp = $("#fPrioridad").value;
+  const fq = $("#fEquipo").value.trim().toLowerCase();
 
-/* Table */
-function renderTabla(){
-  const q = byId('q').value.toLowerCase();
-  const fe = byId('fEstado').value;
-  const fp = byId('fPrioridad').value;
-  const tbody = document.querySelector('#tablaOT tbody');
-  tbody.innerHTML = '';
-  const filtered = data.filter(r=>{
-    const hit = (r.codigo+r.equipo+r.solicitante).toLowerCase().includes(q);
-    const okE = fe? r.estado===fe : true;
-    const okP = fp? r.prioridad===fp : true;
-    return hit && okE && okP;
+  let rows = data.filter(r=>{
+    let pass = true;
+    if (fe && r.estado!==fe) pass=false;
+    if (fp && r.prioridad!==fp) pass=false;
+    if (fq && !r.equipo.toLowerCase().includes(fq)) pass=false;
+    if (q){
+      const blob = `${r.titulo} ${r.equipo} ${r.solicitante} ${r.responsable}`.toLowerCase();
+      if (!blob.includes(q)) pass=false;
+    }
+    return pass;
   });
-  for(const r of filtered){
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${r.codigo}</td>
-      <td>${r.fecha||''}</td>
-      <td>${r.equipo||''}</td>
-      <td>${r.solicitante||''}</td>
-      <td>${badgePri(r.prioridad)}</td>
-      <td>${badgeEstado(r.estado)}</td>
-    `;
-    tr.style.cursor='pointer';
-    tr.onclick = ()=> { cargarEnFormulario(r.id); };
-    tbody.appendChild(tr);
+
+  $("#countBadge").textContent = rows.length;
+  const tb = $("#tbody");
+  tb.innerHTML = "";
+
+  if (!rows.length){
+    tb.innerHTML = `<tr><td colspan="8" class="empty">No hay resultados con los filtros actuales.</td></tr>`;
+    return;
   }
-  if(selectedId){
-    const r=data.find(x=>x.id===selectedId);
-    if(r) mostrarDetalle(r); else byId('detalle').style.display='none';
-  } else byId('detalle').style.display='none';
-}
-function cargarEnFormulario(id){
-  const r = data.find(x=>x.id===id); if(!r) return;
-  selectedId = id; byId('otId').value=id;
-  byId('codigo').value=r.codigo; byId('fecha').value=r.fecha||'';
-  byId('solicitante').value=r.solicitante||''; byId('equipo').value=r.equipo||'';
-  byId('ubicacion').value=r.ubicacion||''; byId('prioridad').value=r.prioridad||'Media';
-  byId('descripcion').value=r.descripcion||''; byId('estado').value=r.estado||'Abierta';
-  byId('responsable').value=r.responsable||''; byId('fechaCierre').value=r.fechaCierre||'';
-  byId('observaciones').value=r.observaciones||'';
-  mostrarDetalle(r);
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-function mostrarDetalle(r){
-  byId('detalle').style.display='';
-  byId('dCod').textContent=r.codigo||'';
-  byId('dFec').textContent=r.fecha||'';
-  byId('dEq').textContent=r.equipo||'';
-  byId('dUb').textContent=r.ubicacion||'';
-  byId('dPri').innerHTML= r.prioridad;
-  byId('dEst').innerHTML= r.estado;
-  byId('dResp').textContent=r.responsable||'';
-  byId('dCie').textContent=r.fechaCierre||'';
-  byId('dDesc').textContent=r.descripcion||'';
-  byId('dObs').textContent=r.observaciones||'';
-}
-function eliminarSeleccionada(){
-  if(!selectedId){ alert('Selecciona una OT (toca una fila).'); return; }
-  if(!confirm('¿Eliminar la OT seleccionada?')) return;
-  data = data.filter(x=>x.id!==selectedId);
-  localStorage.setItem(KEY, JSON.stringify(data));
-  selectedId=null; limpiarFormulario(); renderTabla();
-}
-function marcarCerrada(){
-  if(!selectedId){ alert('Selecciona una OT.'); return; }
-  const i = data.findIndex(x=>x.id===selectedId);
-  if(i<0) return;
-  data[i].estado='Cerrada';
-  if(!data[i].fechaCierre) data[i].fechaCierre=hoyISO();
-  localStorage.setItem(KEY, JSON.stringify(data));
-  cargarEnFormulario(selectedId); renderTabla();
-}
 
-/* CSV */
-function exportCSV(){
-  const headers = ["codigo","fecha","solicitante","equipo","ubicacion","prioridad","estado","responsable","fechaCierre","descripcion","observaciones"];
-  const rows = [headers.join(',')].concat(
-    data.map(r=>headers.map(h=>('"'+(String(r[h]||'').replace(/"/g,'""'))+'"')).join(','))
-  );
-  const blob = new Blob([rows.join('\n')], {type:'text/csv;charset=utf-8;'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'AURUM_OT.csv';
-  a.click();
+  for (const r of rows){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><span class="muted">${r.id.split("-")[0]}</span></td>
+      <td>${escapeHtml(r.titulo)}</td>
+      <td><span class="tag">${escapeHtml(r.equipo)}</span></td>
+      <td>${r.prioridad}</td>
+      <td>${statusPill(r.estado)}</td>
+      <td>${fmt(r.fecha)}</td>
+      <td>${escapeHtml(r.responsable||"")}</td>
+      <td style="white-space:nowrap">
+        <button class="btn" data-edit="${r.id}" title="Editar">Editar</button>
+        ${r.estado!=="Cerrada"
+          ? `<button class="btn ok" data-close="${r.id}" title="Cerrar">Cerrar</button>`
+          : `<button class="btn acc" data-reopen="${r.id}" title="Reabrir">Reabrir</button>`
+        }
+        <button class="btn bad" data-del="${r.id}" title="Eliminar">✕</button>
+      </td>
+    `;
+    tb.appendChild(tr);
+  }
 }
+function statusPill(s){
+  const cls = s==="Abierta"?"abierta":(s==="En Proceso"?"proceso":"cerrada");
+  return `<span class="status ${cls}">${s}</span>`;
+}
+function escapeHtml(s=""){ return s.replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m])) }
 
-/* Init */
-(function init(){
-  // fecha por defecto hoy
-  byId('fecha').value = hoyISO();
-  renderTabla();
-})();
+/* --------------------- Formulario --------------------- */
+function openForm(record=null){
+  $("#formWrap").style.display = "block";
+  if (record){
+    editingId = record.id;
+    $("#otId").value = record.id;
+    $("#titulo").value = record.titulo||"";
+    $("#equipo").value = record.equipo||"";
+    $("#prioridad").value = record.prioridad||"Media";
+    $("#estado").value = record.estado||"Abierta";
+    $("#solicitante").value = record.solicitante||"";
+    $("#responsable").value = record.responsable||"";
+    $("#fecha").value = record.fecha||"";
+    $("#ubicacion").value = record.ubicacion||"";
+    $("#descripcion").value = record.descripcion||"";
+    $("#saveBtn").textContent = "Guardar cambios";
+  }else{
+    editingId = null;
+    $("#otId").value = "";
+    $("#titulo").value = "";
+    $("#equipo").value = "";
+    $("#prioridad").value = "Media";
+    $("#estado").value = "Abierta";
+    $("#solicitante").value = "";
+    $("#responsable").value = "";
+    $("#fecha").value = "";
+    $("#ubicacion").value = "";
+    $("#descripcion").value = "";
+    $("#saveBtn").textContent = "Crear OT";
+  }
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function closeForm(){ $("#formWrap").style.display = "none"; }
+
+$("#newBtn").onclick = ()=> openForm();
+$("#cancelBtn").onclick = ()=> closeForm();
+
+$("#otForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  const rec = {
+    id: editingId || uid(),
+    titulo: $("#titulo").value.trim(),
+    equipo: $("#equipo").value.trim(),
+    prioridad: $("#prioridad").value,
+    estado: $("#estado").value,
+    solicitante: $("#solicitante").value.trim(),
+    responsable: $("#responsable").value.trim(),
+    fecha: $("#fecha").value,
+    ubicacion: $("#ubicacion").value.trim(),
+    descripcion: $("#descripcion").value.trim(),
+    updatedAt: Date.now()
+  };
+  if (!rec.titulo || !rec.equipo){ alert("Título y Equipo son obligatorios."); return; }
+
+  if (editingId){
+    data = data.map(x=> x.id===editingId ? rec : x);
+  }else{
+    data.unshift(rec);
+  }
+  store.save(data);
+  closeForm();
+  render();
+});
+
+/* --------------------- Acciones en lista --------------------- */
+$("#tbody").addEventListener("click", e=>{
+  const t = e.target;
+  if (t.dataset.edit){ const r = byId(t.dataset.edit); if(r) openForm(r); }
+  if (t.dataset.del){
+    const id = t.dataset.del;
+    if (confirm("¿Eliminar esta OT?")){ data = data.filter(x=>x.id!==id); store.save(data); render(); }
+  }
+  if (t.dataset.close){
+    const r = byId(t.dataset.close); if(!r) return;
+    r.estado = "Cerrada"; r.updatedAt = Date.now(); store.save(data); render();
+  }
+  if (t.dataset.reopen){
+    const r = byId(t.dataset.reopen); if(!r) return;
+    r.estado = "Abierta"; r.updatedAt = Date.now(); store.save(data); render();
+  }
+});
+
+/* --------------------- Filtros / Búsqueda --------------------- */
+$("#q").oninput = render;
+$("#fEstado").onchange = render;
+$("#fPrioridad").onchange = render;
+$("#fEquipo").oninput = render;
+$("#clearFilters").onclick = ()=>{
+  $("#q").value=""; $("#fEstado").value=""; $("#fPrioridad").value=""; $("#fEquipo").value="";
+  render();
+};
+
+/* --------------------- Export / Print --------------------- */
+$("#exportBtn").onclick = ()=>{
+  const header = ["id","titulo","equipo","prioridad","estado","fecha","solicitante","responsable","ubicacion","descripcion"];
+  const rows = [header.join(",")];
+  for (const r of data){
+    const line = header.map(k => `"${String(r[k]??"").replace(/"/g,'""')}"`).join(",");
+    rows.push(line);
+  }
+  const blob = new Blob([rows.join("\n")], {type:"text/csv;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "aurum-ot.csv"; a.click();
+  URL.revokeObjectURL(url);
+};
+$("#printBtn").onclick = ()=> window.print();
+
+/* --------------------- Seed opcional (primera vez) --------------------- */
+if (!data.length){
+  data = [
+    { id: uid(), titulo:"Mantención preventiva – Hilux", equipo:"Hilux", prioridad:"Media", estado:"Abierta", solicitante:"Claudio", responsable:"Técnico A", fecha:new Date().toISOString().slice(0,10), ubicacion:"Patio Taller", descripcion:"Checklist de 50 puntos + cambio filtro aceite.", updatedAt:Date.now() },
+    { id: uid(), titulo:"Inspección buzón FE043", equipo:"Feeder", prioridad:"Alta", estado:"En Proceso", solicitante:"Operaciones", responsable:"Mecánico B", fecha:"", ubicacion:"Traspaso CT236", descripcion:"Revisión lifters y placas guía (según protocolo).", updatedAt:Date.now() }
+  ];
+  store.save(data);
+}
+render();
 </script>
 </body>
 </html>
