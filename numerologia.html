@@ -3,201 +3,140 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Numerología Vibracional · AURUM∞</title>
-
-  <!-- Estilos base + tema Lemuriano -->
+  <title>Numerología · AURUM∞</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="lemuria.css">
-
   <style>
-    main{max-width:1000px;margin:20px auto;padding:0 16px}
-    .grid{display:grid;gap:14px}
-    @media (min-width:900px){ .grid.cols-2{grid-template-columns:1fr 1fr} }
-    .card{background:var(--bg-card);border:1px solid var(--gold-20);
-      border-radius:14px;padding:18px;box-shadow:var(--shadow)}
-    .field{display:flex;flex-direction:column;gap:6px}
-    .field input{background:#0f1e21;border:1px solid var(--gold-20);
-      border-radius:10px;color:var(--text);padding:12px 14px;font-size:1rem}
-    .hint{opacity:.75}
-    .kpi{display:flex;align-items:center;gap:10px;margin:6px 0}
-    .kpi .n{font-size:2rem;font-weight:800;color:var(--gold);min-width:2.8ch;text-align:center}
-    button{background:linear-gradient(90deg,#b8860b,#ffd700);color:#0d0d0d;
-      font-weight:700;border:none;border-radius:12px;padding:12px 16px;cursor:pointer}
-    .pill{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:999px;
-      background:#0f1e21;border:1px solid var(--gold-20)}
-    table{width:100%;border-collapse:collapse;margin-top:8px;font-size:.95rem}
-    th,td{border-bottom:1px dashed var(--gold-20);padding:8px 6px;text-align:left}
-    th{color:var(--gold)}
-    .mapping{font-variant-numeric:tabular-nums}
+    /* Contexto */
+    .ctx-wrap{position:sticky;top:0;z-index:999;background:linear-gradient(180deg,#0e1e21 0%,#0f1e21ee 100%);border-bottom:1px solid rgba(212,175,55,.25);box-shadow:0 6px 14px rgba(0,0,0,.25);backdrop-filter:blur(6px)}
+    .ctx{max-width:1100px;margin:0 auto;padding:12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;align-items:center;color:#e9ecf1;font-size:.95rem}
+    .ctx b{color:#f1c84c}.ctx input{width:100%;padding:6px 10px;border-radius:8px;border:1px solid rgba(212,175,55,.35);background:#0f1e21;color:#e9ecf1}
+    .ctx .mini{display:flex;flex-wrap:wrap;gap:10px}.ctx .pill{padding:6px 10px;border:1px solid rgba(212,175,55,.35);border-radius:999px;color:#f1c84c;text-decoration:none}
+    .ctx .pill.active{background:#1b2a2e;border-color:#f1c84c}.ctx .btn{background:#f1c84c;color:#0f1e21;border:none;border-radius:10px;padding:6px 10px;font-weight:700;cursor:pointer}
+    @media (max-width:720px){.ctx{grid-template-columns:1fr}}
+    /* Página */
+    main{max-width:1000px;margin:24px auto;padding:0 16px}
+    .card{background:#0f1e21;border:1px solid rgba(212,175,55,.25);border-radius:14px;padding:18px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+    .field{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+    .field input{background:#0f1e21;border:1px solid rgba(212,175,55,.35);border-radius:10px;color:#e9ecf1;padding:12px 14px}
+    .btn{background:#f1c84c;color:#0f1e21;border:none;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
+    .kpi{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:12px;margin-top:10px}
+    @media (max-width:900px){.kpi{grid-template-columns:repeat(2,1fr)}}
+    .k{background:#0f1e21;border:1px solid rgba(212,175,55,.25);border-radius:12px;padding:12px}
+    .k .n{font-size:2rem;font-weight:900;color:#f1c84c}
+    table{width:100%;border-collapse:separate;border-spacing:0 8px;margin-top:12px}
+    th,td{padding:10px 12px;background:#0f1e21;border:1px solid rgba(212,175,55,.2)}
+    th{color:#f1c84c}
   </style>
 </head>
 <body>
-  <header class="top">
-    <h1>AURUM∞</h1>
-    <nav>
-      <a href="index.html">Inicio</a>
-      <a href="vision.html">Visión</a>
-      <a href="modulos.html">Módulos</a>
-      <a class="active" href="numerologia.html">Numerología</a>
-      <a href="contacto.html">Contacto</a>
-    </nav>
-  </header>
+<!-- Contexto -->
+<div class="ctx-wrap"><div class="ctx">
+  <div><label><b>ID Activo</b></label><input id="ctx-id" placeholder="Opcional para enlazar persona→activo"></div>
+  <div><label><b>Nombre</b></label><input id="ctx-name" placeholder="Ej: Toyota Hilux (opcional)"></div>
+  <div><label><b>Operador</b></label><input id="ctx-op" placeholder="Ej: Tu nombre"></div>
+  <div class="mini">
+    <a class="pill" href="checklist.html">Checklist 3D</a>
+    <a class="pill" href="trazabilidad.html">Trazabilidad</a>
+    <a class="pill active" href="numerologia.html">Numerología</a>
+    <a class="pill" href="hilux.html">Hilux 3D</a>
+    <button class="btn" id="ctx-clear">Limpiar</button>
+  </div>
+</div></div>
 
-  <main>
-    <h2 class="gold">Numerología Vibracional</h2>
-    <p class="hint">
-      Introduce tu <strong>nombre completo</strong> (tal como te presentas) y tu <strong>fecha de nacimiento</strong>.
-      Calculamos números Pythagóricos conservando maestros <strong>11/22/33</strong>.
-    </p>
-
-    <div class="grid cols-2">
-      <div class="card">
-        <div class="field">
-          <label for="fullName" class="gold">Nombre completo</label>
-          <input id="fullName" type="text" placeholder="Tu Nombre Aquí" />
-        </div>
-        <div class="field" style="margin-top:10px">
-          <label for="dob" class="gold">Fecha de nacimiento</label>
-          <input id="dob" type="date" />
-        </div>
-        <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
-          <button id="calc">Calcular</button>
-          <span class="pill"><small>Formato nombre:</small> Pythagorean (A=1… I=9, J=1…)</span>
-        </div>
-
-        <details style="margin-top:14px">
-          <summary class="gold">Mapa de letras ↔ números</summary>
-          <div class="mapping hint" style="margin-top:8px">
-            1: A J S · 2: B K T · 3: C L U · 4: D M V · 5: E N W · 6: F O X · 7: G P Y · 8: H Q Z · 9: I R
-          </div>
-        </details>
-      </div>
-
-      <div class="card">
-        <h3 class="gold">Resultados</h3>
-        <div class="kpi"><span class="n" id="nLife">–</span> <div><strong>Camino de Vida</strong><br><span class="hint" id="tLife">—</span></div></div>
-        <div class="kpi"><span class="n" id="nExpr">–</span> <div><strong>Expresión / Destino (Nombre completo)</strong><br><span class="hint" id="tExpr">—</span></div></div>
-        <div class="kpi"><span class="n" id="nSoul">–</span> <div><strong>Alma / Deseo (Vocales)</strong><br><span class="hint" id="tSoul">—</span></div></div>
-        <div class="kpi"><span class="n" id="nPers">–</span> <div><strong>Personalidad (Consonantes)</strong><br><span class="hint" id="tPers">—</span></div></div>
-        <div class="kpi"><span class="n" id="nYear">–</span> <div><strong>Año Personal</strong><br><span class="hint" id="tYear">—</span></div></div>
+<main>
+  <h1>Numerología Vibracional</h1>
+  <div class="card grid">
+    <div>
+      <div class="field"><label>Nombre completo</label><input id="fullname" placeholder="Ej: ANDRÉS BELLO"></div>
+      <div class="field"><label>Fecha de nacimiento (DD/MM/AAAA)</label><input id="birth" placeholder="21/08/1988"></div>
+      <button class="btn" id="calc">Calcular</button>
+    </div>
+    <div>
+      <div class="kpi">
+        <div class="k"><div class="n" id="k_life">—</div><div>Camino de Vida</div></div>
+        <div class="k"><div class="n" id="k_expr">—</div><div>Expresión / Destino</div></div>
+        <div class="k"><div class="n" id="k_soul">—</div><div>Alma (Vocales)</div></div>
+        <div class="k"><div class="n" id="k_pers">—</div><div>Personalidad (Consonantes)</div></div>
+        <div class="k"><div class="n" id="k_year">—</div><div>Año Personal</div></div>
       </div>
     </div>
+  </div>
 
-    <div class="card">
-      <h3 class="gold">Desglose del nombre</h3>
-      <table>
-        <thead><tr><th>Segmento</th><th>Texto</th><th>Suma</th><th>Reducción</th></tr></thead>
-        <tbody id="tbl"></tbody>
-      </table>
-    </div>
-  </main>
+  <div class="card">
+    <h3>Desglose del nombre</h3>
+    <table id="tbl"><thead><tr><th>Segmento</th><th>Texto</th><th>Suma</th><th>Reducción</th></tr></thead><tbody></tbody></table>
+  </div>
+</main>
 
-  <footer>
-    <small>© AURUM∞ · Lemurian UI</small>
-  </footer>
+<script>
+/* Contexto mínimo */
+(function(){const $=s=>document.querySelector(s),id=$('#ctx-id'),nm=$('#ctx-name'),op=$('#ctx-op');
+const saved=JSON.parse(localStorage.getItem('aurum_ctx')||'{}');if(saved.id)id.value=saved.id;if(saved.name)nm.value=saved.name;if(saved.op)op.value=saved.op;
+const q=new URLSearchParams(location.search);['id','name','op'].forEach(k=>{if(q.get(k)){if(k==='id')id.value=q.get(k);if(k==='name')nm.value=q.get(k);if(k==='op')op.value=q.get(k);}});
+save();[id,nm,op].forEach(e=>e.addEventListener('input',save));function save(){localStorage.setItem('aurum_ctx',JSON.stringify({id:id.value.trim(),name:nm.value.trim(),op:op.value.trim()}));}
+document.querySelector('#ctx-clear').addEventListener('click',()=>{localStorage.removeItem('aurum_ctx');id.value=nm.value=op.value='';});})();
 
-  <script>
-    // --- Helpers ---
-    const VOWELS = 'AEIOUYÁÉÍÓÚÄËÏÖÜ';
-    const MAP = {A:1,J:1,S:1,B:2,K:2,T:2,C:3,L:3,U:3,D:4,M:4,V:4,E:5,N:5,W:5,F:6,O:6,X:6,G:7,P:7,Y:7,H:8,Q:8,Z:8,I:9,R:9};
-    const clean = s => (s||'').toUpperCase()
-        .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-        .replace(/[^A-ZÁÉÍÓÚÄËÏÖÜÑ\s]/g,'').trim();
-    const isVowel = ch => VOWELS.includes(ch);
-    const digits = n => String(n).split('').map(Number);
+/* ===== Numerología básica ===== */
+const MAP = {A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
+const VOW = new Set(['A','E','I','O','U','Y']);
 
-    function reduceNum(n, keepMasters=true){
-      if(keepMasters && (n===11 || n===22 || n===33)) return n;
-      while(n>9){
-        const d = digits(n).reduce((a,b)=>a+b,0);
-        if(keepMasters && (d===11||d===22||d===33)){ n=d; break; }
-        n = d;
-      }
-      return n;
-    }
+function sumWord(str, onlyVowels=false, onlyConsonants=false){
+  let s=0;
+  for(const ch of str.normalize("NFD").replace(/[\u0300-\u036f]/g,'').toUpperCase()){
+    if(!/[A-Z]/.test(ch)) continue;
+    const isV = VOW.has(ch);
+    if(onlyVowels && !isV) continue;
+    if(onlyConsonants && isV) continue;
+    s += MAP[ch]||0;
+  }
+  return s;
+}
+function reduce(n){ // mantiene maestros 11,22,33
+  while(n>9 && n!==11 && n!==22 && n!==33){ n = (''+n).split('').reduce((a,b)=>a+ +b,0); }
+  return n;
+}
+function lifePath(dmy){
+  const m = dmy.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+  if(!m) return null;
+  const s = m[1].split('').concat(m[2].split(''),m[3].split('')).reduce((a,b)=>a+ +b,0);
+  return reduce(s);
+}
+function personalYear(dmy, year=(new Date).getFullYear()){
+  const m = dmy.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/); if(!m) return null;
+  const s = [...m[1],...m[2],...(''+year)].reduce((a,b)=>a+ +b,0);
+  return reduce(s);
+}
 
-    function sumName(str){
-      let sumAll=0,sumV=0,sumC=0;
-      for(const ch of clean(str)){
-        if(ch===' ') continue;
-        const v = MAP[ch]||0;
-        sumAll+=v;
-        if(isVowel(ch)) sumV+=v; else sumC+=v;
-      }
-      return {
-        all:{raw:sumAll,red:reduceNum(sumAll)},
-        vow:{raw:sumV,red:reduceNum(sumV)},
-        con:{raw:sumC,red:reduceNum(sumC)}
-      };
-    }
+document.querySelector('#calc').addEventListener('click', ()=>{
+  const name = document.querySelector('#fullname').value.trim();
+  const birth = document.querySelector('#birth').value.trim();
+  if(!name || !birth){ alert('Ingresa nombre y fecha.'); return; }
 
-    function lifePathFromDate(iso){
-      if(!iso) return {raw:null,red:null};
-      const d = iso.replace(/-/g,'');
-      const raw = d.split('').reduce((a,b)=>a+Number(b),0);
-      return {raw,red:reduceNum(raw)};
-    }
+  const expr = reduce(sumWord(name));
+  const soul = reduce(sumWord(name, true, false));
+  const pers = reduce(sumWord(name, false, true));
+  const life = lifePath(birth);
+  const year = personalYear(birth);
 
-    function personalYear(iso){
-      if(!iso) return {year:null,n:null};
-      const b = new Date(iso+'T00:00:00');
-      const now = new Date();
-      const year = now.getFullYear();
-      // Año personal: día + mes de nacimiento + año actual
-      const sum = reduceNum(b.getUTCDate() + reduceNum(b.getUTCMonth()+1) + reduceNum(year));
-      return {year, n: sum};
-    }
+  document.querySelector('#k_expr').textContent=expr||'—';
+  document.querySelector('#k_soul').textContent=soul||'—';
+  document.querySelector('#k_pers').textContent=pers||'—';
+  document.querySelector('#k_life').textContent=life||'—';
+  document.querySelector('#k_year').textContent=year||'—';
 
-    // --- UI ---
-    const $ = s => document.querySelector(s);
-    const fullName = $('#fullName');
-    const dob = $('#dob');
-
-    // Persistencia simple
-    fullName.value = localStorage.getItem('num:name') || '';
-    dob.value = localStorage.getItem('num:dob') || '';
-
-    $('#calc').addEventListener('click', ()=>{
-      const name = fullName.value.trim();
-      const birth = dob.value;
-
-      if(!name){ alert('Escribe tu nombre completo.'); return; }
-      if(!birth){ alert('Selecciona tu fecha de nacimiento.'); return; }
-
-      localStorage.setItem('num:name', name);
-      localStorage.setItem('num:dob', birth);
-
-      // Cálculos
-      const s = sumName(name);
-      const life = lifePathFromDate(birth);
-      const pYear = personalYear(birth);
-
-      // Pintar KPIs
-      $('#nLife').textContent = life.red ?? '–';
-      $('#tLife').textContent = 'Camino según fecha de nacimiento';
-
-      $('#nExpr').textContent = s.all.red;
-      $('#tExpr').textContent = `Suma del nombre (${s.all.raw}) → ${s.all.red}`;
-
-      $('#nSoul').textContent = s.vow.red;
-      $('#tSoul').textContent = `Vocales (${s.vow.raw}) → ${s.vow.red}`;
-
-      $('#nPers').textContent = s.con.red;
-      $('#tPers').textContent = `Consonantes (${s.con.raw}) → ${s.con.red}`;
-
-      $('#nYear').textContent = pYear.n ?? '–';
-      $('#tYear').textContent = pYear.year ? `Año personal para ${pYear.year}` : '—';
-
-      // Tabla
-      const parts = clean(name).split(/\s+/).filter(Boolean);
-      const rows = parts.map(p=>{
-        const ss = sumName(p);
-        return `<tr><td>${p}</td><td>${p}</td><td>${ss.all.raw}</td><td>${ss.all.red}</td></tr>`;
-      }).join('');
-      $('#tbl').innerHTML =
-        rows +
-        `<tr><td><strong>Total</strong></td><td></td><td><strong>${s.all.raw}</strong></td><td><strong>${s.all.red}</strong></td></tr>`;
-    });
-  </script>
+  // tabla de segmentos
+  const tbody = document.querySelector('#tbl tbody'); tbody.innerHTML='';
+  name.split(/\s+/).filter(Boolean).forEach(seg=>{
+    const s = sumWord(seg);
+    const r = reduce(s);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${seg}</td><td>${seg}</td><td>${s}</td><td>${r}</td>`;
+    tbody.appendChild(tr);
+  });
+});
+</script>
 </body>
 </html>
