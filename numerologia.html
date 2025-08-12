@@ -1,242 +1,378 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Numerología Vibracional · AURUM∞</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="lemuria.css" />
-  <style>
-    :root{
-      --bg:#071218; --card:#0c1b22cc; --glass:#0f1e26b3;
-      --gold:#e7c76c; --gold-20:#e7c76c33; --text:#d9e6ea; --muted:#96a7ad;
-      --shadow:0 12px 32px #0008, inset 0 1px 0 #fff1;
-      --radius:16px;
-    }
-    body{
-      color:var(--text); background: radial-gradient(1200px 800px at 20% -10%, #132635 0%, #08141b 40%, #050c11 100%) fixed;
-      min-height:100svh; font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background-image:
-        radial-gradient(1200px 600px at 120% 10%, #16324877 0%, transparent 60%),
-        radial-gradient(700px 400px at -10% 70%, #11303f55 0%, transparent 55%);
-      background-blend-mode: screen;
-    }
-    header{max-width:1100px;margin:20px auto 0;padding:24px 16px}
-    .brand{font-size:38px;font-weight:800;letter-spacing:.5px}
-    .brand .dot{opacity:.6}
-    main{max-width:1100px;margin:0 auto;padding:12px 16px 60px}
-    .panel{background:var(--glass); backdrop-filter: blur(10px);
-      border:1px solid var(--gold-20); border-radius:var(--radius);
-      box-shadow:var(--shadow); padding:18px 18px; margin:14px 0}
-    .halo{display:flex;align-items:center;gap:10px}
-    .halo i{width:14px;height:14px;border-radius:50%;
-      background: radial-gradient(circle at 30% 30%, #aee7ff, #62d0ff 55%, #2e9eff 80%); box-shadow:0 0 16px #62d0ff88}
-    h1{font-size:34px;margin:0}
-    .gold{color:var(--gold)}
-    .form{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-    .form input[type="text"], .form input[type="date"]{
-      background:#0f1e26; color:var(--text); border:1px solid var(--gold-20);
-      border-radius:10px; padding:12px 12px; min-width:220px; outline:none
-    }
-    .btn{background:linear-gradient(180deg, #f6e49e, #d7b858);
-      color:#1a160a; border:none; padding:12px 16px; font-weight:700;
-      border-radius:12px; cursor:pointer; box-shadow:0 6px 14px #0006}
-    .pill{display:inline-block;padding:8px 12px;border:1px solid var(--gold-20);
-      border-radius:999px;background:#0f1e26aa;margin-right:8px}
-    .lead{font-size:20px;line-height:1.5}
-    .muted{color:var(--muted)}
-    .cards{display:grid;grid-template-columns:1fr; gap:14px}
-    @media(min-width:880px){ .cards{grid-template-columns:1.2fr .8fr} }
-    ul{margin:.3rem 0 0 1.1rem}
-    li{margin:.25rem 0}
-    footer{opacity:.8;text-align:center;padding:28px 16px}
-    code.small{font-size:.85rem;opacity:.85}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>AURUM∞ · Numerología Vibracional</title>
+<link rel="icon" href="data:,">
+<style>
+  :root{
+    --bg:#050c10;
+    --panel:#0b1318;
+    --ink:#e8f5f7;
+    --muted:#9fb3b9;
+    --gold:#f5cc4b;
+    --gold-20:rgba(245,204,75,.2);
+    --gold-08:rgba(245,204,75,.08);
+    --shadow:0 12px 32px rgba(0,0,0,.35), 0 0 60px rgba(245,204,75,.05) inset;
+    --radius:18px;
+  }
+  *{box-sizing:border-box}
+  html,body{background:radial-gradient(1000px 600px at 20% -10%,#0e1b22 0,#071015 40%,var(--bg) 100%);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";margin:0}
+  a{color:var(--gold)}
+  header{padding:28px 16px 10px;max-width:1100px;margin:auto}
+  .brand{display:flex;align-items:center;gap:12px}
+  .orb{width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#7ef2ff, #3cc9ff 40%, #2a7b9a 70%, transparent 72%), radial-gradient(circle at 70% 70%, #ffe082 0, #f5cc4b 50%, transparent 55%);box-shadow:0 0 28px #5feaff}
+  h1{font-size:clamp(28px,4vw,42px);margin:0;font-weight:800;letter-spacing:.5px}
+  .sub{opacity:.8;margin-top:4px}
+  main{max-width:1100px;margin:10px auto 60px;padding:0 16px}
+  .card{background:linear-gradient(180deg,var(--panel),#071016);border:1px solid var(--gold-08);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+  .grid{display:grid;gap:14px}
+  @media(min-width:900px){.grid{grid-template-columns:1.2fr 1fr}}
+  label{font-weight:600}
+  input,select,button,textarea{background:#0e1920;border:1px solid var(--gold-20);border-radius:12px;color:var(--ink);padding:12px 14px;font-size:16px;outline:none}
+  input[type="date"]{color-scheme:dark}
+  .row{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:700px){.row{grid-template-columns:1.2fr .6fr .6fr}}
+  .actions{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{background:linear-gradient(180deg,#1b2a31,#112027);border:1px solid var(--gold-20);cursor:pointer;transition:.2s}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,.25)}
+  .btn-primary{background:linear-gradient(180deg,#3a2f0a,#2b2308);border-color:#8a6b16;color:#ffe9a6}
+  h2{margin:0 0 10px;font-size:20px}
+  h3{margin:0 0 8px;font-size:18px;color:#ffe08a}
+  .pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.03);border:1px solid var(--gold-20);padding:8px 12px;border-radius:999px;font-size:14px}
+  .muted{color:var(--muted)}
+  ul{margin:8px 0 0 18px}
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .kpi .box{background:#0c171d;border:1px solid var(--gold-08);border-radius:14px;padding:10px;text-align:center}
+  .kpi .n{font-size:20px;font-weight:800;color:#ffe08a}
+  .hr{height:1px;background:linear-gradient(90deg,transparent,var(--gold-20),transparent);margin:14px 0}
+  footer{max-width:1100px;margin:30px auto 100px;padding:0 16px;color:var(--muted);text-align:center}
+  /* print for PDF */
+  @media print{
+    header, .actions-top, .actions {display:none !important}
+    body{background:white}
+    .card{break-inside:avoid}
+    main{margin:0;padding:0}
+  }
+</style>
 </head>
 <body>
   <header>
-    <div class="halo">
-      <i></i>
-      <h1 class="brand">AURUM∞ <span class="dot">·</span> <span class="gold">Numerología</span> Vibracional</h1>
-    </div>
-    <div class="panel">
-      <form class="form" id="form">
-        <input id="nombre" type="text" placeholder="Nombre completo" required />
-        <input id="fecha" type="date" required />
-        <button class="btn" type="submit">Calcular</button>
-        <span class="pill muted" id="hoy"></span>
-      </form>
+    <div class="brand">
+      <div class="orb"></div>
+      <div>
+        <h1>AURUM∞ · Numerología Vibracional</h1>
+        <div class="sub muted" id="stamp"></div>
+      </div>
     </div>
   </header>
 
   <main>
-    <section class="cards">
-      <div class="panel" id="mensaje">
-        <div class="lead" id="mensaje-titulo">Ingresa tus datos para ver tu estado vibracional de hoy.</div>
-        <p class="muted" id="mensaje-resumen" style="margin:.6rem 0 0"></p>
-        <div style="margin-top:12px">
-          <div class="gold" style="font-weight:700;margin-bottom:6px">Acciones sugeridas</div>
-          <ul id="acciones"></ul>
+    <!-- Entrada -->
+    <section class="card actions-top">
+      <h2>Datos para la lectura</h2>
+      <div class="row">
+        <div>
+          <label>Nombre completo</label>
+          <input id="nombre" placeholder="Nombre(s) Apellidos" value="">
         </div>
-        <p class="muted" style="margin-top:12px">Nota: La numerología es una guía; tu libre albedrío define el rumbo. Úsala para ordenar prioridades y energía.</p>
+        <div>
+          <label>Fecha de nacimiento</label>
+          <input id="fecha" type="date" />
+        </div>
+        <div>
+          <label>Zona horaria</label>
+          <select id="tz">
+            <option value="local">Usar hora local del dispositivo</option>
+            <option value="UTC">UTC</option>
+          </select>
+        </div>
       </div>
-
-      <aside class="panel" id="resumen">
-        <div style="font-weight:800;color:var(--gold)">Detalle de cálculos</div>
-        <pre id="detalle" style="white-space:pre-wrap;margin-top:8px"></pre>
-      </aside>
+      <div class="actions" style="margin-top:10px">
+        <button class="btn btn-primary" onclick="generar()">Calcular e interpretar</button>
+        <button class="btn" onclick="window.print()">Descargar PDF</button>
+      </div>
+      <div class="muted" style="margin-top:8px">Sugerencia: escribe tu nombre legal completo (sin tildes) para un análisis clásico. Se aceptan caracteres en español; “Ñ/ñ” se contabiliza como “N”.</div>
     </section>
 
-    <section class="panel" id="profundo" style="display:none">
-      <div style="font-weight:800;color:var(--gold)">Lectura Lemuriana</div>
-      <div id="lectura" style="margin-top:6px"></div>
+    <!-- Resumen KPIs -->
+    <section class="card" id="resumen" style="display:none">
+      <h2>Resumen de números clave</h2>
+      <div class="kpi">
+        <div class="box"><div>Camino de vida</div><div class="n" id="k_camino"></div></div>
+        <div class="box"><div>Destino / Expresión</div><div class="n" id="k_destino"></div></div>
+        <div class="box"><div>Alma</div><div class="n" id="k_alma"></div></div>
+        <div class="box"><div>Personalidad</div><div class="n" id="k_pers"></div></div>
+      </div>
+      <div class="hr"></div>
+      <div class="kpi">
+        <div class="box"><div>Año personal</div><div class="n" id="k_anno"></div></div>
+        <div class="box"><div>Mes personal</div><div class="n" id="k_mes"></div></div>
+        <div class="box"><div>Día personal</div><div class="n" id="k_dia"></div></div>
+        <div class="box"><div>Vibración del día</div><div class="n" id="k_vib"></div></div>
+      </div>
+    </section>
+
+    <!-- Interpretación y vibración -->
+    <section class="grid" id="panel" style="display:none">
+      <article class="card">
+        <h2 id="tituloVib">Vibración del día</h2>
+        <div class="pill" id="identidad"></div>
+        <p id="textoVib" style="margin-top:10px;line-height:1.6"></p>
+        <h3>Acciones recomendadas</h3>
+        <ul id="acciones"></ul>
+        <div class="muted" style="margin-top:10px">La numerología es una guía: tú eliges qué activar. Usa estas claves para ordenar prioridades y energía.</div>
+      </article>
+
+      <article class="card">
+        <h2>Interpretación global</h2>
+        <p id="global" style="line-height:1.6"></p>
+        <div class="hr"></div>
+        <h3>Detalle de cálculos</h3>
+        <div id="detalle" class="muted" style="white-space:pre-wrap"></div>
+      </article>
+    </section>
+
+    <!-- Interpretación por número -->
+    <section class="card" id="porNumero" style="display:none">
+      <h2>Significados por número</h2>
+      <div id="bloques"></div>
     </section>
   </main>
 
-  <footer class="muted">© 2025 AURUM∞ · Módulo de Numerología Vibracional</footer>
+  <footer>© 2025 AURUM∞ · Módulo de Numerología Vibracional</footer>
 
 <script>
-/* ---------- Utilidades base (sin desfase horario) ---------- */
-const map = {A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8,Ñ:5,Á:1,É:5,Í:9,Ó:6,Ú:3};
-const vocales = new Set(['A','E','I','O','U','Á','É','Í','Ó','Ú']);
-const maestros = new Set([11,22,33]);
+const stamp = document.getElementById('stamp');
+const fmtFecha = (d)=>`${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+stamp.textContent = "Hoy: " + fmtFecha(new Date());
 
-function sumaPalabra(txt){ return [...txt.toUpperCase().normalize("NFD").replace(/\p{Diacritic}/gu,'').replace(/[^A-ZÑÁÉÍÓÚ]/g,'')].reduce((a,c)=>a+(map[c]||0),0); }
-function sumaSolo(txt, predicate){ return [...txt.toUpperCase().normalize("NFD").replace(/\p{Diacritic}/gu,'')].filter(ch=>/[A-ZÑÁÉÍÓÚ]/.test(ch)&&predicate(ch)).reduce((a,c)=>a+(map[c]||0),0); }
-function reducir(n){ if(maestros.has(n)) return n; while(n>9){ n = (''+n).split('').reduce((a,d)=>a+ +d,0); if(maestros.has(n)) break; } return n; }
+// ---------- Utilidades ----------
+const clean = s => (s||"").toUpperCase()
+  .normalize('NFD').replace(/[\u0300-\u036f]/g,'') // sin tildes
+  .replace(/Ñ/g,'N').replace(/[^A-Z ]/g,'')
+  .trim();
 
-function fechaDesdeInput(input){ // yyyy-mm-dd -> Date UTC seguro
-  const [y,m,d] = input.split('-').map(Number);
-  return new Date(Date.UTC(y, m-1, d));
+const mapPyth = {A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
+const esVocal = c => 'AEIOUY'.includes(c); // usamos Y como vocal en numerología clásica
+
+function reduceNum(n, allowMasters=true){
+  // preserva 11,22,33 como maestros si allowMasters
+  while(n>9){
+    if(allowMasters && (n===11 || n===22 || n===33)) return n;
+    n = (''+n).split('').reduce((a,b)=>a+(+b),0);
+  }
+  return n;
 }
-function hoyLocalISO(){ const t=new Date(); const y=t.getFullYear(), m=('0'+(t.getMonth()+1)).slice(-2), d=('0'+t.getDate()).slice(-2); return `${y}-${m}-${d}`; }
 
-/* ---------- Mensajes Lemurianos ---------- */
-const msgDia = {
-  1:{t:'Inicio y energía. Toma acción y avanza en tus metas.',a:['Inicia un nuevo proyecto','Toma decisiones','Actúa con confianza']},
-  2:{t:'Cooperación y sensibilidad. Cultiva la armonía.',a:['Pide y ofrece ayuda','Practica la escucha','Ordena tu espacio emocional']},
-  3:{t:'Creatividad y expresión. Comunica tu verdad con alegría.',a:['Escribe o presenta ideas','Comunica con humor','Alimenta tu arte']},
-  4:{t:'Orden sagrado. Estructura, método y paciencia.',a:['Crea un plan y checklist','Pon límites sanos','Avanza paso a paso']},
-  5:{t:'Cambio y libertad. Muévete y explora.',a:['Prueba una vía nueva','Negocia con flexibilidad','Respira aire libre']},
-  6:{t:'Cuidado y belleza. Armoniza vínculos y hogar.',a:['Resuelve un pendiente con cariño','Embellece tu espacio','Ofrece servicio consciente']},
-  7:{t:'Silencio y visión. Integra y sintetiza.',a:['Agenda tiempo de estudio','Medita / camina en naturaleza','Observa antes de actuar']},
-  8:{t:'Poder y materialización. Lidera con ética.',a:['Cierra acuerdos','Revisa finanzas','Ejecuta con foco']},
-  9:{t:'Cierre y propósito. Termina ciclos, depura y comparte valor.',a:['Entrega algo terminado','Agradece y reconoce apoyos','Suelta lo que ya cumplió su rol']},
-  11:{t:'Inspiración y maestría. Intuición alta; guía con tu ejemplo.',a:['Comparte visión','Protege tu energía','Escribe la descarga que recibas']},
-  22:{t:'Arquitectura sagrada. Concreta un diseño grande en pasos pequeños.',a:['Divide el plan maestro','Asigna responsables','Aterriza un prototipo']},
-  33:{t:'Amor en acción. Enseña, sana y expande compasión.',a:['Ofrece mentoría','Cuida tu cuerpo','Practica gratitud visible']}
-};
+function sumLetters(str, filterFn){
+  const s = clean(str).replace(/ /g,'');
+  const arr = s.split('').filter(ch => /[A-Z]/.test(ch) && (!filterFn || filterFn(ch)));
+  const sum = arr.reduce((acc,ch)=> acc + (mapPyth[ch]||0), 0);
+  return reduceNum(sum,true);
+}
 
-const arquetipos = {
-  lifepath:{
-    1:'Pionero(a) lemuriano: abre caminos con voluntad clara.',
-    2:'Tejedor(a) de redes: une, equilibra y pacifica.',
-    3:'Musa solar: eleva a través de palabra y alegría.',
-    4:'Constructor(a) del templo: orden, rutina consciente y base sólida.',
-    5:'Viajero(a) del viento: cambio, aventura y versatilidad.',
-    6:'Guardían(a) del hogar: servicio, estética y cuidado.',
-    7:'Sabio(a) de cristal: introspección, estudio y verdad interior.',
-    8:'Regente dorado: liderazgo ético y prosperidad consciente.',
-    9:'Alquimista compasivo: cierre, visión y servicio universal.',
-    11:'Antena de luz: inspiración, intuición y carisma espiritual.',
-    22:'Arquitecto del plan mayor: materializa lo elevado.',
-    33:'Maestría del corazón: enseñanza y sanación en comunidad.'
+function fechaFromInput(){
+  const raw = document.getElementById('fecha').value;
+  if(!raw) return null;
+  const tz = document.getElementById('tz').value;
+  // raw es yyyy-mm-dd
+  let d = new Date(raw + (tz==='UTC'?'T00:00:00Z':'T00:00:00'));
+  // Aseguramos que no desplace al día anterior
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
+
+function calcCaminoVida(d){
+  const n = +`${d.getFullYear()}${d.getMonth()+1}${d.getDate()}`.replace(/-/g,'');
+  const sum = (''+d.getFullYear()).split('').reduce((a,b)=>a+ +b,0)
+           + (''+(d.getMonth()+1)).split('').reduce((a,b)=>a+ +b,0)
+           + (''+d.getDate()).split('').reduce((a,b)=>a+ +b,0);
+  return reduceNum(sum,true);
+}
+
+function anoPersonal(d, hoy){
+  const base = (d.getDate() + (d.getMonth()+1) + (hoy.getFullYear()))
+    .toString().split('').reduce((a,b)=>a+ +b,0);
+  return reduceNum(base,true);
+}
+function mesPersonal(ap, hoy){ return reduceNum(ap + (hoy.getMonth()+1), true); }
+function diaPersonal(mp, hoy){ return reduceNum(mp + hoy.getDate(), true); }
+
+// ---------- Interpretaciones ----------
+const textos = {
+  base:{
+    1:{titulo:"Inicio y energía",desc:"Acción, impulso, liderazgo, identidad. Día para decidir y avanzar."},
+    2:{titulo:"Cooperación y sensibilidad",desc:"Diálogo, diplomacia, intuición. Suma fuerzas y cuida los ritmos."},
+    3:{titulo:"Comunicación y creatividad",desc:"Expresión, carisma, alegría. Comparte ideas y genera conexiones."},
+    4:{titulo:"Base y orden",desc:"Estructura, disciplina, foco. Organiza, prioriza y concreta pasos."},
+    5:{titulo:"Cambio y movimiento",desc:"Flexibilidad, viajes, novedades. Abre espacio a lo nuevo sin perder el centro."},
+    6:{titulo:"Cuidado y responsabilidad",desc:"Vínculos, hogar, servicios. Atiende lo importante y armoniza el entorno."},
+    7:{titulo:"Análisis y propósito",desc:"Buceo interno, estudio, estrategia. Observa, integra y ajusta el rumbo."},
+    8:{titulo:"Poder y gestión",desc:"Ejecución, recursos, resultados. Ordena números, negocia, materializa."},
+    9:{titulo:"Cierre y propósito",desc:"Ciclos, servicio, síntesis. Suelta lo que cumplió su rol y comparte valor."},
+    11:{titulo:"Visión y inspiración (Maestro 11)",desc:"Claridad elevada, sensibilidad y liderazgo espiritual. Inspirar desde el ejemplo."},
+    22:{titulo:"Arquitectura de lo grande (Maestro 22)",desc:"Construcción de alto impacto con raíces y propósito. Disciplina + visión."},
+    33:{titulo:"Servicio amoroso (Maestro 33)",desc:"Amor en acción, pedagogía del corazón, elevación del entorno."}
   },
-  destino:{
-    1:'Tu expresión pide iniciativa y autonomía.',
-    2:'Tu expresión pide cooperación y diplomacia.',
-    3:'Tu expresión pide comunicar, inspirar y crear.',
-    4:'Tu expresión pide método y constancia.',
-    5:'Tu expresión pide libertad y adaptación.',
-    6:'Tu expresión pide servicio, cuidado y belleza.',
-    7:'Tu expresión pide análisis y sabiduría.',
-    8:'Tu expresión pide gestión y poder ético.',
-    9:'Tu expresión pide altruismo y visión.',
-    11:'Tu expresión pide inspirar y elevar frecuencia.',
-    22:'Tu expresión pide construir obras que trasciendan.',
-    33:'Tu expresión pide educar, sanar y contener.'
+  acciones:{
+    1:["Inicia un nuevo proyecto","Toma decisiones concretas","Actúa con confianza"],
+    2:["Escucha y media acuerdos","Pide y ofrece ayuda","Honra tus ritmos"],
+    3:["Presenta ideas/ventas","Escribe o crea contenido","Conecta con tu red"],
+    4:["Planifica y asigna tareas","Cierra pendientes","Ordena tus sistemas"],
+    5:["Explora alternativas","Negocia cambios","Haz espacio en agenda"],
+    6:["Cuidar equipos/familia","Mejorar espacios","Entrega soporte de calidad"],
+    7:["Analiza métricas","Estudia/entrena","Define estrategia en silencio"],
+    8:["Presupuesta y negocia","Lidera con resultados","Enfoca en KPI claves"],
+    9:["Entrega algo terminado","Agradece y reconoce apoyos","Suelta lo que ya cumplió"],
+    11:["Comparte visión","Mentoriza con empatía","Protege tu energía"],
+    22:["Baja la visión a plan maestro","Crea procesos escalables","Cuida el equipo núcleo"],
+    33:["Enseña/acompaña","Actos de servicio","Practica compasión firme"]
   },
-  alma:{
-    1:'Deseo profundo: ser primero, auténtico, iniciar.',
-    2:'Deseo profundo: unión, paz y ternura.',
-    3:'Deseo profundo: expresarte y jugar.',
-    4:'Deseo profundo: orden, seguridad, hábitos sagrados.',
-    5:'Deseo profundo: experiencias, movimiento y libertad.',
-    6:'Deseo profundo: servir y armonizar.',
-    7:'Deseo profundo: comprender y contemplar.',
-    8:'Deseo profundo: impacto material con conciencia.',
-    9:'Deseo profundo: cerrar, sanar y elevar.',
-    11:'Deseo profundo: canalizar y guiar.',
-    22:'Deseo profundo: edificar para el bien mayor.',
-    33:'Deseo profundo: amar enseñando.'
+  numero:{
+    camino:{
+      1:"Tu sendero pide autonomía y pionerismo. El reto: pasar de ‘hacer todo’ a liderar con visión.",
+      2:"Tu camino es tejer puentes. El reto: sostener límites sanos sin perder la armonía.",
+      3:"Viniste a comunicar y alegrar. El reto: convertir ideas en productos/servicios.",
+      4:"Base, método y constancia. El reto: no rigidizar; recordar el ‘para qué’.",
+      5:"Movimiento, cambio y libertad. El reto: canalizar la energía en mejoras concretas.",
+      6:"Cuidar y responsabilizarte. El reto: no sobrecargar; delegar con amor.",
+      7:"Profundidad y sabiduría. El reto: confiar para salir a la acción.",
+      8:"Gestión y resultados. El reto: que el poder sirva al propósito.",
+      9:"Servicio y cierre de ciclos. El reto: no quedarse solo en el ideal.",
+      11:"Intuición y faro. El reto: anclar en hábitos que sostengan la visión.",
+      22:"Constructor/a de impacto. El reto: paciencia, procesos, equipo.",
+      33:"Servicio elevado. El reto: cuidarte para cuidar."
+    },
+    destino:{
+      1:"Expresión de liderazgo y originalidad.",
+      2:"Cooperación, detalle y sensibilidad en tu obra.",
+      3:"Creatividad, arte y conexión social.",
+      4:"Estructuras, sistemas y confiabilidad.",
+      5:"Innovación, marketing y expansión.",
+      6:"Excelencia en servicio y cuidado.",
+      7:"Investigación, estrategia y calidad.",
+      8:"Dirección, finanzas y logro.",
+      9:"Propósito, cultura y legado.",
+      11:"Inspiración pública y guía.",
+      22:"Arquitecto/a de proyectos mayores.",
+      33:"Maestría en enseñanza/servicio."
+    },
+    alma:{
+      1:"Deseo de autonomía y logro.",
+      2:"Necesidad de armonía y vínculos.",
+      3:"Ganas de expresar y jugar.",
+      4:"Seguridad en orden y rutinas.",
+      5:"Aventura y variedad.",
+      6:"Cuidado y belleza.",
+      7:"Comprensión profunda.",
+      8:"Influencia y recursos.",
+      9:"Trascendencia y ayuda.",
+      11:"Inspirar desde lo sutil.",
+      22:"Construir para muchos.",
+      33:"Servir con amor."
+    },
+    personalidad:{
+      1:"Te perciben decidido/a.",
+      2:"Te ven amable y mediador/a.",
+      3:"Carismático/a y social.",
+      4:"Serio/a y confiable.",
+      5:"Versátil y libre.",
+      6:"Cálido/a y protector/a.",
+      7:"Analítico/a y reservado/a.",
+      8:"Sólido/a y directivo/a.",
+      9:"Humanista y amplio/a.",
+      11:"Magnético/a e inspirador/a.",
+      22:"Sólido/a y visionario/a.",
+      33:"Acompañante compasivo/a."
+    }
   }
 };
 
-/* ---------- Cálculo ---------- */
-function calc(fechaStr, nombre){
-  const d = fechaDesdeInput(fechaStr);
-  const f = {y:d.getUTCFullYear(), m:d.getUTCMonth()+1, day:d.getUTCDate()};
-  const lifepath = reducir(f.y.toString().split('').reduce((a,n)=>a+ +n,0) + f.m + f.day);
-  const nombreSum = sumaPalabra(nombre);
-  const destino = reducir(nombreSum);
-  const alma = reducir(sumaSolo(nombre, ch=>vocales.has(ch)));
-  const personalidad = reducir(sumaSolo(nombre, ch=>/[A-ZÑÁÉÍÓÚ]/.test(ch)&&!vocales.has(ch)));
-  // Año/Mes/Día personal (Pitágoras simple)
-  const hoy = new Date(); // local
-  const Y = hoy.getFullYear();
-  const mes = hoy.getMonth()+1;
-  const dia = hoy.getDate();
-  const anioPersonal = reducir((Y.toString().split('').reduce((a,n)=>a+ +n,0)) + reducir(f.m) + reducir(f.day));
-  const mesPersonal = reducir(anioPersonal + mes);
-  const diaPersonal = reducir(mesPersonal + dia);
-  return { lifepath, destino, alma, personalidad, anioPersonal, mesPersonal, diaPersonal, f, nombre };
-}
-
-/* ---------- Render ---------- */
-const form = document.getElementById('form');
-document.getElementById('fecha').value = hoyLocalISO();
-document.getElementById('hoy').textContent = 'Hoy: ' + new Date().toLocaleDateString();
-
-form.addEventListener('submit', e=>{
-  e.preventDefault();
+// ---------- Generación de informe ----------
+function generar(){
   const nombre = document.getElementById('nombre').value.trim();
-  const fecha = document.getElementById('fecha').value;
-  if(!nombre || !fecha) return;
+  const fecha = fechaFromInput();
+  if(!nombre || !fecha){ alert("Completa nombre y fecha."); return; }
 
-  const r = calc(fecha, nombre);
+  const hoy = new Date();
+  const camino = calcCaminoVida(fecha);
+  const destino = sumLetters(nombre);
+  const alma = sumLetters(nombre, c=>esVocal(c));
+  const personalidad = sumLetters(nombre, c=>!esVocal(c));
+  const ap = anoPersonal(fecha,hoy);
+  const mp = mesPersonal(ap,hoy);
+  const dp = diaPersonal(mp,hoy);
+  const vib = dp; // usamos el día personal como vibración guía
 
-  // Estado vibracional del día
-  const dia = msgDia[r.diaPersonal] || msgDia[reducir(r.diaPersonal)];
-  document.getElementById('mensaje-titulo').textContent = dia.t;
-  document.getElementById('mensaje-resumen').innerHTML =
-    `<span class="muted">Nombre:</span> <b>${r.nombre}</b> · <span class="muted">Hoy:</span> <b>${new Date().toLocaleDateString()}</b>`;
+  // Relleno de KPIs
+  document.getElementById('k_camino').textContent = camino;
+  document.getElementById('k_destino').textContent = destino;
+  document.getElementById('k_alma').textContent = alma;
+  document.getElementById('k_pers').textContent = personalidad;
+  document.getElementById('k_anno').textContent = ap;
+  document.getElementById('k_mes').textContent = mp;
+  document.getElementById('k_dia').textContent = dp;
+  document.getElementById('k_vib').textContent = vib;
+  document.getElementById('resumen').style.display = '';
+
+  // Vibración del día
+  const base = textos.base[vib] || textos.base[reduceNum(vib,false)];
+  document.getElementById('tituloVib').textContent = base.titulo;
+  document.getElementById('identidad').textContent = `${nombre} · Naciste: ${fmtFecha(fecha)} · Hoy: ${fmtFecha(hoy)}`;
+  document.getElementById('textoVib').textContent = base.desc;
+  const acc = textos.acciones[vib] || textos.acciones[reduceNum(vib,false)] || [];
   const ul = document.getElementById('acciones'); ul.innerHTML='';
-  dia.a.forEach(s=>{ const li=document.createElement('li'); li.textContent=s; ul.appendChild(li); });
+  acc.forEach(a=>{ const li=document.createElement('li'); li.textContent=a; ul.appendChild(li); });
+
+  // Global
+  const gl = [
+    `Tu Camino de vida (${camino}) marca el tono sobre cómo avanzas.`,
+    `El Destino/Expresión (${destino}) muestra tu forma natural de aportar.`,
+    `El Alma (${alma}) revela tu motivación interna y deseo profundo.`,
+    `La Personalidad (${personalidad}) es cómo el entorno te percibe.`,
+    `Año/Mes/Día personal: ${ap}/${mp}/${dp}. La vibración de hoy te propone: “${base.titulo}”.`
+  ].join(' ');
+  document.getElementById('global').textContent = gl;
 
   // Detalle
-  const det = [
-    `Nombre: ${r.nombre}`,
-    `Fecha: ${r.f.y}-${String(r.f.m).padStart(2,'0')}-${String(r.f.day).padStart(2,'0')}`,
-    `Camino de vida: ${r.lifepath}`,
-    `Destino/Expresión: ${r.destino}`,
-    `Alma: ${r.alma}`,
-    `Personalidad: ${r.personalidad}`,
-    `Año personal: ${r.anioPersonal} | Mes personal: ${r.mesPersonal} | Día personal: ${r.diaPersonal}`
-  ].join('\n');
-  document.getElementById('detalle').textContent = det;
+  const detalle = 
+`Nombre: ${nombre}
+Fecha de nacimiento: ${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2,'0')}-${String(fecha.getDate()).padStart(2,'0')}
+Camino de vida: ${camino}
+Destino/Expresión: ${destino}
+Alma: ${alma}
+Personalidad: ${personalidad}
+Año personal: ${ap} | Mes personal: ${mp} | Día personal: ${dp}`;
+  document.getElementById('detalle').textContent = detalle;
 
-  // Lectura profunda
-  const lp = arquetipos.lifepath[r.lifepath], de = arquetipos.destino[r.destino], al = arquetipos.alma[r.alma];
-  const lecturaHTML = `
-    <p><b class="gold">Camino de Vida ${r.lifepath}:</b> ${lp}</p>
-    <p><b class="gold">Destino/Expresión ${r.destino}:</b> ${de}</p>
-    <p><b class="gold">Alma ${r.alma}:</b> ${al}</p>
-    <p class="muted">Sinergia del día: actúa como <b>${lp?.toLowerCase().replace(/^[a-záéíóúñ]/i,c=>c.toUpperCase())||'tu nota esencial'}</b> y deja que el tono <b>${r.diaPersonal}</b> guíe tus microdecisiones.</p>
-  `;
-  const profundo = document.getElementById('profundo');
-  document.getElementById('lectura').innerHTML = lecturaHTML;
-  profundo.style.display = 'block';
-});
+  // Bloques por número
+  const bloques = document.getElementById('bloques');
+  bloques.innerHTML = '';
+  function addBlock(titulo, n){
+    const nn = (textos.numero[titulo] && textos.numero[titulo][n]) ? n : reduceNum(n,false);
+    const wrap = document.createElement('div');
+    wrap.style.marginBottom='14px';
+    wrap.innerHTML = `<h3>${capitalize(titulo)} (${n})</h3><div class="muted">${(textos.numero[titulo][nn]||'')}</div>`;
+    bloques.appendChild(wrap);
+  }
+  addBlock('camino', camino);
+  addBlock('destino', destino);
+  addBlock('alma', alma);
+  addBlock('personalidad', personalidad);
+
+  document.getElementById('panel').style.display='';
+  document.getElementById('porNumero').style.display='';
+}
+
+function capitalize(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+
+// set default today for date input
+(function preset(){
+  const d = new Date();
+  const v = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  document.getElementById('fecha').value = v;
+})();
 </script>
 </body>
 </html>
