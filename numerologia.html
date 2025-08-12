@@ -1,360 +1,127 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>AURUM∞ · Numerología</title>
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root{
-      --bg:#0b0f14; --card:#121824; --accent:#a6ffea; --soft:#6de7ff;
-      --text:#e9f1ff; --muted:#a9b6c7; --gold:#f5d374;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0; font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial;
-      background: radial-gradient(1200px 600px at 70% 0%, #142031 0%, var(--bg) 50%, #0a0d12 100%);
-      color:var(--text);
-      min-height:100svh; display:flex; flex-direction:column;
-    }
-    header{
-      padding:20px 24px; display:flex; align-items:center; gap:16px;
-      border-bottom:1px solid #1c2533; position:sticky; top:0; backdrop-filter: blur(8px);
-      background: rgba(11,15,20,.7);
-    }
-    .logo{width:38px; aspect-ratio:1; border-radius:12px; background:
-      conic-gradient(from 220deg, var(--accent), var(--soft), var(--gold), var(--accent));
-      filter: drop-shadow(0 0 20px rgba(166,255,234,.25));
-    }
-    header h1{margin:0; letter-spacing:.06em; font-weight:700}
-    main{width:min(1100px, 94%); margin:28px auto 40px; display:grid; gap:20px}
-    .row{display:grid; grid-template-columns: 1.1fr .9fr; gap:20px}
-    @media (max-width: 900px){ .row{grid-template-columns: 1fr} }
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.0));
-      border:1px solid #1a2636; border-radius:14px; padding:18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.04);
-    }
-    .card h2{margin:0 0 12px; font-size:18px; color:var(--soft)}
-    label{display:block; font-size:14px; color:var(--muted); margin-bottom:6px}
-    input, button, select{
-      width:100%; padding:12px 14px; border-radius:12px; border:1px solid #243247;
-      background:#0f1520; color:var(--text); outline:none; font-size:15px;
-    }
-    input:focus{border-color:#315d8f; box-shadow:0 0 0 3px rgba(109,231,255,.12)}
-    button{
-      cursor:pointer; background:linear-gradient(90deg, #2bb7b0, #5dd1ff);
-      border:0; font-weight:700; letter-spacing:.02em;
-      box-shadow:0 6px 24px rgba(93,209,255,.25);
-    }
-    button:hover{filter:brightness(1.05)}
-    .grid{display:grid; gap:12px; grid-template-columns: repeat(2, minmax(0,1fr))}
-    @media (max-width:700px){ .grid{grid-template-columns:1fr} }
-    .kpi{
-      border:1px solid #213149; border-radius:12px; padding:14px;
-      background:linear-gradient(180deg, rgba(166,255,234,.06), transparent 60%);
-    }
-    .kpi b{font-size:22px; color:var(--gold)}
-    .pill{
-      display:inline-block; padding:6px 10px; border-radius:999px; font-size:12px;
-      border:1px solid #2b3b52; color:#cfe7ff; background:#101827; margin-top:6px;
-    }
-    .msg{
-      line-height:1.6; color:#dfe8f6;
-      background:linear-gradient(180deg, rgba(245,211,116,.08), rgba(166,255,234,.06));
-      border:1px solid #2a354a; border-radius:14px; padding:16px;
-    }
-    .muted{color:var(--muted); font-size:13px}
-    footer{opacity:.7; text-align:center; padding:16px; font-size:12px; color:var(--muted)}
-    .hr{height:1px; background:#1a2536; margin:12px 0 8px}
-    .right .kpi{background:linear-gradient(180deg, rgba(93,209,255,.08), transparent 60%)}
-    .small{font-size:12px; color:#c4d3e8}
-  </style>
+  <title>AURUM∞ · Numerología Vibracional</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="lemuria.css">
 </head>
 <body>
-  <header>
-    <div class="logo" aria-hidden="true"></div>
-    <h1>AURUM∞ · Numerología Vibracional</h1>
-  </header>
+<header>
+  <h1>🔵 Numerología Vibracional</h1>
+</header>
+<main>
+  <section class="card">
+    <form id="form-numerologia">
+      <label>Nombre completo:</label>
+      <input type="text" id="nombre" required>
+      <label>Fecha de nacimiento:</label>
+      <input type="date" id="fecha" required>
+      <button type="submit">Calcular</button>
+    </form>
+  </section>
 
-  <main>
-    <div class="row">
-      <!-- FORM -->
-      <section class="card">
-        <h2>Calcula tu mapa y tu vibración de hoy</h2>
-        <div class="grid">
-          <div>
-            <label>Nombre completo (tal como te presentan)</label>
-            <input id="nombre" placeholder="Ej.: Juan Ignacio Torres" autocomplete="name">
-          </div>
-          <div>
-            <label>Fecha de nacimiento</label>
-            <input id="fecha" type="date">
-          </div>
-        </div>
-        <div style="display:flex; gap:12px; margin-top:14px">
-          <button id="calcular">Calcular</button>
-          <button id="hoy" type="button" style="background:#203045; box-shadow:none">Solo vibración de hoy</button>
-        </div>
-        <p class="muted" style="margin-top:10px">
-          Consejos prácticos y un mensaje de enfoque según tu <em>día personal</em> (1–9). Se guarda en el navegador para tu próxima visita.
-        </p>
-      </section>
+  <section id="resultado" class="card" style="display:none;">
+    <div id="mensaje-dia"></div>
+    <div id="acciones-sugeridas"></div>
+    <hr>
+    <div id="detalle-calculos"></div>
+  </section>
+</main>
 
-      <!-- KPIs IZQ -->
-      <section class="card right">
-        <h2>Claves personales</h2>
-        <div class="grid">
-          <div class="kpi"><div class="muted">Camino de vida</div><b id="k_camino">—</b><div class="pill" id="p_camino"> </div></div>
-          <div class="kpi"><div class="muted">Destino / Expresión</div><b id="k_destino">—</b><div class="pill" id="p_destino"> </div></div>
-          <div class="kpi"><div class="muted">Alma (Motivación)</div><b id="k_alma">—</b><div class="pill" id="p_alma"> </div></div>
-          <div class="kpi"><div class="muted">Personalidad</div><b id="k_persona">—</b><div class="pill" id="p_persona"> </div></div>
-          <div class="kpi"><div class="muted">Año personal</div><b id="k_anio">—</b><div class="pill" id="p_anio"> </div></div>
-          <div class="kpi"><div class="muted">Mes personal</div><b id="k_mes">—</b><div class="pill" id="p_mes"> </div></div>
-        </div>
-      </section>
-    </div>
+<script>
+// Funciones auxiliares
+function sumaDigitos(num) {
+  while (num > 9 && num !== 11 && num !== 22 && num !== 33) {
+    num = num.toString().split('').reduce((a, b) => a + Number(b), 0);
+  }
+  return num;
+}
 
-    <!-- MENSAJE DEL DÍA -->
-    <section class="card">
-      <h2>Estado vibracional del día</h2>
-      <div class="grid">
-        <div>
-          <div class="kpi" style="margin-bottom:12px">
-            <div class="muted">Día personal</div>
-            <b id="k_dia">—</b>
-            <div class="pill" id="p_dia"> </div>
-          </div>
-          <div class="msg" id="mensaje">Ingresa tus datos para ver tu enfoque del día.</div>
-        </div>
-        <div>
-          <div class="kpi">
-            <div class="muted">Acciones sugeridas</div>
-            <ul id="acciones" class="small" style="margin:8px 0 0 16px">
-              <li>—</li>
-            </ul>
-          </div>
-          <div class="hr"></div>
-          <div class="muted small">
-            Nota: La numerología es una guía. Tu libre albedrío define el resultado; usa estas claves para organizar prioridades y tu energía.
-          </div>
-        </div>
-      </div>
-    </section>
+function valorNombre(nombre) {
+  const mapa = {A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,
+                J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,
+                S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
+  return nombre.toUpperCase().replace(/[^A-Z]/g, '')
+              .split('').reduce((a, l) => a + (mapa[l] || 0), 0);
+}
 
-    <!-- RAW NUMBERS (si quieres verlos) -->
-    <section class="card">
-      <h2>Detalle de cálculos</h2>
-      <pre id="raw" class="small" style="white-space:pre-wrap; margin:0">—</pre>
-    </section>
-  </main>
+function soloVocales(nombre) {
+  return nombre.toUpperCase().replace(/[^AEIOUÁÉÍÓÚÜ]/g, '');
+}
 
-  <footer>© 2025 AURUM∞ · Módulo de Numerología Vibracional</footer>
+function soloConsonantes(nombre) {
+  return nombre.toUpperCase().replace(/[^A-Z]/g, '')
+              .replace(/[AEIOUÁÉÍÓÚÜ]/g, '');
+}
 
-  <script>
-    // Utilidades
-    const trim = s => (s||"").normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z ]/g,'').toUpperCase().trim();
-    const sumDigits = n => (""+n).split("").reduce((a,b)=>a+Number(b),0);
-    const reduceNum = n => {
-      const M=[11,22,33]; // maestros
-      while(n>9 && !M.includes(n)) n = sumDigits(n);
-      return n;
-    };
-    const letterMap = (()=>{ // Pitagórica 1–9
-      const seq = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-      const map = {};
-      let v=1;
-      for (const ch of seq){
-        map[ch]=v; v++; if(v>9) v=1;
-      }
-      return map;
-    })();
+document.getElementById('form-numerologia').addEventListener('submit', function(e){
+  e.preventDefault();
+  
+  const nombre = document.getElementById('nombre').value.trim();
+  const fechaStr = document.getElementById('fecha').value;
 
-    function numberFromName(name, vowelsOnly=false, consonantsOnly=false){
-      let total=0;
-      const vowels = new Set(['A','E','I','O','U','Y']);
-      for(const ch of trim(name)){
-        if(ch===' ') continue;
-        const isV = vowels.has(ch);
-        if(vowelsOnly && !isV) continue;
-        if(consonantsOnly && isV) continue;
-        total += letterMap[ch]||0;
-      }
-      return reduceNum(total);
-    }
+  // ✅ Arreglo para evitar el bug de la fecha que retrocede un día
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(fechaStr || "");
+  if(!m){ alert("Revisa la fecha (formato YYYY-MM-DD)."); return; }
+  const yyyy = Number(m[1]), mm = Number(m[2]), dd = Number(m[3]);
 
-    // Camino de vida (fecha)
-    function caminoVida(yyyy,mm,dd){
-      return reduceNum(reduceNum(yyyy)+reduceNum(mm)+reduceNum(dd));
-    }
+  // Cálculos numerológicos
+  const caminoVida = sumaDigitos(dd + mm + yyyy);
+  const destino = sumaDigitos(valorNombre(nombre));
+  const alma = sumaDigitos(valorNombre(soloVocales(nombre)));
+  const personalidad = sumaDigitos(valorNombre(soloConsonantes(nombre)));
 
-    // Año/Mes/Día personal
-    function personalYear(yyyy,mm,dd, today=new Date()){
-      const y = today.getFullYear();
-      return reduceNum(reduceNum(dd)+reduceNum(mm)+reduceNum(y));
-    }
-    function personalMonth(py, today=new Date()){
-      return reduceNum(py + reduceNum(today.getMonth()+1));
-    }
-    function personalDay(pm, today=new Date()){
-      return reduceNum(pm + reduceNum(today.getDate()));
-    }
+  const hoy = new Date();
+  const anioPersonal = sumaDigitos(mm + dd + hoy.getFullYear());
+  const mesPersonal = sumaDigitos(anioPersonal + (hoy.getMonth() + 1));
+  const diaPersonal = sumaDigitos(mesPersonal + hoy.getDate());
 
-    // Diccionarios de significado
-    const etiquetas = {
-      camino:{
-        1:"Liderazgo · Inicios",
-        2:"Cooperación · Sensibilidad",
-        3:"Creatividad · Expresión",
-        4:"Orden · Construcción",
-        5:"Cambio · Libertad",
-        6:"Responsabilidad · Servicio",
-        7:"Análisis · Espíritu",
-        8:"Poder · Gestión",
-        9:"Humanismo · Cierre",
-        11:"Inspiración · Visión",
-        22:"Maestro Constructor",
-        33:"Maestro Servicio"
-      },
-      destino:{ // puedes ajustar
-        1:"Pionero",
-        2:"Mediador",
-        3:"Comunicador",
-        4:"Arquitecto",
-        5:"Explorador",
-        6:"Tutor",
-        7:"Investigador",
-        8:"Gestor",
-        9:"Filántropo",
-        11:"Canal",
-        22:"Estructurador",
-        33:"Sanador"
-      },
-      alma:{1:"Voluntad",2:"Armonía",3:"Alegría",4:"Seguridad",5:"Aventura",6:"Cuidado",7:"Verdad",8:"Logro",9:"Compasión",11:"Elevación",22:"Legado",33:"Amor Universal"},
-      persona:{1:"Determinación",2:"Empatía",3:"Carisma",4:"Fiabilidad",5:"Versatilidad",6:"Confianza",7:"Reserva",8:"Autoridad",9:"Humanidad",11:"Magnetismo",22:"Influencia",33:"Inspiración"}
-    };
+  // Mensajes diarios según vibración (ejemplo básico)
+  let mensaje = "";
+  let acciones = [];
+  if(diaPersonal === 1){
+    mensaje = "Inicio y energía. Toma acción y avanza en tus metas.";
+    acciones = ["Inicia un nuevo proyecto", "Toma decisiones", "Actúa con confianza"];
+  }
+  else if(diaPersonal === 9){
+    mensaje = "Cierre y propósito. Termina ciclos, depura y comparte valor.";
+    acciones = ["Entrega algo terminado", "Agradece y reconoce apoyos", "Suelta lo que ya cumplió su rol"];
+  }
+  else {
+    mensaje = "Día para mantener equilibrio y enfocarte en lo que más importa.";
+    acciones = ["Organiza tu espacio", "Conversa con alguien importante", "Medita unos minutos"];
+  }
 
-    const vibracionDia = {
-      1:{
-        msg:"Impulso de inicio. Hoy la energía te pide dar el primer paso y marcar dirección.",
-        acciones:["Define 1 meta clave para esta semana","Haz una acción visible que la acerque","Evita dispersarte en microtareas"]
-      },
-      2:{
-        msg:"Cooperación y ritmo. Escucha, conecta y cállate el ruido interno para cocrear.",
-        acciones:["Agenda una conversación importante","Pide feedback antes de decidir","Cuida tu hidratación y descanso"]
-      },
-      3:{
-        msg:"Expresión y creatividad. Comunica con frescura, diseña, escribe, presenta.",
-        acciones:["Redacta un anuncio/brief","Graba un video corto explicando tu idea","Evita prometer más de lo que harás"]
-      },
-      4:{
-        msg:"Estructura y procesos. Ordena, documenta y convierte lo complejo en pasos claros.",
-        acciones:["Crea checklist operativo","Bloquea 90’ de foco profundo","Revisa seguridad y calidad"]
-      },
-      5:{
-        msg:"Cambio y movimiento. Explora alternativas, prueba y adapta rápido.",
-        acciones:["Haz un test A/B simple","Ajusta tu agenda con margen","Evita decisiones impulsivas"]
-      },
-      6:{
-        msg:"Cuidado y servicio. Fortalece equipo, clientes y entorno cercano.",
-        acciones:["Cierra pendientes con stakeholders","Ofrece ayuda concreta","Organiza tu espacio de trabajo"]
-      },
-      7:{
-        msg:"Análisis y sentido. Profundiza en datos y toma distancia para ver el patrón.",
-        acciones:["Investiga 1 tema crítico","Medita o camina 20’ sin pantallas","Documenta hallazgos"]
-      },
-      8:{
-        msg:"Gestión y resultados. Negocia recursos, presupuesto, acuerdos.",
-        acciones:["Prioriza tareas con impacto económico","Revisa KPIs","Asegura cierres y cobros"]
-      },
-      9:{
-        msg:"Cierre y propósito. Termina ciclos, depura y comparte valor.",
-        acciones:["Entrega algo terminado","Agradece y reconoce apoyos","Suelta lo que ya cumplió su rol"]
-      }
-    };
+  // Mostrar resultados
+  document.getElementById('mensaje-dia').innerHTML = `
+    <p><strong>${mensaje}</strong></p>
+    <p>Nombre: <strong>${nombre}</strong> · Hoy: ${dd}/${mm}/${yyyy}</p>
+  `;
 
-    function setText(id, val){ document.getElementById(id).textContent = val; }
-    function setPill(id, txt){ document.getElementById(id).textContent = txt||" "; }
+  document.getElementById('acciones-sugeridas').innerHTML = `
+    <h4>Acciones sugeridas</h4>
+    <ul>${acciones.map(a => `<li>${a}</li>`).join('')}</ul>
+  `;
 
-    function interpretarYMostrar(nombre, fechaStr){
-      const rawOut = [];
-      // Parse fecha
-      const d = new Date(fechaStr);
-      if(isNaN(d)) { alert("Revisa la fecha."); return; }
-      const yyyy = d.getFullYear(), mm = d.getMonth()+1, dd = d.getDate();
+  document.getElementById('detalle-calculos').innerHTML = `
+    <h4>Detalle de cálculos</h4>
+    <p>Nombre: ${nombre}</p>
+    <p>Fecha: ${yyyy}-${String(mm).padStart(2,'0')}-${String(dd).padStart(2,'0')}</p>
+    <p>Camino de vida: ${caminoVida}</p>
+    <p>Destino/Expresión: ${destino}</p>
+    <p>Alma: ${alma}</p>
+    <p>Personalidad: ${personalidad}</p>
+    <p>Año personal: ${anioPersonal} | Mes personal: ${mesPersonal} | Día personal: ${diaPersonal}</p>
+  `;
 
-      // Núcleos
-      const camino = caminoVida(yyyy,mm,dd);
-      const destino = numberFromName(nombre);
-      const alma = numberFromName(nombre,true,false);
-      const persona = numberFromName(nombre,false,true);
+  document.getElementById('resultado').style.display = 'block';
+});
+</script>
 
-      // Tránsitos personales
-      const today = new Date();
-      const anio = personalYear(yyyy,mm,dd,today);
-      const mes  = personalMonth(anio,today);
-      const dia  = personalDay(mes,today);
-
-      // Pintar KPIs
-      setText("k_camino", camino); setPill("p_camino", etiquetas.camino[camino]||"");
-      setText("k_destino", destino); setPill("p_destino", etiquetas.destino[destino]||"");
-      setText("k_alma", alma); setPill("p_alma", etiquetas.alma[alma]||"");
-      setText("k_persona", persona); setPill("p_persona", etiquetas.persona[persona]||"");
-
-      setText("k_anio", anio); setPill("p_anio", `Tono ${anio}: ${etiquetas.camino[anio]||"Crecimiento"}`);
-      setText("k_mes",  mes);  setPill("p_mes",  `Enfoque ${mes}`);
-
-      setText("k_dia",  dia);  setPill("p_dia",  `Pulso ${dia}`);
-
-      // Mensaje del día
-      const v = vibracionDia[dia] || {msg:"Día neutro para ordenar y observar.", acciones:["Respira profundo 3x","Lista 3 prioridades","Cuida tu energía"]};
-      const head = `<b>${v.msg}</b>`;
-      const sub = `<div class="muted" style="margin-top:6px">Nombre: <b>${nombre}</b> · Hoy: ${today.toLocaleDateString()}</div>`;
-      document.getElementById("mensaje").innerHTML = head + sub;
-
-      // Acciones
-      const ul = document.getElementById("acciones");
-      ul.innerHTML = v.acciones.map(a=>`<li>${a}</li>`).join("");
-
-      // RAW detalle (por si quieres auditar)
-      rawOut.push(`Nombre: ${nombre}`);
-      rawOut.push(`Fecha: ${yyyy}-${String(mm).padStart(2,'0')}-${String(dd).padStart(2,'0')}`);
-      rawOut.push(`Camino de vida: ${camino}`);
-      rawOut.push(`Destino/Expresión: ${destino}`);
-      rawOut.push(`Alma: ${alma}`);
-      rawOut.push(`Personalidad: ${persona}`);
-      rawOut.push(`Año personal: ${anio} | Mes personal: ${mes} | Día personal: ${dia}`);
-      document.getElementById("raw").textContent = rawOut.join("\n");
-
-      // Guardar en localStorage
-      localStorage.setItem("aurum_num_nombre", nombre);
-      localStorage.setItem("aurum_num_fecha", fechaStr);
-    }
-
-    // Solo vibración del día con últimos datos
-    function soloHoy(){
-      const nombre = localStorage.getItem("aurum_num_nombre") || document.getElementById("nombre").value.trim();
-      const fecha  = localStorage.getItem("aurum_num_fecha")  || document.getElementById("fecha").value;
-      if(!nombre || !fecha) { alert("Primero ingresa nombre y fecha."); return; }
-      interpretarYMostrar(nombre, fecha);
-    }
-
-    // Listeners
-    document.getElementById("calcular").addEventListener("click", ()=>{
-      const nombre = document.getElementById("nombre").value.trim();
-      const fecha  = document.getElementById("fecha").value;
-      if(!nombre || !fecha){ alert("Completa nombre y fecha de nacimiento."); return; }
-      interpretarYMostrar(nombre, fecha);
-    });
-    document.getElementById("hoy").addEventListener("click", soloHoy);
-
-    // Prefill si hay memoria
-    (function preload(){
-      const n = localStorage.getItem("aurum_num_nombre");
-      const f = localStorage.getItem("aurum_num_fecha");
-      if(n) document.getElementById("nombre").value = n;
-      if(f) document.getElementById("fecha").value = f;
-      if(n && f) interpretarYMostrar(n,f);
-    })();
-  </script>
+<footer>
+  <p>© 2025 AURUM∞ · Módulo de Numerología Vibracional</p>
+</footer>
 </body>
 </html>
