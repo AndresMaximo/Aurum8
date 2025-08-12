@@ -3,125 +3,240 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AURUM∞ · Numerología Vibracional</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="lemuria.css">
+  <title>Numerología Vibracional · AURUM∞</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="lemuria.css" />
+  <style>
+    :root{
+      --bg:#071218; --card:#0c1b22cc; --glass:#0f1e26b3;
+      --gold:#e7c76c; --gold-20:#e7c76c33; --text:#d9e6ea; --muted:#96a7ad;
+      --shadow:0 12px 32px #0008, inset 0 1px 0 #fff1;
+      --radius:16px;
+    }
+    body{
+      color:var(--text); background: radial-gradient(1200px 800px at 20% -10%, #132635 0%, #08141b 40%, #050c11 100%) fixed;
+      min-height:100svh; font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background-image:
+        radial-gradient(1200px 600px at 120% 10%, #16324877 0%, transparent 60%),
+        radial-gradient(700px 400px at -10% 70%, #11303f55 0%, transparent 55%);
+      background-blend-mode: screen;
+    }
+    header{max-width:1100px;margin:20px auto 0;padding:24px 16px}
+    .brand{font-size:38px;font-weight:800;letter-spacing:.5px}
+    .brand .dot{opacity:.6}
+    main{max-width:1100px;margin:0 auto;padding:12px 16px 60px}
+    .panel{background:var(--glass); backdrop-filter: blur(10px);
+      border:1px solid var(--gold-20); border-radius:var(--radius);
+      box-shadow:var(--shadow); padding:18px 18px; margin:14px 0}
+    .halo{display:flex;align-items:center;gap:10px}
+    .halo i{width:14px;height:14px;border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #aee7ff, #62d0ff 55%, #2e9eff 80%); box-shadow:0 0 16px #62d0ff88}
+    h1{font-size:34px;margin:0}
+    .gold{color:var(--gold)}
+    .form{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+    .form input[type="text"], .form input[type="date"]{
+      background:#0f1e26; color:var(--text); border:1px solid var(--gold-20);
+      border-radius:10px; padding:12px 12px; min-width:220px; outline:none
+    }
+    .btn{background:linear-gradient(180deg, #f6e49e, #d7b858);
+      color:#1a160a; border:none; padding:12px 16px; font-weight:700;
+      border-radius:12px; cursor:pointer; box-shadow:0 6px 14px #0006}
+    .pill{display:inline-block;padding:8px 12px;border:1px solid var(--gold-20);
+      border-radius:999px;background:#0f1e26aa;margin-right:8px}
+    .lead{font-size:20px;line-height:1.5}
+    .muted{color:var(--muted)}
+    .cards{display:grid;grid-template-columns:1fr; gap:14px}
+    @media(min-width:880px){ .cards{grid-template-columns:1.2fr .8fr} }
+    ul{margin:.3rem 0 0 1.1rem}
+    li{margin:.25rem 0}
+    footer{opacity:.8;text-align:center;padding:28px 16px}
+    code.small{font-size:.85rem;opacity:.85}
+  </style>
 </head>
 <body>
-<header>
-  <h1>🔵 Numerología Vibracional</h1>
-</header>
-<main>
-  <section class="card">
-    <form id="form-numerologia">
-      <label>Nombre completo:</label>
-      <input type="text" id="nombre" required>
-      <label>Fecha de nacimiento:</label>
-      <input type="date" id="fecha" required>
-      <button type="submit">Calcular</button>
-    </form>
-  </section>
+  <header>
+    <div class="halo">
+      <i></i>
+      <h1 class="brand">AURUM∞ <span class="dot">·</span> <span class="gold">Numerología</span> Vibracional</h1>
+    </div>
+    <div class="panel">
+      <form class="form" id="form">
+        <input id="nombre" type="text" placeholder="Nombre completo" required />
+        <input id="fecha" type="date" required />
+        <button class="btn" type="submit">Calcular</button>
+        <span class="pill muted" id="hoy"></span>
+      </form>
+    </div>
+  </header>
 
-  <section id="resultado" class="card" style="display:none;">
-    <div id="mensaje-dia"></div>
-    <div id="acciones-sugeridas"></div>
-    <hr>
-    <div id="detalle-calculos"></div>
-  </section>
-</main>
+  <main>
+    <section class="cards">
+      <div class="panel" id="mensaje">
+        <div class="lead" id="mensaje-titulo">Ingresa tus datos para ver tu estado vibracional de hoy.</div>
+        <p class="muted" id="mensaje-resumen" style="margin:.6rem 0 0"></p>
+        <div style="margin-top:12px">
+          <div class="gold" style="font-weight:700;margin-bottom:6px">Acciones sugeridas</div>
+          <ul id="acciones"></ul>
+        </div>
+        <p class="muted" style="margin-top:12px">Nota: La numerología es una guía; tu libre albedrío define el rumbo. Úsala para ordenar prioridades y energía.</p>
+      </div>
+
+      <aside class="panel" id="resumen">
+        <div style="font-weight:800;color:var(--gold)">Detalle de cálculos</div>
+        <pre id="detalle" style="white-space:pre-wrap;margin-top:8px"></pre>
+      </aside>
+    </section>
+
+    <section class="panel" id="profundo" style="display:none">
+      <div style="font-weight:800;color:var(--gold)">Lectura Lemuriana</div>
+      <div id="lectura" style="margin-top:6px"></div>
+    </section>
+  </main>
+
+  <footer class="muted">© 2025 AURUM∞ · Módulo de Numerología Vibracional</footer>
 
 <script>
-// Funciones auxiliares
-function sumaDigitos(num) {
-  while (num > 9 && num !== 11 && num !== 22 && num !== 33) {
-    num = num.toString().split('').reduce((a, b) => a + Number(b), 0);
+/* ---------- Utilidades base (sin desfase horario) ---------- */
+const map = {A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8,Ñ:5,Á:1,É:5,Í:9,Ó:6,Ú:3};
+const vocales = new Set(['A','E','I','O','U','Á','É','Í','Ó','Ú']);
+const maestros = new Set([11,22,33]);
+
+function sumaPalabra(txt){ return [...txt.toUpperCase().normalize("NFD").replace(/\p{Diacritic}/gu,'').replace(/[^A-ZÑÁÉÍÓÚ]/g,'')].reduce((a,c)=>a+(map[c]||0),0); }
+function sumaSolo(txt, predicate){ return [...txt.toUpperCase().normalize("NFD").replace(/\p{Diacritic}/gu,'')].filter(ch=>/[A-ZÑÁÉÍÓÚ]/.test(ch)&&predicate(ch)).reduce((a,c)=>a+(map[c]||0),0); }
+function reducir(n){ if(maestros.has(n)) return n; while(n>9){ n = (''+n).split('').reduce((a,d)=>a+ +d,0); if(maestros.has(n)) break; } return n; }
+
+function fechaDesdeInput(input){ // yyyy-mm-dd -> Date UTC seguro
+  const [y,m,d] = input.split('-').map(Number);
+  return new Date(Date.UTC(y, m-1, d));
+}
+function hoyLocalISO(){ const t=new Date(); const y=t.getFullYear(), m=('0'+(t.getMonth()+1)).slice(-2), d=('0'+t.getDate()).slice(-2); return `${y}-${m}-${d}`; }
+
+/* ---------- Mensajes Lemurianos ---------- */
+const msgDia = {
+  1:{t:'Inicio y energía. Toma acción y avanza en tus metas.',a:['Inicia un nuevo proyecto','Toma decisiones','Actúa con confianza']},
+  2:{t:'Cooperación y sensibilidad. Cultiva la armonía.',a:['Pide y ofrece ayuda','Practica la escucha','Ordena tu espacio emocional']},
+  3:{t:'Creatividad y expresión. Comunica tu verdad con alegría.',a:['Escribe o presenta ideas','Comunica con humor','Alimenta tu arte']},
+  4:{t:'Orden sagrado. Estructura, método y paciencia.',a:['Crea un plan y checklist','Pon límites sanos','Avanza paso a paso']},
+  5:{t:'Cambio y libertad. Muévete y explora.',a:['Prueba una vía nueva','Negocia con flexibilidad','Respira aire libre']},
+  6:{t:'Cuidado y belleza. Armoniza vínculos y hogar.',a:['Resuelve un pendiente con cariño','Embellece tu espacio','Ofrece servicio consciente']},
+  7:{t:'Silencio y visión. Integra y sintetiza.',a:['Agenda tiempo de estudio','Medita / camina en naturaleza','Observa antes de actuar']},
+  8:{t:'Poder y materialización. Lidera con ética.',a:['Cierra acuerdos','Revisa finanzas','Ejecuta con foco']},
+  9:{t:'Cierre y propósito. Termina ciclos, depura y comparte valor.',a:['Entrega algo terminado','Agradece y reconoce apoyos','Suelta lo que ya cumplió su rol']},
+  11:{t:'Inspiración y maestría. Intuición alta; guía con tu ejemplo.',a:['Comparte visión','Protege tu energía','Escribe la descarga que recibas']},
+  22:{t:'Arquitectura sagrada. Concreta un diseño grande en pasos pequeños.',a:['Divide el plan maestro','Asigna responsables','Aterriza un prototipo']},
+  33:{t:'Amor en acción. Enseña, sana y expande compasión.',a:['Ofrece mentoría','Cuida tu cuerpo','Practica gratitud visible']}
+};
+
+const arquetipos = {
+  lifepath:{
+    1:'Pionero(a) lemuriano: abre caminos con voluntad clara.',
+    2:'Tejedor(a) de redes: une, equilibra y pacifica.',
+    3:'Musa solar: eleva a través de palabra y alegría.',
+    4:'Constructor(a) del templo: orden, rutina consciente y base sólida.',
+    5:'Viajero(a) del viento: cambio, aventura y versatilidad.',
+    6:'Guardían(a) del hogar: servicio, estética y cuidado.',
+    7:'Sabio(a) de cristal: introspección, estudio y verdad interior.',
+    8:'Regente dorado: liderazgo ético y prosperidad consciente.',
+    9:'Alquimista compasivo: cierre, visión y servicio universal.',
+    11:'Antena de luz: inspiración, intuición y carisma espiritual.',
+    22:'Arquitecto del plan mayor: materializa lo elevado.',
+    33:'Maestría del corazón: enseñanza y sanación en comunidad.'
+  },
+  destino:{
+    1:'Tu expresión pide iniciativa y autonomía.',
+    2:'Tu expresión pide cooperación y diplomacia.',
+    3:'Tu expresión pide comunicar, inspirar y crear.',
+    4:'Tu expresión pide método y constancia.',
+    5:'Tu expresión pide libertad y adaptación.',
+    6:'Tu expresión pide servicio, cuidado y belleza.',
+    7:'Tu expresión pide análisis y sabiduría.',
+    8:'Tu expresión pide gestión y poder ético.',
+    9:'Tu expresión pide altruismo y visión.',
+    11:'Tu expresión pide inspirar y elevar frecuencia.',
+    22:'Tu expresión pide construir obras que trasciendan.',
+    33:'Tu expresión pide educar, sanar y contener.'
+  },
+  alma:{
+    1:'Deseo profundo: ser primero, auténtico, iniciar.',
+    2:'Deseo profundo: unión, paz y ternura.',
+    3:'Deseo profundo: expresarte y jugar.',
+    4:'Deseo profundo: orden, seguridad, hábitos sagrados.',
+    5:'Deseo profundo: experiencias, movimiento y libertad.',
+    6:'Deseo profundo: servir y armonizar.',
+    7:'Deseo profundo: comprender y contemplar.',
+    8:'Deseo profundo: impacto material con conciencia.',
+    9:'Deseo profundo: cerrar, sanar y elevar.',
+    11:'Deseo profundo: canalizar y guiar.',
+    22:'Deseo profundo: edificar para el bien mayor.',
+    33:'Deseo profundo: amar enseñando.'
   }
-  return num;
+};
+
+/* ---------- Cálculo ---------- */
+function calc(fechaStr, nombre){
+  const d = fechaDesdeInput(fechaStr);
+  const f = {y:d.getUTCFullYear(), m:d.getUTCMonth()+1, day:d.getUTCDate()};
+  const lifepath = reducir(f.y.toString().split('').reduce((a,n)=>a+ +n,0) + f.m + f.day);
+  const nombreSum = sumaPalabra(nombre);
+  const destino = reducir(nombreSum);
+  const alma = reducir(sumaSolo(nombre, ch=>vocales.has(ch)));
+  const personalidad = reducir(sumaSolo(nombre, ch=>/[A-ZÑÁÉÍÓÚ]/.test(ch)&&!vocales.has(ch)));
+  // Año/Mes/Día personal (Pitágoras simple)
+  const hoy = new Date(); // local
+  const Y = hoy.getFullYear();
+  const mes = hoy.getMonth()+1;
+  const dia = hoy.getDate();
+  const anioPersonal = reducir((Y.toString().split('').reduce((a,n)=>a+ +n,0)) + reducir(f.m) + reducir(f.day));
+  const mesPersonal = reducir(anioPersonal + mes);
+  const diaPersonal = reducir(mesPersonal + dia);
+  return { lifepath, destino, alma, personalidad, anioPersonal, mesPersonal, diaPersonal, f, nombre };
 }
 
-function valorNombre(nombre) {
-  const mapa = {A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,
-                J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,
-                S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
-  return nombre.toUpperCase().replace(/[^A-Z]/g, '')
-              .split('').reduce((a, l) => a + (mapa[l] || 0), 0);
-}
+/* ---------- Render ---------- */
+const form = document.getElementById('form');
+document.getElementById('fecha').value = hoyLocalISO();
+document.getElementById('hoy').textContent = 'Hoy: ' + new Date().toLocaleDateString();
 
-function soloVocales(nombre) {
-  return nombre.toUpperCase().replace(/[^AEIOUÁÉÍÓÚÜ]/g, '');
-}
-
-function soloConsonantes(nombre) {
-  return nombre.toUpperCase().replace(/[^A-Z]/g, '')
-              .replace(/[AEIOUÁÉÍÓÚÜ]/g, '');
-}
-
-document.getElementById('form-numerologia').addEventListener('submit', function(e){
+form.addEventListener('submit', e=>{
   e.preventDefault();
-  
   const nombre = document.getElementById('nombre').value.trim();
-  const fechaStr = document.getElementById('fecha').value;
+  const fecha = document.getElementById('fecha').value;
+  if(!nombre || !fecha) return;
 
-  // ✅ Arreglo para evitar el bug de la fecha que retrocede un día
-  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(fechaStr || "");
-  if(!m){ alert("Revisa la fecha (formato YYYY-MM-DD)."); return; }
-  const yyyy = Number(m[1]), mm = Number(m[2]), dd = Number(m[3]);
+  const r = calc(fecha, nombre);
 
-  // Cálculos numerológicos
-  const caminoVida = sumaDigitos(dd + mm + yyyy);
-  const destino = sumaDigitos(valorNombre(nombre));
-  const alma = sumaDigitos(valorNombre(soloVocales(nombre)));
-  const personalidad = sumaDigitos(valorNombre(soloConsonantes(nombre)));
+  // Estado vibracional del día
+  const dia = msgDia[r.diaPersonal] || msgDia[reducir(r.diaPersonal)];
+  document.getElementById('mensaje-titulo').textContent = dia.t;
+  document.getElementById('mensaje-resumen').innerHTML =
+    `<span class="muted">Nombre:</span> <b>${r.nombre}</b> · <span class="muted">Hoy:</span> <b>${new Date().toLocaleDateString()}</b>`;
+  const ul = document.getElementById('acciones'); ul.innerHTML='';
+  dia.a.forEach(s=>{ const li=document.createElement('li'); li.textContent=s; ul.appendChild(li); });
 
-  const hoy = new Date();
-  const anioPersonal = sumaDigitos(mm + dd + hoy.getFullYear());
-  const mesPersonal = sumaDigitos(anioPersonal + (hoy.getMonth() + 1));
-  const diaPersonal = sumaDigitos(mesPersonal + hoy.getDate());
+  // Detalle
+  const det = [
+    `Nombre: ${r.nombre}`,
+    `Fecha: ${r.f.y}-${String(r.f.m).padStart(2,'0')}-${String(r.f.day).padStart(2,'0')}`,
+    `Camino de vida: ${r.lifepath}`,
+    `Destino/Expresión: ${r.destino}`,
+    `Alma: ${r.alma}`,
+    `Personalidad: ${r.personalidad}`,
+    `Año personal: ${r.anioPersonal} | Mes personal: ${r.mesPersonal} | Día personal: ${r.diaPersonal}`
+  ].join('\n');
+  document.getElementById('detalle').textContent = det;
 
-  // Mensajes diarios según vibración (ejemplo básico)
-  let mensaje = "";
-  let acciones = [];
-  if(diaPersonal === 1){
-    mensaje = "Inicio y energía. Toma acción y avanza en tus metas.";
-    acciones = ["Inicia un nuevo proyecto", "Toma decisiones", "Actúa con confianza"];
-  }
-  else if(diaPersonal === 9){
-    mensaje = "Cierre y propósito. Termina ciclos, depura y comparte valor.";
-    acciones = ["Entrega algo terminado", "Agradece y reconoce apoyos", "Suelta lo que ya cumplió su rol"];
-  }
-  else {
-    mensaje = "Día para mantener equilibrio y enfocarte en lo que más importa.";
-    acciones = ["Organiza tu espacio", "Conversa con alguien importante", "Medita unos minutos"];
-  }
-
-  // Mostrar resultados
-  document.getElementById('mensaje-dia').innerHTML = `
-    <p><strong>${mensaje}</strong></p>
-    <p>Nombre: <strong>${nombre}</strong> · Hoy: ${dd}/${mm}/${yyyy}</p>
+  // Lectura profunda
+  const lp = arquetipos.lifepath[r.lifepath], de = arquetipos.destino[r.destino], al = arquetipos.alma[r.alma];
+  const lecturaHTML = `
+    <p><b class="gold">Camino de Vida ${r.lifepath}:</b> ${lp}</p>
+    <p><b class="gold">Destino/Expresión ${r.destino}:</b> ${de}</p>
+    <p><b class="gold">Alma ${r.alma}:</b> ${al}</p>
+    <p class="muted">Sinergia del día: actúa como <b>${lp?.toLowerCase().replace(/^[a-záéíóúñ]/i,c=>c.toUpperCase())||'tu nota esencial'}</b> y deja que el tono <b>${r.diaPersonal}</b> guíe tus microdecisiones.</p>
   `;
-
-  document.getElementById('acciones-sugeridas').innerHTML = `
-    <h4>Acciones sugeridas</h4>
-    <ul>${acciones.map(a => `<li>${a}</li>`).join('')}</ul>
-  `;
-
-  document.getElementById('detalle-calculos').innerHTML = `
-    <h4>Detalle de cálculos</h4>
-    <p>Nombre: ${nombre}</p>
-    <p>Fecha: ${yyyy}-${String(mm).padStart(2,'0')}-${String(dd).padStart(2,'0')}</p>
-    <p>Camino de vida: ${caminoVida}</p>
-    <p>Destino/Expresión: ${destino}</p>
-    <p>Alma: ${alma}</p>
-    <p>Personalidad: ${personalidad}</p>
-    <p>Año personal: ${anioPersonal} | Mes personal: ${mesPersonal} | Día personal: ${diaPersonal}</p>
-  `;
-
-  document.getElementById('resultado').style.display = 'block';
+  const profundo = document.getElementById('profundo');
+  document.getElementById('lectura').innerHTML = lecturaHTML;
+  profundo.style.display = 'block';
 });
 </script>
-
-<footer>
-  <p>© 2025 AURUM∞ · Módulo de Numerología Vibracional</p>
-</footer>
 </body>
 </html>
