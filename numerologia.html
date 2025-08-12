@@ -1,383 +1,437 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AURUM∞ · Numerología Vibracional</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURUM∞ · Numerología Vibracional Avanzada</title>
 <style>
   :root{
-    --bg1:#0a0f1a; --bg2:#121a2b; --iris:#8ad9ff; --aqua:#39f1c5; --gold:#ffe083;
-    --violet:#b99cff; --rose:#ff9ad6; --text:#ecf3ff; --muted:#9fb0c9;
-    --card:#0f1524cc; --card2:#0d1220e6; --ok:#38d39f; --warn:#ffd36b;
+    --bg:#091115;--panel:#0f1d22;--ink:#e7efe9;--muted:#9fb2b6;
+    --line:#1c3338;--gold:#f5d26b;--gold2:#c3a24a;--aqua:#78ffe0;
   }
-  /* Lemurian backdrop */
-  body{
-    margin:0; color:var(--text); background: radial-gradient(1200px 800px at 20% 10%, #1b2847 0%, var(--bg2) 40%, var(--bg1) 85%);
-    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Inter, "Noto Sans", "Liberation Sans", Arial, "Apple Color Emoji","Noto Color Emoji";
-    background-attachment: fixed;
-  }
-  .stars, .nebula{position:fixed; inset:0; pointer-events:none; z-index:-1}
-  .stars{background-image:radial-gradient(2px 2px at 10% 20%,#ffffff66 30%,transparent 31%),
-                           radial-gradient(1.5px 1.5px at 70% 30%,#ffffff55 30%,transparent 31%),
-                           radial-gradient(1.5px 1.5px at 30% 70%,#ffffff55 30%,transparent 31%),
-                           radial-gradient(1px 1px at 80% 80%,#ffffff33 30%,transparent 31%)}
-  .nebula{background:
-     radial-gradient(600px 400px at 75% 20%, #7ef7ff12, transparent 60%),
-     radial-gradient(500px 350px at 20% 80%, #a47bff14, transparent 60%),
-     radial-gradient(350px 250px at 50% 50%, #ffb3e614, transparent 60%);
-  }
-  header{
-    position:sticky; top:0; z-index:5; backdrop-filter: blur(8px);
-    background: linear-gradient(180deg, #0b1020ee, #0b1020cc 60%, transparent);
-    border-bottom:1px solid #ffffff12;
-  }
-  .container{max-width:1100px; margin:0 auto; padding:20px 16px;}
-  .brand{display:flex; align-items:center; gap:12px}
-  .brand .sigil{
-    width:40px; height:40px; border-radius:50%;
-    background: conic-gradient(from 220deg, var(--aqua), var(--violet), var(--rose), var(--aqua));
-    box-shadow: 0 0 20px #8ad9ff55, inset 0 0 18px #ffffff22;
-    display:grid; place-items:center; color:#001923; font-weight:800;
-  }
-  .brand h1{font-size:20px; margin:0; letter-spacing:0.08em}
-  nav a{color:var(--muted); text-decoration:none; margin-right:16px}
-  nav a:hover{color:var(--aqua)}
-  .grid{display:grid; gap:18px; grid-template-columns: 1fr}
-  @media(min-width:900px){ .grid{grid-template-columns: 1.2fr 1fr} }
-
-  .card{
-    background: linear-gradient(180deg, var(--card), var(--card2));
-    border:1px solid #ffffff1a; border-radius:16px; padding:18px;
-    box-shadow: 0 10px 30px #0008, inset 0 1px 0 #fff1;
-  }
-  h2{margin:0 0 10px 0; font-size:20px; letter-spacing:.06em}
-  .sub{color:var(--muted); font-size:13px; margin-bottom:12px}
-  label{font-size:13px; color:var(--muted)}
-  .row{display:grid; gap:12px; grid-template-columns: 1fr}
-  @media(min-width:680px){ .row{grid-template-columns: 1fr 1fr 1fr} }
-  input, select, button, textarea{
-    width:100%; padding:12px 12px; border-radius:12px; border:1px solid #ffffff22;
-    background:#0d1322; color:var(--text); outline:none;
-  }
-  input:focus, textarea:focus{border-color:#7ef7ff55; box-shadow:0 0 0 3px #39f1c51f}
-  .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
-  .btn{cursor:pointer; border:1px solid #39f1c544; background:linear-gradient(180deg,#1a2742,#121b34); }
-  .btn.primary{background:linear-gradient(180deg,#1b3344,#10263b); border-color:#39f1c588}
-  .btn.gold{border-color:#ffd36b66; background:linear-gradient(180deg,#3a2b14,#231b0d)}
-  .kpi{
-    display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap:10px; margin-top:10px;
-  }
-  .pill{
-    border:1px solid #ffffff1f; border-radius:12px; padding:10px 12px; background:#0b1222;
-  }
-  .pill b{color:var(--gold)}
-  .section{margin-top:14px; border-top:1px dashed #ffffff22; padding-top:12px}
-  .tag{display:inline-block; padding:2px 10px; border-radius:999px; font-size:12px; border:1px solid #ffffff22; color:#cfe9ff; margin-right:6px}
-  .ok{color:var(--ok)} .warn{color:var(--warn)}
-  details{border:1px dashed #ffffff26; border-radius:12px; padding:10px 12px; background:#0b1222; margin-top:8px}
-  summary{cursor:pointer; color:#bfeaff}
-  .footer-note{color:#94a7c5; font-size:12px; margin-top:12px}
-  /* Print */
-  @media print{
-    header, .actions{display:none !important}
-    body{background:#fff; color:#111}
-    .card{box-shadow:none; border:1px solid #ccc; background:#fff}
-    .stars,.nebula{display:none}
-  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:radial-gradient(1200px 600px at 60% -10%,#19323a22,transparent),var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+  header{padding:28px 18px 0;max-width:1200px;margin:auto}
+  .brand{display:flex;gap:14px;align-items:center}
+  .orb{width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#8ff,#3cf 52%,#157 60%,transparent 61%),radial-gradient(circle at 65% 65%,#6ff,#2fb 45%,#0a6 55%);box-shadow:0 0 24px #78ffe055}
+  h1{font-weight:900;font-size:clamp(28px,5vw,44px);margin:0;letter-spacing:.4px}
+  nav{margin:10px 0 22px}
+  nav a{color:var(--muted);text-decoration:none;margin-right:14px}
+  nav a:hover{color:var(--ink)}
+  main{max-width:1200px;margin:0 auto;padding:0 18px 80px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.35);margin:14px 0}
+  .row{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:760px){.row{grid-template-columns:1.1fr .9fr}}
+  label{display:block;font-weight:700;color:var(--gold);margin-bottom:6px}
+  input[type="text"]{width:100%;background:#0f1e21;border:1px solid #22373c;border-radius:10px;color:var(--ink);padding:12px 14px;font-size:16px}
+  .btn{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1c1b1a;border:none;border-radius:12px;padding:12px 18px;font-weight:900;letter-spacing:.3px;cursor:pointer}
+  .btn.alt{background:#17343a;color:#d7ecec;border:1px solid #2f5860}
+  .lead{font-size:20px;line-height:1.55}
+  .muted{color:var(--muted)}
+  .gold{color:var(--gold)}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+  .kpi{border-left:4px solid var(--gold);padding-left:12px}
+  .section{font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#a9b9bc;font-size:12px}
+  details{border:1px dashed #23434a;border-radius:10px;padding:10px 12px}
+  details>summary{cursor:pointer;font-weight:800}
+  .grid2{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:980px){.grid2{grid-template-columns:1fr 1fr}}
+  .pill{display:inline-block;background:#17343a;border:1px solid #2a616a;color:#bfeeee;padding:4px 10px;border-radius:999px;font-size:12px;margin:4px 6px 0 0}
+  footer{opacity:.8;font-size:13px;text-align:center;margin:36px 0 10px}
+  .flex{display:flex;gap:10px;flex-wrap:wrap}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace}
 </style>
 </head>
 <body>
-<div class="stars"></div><div class="nebula"></div>
 <header>
-  <div class="container" style="display:flex; align-items:center; justify-content:space-between; gap:16px;">
-    <div class="brand">
-      <div class="sigil">∞</div>
-      <h1>AURUM∞ · Numerología Vibracional</h1>
-    </div>
-    <nav>
-      <a href="/index.html">Inicio</a>
-      <a href="/modulos.html">Módulos</a>
-      <a href="/vision.html">Visión</a>
-      <a href="/contacto.html">Contacto</a>
-    </nav>
-  </div>
+  <div class="brand"><div class="orb"></div><h1>AURUM∞ · Numerología Vibracional Avanzada</h1></div>
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="modulos.html">Módulos</a>
+    <a href="contacto.html">Contacto</a>
+  </nav>
 </header>
 
-<main class="container grid">
+<main>
   <!-- Entrada -->
-  <section class="card">
-    <h2>Datos del consultante</h2>
-    <div class="sub">Completa y pulsa <b>Calcular</b>. Puedes elegir la fecha para la vibración del día (por defecto, hoy).</div>
+  <div class="card">
     <div class="row">
       <div>
-        <label>Nombre completo (tal como figura en documento)</label>
-        <input id="nombre" placeholder="Ej: Alexi Esteban Troncoso Carmona" />
+        <label>Nombre completo</label>
+        <input id="nombre" type="text" placeholder="Ej.: Andrés Marcelo Bello Moraga">
       </div>
       <div>
-        <label>Fecha de nacimiento</label>
-        <input id="nacimiento" type="date" />
-      </div>
-      <div>
-        <label>Fecha a analizar (para la vibración del día)</label>
-        <input id="fechaAnalisis" type="date" />
+        <label>Fecha de nacimiento (dd/mm/aaaa)</label>
+        <input id="fecha" type="text" inputmode="numeric" placeholder="30/05/1984">
       </div>
     </div>
-    <div style="margin-top:10px">
-      <label style="display:flex; align-items:center; gap:8px">
-        <input id="contarYvocal" type="checkbox" checked />
-        Considerar la “Y” como vocal (recomendado en español)
-      </label>
+    <div class="flex" style="margin-top:12px">
+      <button class="btn" onclick="calc()">Calcular</button>
+      <button class="btn alt" onclick="window.print()">Imprimir / PDF</button>
     </div>
-    <div class="actions">
-      <button class="btn primary" onclick="calcular()">Calcular</button>
-      <button class="btn" onclick="limpiar()">Limpiar</button>
-      <button class="btn gold" onclick="window.print()">Generar PDF</button>
-    </div>
-    <div class="footer-note">Nota: Los <b>números maestros</b> 11/22/33 se preservan cuando aparecen naturalmente; en ciclos personales se reduce a 1–9.</div>
-  </section>
+  </div>
 
-  <!-- Salida -->
-  <section class="card" id="panelResultados" style="display:none">
-    <h2>Resumen numérico</h2>
-    <div class="kpi">
-      <div class="pill">Camino de Vida: <b id="k1"></b></div>
-      <div class="pill">Destino (Nombre): <b id="k2"></b></div>
-      <div class="pill">Alma (Vocales): <b id="k3"></b></div>
-      <div class="pill">Personalidad (Consonantes): <b id="k4"></b></div>
-      <div class="pill">Año Personal: <b id="k5"></b></div>
-      <div class="pill">Mes Personal: <b id="k6"></b></div>
-      <div class="pill">Día Personal: <b id="k7"></b></div>
-    </div>
+  <!-- Portada -->
+  <div id="portada" class="card" style="display:none">
+    <div class="lead" id="headline"></div>
+    <div class="muted" style="margin-top:6px">Nombre: <span id="tagNombre"></span> · Fecha: <span id="tagFecha"></span> · Hoy: <span id="tagHoy"></span></div>
+  </div>
 
-    <div class="section">
-      <span class="tag">Interpretación Global</span>
-      <div id="global"></div>
+  <!-- KPIs -->
+  <div id="kpis" class="card" style="display:none">
+    <div class="kpis">
+      <div class="kpi"><div class="section">Camino de vida</div><div id="cv" class="gold"></div></div>
+      <div class="kpi"><div class="section">Día nacimiento</div><div id="dn" class="gold"></div></div>
+      <div class="kpi"><div class="section">Expresión (Destino)</div><div id="dest" class="gold"></div></div>
+      <div class="kpi"><div class="section">Alma</div><div id="alma" class="gold"></div></div>
+      <div class="kpi"><div class="section">Personalidad</div><div id="pers" class="gold"></div></div>
+      <div class="kpi"><div class="section">Actitud</div><div id="act" class="gold"></div></div>
+      <div class="kpi"><div class="section">Madurez</div><div id="mad" class="gold"></div></div>
+      <div class="kpi"><div class="section">Año · Mes · Día personal</div><div id="ciclos" class="gold"></div></div>
     </div>
+  </div>
 
-    <div class="section">
-      <span class="tag">Vibración del día</span>
-      <div id="vibe"></div>
+  <!-- Resumen -->
+  <div id="resumen" class="card" style="display:none">
+    <details open>
+      <summary>📜 Síntesis global</summary>
+      <p id="resumenTxt" class="lead"></p>
+    </details>
+  </div>
+
+  <!-- Interpretaciones por aspecto -->
+  <div id="profundo" class="grid2" style="display:none">
+    <div class="card"><details open><summary>Camino de vida</summary><div id="cvTxt" class="muted"></div></details></div>
+    <div class="card"><details open><summary>Día de nacimiento (talento innato)</summary><div id="dnTxt" class="muted"></div></details></div>
+    <div class="card"><details open><summary>Expresión / Destino (lo que vienes a desplegar)</summary><div id="destTxt" class="muted"></div></details></div>
+    <div class="card"><details open><summary>Alma (deseo interno)</summary><div id="almaTxt" class="muted"></div></details></div>
+    <div class="card"><details open><summary>Personalidad (cómo te perciben)</summary><div id="persTxt" class="muted"></div></details></div>
+    <div class="card"><details><summary>Actitud & Madurez</summary><div id="amTxt" class="muted"></div></details></div>
+  </div>
+
+  <!-- Kármicas, pináculos, retos -->
+  <div id="karmicos" class="grid2" style="display:none">
+    <div class="card">
+      <details open><summary>Lecciones y deudas kármicas</summary>
+        <div id="karmaTxt" class="muted"></div>
+        <div id="deudaTxt" class="muted" style="margin-top:8px"></div>
+      </details>
     </div>
-  </section>
+    <div class="card">
+      <details open><summary>Pináculos (ciclos de expansión)</summary>
+        <div id="pinaculosTxt" class="muted mono"></div>
+      </details>
+    </div>
+    <div class="card">
+      <details open><summary>Retos (aprendizajes clave)</summary>
+        <div id="retosTxt" class="muted mono"></div>
+      </details>
+    </div>
+    <div class="card">
+      <details><summary>Planos de expresión y balance 1–9</summary>
+        <div id="planosTxt" class="muted"></div>
+        <div id="freqTxt" class="muted" style="margin-top:8px"></div>
+      </details>
+    </div>
+  </div>
 
-  <!-- Fichas por número -->
-  <section class="card" id="panelFichas" style="display:none">
-    <h2>Fichas profundas</h2>
-    <div class="sub">Pulsa para abrir la interpretación detallada de cada número relevante en tu perfil.</div>
-    <div id="fichas"></div>
-  </section>
+  <!-- Vibración del día -->
+  <div id="vibradia" class="card" style="display:none">
+    <details open>
+      <summary>Vibración del día y acciones sugeridas</summary>
+      <p id="diaTxt" class="lead"></p>
+      <div id="acciones" class="muted"></div>
+    </details>
+  </div>
+
+  <footer>© 2025 AURUM∞ · Módulo de Numerología Vibracional</footer>
 </main>
 
 <script>
-/* Utilidades numerológicas */
-const mapa = {
-  A:1,J:1,S:1, B:2,K:2,T:2, C:3,L:3,U:3, D:4,M:4,V:4, E:5,N:5,W:5,
-  F:6,O:6,X:6, G:7,P:7,Y:7, H:8,Q:8,Z:8, I:9,R:9
-};
-const VOWELS = new Set(['A','E','I','O','U','Y']); // Y como vocal (toggle más abajo)
+/* ---------- Utilidades ---------- */
+const normalize = s => s.toUpperCase()
+  .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+  .replace(/Ü/g,'U').replace(/Ñ/g,'N').replace(/[^A-Z\s]/g,'');
 
-function sumDigits(n){ return n.toString().split('').reduce((a,b)=>a + (+b),0); }
-function reduceNumber(n, preserveMasters=true){
-  // Mantener 11/22/33 sólo en primeras reducciones
-  while(n>9){
-    if(preserveMasters && (n===11 || n===22 || n===33)) return n;
-    n = sumDigits(n);
-  }
-  return n;
-}
-function dateToDMY(d){
-  return { d: d.getDate(), m: d.getMonth()+1, y: d.getFullYear() };
-}
-function parseISO(value){
-  // Evita desajustes de zona creando como UTC
-  const parts = value.split('-').map(Number);
-  // yyyy-mm-dd
-  return new Date(parts[0], parts[1]-1, parts[2]);
-}
-function calcCaminoVida(d){
-  const {d:dd, m, y} = dateToDMY(d);
-  return reduceNumber(sumDigits(dd)+sumDigits(m)+sumDigits(y), true);
-}
-function nameToNumbers(nombre, contarYcomoVocal){
-  const letters = nombre.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-ZÁÉÍÓÚÜÑ ]/g,'');
-  let total=0, vocales=0, conson=0;
-  for(const ch of letters){
+const parseDMY = str => {
+  const m=String(str||'').trim().match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})$/);
+  if(!m) return null;
+  const d=+m[1], mo=+m[2]-1, y=+(m[3].length===2?('19'+m[3]):m[3]);
+  const dt=new Date(y,mo,d);
+  return dt && dt.getMonth()===mo && dt.getDate()===d ? dt : null;
+};
+const fmt = d => `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+const sumDigits = n => String(n).split('').reduce((a,b)=>a+(+b),0);
+
+const reduceNum = (n, master=true) => {
+  let s = (typeof n==='number')?sumDigits(n):sumDigits(String(n).replace(/\D/g,''));
+  if(master && (s===11||s===22||s===33)) return s;
+  while(s>9){ s = sumDigits(s); if(master && (s===11||s===22||s===33)) return s; }
+  return s;
+};
+
+/* ---------- Núcleos ---------- */
+const letterMap={A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
+const vowels=new Set(['A','E','I','O','U','Y']);
+
+function nameNumbers(full){
+  const clean=normalize(full);
+  let soul=0, pers=0, total=0, counts=Array(10).fill(0), letters={};
+  for(const ch of clean){
     if(ch===' ') continue;
-    const base = mapa[ch] || 0;
-    total += base;
-    const esVocal = (ch==='Y') ? contarYcomoVocal : VOWELS.has(ch);
-    if(esVocal) vocales += base; else conson += base;
+    const v=letterMap[ch]||0;
+    total+=v; counts[v]++; letters[ch]=(letters[ch]||0)+1;
+    if(vowels.has(ch)) soul+=v; else pers+=v;
   }
+  const missing=Object.keys(letterMap).filter(l=>!(l in letters));
   return {
-    destino: reduceNumber(total, true),
-    alma: reduceNumber(vocales, true),
-    personalidad: reduceNumber(conson, true)
+    expression: reduceNum(total,true),
+    soul: reduceNum(soul,true),
+    personality: reduceNum(pers,true),
+    counts, missingLetters: missing
   };
 }
-function personalYear(dob, target){
-  const b = dateToDMY(dob);
-  const t = dateToDMY(target);
-  const n = sumDigits(b.d) + sumDigits(b.m) + sumDigits(t.y);
-  return reduceNumber(n, false);
-}
-function personalMonth(yr, target){
-  return reduceNumber(yr + (dateToDMY(target).m), false);
-}
-function personalDay(mo, target){
-  return reduceNumber(mo + (dateToDMY(target).d), false);
+
+function karmicLessons(missingLetters){
+  // Lecciones por letras ausentes (sistema pitagórico)
+  const map={
+    A:'Autoafirmación (1)', B:'Cooperación (2)', C:'Expresión (3)', D:'Orden y método (4)',
+    E:'Cambio y versatilidad (5)', F:'Responsabilidad/afecto (6)', G:'Confianza/estudio (7)',
+    H:'Gestión y abundancia (8)', I:'Fe y optimismo (9)', J:'Iniciativa práctica (1)',
+    K:'Visión/maestría (11)', L:'Arte de la palabra (3)', M:'Trabajo/constancia (4)',
+    N:'Adaptación (5)', O:'Calidez/espiritualidad (6)', P:'Introspección (7)',
+    Q:'Influencia material (8)', R:'Proyección pública (9)', S:'Diplomacia (2)',
+    T:'Cooperación práctica (2)', U:'Prueba y aprendizaje (3)', V:'Equilibrio afectivo (4)',
+    W:'Fuerza creativa (5)', X:'Integración (6)', Y:'Decisión vocacional (7)',
+    Z:'Propósito y finalización (8)'
+  };
+  return missingLetters.map(l=>map[l]).filter(Boolean);
 }
 
-/* Textos de interpretación */
-const FICHAS = {
-  1:{titulo:"1 · Voluntad / Inicio",
-     luz:"Liderazgo, autonomía, dirección clara, capacidad para arrancar proyectos y abrir camino.",
-     sombra:"Impaciencia, egocentrismo, aislamiento, dificultad para pedir ayuda.",
-     integracion:"Practica liderazgo servicial: decide, pero escucha y delega. Canaliza tu fuego en metas concretas y medibles."},
-  2:{titulo:"2 · Cooperación / Sensibilidad",
-     luz:"Diplomacia, trabajo en equipo, intuición relacional, escucha profunda.",
-     sombra:"Dependencia, indecisión, evitar el conflicto a toda costa.",
-     integracion:"Pon límites amorosos y decide en tiempos finitos. La sensibilidad es un talento cuando no te disuelves en el otro."},
-  3:{titulo:"3 · Expresión / Creatividad",
-     luz:"Comunicación, carisma, alegría, arte y narrativa.",
-     sombra:"Dispersión, procrastinación estética, dramatización.",
-     integracion:"Ritualiza tu creatividad: bloques de tiempo y entregables. Menos es más; publica, no persigas “perfecto”."},
-  4:{titulo:"4 · Orden / Construcción",
-     luz:"Disciplina, método, ingeniería, confiabilidad.",
-     sombra:"Rigidez, miedo al cambio, exceso de control.",
-     integracion:"Estructura con márgenes de flexibilidad. Itera en sprints: planifica, ejecuta, mide, ajusta."},
-  5:{titulo:"5 · Cambio / Movimiento",
-     luz:"Adaptabilidad, exploración, aprendizaje veloz.",
-     sombra:"Inquietud crónica, dispersión hedonista, miedo al compromiso.",
-     integracion:"Explora con foco: 1 cambio transformador cada vez. Diseña reglas de juego antes de saltar."},
-  6:{titulo:"6 · Cuidado / Responsabilidad",
-     luz:"Servicio, armonía, estética de lo útil, liderazgo cuidador.",
-     sombra:"Autoexigencia, sobrecarga, martirio silencioso.",
-     integracion:"Cuida sin salvar. Agenda cuidado propio como tarea crítica del proyecto."},
-  7:{titulo:"7 · Insight / Maestro interior",
-     luz:"Análisis profundo, espiritualidad experiencial, investigación.",
-     sombra:"Aislamiento, exceso de duda, intelectualización.",
-     integracion:"Baja la sabiduría al cuerpo: prototipa, testea, comparte aprendizajes."},
-  8:{titulo:"8 · Poder / Gestión",
-     luz:"Ejecución, recursos, negociación, visión material.",
-     sombra:"Control por miedo, rigidez, trabajar sin alma.",
-     integracion:"Alínea propósito y métricas. Poder como capacidad de crear valor distribuido."},
-  9:{titulo:"9 · Trascendencia / Servicio al colectivo",
-     luz:"Humanitarismo, cierre de ciclos, arte sanador.",
-     sombra:"Idealismo dolorido, no soltar, culpas.",
-     integracion:"Cierra con ritual y gratitud. Enfoca compasión con límites claros."},
-  11:{titulo:"11 · Maestría Intuitiva",
-     luz:"Visión, inspiración, canal creativo-espiritual.",
-     sombra:"Nerviosismo, exceso de expectativas, dispersión energética.",
-     integracion:"Enraíza la visión en rutinas. Traduce intuición en prototipos y acuerdos."},
-  22:{titulo:"22 · Arquitecto del Propósito",
-     luz:"Materializar lo imposible, liderazgo sistémico, impacto a escala.",
-     sombra:"Perfeccionismo paralizante, temor a la grandeza propia.",
-     integracion:"Divide visión en ladrillos semanales. Mentoreo y equipos como columna vertebral."},
-  33:{titulo:"33 · Servicio Compasivo",
-     luz:"Amor que organiza, pedagogía sanadora, arte al servicio.",
-     sombra:"Autosacrificio, pérdida de límites, agotamiento.",
-     integracion:"Amor con estructura: agenda límites, descanso y co-responsabilidad."}
+function karmicDebtFromDate(d){
+  // Deuda si la suma completa de la fecha es 13/14/16/19 antes de reducir
+  const raw = sumDigits(`${d.getDate()}${d.getMonth()+1}${d.getFullYear()}`);
+  const debts={13:'Esfuerzo y disciplina',14:'Autodominio y límites',16:'Ego vs humildad',19:'Independencia responsable'};
+  return debts[raw] ? {raw,desc:debts[raw]} : null;
+}
+
+/* ---------- Textos profundos por aspecto ---------- */
+const base = {
+  // Para cada número: textos por aspecto (vida, destino, alma, personalidad, dia)
+  vida:{
+    1:"Camino del pionero. Naces para iniciar, liderar y abrir ruta. Desafío: soledad por exceso de autosuficiencia; virtud: coraje y enfoque.",
+    2:"Camino del vínculo. Aprendes a cooperar, mediar y cultivar sensibilidad. Desafío: indecisión/hipersensibilidad; virtud: paz y escucha.",
+    3:"Camino del mensajero. Traes alegría, palabra y arte. Desafío: dispersión; virtud: creatividad que inspira.",
+    4:"Camino del constructor. Orden, método y paciencia para materializar. Desafío: rigidez; virtud: confiabilidad.",
+    5:"Camino del explorador. Cambio, libertad y aprendizaje continuo. Desafío: exceso de impulsos; virtud: adaptabilidad.",
+    6:"Camino del cuidador. Armonía, belleza y responsabilidad afectiva. Desafío: control y sobrecarga; virtud: amor en equilibrio.",
+    7:"Camino del buscador. Estudio, introspección y mística. Desafío: aislamiento; virtud: sabiduría y profundidad.",
+    8:"Camino del realizador. Poder, gestión y resultados tangibles. Desafío: dureza/ambición vacía; virtud: autoridad consciente.",
+    9:"Camino del servidor. Cierre, compasión y visión amplia. Desafío: desborde/idealismo; virtud: altruismo con límites.",
+    11:"Camino del inspirador. Antena abierta; guías con visión y ejemplo. Desafío: nervio/autoexigencia; virtud: presencia luminosa.",
+    22:"Camino del maestro constructor. Sueños a escala humana. Desafío: abrumarte; virtud: plan, equipo y paciencia.",
+    33:"Camino del sanador/educador. Amor en servicio. Desafío: sacrificio; virtud: servicio con autocuidado."
+  },
+  destino:{
+    1:"Tu expresión natural es liderar e iniciar; tu voz gana cuando es simple y valiente.",
+    2:"Tu destino te pide unir, diplomar y sostener climas de confianza.",
+    3:"Vienes a comunicar y alegrar; escribe, enseña, crea.",
+    4:"Traes orden y procesos; eres pilar cuando hay método.",
+    5:"Expresas libertad: aprendizaje, viajes, cambios y docencia práctica.",
+    6:"Belleza, familia, armonía, servicio; liderazgo cuidado.",
+    7:"Destinas a investigar, estudiar, meditar; conviertes datos en sentido.",
+    8:"Vienes a gestionar recursos y producir impacto medible.",
+    9:"Tu expresión es humanista/artística; cierras ciclos y elevas.",
+    11:"Visión e inspiración pública; influencia por ideas.",
+    22:"Proyectos grandes, arquitectura/organización a escala.",
+    33:"Docencia, acompañamiento, sanación por ejemplo."
+  },
+  alma:{
+    1:"Necesitas autonomía y poder decidir.",
+    2:"Necesitas cercanía, cooperación y ternura.",
+    3:"Necesitas expresar, jugar y ser escuchado/a.",
+    4:"Necesitas seguridad, rutina y objetivos claros.",
+    5:"Necesitas variedad, movimiento y estímulo.",
+    6:"Necesitas armonía, estética y vínculos cuidados.",
+    7:"Necesitas silencio, estudio y espacio propio.",
+    8:"Necesitas logro, reconocimiento y recursos bien usados.",
+    9:"Necesitas sentido y contribuir a algo mayor.",
+    11:"Necesitas inspirar y sentirte canal.",
+    22:"Necesitas construir algo que trascienda.",
+    33:"Necesitas servir educando/acompañando con amor."
+  },
+  personalidad:{
+    1:"Proyectas decisión y empuje.",
+    2:"Proyectas amabilidad y cooperación.",
+    3:"Proyectas carisma y verbo.",
+    4:"Proyectas seriedad y orden.",
+    5:"Proyectas dinamismo y curiosidad.",
+    6:"Proyectas calidez y responsabilidad.",
+    7:"Proyectas reserva y profundidad.",
+    8:"Proyectas poder y eficacia.",
+    9:"Proyectas idealismo y humanidad.",
+    11:"Proyectas visión/espiritualidad.",
+    22:"Proyectas solidez organizativa.",
+    33:"Proyectas compasión y guía."
+  },
+  dia:{
+    1:{tit:"Inicio y energía. Toma acción y avanza en tus metas.",acc:["Lanza algo pequeño hoy","Decide una prioridad","Camina con confianza"]},
+    2:{tit:"Cooperación y escucha. Pulsa suave, tejer vínculos.",acc:["Pide/da ayuda","Practica escucha activa","Baja el ritmo, cuida tu sistema nervioso"]},
+    3:{tit:"Comunicación y creatividad. Expresa y comparte.",acc:["Escribe/publica","Reúnete y conversa","Haz algo lúdico"]},
+    4:{tit:"Orden y estructura. Construye base y hábitos.",acc:["Agenda y plan","Ordena tu espacio","Cuida cuerpo y descanso"]},
+    5:{tit:"Cambio y libertad. Explora/Aprende/Adapta.",acc:["Prueba algo nuevo","Varía ruta o entorno","Acepta imprevistos"]},
+    6:{tit:"Cuidado y responsabilidad. Armoniza tu entorno.",acc:["Cierra pendientes familiares/laborales","Embellece un espacio","Practica empatía"]},
+    7:{tit:"Introspección y sentido. Silencio para claridad.",acc:["Bloques de estudio/meditación","Escribe para comprender","Apaga notificaciones"]},
+    8:{tit:"Poder y realización. Ejecuta con impacto.",acc:["Negocia/define KPIs","Optimiza recursos","Mide resultados"]},
+    9:{tit:"Cierre y propósito. Depura y comparte valor.",acc:["Entrega algo terminado","Agradece y reconoce","Suelta lo que cumplió su rol"]},
+    11:{tit:"Inspiración y visión. Mantén presencia.",acc:["Comparte una idea elevada","Servicio humilde","Respira y centra el sistema"]},
+    22:{tit:"Plan maestro en avances pequeños.",acc:["Divide en pasos","Coordina equipo","Sostén el ritmo sin forzar"]},
+    33:{tit:"Amor en servicio. Educa/sana.",acc:["Acompaña con compasión","Enseña lo que practicas","Cuida primero tu energía"]}
+  }
 };
 
-function glosaNumero(n){
-  const f = FICHAS[n] || FICHAS[reduceNumber(n,false)];
-  return `<b>${f.titulo}</b> — ${f.luz}`;
-}
-
-/* Interpretación global sencilla combinando Camino+Destino+Alma+Personalidad */
-function interpretacionGlobal(k){
-  const piezas = [];
-  piezas.push(`Tu <b>Camino de Vida</b> ${glosaNumero(k.camino)}. Marca el aprendizaje que tu alma vino a cultivar.`);
-  piezas.push(`Tu <b>Destino</b> (nombre) ${glosaNumero(k.destino)}. Es la firma social: cómo te perciben y a qué te invitan.`);
-  piezas.push(`Tu <b>Deseo del Alma</b> ${glosaNumero(k.alma)}. Lo que te nutre en lo íntimo y te recarga.`);
-  piezas.push(`Tu <b>Personalidad</b> ${glosaNumero(k.personalidad)}. Tu modo natural de interactuar y protegerte.`);
-  // Coherencias y tensiones básicas
-  const afin = (a,b)=> a===b || reduceNumber(a,false)===reduceNumber(b,false);
-  const matches = [];
-  if(afin(k.camino,k.destino)) matches.push("camino y destino alineados");
-  if(afin(k.alma,k.personalidad)) matches.push("alma y personalidad dialogan en el mismo tono");
-  const wrap = matches.length ? `Se observan coherencias: <span class="ok">${matches.join(" · ")}</span>.` : `Hay aprendizajes en integrar las distintas voces internas (no es conflicto, es polifonía).`;
-  return piezas.join("<br>") + "<br><br>" + wrap;
-}
-
-/* Vibración del día */
-function vibracionDelDia(diaPersonal){
-  const mapa = {
-    1:{clave:"Inicios", msg:"Hoy abre una puerta. Un primer paso claro vale más que diez ideas.", acts:["Define 1 objetivo y 1 tarea crítica","Evita consultar en exceso, confía en tu pulso","Cuida tu tono al liderar: firme y empático"]},
-    2:{clave:"Alianzas", msg:"Día de puentes. La cooperación reduce fricción y acelera el avance.", acts:["Agenda una conversación difícil","Pide y ofrece feedback específico","Evita decidir en soledad asuntos complejos"]},
-    3:{clave:"Expresión", msg:"Comunica y crea. Lo que no expresas se estanca.", acts:["Escribe un anuncio / presentación","Publica un avance imperfecto","Reserva 30’ para creatividad libre"]},
-    4:{clave:"Estructura", msg:"Ordena, documenta y cierra pendientes.", acts:["Define procesos mínimos viables","Bloquea tiempo profundo sin interrupciones","Evita sobreplanificar: deja márgenes"]},
-    5:{clave:"Cambio", msg:"Itera y adapta. Explora sin perder el foco.", acts:["Prueba una mejora o herramienta","Rotar tareas para aprender","Evita comprometerte con 3 cambios a la vez"]},
-    6:{clave:"Cuidado", msg:"Armoniza equipos y entorno. El detalle importa.", acts:["Revisa calidad/seguridad","Acompaña a alguien clave","Evita hacerte cargo de todo: reparte"]},
-    7:{clave:"Insight", msg:"Profundiza y afina criterio. Silencio productivo.", acts:["Analiza datos/indicadores","Diseña un experimento","Evita sobrepensar: decide al final del bloque"]},
-    8:{clave:"Ejecución", msg:"Negocia, gestiona recursos, impulsa resultados.", acts:["Cierra acuerdos","Monitorea KPIs y costos","Evita controlar por ansiedad: confía en el proceso"]},
-    9:{clave:"Cierre", msg:"Entrega, agradece y suelta. Comparte impacto.", acts:["Cierra 1 ciclo con acta","Reconoce al equipo","Evita iniciar algo grande hoy"]}
+/* ---------- Planos y frecuencias ---------- */
+function planosYFrecuencias(counts){
+  // Mapa 1–9 a planos
+  const plano={
+    fisico:[1,4,8], emocional:[2,5], mental:[3,6,9], espiritual:[7,11]
   };
-  const v = mapa[diaPersonal] || mapa[reduceNumber(diaPersonal,false)];
-  return `
-    <div style="margin:6px 0 8px 0"><b>Clave:</b> ${v.clave}</div>
-    <div style="margin-bottom:8px">${v.msg}</div>
-    <div><b>Acciones recomendadas:</b>
-      <ul style="margin:6px 0 0 18px">
-        ${v.acts.map(a=>`<li>${a}</li>`).join('')}
-      </ul>
-    </div>
-  `;
+  const sum=(arr)=>arr.reduce((a,b)=>a+(counts[b]||0),0);
+  const res={
+    fisico:sum(plano.fisico), emocional:sum(plano.emocional),
+    mental:sum(plano.mental), espiritual:counts[7]||0
+  };
+  const freq = Array.from({length:9},(_,i)=>({n:i+1,c:counts[i+1]||0}));
+  return {res,freq};
 }
 
-/* Render fichas */
-function renderFichas(uniqueNums){
-  const cont = document.getElementById('fichas');
-  cont.innerHTML = uniqueNums.map(n=>{
-    const f = FICHAS[n] || FICHAS[reduceNumber(n,false)];
-    return `
-      <details>
-        <summary>${f.titulo}</summary>
-        <div style="margin-top:8px">
-          <div><b>En luz:</b> ${f.luz}</div>
-          <div style="margin-top:6px"><b>En sombra:</b> ${f.sombra}</div>
-          <div style="margin-top:6px"><b>Integración práctica:</b> ${f.integracion}</div>
-        </div>
-      </details>
-    `;
-  }).join('');
+/* ---------- Pináculos y Retos ---------- */
+function pinaculosYRetos(d){
+  const m = reduceNum(d.getMonth()+1,true);
+  const dy= reduceNum(d.getDate(),true);
+  const y = reduceNum(d.getFullYear(),true);
+  // pináculos
+  const P1 = reduceNum(m+dy,true);
+  const P2 = reduceNum(dy+y,true);
+  const P3 = reduceNum(P1+P2,true);
+  const P4 = reduceNum(m+y,true);
+  // edades
+  const life = reduceNum(d.getDate()+(d.getMonth()+1)+d.getFullYear(),true);
+  const end1 = 36 - (typeof life==='number'?life:reduceNum(life,false));
+  const end2 = end1 + 9, end3 = end2 + 9, end4 = Infinity;
+  // retos (desafíos)
+  const R1 = Math.abs(reduceNum(d.getMonth()+1,false) - reduceNum(d.getDate(),false))||0;
+  const R2 = Math.abs(reduceNum(d.getDate(),false) - reduceNum(d.getFullYear(),false))||0;
+  const R3 = Math.abs(R1 - R2)||0;
+  const R4 = Math.abs(reduceNum(d.getMonth()+1,false) - reduceNum(d.getFullYear(),false))||0;
+  return {pinaculos:[P1,P2,P3,P4], edades:[end1,end2,end3,end4], retos:[R1,R2,R3,R4]};
 }
 
-/* Principal */
-function calcular(){
-  const nombre = document.getElementById('nombre').value.trim();
-  const fNac = document.getElementById('nacimiento').value;
-  const fAnal = document.getElementById('fechaAnalisis').value;
-  if(!nombre || !fNac){
-    alert('Completa nombre y fecha de nacimiento.'); return;
-  }
-  const dob = parseISO(fNac);
-  const target = fAnal ? parseISO(fAnal) : new Date();
+/* ---------- Vibración día ---------- */
+function tonoDia(n){ return base.dia[n] || base.dia[reduceNum(n,false)]; }
 
-  const camino = calcCaminoVida(dob);
-  const { destino, alma, personalidad } = nameToNumbers(nombre, document.getElementById('contarYvocal').checked);
-  const anio = personalYear(dob, target);
-  const mes = personalMonth(anio, target);
-  const dia = personalDay(mes, target);
+/* ---------- Síntesis ---------- */
+function sintetiza(cv,dn,dest,alma,pers,act,mad,anio,mes,dia){
+  const k=(n)=>({1:"acción",2:"vínculo",3:"expresión",4:"estructura",5:"cambio",6:"cuidado",7:"sentido",8:"poder",9:"cierre",11:"visión",22:"construcción",33:"servicio"}[n]||k(reduceNum(n,false)));
+  return `Tu vida se orienta a ${k(cv)}, con un talento innato ${k(dn)}. 
+Te expresas desde ${k(dest)}, tu corazón necesita ${k(alma)} y tu imagen proyecta ${k(pers)}. 
+Tu actitud cotidiana busca ${k(act)} y tu madurez integra ${k(mad)}. 
+El año (${anio}) favorece ${k(anio)}; este mes ${k(mes)}; hoy ${k(dia)}. 
+Concreta en 1–2 acciones y regula el ritmo para sostener el proceso.`;
+}
+
+/* ---------- Render principal ---------- */
+function calc(){
+  const nombre=(document.getElementById('nombre').value||'').trim();
+  const fechaStr=(document.getElementById('fecha').value||'').trim();
+  const d=parseDMY(fechaStr);
+  if(!d){ alert('Revisa la fecha (usa dd/mm/aaaa).'); return; }
+
+  const hoy=new Date();
+  const cv = reduceNum(d.getDate()+(d.getMonth()+1)+d.getFullYear(),true);
+  const dn = reduceNum(d.getDate(),true);
+  const nm = nameNumbers(nombre);
+  const dest = nm.expression, alma=nm.soul, pers=nm.personality;
+  const act = reduceNum((d.getMonth()+1)+d.getDate(),true);
+  const mad = reduceNum((typeof cv==='number'?cv:reduceNum(cv,false)) + (typeof dest==='number'?dest:reduceNum(dest,false)), true);
+
+  const anio = reduceNum(hoy.getFullYear() + (d.getMonth()+1) + d.getDate(), true);
+  const mes  = reduceNum(anio + (hoy.getMonth()+1), true);
+  const dia  = reduceNum(mes + hoy.getDate(), true);
+  const tone = tonoDia(dia);
+
+  // Pináculos/Retos
+  const pr = pinaculosYRetos(d);
+
+  // Kármicos
+  const lecciones = karmicLessons(nm.missingLetters);
+  const deuda = karmicDebtFromDate(d);
+
+  // Planos/frecuencias
+  const pf = planosYFrecuencias(nm.counts);
+
+  // Portada
+  document.getElementById('portada').style.display='block';
+  document.getElementById('kpis').style.display='block';
+  document.getElementById('resumen').style.display='block';
+  document.getElementById('profundo').style.display='grid';
+  document.getElementById('karmicos').style.display='grid';
+  document.getElementById('vibradia').style.display='block';
+
+  document.getElementById('headline').textContent = tone.tit;
+  document.getElementById('tagNombre').textContent = nombre || '—';
+  document.getElementById('tagFecha').textContent = fmt(d);
+  document.getElementById('tagHoy').textContent = fmt(hoy);
 
   // KPIs
-  k1.textContent = camino; k2.textContent = destino; k3.textContent = alma;
-  k4.textContent = personalidad; k5.textContent = anio; k6.textContent = mes; k7.textContent = dia;
+  const put=(id,v)=>document.getElementById(id).textContent=v;
+  put('cv',cv); put('dn',dn); put('dest',dest); put('alma',alma); put('pers',pers); put('act',act); put('mad',mad);
+  put('ciclos',`${anio} • ${mes} • ${dia}`);
 
-  global.innerHTML = interpretacionGlobal({camino, destino, alma, personalidad});
-  vibe.innerHTML = vibracionDelDia(dia);
+  // Textos por aspecto profundos
+  const deep=(obj,n)=>obj[n]||obj[reduceNum(n,false)];
+  document.getElementById('cvTxt').textContent   = deep(base.vida,cv);
+  document.getElementById('dnTxt').textContent   = deep(base.vida,dn);
+  document.getElementById('destTxt').textContent = deep(base.destino,dest);
+  document.getElementById('almaTxt').textContent = deep(base.alma,alma);
+  document.getElementById('persTxt').textContent = deep(base.personalidad,pers);
+  document.getElementById('amTxt').innerHTML =
+    `<b>Actitud ${act}</b>: ${deep(base.personalidad,act)}<br>`+
+    `<b>Madurez ${mad}</b>: integra Camino (${cv}) y Expresión (${dest}).`;
 
-  // Fichas únicas
-  const set = new Set([camino,destino,alma,personalidad]);
-  renderFichas([...set]);
+  document.getElementById('resumenTxt').textContent = sintetiza(cv,dn,dest,alma,pers,act,mad,anio,mes,dia);
 
-  document.getElementById('panelResultados').style.display = '';
-  document.getElementById('panelFichas').style.display = '';
-}
-function limpiar(){
-  nombre.value=''; nacimiento.value=''; fechaAnalisis.value='';
-  document.getElementById('panelResultados').style.display='none';
-  document.getElementById('panelFichas').style.display='none';
+  // Karma
+  document.getElementById('karmaTxt').innerHTML =
+    lecciones.length ? `Letras ausentes → ${lecciones.join(' · ')}` : 'No hay lecciones kármicas destacadas por letras ausentes.';
+  document.getElementById('deudaTxt').textContent =
+    deuda ? `Deuda kármica ${deuda.raw}: ${deuda.desc}. Se activa al exigir disciplina, humildad e independencia consciente.` :
+            'No se detecta deuda kármica 13/14/16/19 en la suma original de la fecha.';
+
+  // Pináculos
+  const e=pr.edades; const p=pr.pinaculos; const r=pr.retos;
+  document.getElementById('pinaculosTxt').innerHTML =
+    `P1 (${p[0]}) · 0–${e[0]} años → ${deep(base.vida,p[0])}<br>`+
+    `P2 (${p[1]}) · ${e[0]+1}–${e[1]} → ${deep(base.vida,p[1])}<br>`+
+    `P3 (${p[2]}) · ${e[1]+1}–${e[2]} → ${deep(base.vida,p[2])}<br>`+
+    `P4 (${p[3]}) · ${e[2]+1}–… → ${deep(base.vida,p[3])}`;
+  document.getElementById('retosTxt').innerHTML =
+    `R1: ${r[0]} · Autoconocimiento temprano<br>`+
+    `R2: ${r[1]} · Ajuste vocacional<br>`+
+    `R3: ${r[2]} · Integración emocional/mental<br>`+
+    `R4: ${r[3]} · Aprendizaje de fondo`;
+
+  // Planos/frecuencias
+  const pl=pf.res, fq=pf.freq;
+  document.getElementById('planosTxt').innerHTML =
+    `Físico: <b>${pl.fisico}</b> · Emocional: <b>${pl.emocional}</b> · Mental: <b>${pl.mental}</b> · Espiritual: <b>${pl.espiritual}</b><br>`+
+    `Equilibra atendiendo al plano más bajo primero.`;
+  document.getElementById('freqTxt').innerHTML =
+    fq.map(o=>`<span class="pill">${o.n}:${o.c}</span>`).join(' ');
+
+  // Día
+  document.getElementById('diaTxt').innerHTML = `Día personal ${dia}: <b>${tone.tit}</b>`;
+  document.getElementById('acciones').innerHTML = `<ul>${tone.acc.map(a=>`<li>${a}</li>`).join('')}</ul>`;
 }
 </script>
 </body>
