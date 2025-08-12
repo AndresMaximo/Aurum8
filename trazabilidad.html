@@ -1,249 +1,82 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Trazabilidad de Activo · AURUM∞</title>
-
-  <!-- Estilos base + tema Lemuriano -->
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="lemuria.css">
-
-  <style>
-    main{max-width:1000px;margin:20px auto;padding:0 16px}
-    .card{background:var(--bg-card);border:1px solid var(--gold-20);
-      border-radius:14px;padding:18px 16px;box-shadow:var(--shadow);margin-bottom:16px}
-    .field{display:flex;flex-direction:column;gap:6px;margin:12px 0}
-    .field label{font-weight:600;color:var(--gold)}
-    .field input[type="text"], .field select, .field textarea{
-      background:#0f1e21;border:1px solid var(--gold-20);border-radius:10px;
-      color:var(--text);padding:12px 14px;font-size:1rem;outline:none}
-    .hint{opacity:.7;font-size:.95rem}
-    .row{display:grid;gap:12px}
-    @media (min-width:700px){ .row.cols-2{grid-template-columns:1fr 1fr} }
-    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
-      background:#0f1e21;border:1px solid var(--gold-20)}
-    .pill small{opacity:.8}
-    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
-    button, .btn{background:linear-gradient(90deg,#b8860b,#ffd700);color:#0d0d0d;
-      font-weight:700;border:none;border-radius:12px;padding:12px 16px;cursor:pointer}
-    button.ghost{background:transparent;border:1px solid var(--gold-40);color:var(--gold)}
-    ul.timeline{list-style:none;padding:0;margin:0}
-    ul.timeline li{border-left:2px solid var(--gold-40);padding:10px 12px 10px 14px;margin-left:8px}
-    ul.timeline li::marker{content:""}
-    .file-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
-    .file-item{border:1px dashed var(--gold-30);border-radius:10px;padding:6px 10px;opacity:.9}
-    .sep{height:1px;background:var(--gold-20);margin:14px 0}
-  </style>
-</head>
 <body>
-  <header class="top">
-    <h1>AURUM∞</h1>
-    <nav>
-      <a href="index.html">Inicio</a>
-      <a href="vision.html">Visión</a>
-      <a href="modulos.html">Módulos</a>
-      <a class="active" href="trazabilidad.html">Trazabilidad</a>
-      <a href="contacto.html">Contacto</a>
-    </nav>
-  </header>
-
   <main>
-    <h2 class="gold">Trazabilidad de Activo / Intervención</h2>
-
-    <div class="card">
-      <div class="field">
-        <label for="assetId">ID Activo (QR / Código interno)</label>
-        <input id="assetId" type="text" placeholder="HILUX-A8-001" />
-        <div class="hint">Puedes pegar el texto leído desde QR o escribir el código manualmente.</div>
+    <!-- Barra de contexto para compartir datos -->
+    <div class="card" style="margin-bottom: 1rem; padding: 1rem;">
+      <strong>Contexto</strong>
+      <div style="display: grid; gap: .5rem; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); margin-top: .5rem;">
+        <label>ID Activo
+          <input data-bind="assetId" placeholder="HILUX-A8-001" 
+                 oninput="AURUM.set('assetId', this.value)">
+        </label>
+        <label>Nombre
+          <input data-bind="assetName" placeholder="Toyota Hilux" 
+                 oninput="AURUM.set('assetName', this.value)">
+        </label>
+        <label>Operador
+          <input data-bind="operator" placeholder="Andrés Bello" 
+                 oninput="AURUM.set('operator', this.value)">
+        </label>
       </div>
 
-      <div class="row cols-2">
+      <div style="margin-top: .75rem; display: flex; gap: .5rem; flex-wrap: wrap;">
+        <a href="checklist.html" class="btn" data-link>Checklist 3D</a>
+        <a href="trazabilidad.html" class="btn" data-link>Trazabilidad</a>
+        <a href="numerologia.html" class="btn" data-link>Numerología</a>
+        <a href="hilux.html" class="btn" data-link>Hilux 3D</a>
+      </div>
+    </div>
+
+    <!-- Formulario de trazabilidad -->
+    <div class="card">
+      <h2>Trazabilidad de Activo / Intervención</h2>
+      <form data-save>
         <div class="field">
-          <label for="assetName">Nombre / Descripción</label>
-          <input id="assetName" type="text" placeholder="Toyota Hilux – Check 50 pts / Intervención" />
+          <label>ID Activo (QR / Código interno)</label>
+          <input type="text" name="assetId" data-bind="assetId" placeholder="Ej: HILUX-A8-001">
         </div>
 
         <div class="field">
-          <label for="status">Estado</label>
-          <select id="status">
+          <label>Nombre / Descripción</label>
+          <input type="text" name="assetName" data-bind="assetName" placeholder="Toyota Hilux – Check 50 pts / Intervención">
+        </div>
+
+        <div class="field">
+          <label>Estado</label>
+          <select name="status">
             <option>Pendiente</option>
             <option>En Proceso</option>
-            <option>Completado</option>
-            <option>Observado</option>
+            <option>Finalizado</option>
           </select>
         </div>
-      </div>
 
-      <div class="field">
-        <label for="notes">Notas</label>
-        <textarea id="notes" rows="4" placeholder="Hallazgos, acciones, repuestos, responsables…"></textarea>
-      </div>
-
-      <div class="sep"></div>
-
-      <div class="row cols-2">
         <div class="field">
           <label>Ubicación (GPS)</label>
-          <div class="actions">
-            <button id="btnGeo" type="button">Obtener ubicación</button>
-            <span class="pill"><small>Lat:</small><span id="lat">—</span></span>
-            <span class="pill"><small>Lng:</small><span id="lng">—</span></span>
-          </div>
-          <div class="hint">Se almacena la última posición registrada para este activo (en este dispositivo).</div>
+          <button type="button" onclick="getLocation()">Obtener ubicación</button>
+          <p>Lat: <span id="lat">—</span>, Lng: <span id="lng">—</span></p>
         </div>
 
         <div class="field">
           <label>Adjuntar evidencia (imágenes, PDFs)</label>
-          <input id="files" type="file" multiple accept="image/*,.pdf" />
-          <div id="fileList" class="file-list"></div>
+          <input type="file" name="evidence" multiple>
         </div>
-      </div>
 
-      <div class="sep"></div>
-
-      <div class="actions">
-        <button id="save" type="button">Guardar evento</button>
-        <button id="clear" class="ghost" type="button">Limpiar formulario</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3 class="gold">Línea de tiempo</h3>
-      <ul id="timeline" class="timeline"></ul>
-      <div class="hint">Los eventos se guardan en <strong>este navegador</strong> (localStorage) por ID de activo.</div>
+        <button type="submit">Guardar Registro</button>
+      </form>
     </div>
   </main>
 
-  <footer>
-    <small>© AURUM∞ · Lemurian UI</small>
-  </footer>
-
+  <!-- Script de conexión -->
+  <script src="aurum.js"></script>
   <script>
-    // Utilidades ----------------------------------------
-    const $ = (s)=>document.querySelector(s);
-    const fmt = (d)=> new Date(d).toLocaleString();
-
-    // DOM
-    const assetId = $('#assetId');
-    const assetName = $('#assetName');
-    const statusSel = $('#status');
-    const notes = $('#notes');
-    const latEl = $('#lat');
-    const lngEl = $('#lng');
-    const filesInput = $('#files');
-    const fileList = $('#fileList');
-    const timeline = $('#timeline');
-
-    // Estado en memoria
-    let lastCoords = null;
-    let pickedFiles = [];
-
-    // Carga inicial (si hay último ID usado)
-    assetId.value = localStorage.getItem('AURUM:lastAssetId') || '';
-    if (assetId.value) renderTimeline(assetId.value);
-
-    // Handlers ------------------------------------------
-    $('#btnGeo').addEventListener('click', () => {
-      if (!navigator.geolocation) {
-        alert('Geolocalización no disponible en este dispositivo/navegador.');
-        return;
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos) {
+          document.getElementById("lat").textContent = pos.coords.latitude.toFixed(6);
+          document.getElementById("lng").textContent = pos.coords.longitude.toFixed(6);
+        });
+      } else {
+        alert("La geolocalización no está soportada en este navegador.");
       }
-      navigator.geolocation.getCurrentPosition(
-        pos => {
-          const { latitude, longitude } = pos.coords;
-          lastCoords = { latitude, longitude, ts: Date.now() };
-          latEl.textContent = latitude.toFixed(6);
-          lngEl.textContent = longitude.toFixed(6);
-        },
-        err => alert('No fue posible obtener la ubicación: ' + err.message),
-        { enableHighAccuracy: true, timeout: 12000 }
-      );
-    });
-
-    filesInput.addEventListener('change', () => {
-      pickedFiles = Array.from(filesInput.files || []);
-      fileList.innerHTML = '';
-      pickedFiles.forEach(f => {
-        const tag = document.createElement('span');
-        tag.className = 'file-item';
-        tag.textContent = f.name;
-        fileList.appendChild(tag);
-      });
-    });
-
-    $('#clear').addEventListener('click', () => {
-      assetName.value = '';
-      statusSel.value = 'Pendiente';
-      notes.value = '';
-      latEl.textContent = '—';
-      lngEl.textContent = '—';
-      lastCoords = null;
-      filesInput.value = '';
-      pickedFiles = [];
-      fileList.innerHTML = '';
-    });
-
-    $('#save').addEventListener('click', () => {
-      const id = (assetId.value || '').trim();
-      if (!id) return alert('Ingresa un ID de activo para guardar.');
-
-      // Construir evento
-      const evt = {
-        ts: Date.now(),
-        name: assetName.value.trim(),
-        status: statusSel.value,
-        notes: notes.value.trim(),
-        coords: lastCoords,
-        files: pickedFiles.map(f => ({ name: f.name, size: f.size }))
-        // Nota: En estático no almacenamos binarios; sólo listamos nombres/tamaños.
-      };
-
-      // Guardar por ID en localStorage
-      const key = 'AURUM:trace:' + id;
-      const list = JSON.parse(localStorage.getItem(key) || '[]');
-      list.unshift(evt);
-      localStorage.setItem(key, JSON.stringify(list));
-      localStorage.setItem('AURUM:lastAssetId', id);
-
-      renderTimeline(id);
-      alert('Evento guardado localmente.');
-    });
-
-    assetId.addEventListener('change', () => {
-      renderTimeline(assetId.value.trim());
-      localStorage.setItem('AURUM:lastAssetId', assetId.value.trim());
-    });
-
-    // Render --------------------------------------------
-    function renderTimeline(id){
-      timeline.innerHTML = '';
-      if(!id) return;
-      const key = 'AURUM:trace:' + id;
-      const list = JSON.parse(localStorage.getItem(key) || '[]');
-
-      if(!list.length){
-        timeline.innerHTML = '<li><em>No hay eventos aún para este activo.</em></li>';
-        return;
-      }
-
-      list.forEach(e => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <strong class="gold">${e.status}</strong>
-          <div><small>${fmt(e.ts)}</small></div>
-          ${e.name ? `<div>${escapeHTML(e.name)}</div>` : ''}
-          ${e.notes ? `<div class="hint">${escapeHTML(e.notes)}</div>` : ''}
-          ${e.coords ? `<div class="hint">GPS: ${e.coords.latitude.toFixed(6)}, ${e.coords.longitude.toFixed(6)}</div>` : ''}
-          ${e.files?.length ? `<div class="hint">Adjuntos: ${e.files.map(f=>f.name).join(', ')}</div>`:''}
-        `;
-        timeline.appendChild(li);
-      });
-    }
-
-    function escapeHTML(s){
-      return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
     }
   </script>
 </body>
-</html>
