@@ -1,67 +1,108 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Módulos - AURUM∞</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulos - AURUM∞</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="lemuria.css" />
+  <style>
+    main {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 0 16px;
+    }
+    h1 {
+      font-size: 1.8rem;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .module-card {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      background: var(--bg-card);
+      border: 1px solid var(--gold-20);
+      border-radius: 14px;
+      padding: 18px;
+      margin: 12px 0;
+      transition: transform 0.08s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--gold);
+      box-shadow: 0 8px 26px rgba(255, 215, 0, 0.15);
+    }
+    .module-title {
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 6px;
+    }
+    .module-chip {
+      margin-left: .5rem;
+      font-size: .8rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--gold-20);
+      background: rgba(255, 215, 0, 0.05);
+      color: var(--gold);
+    }
+    .module-sub {
+      margin: 0 0 8px;
+      color: var(--text-secondary);
+    }
+    .module-bullets {
+      margin: 0;
+      padding-left: 1.2rem;
+      color: var(--text-secondary);
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>AURUM∞</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="vision.html">Visión</a></li>
-                <li><a href="modulos.html" class="active">Módulos</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-            </ul>
-        </nav>
-    </header>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="vision.html">Visión</a></li>
+        <li><a href="modulos.html" class="active">Módulos</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h1>Módulos Disponibles</h1>
 
-    <main>
-        <section id="modulos">
-            <h2>Módulos Disponibles</h2>
-            <div class="grid">
+    <a href="checklist.html" class="module-card">
+      <div class="module-title">Checklist Técnico 3D</div>
+      <p class="module-sub">Inspección visual y técnica con modelo 3D</p>
+    </a>
 
-                <!-- Checklist Técnico 3D -->
-                <a class="card" href="hilux.html">
-                    <h3>Checklist Técnico 3D</h3>
-                    <div class="sub">Inspección visual y técnica con modelo 3D</div>
-                </a>
+    <a href="trazabilidad.html" class="module-card">
+      <div class="module-title">Trazabilidad Energética</div>
+      <p class="module-sub">Monitoreo y registro de energía por equipo</p>
+    </a>
 
-                <!-- Trazabilidad Energética -->
-                <a class="card" href="trazabilidad.html">
-                    <h3>Trazabilidad Energética</h3>
-                    <div class="sub">Monitoreo y registro de energía por equipo</div>
-                </a>
+    <a href="numerologia.html" class="module-card">
+      <div class="module-title">Numerología Vibracional</div>
+      <p class="module-sub">Cálculo e interpretación vibracional diaria</p>
+    </a>
 
-                <!-- Numerología Vibracional -->
-                <a class="card" href="numerologia.html">
-                    <h3>Numerología Vibracional</h3>
-                    <div class="sub">Cálculo e interpretación vibracional diaria</div>
-                </a>
+    <a href="ot.html" class="module-card">
+      <div class="module-title">
+        Órdenes de Trabajo
+        <span class="module-chip">Nuevo</span>
+      </div>
+      <p class="module-sub">Crear · Editar · Cerrar OT · Exportar CSV · Imprimir PDF</p>
+      <ul class="module-bullets">
+        <li>Búsqueda y filtros por estado/prioridad/equipo</li>
+        <li>Detalle rápido y edición con un toque</li>
+        <li>Guardado local (sin servidor)</li>
+      </ul>
+    </a>
 
-                <!-- Órdenes de Trabajo -->
-                <a class="card" href="ot.html" style="display:block;text-decoration:none;color:inherit">
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
-                        <h3 style="margin:0;font-size:18px;letter-spacing:.06em">Órdenes de Trabajo</h3>
-                        <span class="badge">Nuevo</span>
-                    </div>
-                    <div class="sub">Crear · Editar · Cerrar OT · Exportar CSV · Imprimir PDF</div>
-                    <ul style="margin:10px 0 0 18px; padding:0; color:#9fb0c9; font-size:13px; line-height:1.35">
-                        <li>Búsqueda y filtros por estado/prioridad/equipo</li>
-                        <li>Detalle rápido y edición con un toque</li>
-                        <li>Guardado local (sin servidor)</li>
-                    </ul>
-                </a>
-
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 AURUM∞. Todos los derechos reservados.</p>
-    </footer>
+  </main>
+  <footer>
+    <p>© 2025 AURUM∞. Todos los derechos reservados.</p>
+  </footer>
 </body>
 </html>
