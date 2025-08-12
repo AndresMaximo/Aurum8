@@ -1,82 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trazabilidad de Activo · AURUM∞</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="lemuria.css">
+  <style>
+    /* ====== Banner de Contexto AURUM∞ ====== */
+    .ctx-wrap{position:sticky;top:0;z-index:999;background:linear-gradient(180deg,#0e1e21 0%,#0f1e21ee 100%);border-bottom:1px solid rgba(212,175,55,.25);box-shadow:0 6px 14px rgba(0,0,0,.25);backdrop-filter:blur(6px)}
+    .ctx{max-width:1100px;margin:0 auto;padding:12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;align-items:center;color:#e9ecf1;font-size:.95rem}
+    .ctx b{color:#f1c84c;font-weight:700;letter-spacing:.2px}
+    .ctx input{width:100%;padding:6px 10px;border-radius:8px;border:1px solid rgba(212,175,55,.35);background:#0f1e21;color:#e9ecf1;outline:none}
+    .ctx .mini{display:flex;flex-wrap:wrap;gap:10px}
+    .ctx .pill{padding:6px 10px;border:1px solid rgba(212,175,55,.35);border-radius:999px;color:#f1c84c;text-decoration:none}
+    .ctx .pill.active{background:#1b2a2e;border-color:#f1c84c}
+    .ctx .btn{background:#f1c84c;color:#0f1e21;border:none;border-radius:10px;padding:6px 10px;font-weight:700;cursor:pointer}
+    @media (max-width:720px){.ctx{grid-template-columns:1fr}}
+    /* ====== Página ====== */
+    main{max-width:1000px;margin:24px auto;padding:0 16px}
+    .card{background:var(--bg-card,#0f1e21);border:1px solid rgba(212,175,55,.25);border-radius:14px;padding:18px;box-shadow:var(--shadow,0 8px 22px rgba(0,0,0,.35));}
+    .field{display:flex;flex-direction:column;gap:6px;margin:12px 0}
+    .field label{font-weight:600;color:#f1c84c}
+    .field input,.field select,.field textarea{background:#0f1e21;border:1px solid rgba(212,175,55,.35);border-radius:10px;color:#e9ecf1;padding:12px 14px;font-size:1rem;outline:none}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+    .btn{background:#f1c84c;color:#0f1e21;border:none;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
+    .muted{opacity:.85}
+  </style>
+</head>
 <body>
-  <main>
-    <!-- Barra de contexto para compartir datos -->
-    <div class="card" style="margin-bottom: 1rem; padding: 1rem;">
-      <strong>Contexto</strong>
-      <div style="display: grid; gap: .5rem; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); margin-top: .5rem;">
-        <label>ID Activo
-          <input data-bind="assetId" placeholder="HILUX-A8-001" 
-                 oninput="AURUM.set('assetId', this.value)">
-        </label>
-        <label>Nombre
-          <input data-bind="assetName" placeholder="Toyota Hilux" 
-                 oninput="AURUM.set('assetName', this.value)">
-        </label>
-        <label>Operador
-          <input data-bind="operator" placeholder="Andrés Bello" 
-                 oninput="AURUM.set('operator', this.value)">
-        </label>
-      </div>
 
-      <div style="margin-top: .75rem; display: flex; gap: .5rem; flex-wrap: wrap;">
-        <a href="checklist.html" class="btn" data-link>Checklist 3D</a>
-        <a href="trazabilidad.html" class="btn" data-link>Trazabilidad</a>
-        <a href="numerologia.html" class="btn" data-link>Numerología</a>
-        <a href="hilux.html" class="btn" data-link>Hilux 3D</a>
+<!-- ===== CONTEXTO AURUM∞ ===== -->
+<div class="ctx-wrap">
+  <div class="ctx" id="ctx">
+    <div><label><b>ID Activo</b></label><input id="ctx-id" placeholder="Ej: HILUX-A8-001"></div>
+    <div><label><b>Nombre</b></label><input id="ctx-name" placeholder="Ej: Toyota Hilux"></div>
+    <div><label><b>Operador</b></label><input id="ctx-op" placeholder="Ej: Andrés Bello"></div>
+    <div class="mini">
+      <a class="pill" href="checklist.html">Checklist 3D</a>
+      <a class="pill active" href="trazabilidad.html">Trazabilidad</a>
+      <a class="pill" href="numerologia.html">Numerología</a>
+      <a class="pill" href="hilux.html">Hilux 3D</a>
+      <button class="btn" id="ctx-clear">Limpiar</button>
+    </div>
+  </div>
+</div>
+<!-- ===== / CONTEXTO ===== -->
+
+<main>
+  <h1>Trazabilidad de Activo / Intervención</h1>
+  <div class="card">
+    <div class="field">
+      <label for="assetId">ID Activo (QR / Código interno)</label>
+      <input id="assetId" placeholder="Ej: HILUX-A8-001">
+    </div>
+
+    <div class="field">
+      <label for="assetName">Nombre / Descripción</label>
+      <input id="assetName" placeholder="Toyota Hilux – Check 50 pts / Intervención">
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="state">Estado</label>
+        <select id="state">
+          <option>Pendiente</option>
+          <option>En curso</option>
+          <option>Completado</option>
+          <option>Observado</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Ubicación (GPS)</label>
+        <div class="actions">
+          <button class="btn" id="gpsBtn">Obtener ubicación</button>
+          <span class="muted" id="gpsOut">Lat: —, Lng: —</span>
+        </div>
+        <small class="muted">Se almacena la última posición registrada para este activo.</small>
       </div>
     </div>
 
-    <!-- Formulario de trazabilidad -->
-    <div class="card">
-      <h2>Trazabilidad de Activo / Intervención</h2>
-      <form data-save>
-        <div class="field">
-          <label>ID Activo (QR / Código interno)</label>
-          <input type="text" name="assetId" data-bind="assetId" placeholder="Ej: HILUX-A8-001">
-        </div>
-
-        <div class="field">
-          <label>Nombre / Descripción</label>
-          <input type="text" name="assetName" data-bind="assetName" placeholder="Toyota Hilux – Check 50 pts / Intervención">
-        </div>
-
-        <div class="field">
-          <label>Estado</label>
-          <select name="status">
-            <option>Pendiente</option>
-            <option>En Proceso</option>
-            <option>Finalizado</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>Ubicación (GPS)</label>
-          <button type="button" onclick="getLocation()">Obtener ubicación</button>
-          <p>Lat: <span id="lat">—</span>, Lng: <span id="lng">—</span></p>
-        </div>
-
-        <div class="field">
-          <label>Adjuntar evidencia (imágenes, PDFs)</label>
-          <input type="file" name="evidence" multiple>
-        </div>
-
-        <button type="submit">Guardar Registro</button>
-      </form>
+    <div class="field">
+      <label for="operator">Operador</label>
+      <input id="operator" placeholder="Nombre del operador">
     </div>
-  </main>
 
-  <!-- Script de conexión -->
-  <script src="aurum.js"></script>
-  <script>
-    function getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(pos) {
-          document.getElementById("lat").textContent = pos.coords.latitude.toFixed(6);
-          document.getElementById("lng").textContent = pos.coords.longitude.toFixed(6);
-        });
-      } else {
-        alert("La geolocalización no está soportada en este navegador.");
-      }
-    }
-  </script>
+    <div class="field">
+      <label for="evidence">Adjuntar evidencia (imágenes, PDFs)</label>
+      <input id="evidence" type="file" multiple />
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="saveBtn">Guardar Registro</button>
+      <span id="saveMsg" class="muted"></span>
+    </div>
+  </div>
+</main>
+
+<script>
+/* ===== Contexto compartido ===== */
+(function(){
+  const $=s=>document.querySelector(s);
+  const idI=$('#ctx-id'), nameI=$('#ctx-name'), opI=$('#ctx-op');
+  const saved=JSON.parse(localStorage.getItem('aurum_ctx')||'{}');
+  if(saved.id)idI.value=saved.id; if(saved.name)nameI.value=saved.name; if(saved.op)opI.value=saved.op;
+  const q=new URLSearchParams(location.search);
+  ['id','name','op'].forEach(k=>{ if(q.get(k)){ if(k==='id')idI.value=q.get(k); if(k==='name')nameI.value=q.get(k); if(k==='op')opI.value=q.get(k);} });
+  save(); [idI,nameI,opI].forEach(el=>el.addEventListener('input',save));
+  function save(){ localStorage.setItem('aurum_ctx', JSON.stringify({id:idI.value.trim(),name:nameI.value.trim(),op:opI.value.trim()})); }
+  $('#ctx-clear').addEventListener('click',()=>{localStorage.removeItem('aurum_ctx');idI.value=nameI.value=opI.value='';});
+  window.AURUM_CTX={get id(){return idI.value.trim()},get name(){return nameI.value.trim()},get op(){return opI.value.trim()}};
+})();
+
+/* ===== Precarga desde Contexto ===== */
+document.querySelector('#assetId').value = AURUM_CTX.id || '';
+document.querySelector('#assetName').value = AURUM_CTX.name || '';
+document.querySelector('#operator').value = AURUM_CTX.op || '';
+
+/* ===== GPS ===== */
+document.querySelector('#gpsBtn').addEventListener('click', ()=>{
+  const out = document.querySelector('#gpsOut');
+  if(!navigator.geolocation){ out.textContent='GPS no disponible'; return;}
+  navigator.geolocation.getCurrentPosition(
+    p=>{ out.textContent=`Lat: ${p.coords.latitude.toFixed(6)}, Lng: ${p.coords.longitude.toFixed(6)}`; },
+    _=>{ out.textContent='No se pudo obtener ubicación'; },
+    {enableHighAccuracy:true,timeout:8000}
+  );
+});
+
+/* ===== Guardado local simple (demo) ===== */
+document.querySelector('#saveBtn').addEventListener('click', ()=>{
+  const rec = {
+    id: document.querySelector('#assetId').value.trim(),
+    name: document.querySelector('#assetName').value.trim(),
+    state: document.querySelector('#state').value,
+    operator: document.querySelector('#operator').value.trim(),
+    when: new Date().toISOString()
+  };
+  const key = 'aurum_traza_'+(rec.id||'sin-id');
+  const arr = JSON.parse(localStorage.getItem(key)||'[]');
+  arr.push(rec); localStorage.setItem(key, JSON.stringify(arr));
+  document.querySelector('#saveMsg').textContent = 'Registro guardado localmente ✔';
+});
+</script>
 </body>
+</html>
