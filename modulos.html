@@ -1,43 +1,67 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AURUM∞ · Módulos</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="lemuria.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulos - AURUM∞</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="index.html">AURUM∞</a>
-    <nav>
-      <a href="index.html">Inicio</a>
-      <a href="vision.html">Visión</a>
-      <a class="active" href="modulos.html">Módulos</a>
-      <a href="contacto.html">Contacto</a>
-    </nav>
-  </header>
+    <header>
+        <h1>AURUM∞</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="vision.html">Visión</a></li>
+                <li><a href="modulos.html" class="active">Módulos</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <main class="container">
-    <h1>Módulos Disponibles</h1>
-    <p>Explora cada herramienta e ingresa con el mismo ID de activo para mantener el contexto.</p>
+    <main>
+        <section id="modulos">
+            <h2>Módulos Disponibles</h2>
+            <div class="grid">
 
-    <div class="stack">
-      <a class="card link-card" href="hilux.html">
-        <h2>Hilux 3D</h2>
-        <p>Visor 3D (GLB) con soporte para hotspots y checklist.</p>
-      </a>
+                <!-- Checklist Técnico 3D -->
+                <a class="card" href="hilux.html">
+                    <h3>Checklist Técnico 3D</h3>
+                    <div class="sub">Inspección visual y técnica con modelo 3D</div>
+                </a>
 
-      <a class="card link-card" href="trazabilidad.html">
-        <h2>Trazabilidad</h2>
-        <p>Registro de intervenciones, estado, GPS y evidencias.</p>
-      </a>
+                <!-- Trazabilidad Energética -->
+                <a class="card" href="trazabilidad.html">
+                    <h3>Trazabilidad Energética</h3>
+                    <div class="sub">Monitoreo y registro de energía por equipo</div>
+                </a>
 
-      <a class="card link-card" href="numerologia.html">
-        <h2>Numerología</h2>
-        <p>Cálculos vibracionales asociados al operador y ciclo anual.</p>
-      </a>
-    </div>
-  </main>
+                <!-- Numerología Vibracional -->
+                <a class="card" href="numerologia.html">
+                    <h3>Numerología Vibracional</h3>
+                    <div class="sub">Cálculo e interpretación vibracional diaria</div>
+                </a>
+
+                <!-- Órdenes de Trabajo -->
+                <a class="card" href="ot.html" style="display:block;text-decoration:none;color:inherit">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+                        <h3 style="margin:0;font-size:18px;letter-spacing:.06em">Órdenes de Trabajo</h3>
+                        <span class="badge">Nuevo</span>
+                    </div>
+                    <div class="sub">Crear · Editar · Cerrar OT · Exportar CSV · Imprimir PDF</div>
+                    <ul style="margin:10px 0 0 18px; padding:0; color:#9fb0c9; font-size:13px; line-height:1.35">
+                        <li>Búsqueda y filtros por estado/prioridad/equipo</li>
+                        <li>Detalle rápido y edición con un toque</li>
+                        <li>Guardado local (sin servidor)</li>
+                    </ul>
+                </a>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 AURUM∞. Todos los derechos reservados.</p>
+    </footer>
 </body>
 </html>
