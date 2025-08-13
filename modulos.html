@@ -6,99 +6,64 @@
 <title>Módulos – AURUM∞</title>
 <style>
   :root{
-    --bg:#0f1216; --panel:#151a21; --panel2:#10151b;
-    --text:#e9f0ff; --muted:#a8b3c7; --gold:#ffd54a; --gold2:#e3b640;
-    --ok:#4ade80; --warn:#f59e0b; --card:#121820; --br:18px;
-    --shadow: 0 10px 30px rgba(0,0,0,.45);
+    --bg:#0f1216;--panel:#151a21;--panel2:#10151b;--line:#212a36;
+    --text:#e9f0ff;--muted:#a8b3c7;--gold:#ffd54a;--br:18px;--shadow:0 10px 30px rgba(0,0,0,.45);
   }
   *{box-sizing:border-box}
-  html,body{margin:0;background:radial-gradient(1200px 700px at 10% -10%,rgba(255,213,74,.08),transparent 60%), var(--bg); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue","Noto Sans",Arial,"Apple Color Emoji","Segoe UI Emoji"; }
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Segoe UI,Roboto,Ubuntu,Arial}
   a{color:inherit;text-decoration:none}
-  header{position:sticky;top:0;background:linear-gradient(180deg,#0f1216 0%, rgba(15,18,22,.85) 100%);backdrop-filter: blur(6px); border-bottom:1px solid #1f2630;}
-  .wrap{max-width:980px;margin:auto;padding:18px 18px}
-  nav a{margin-right:16px;color:var(--muted)}
-  nav a:hover{color:var(--text)}
-  h1{font-size:2.2rem; letter-spacing:.4px; margin:18px 0 6px}
-  .sub{color:var(--gold); font-weight:700; margin-bottom:20px}
-  .grid{display:grid;gap:14px}
-  .card{background:linear-gradient(180deg,var(--panel) 0%,var(--panel2) 100%); border:1px solid #212a36; border-radius:var(--br); box-shadow:var(--shadow); padding:18px}
-  .card h3{margin:0 0 4px}
-  .tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.78rem;border:1px solid #323a46;color:var(--muted)}
-  .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
-  .btn{display:inline-flex;align-items:center;gap:8px;background:#16202b;border:1px solid #273140;color:var(--text);padding:10px 14px;border-radius:12px}
-  .btn:hover{border-color:#3a4556;transform:translateY(-1px)}
-  .btn.gold{background:linear-gradient(180deg,#2a2414,#171308); border-color:#4a3a14}
-  .btn.gold span{color:var(--gold)}
-  footer{color:#7f8aa1;border-top:1px solid #1f2630;margin-top:26px}
-  ul.slim{margin:10px 0 0 18px;color:var(--muted)}
+  header{border-bottom:1px solid var(--line);background:#0f1216}
+  .wrap{max-width:1100px;margin:auto;padding:18px}
+  h1{color:var(--gold);margin:12px 0 8px}
+  .grid{display:grid;grid-template-columns:1fr;gap:14px}
+  .card{
+    background:linear-gradient(180deg,var(--panel) 0%,var(--panel2) 100%);
+    border:1px solid var(--line);border-radius:var(--br);box-shadow:var(--shadow);
+    padding:18px;
+  }
+  .title{font-size:1.2rem;font-weight:700}
+  .desc{color:var(--muted);margin:.35rem 0 1rem}
+  .btn{display:inline-block;padding:10px 14px;border-radius:12px;border:1px solid #2a3546;background:#16202b}
+  .btn span{margin-right:6px}
+  .chip{margin-left:8px;color:#111;background:var(--gold);border-radius:999px;font-size:.75rem;padding:.2rem .5rem}
+  footer{padding:30px 18px;color:var(--muted);text-align:center}
 </style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <nav>
-        <a href="index.html">Inicio</a>
-        <a href="vision.html">Visión</a>
-        <a href="modulos.html" style="color:var(--gold);font-weight:700;">Módulos</a>
-        <a href="contacto.html">Contacto</a>
-      </nav>
-      <h1>AURUM∞</h1>
-      <div class="sub">Módulos Disponibles</div>
-    </div>
-  </header>
+<header class="wrap">
+  <h1>Módulos Disponibles</h1>
+</header>
 
-  <main class="wrap grid">
+<main class="wrap">
+  <section class="grid">
 
-    <section class="card">
-      <h3>Checklist Técnico 3D</h3>
-      <div class="tag">Inspección visual y técnica con modelo 3D</div>
-      <p style="margin:10px 0 0;color:var(--muted)">Levanta hallazgos, adjunta evidencia y cierra inspecciones guiadas.</p>
-      <div class="cta">
-        <a class="btn gold" href="checklist3d.html"><span>➜</span> Abrir módulo</a>
-        <span class="tag">Nuevo</span>
-      </div>
-    </section>
+    <article class="card">
+      <div class="title">Checklist Técnico 3D</div>
+      <div class="desc">Inspección visual y técnica (con fotos) y registro local.</div>
+      <a class="btn" href="checklist3d.html"><span>➜</span> Abrir módulo</a>
+    </article>
 
-    <section class="card">
-      <h3>Trazabilidad Energética</h3>
-      <div class="tag">Monitoreo y registro de energía por equipo</div>
-      <p style="margin:10px 0 0;color:var(--muted)">Captura consumos, estados y genera histórico exportable.</p>
-      <div class="cta">
-        <a class="btn gold" href="energia.html"><span>➜</span> Abrir módulo</a>
-      </div>
-    </section>
+    <article class="card">
+      <div class="title">Trazabilidad Energética</div>
+      <div class="desc">Monitoreo y registro de energía por equipo (kWh, turnos, KPIs y csv).</div>
+      <a class="btn" href="trazabilidad.html"><span>➜</span> Abrir módulo</a>
+    </article>
 
-    <section class="card">
-      <h3>Numerología Vibracional</h3>
-      <div class="tag">Cálculo e interpretación vibracional diaria</div>
-      <p style="margin:10px 0 0;color:var(--muted)">Estado del día, claves y detalle de números personales.</p>
-      <div class="cta">
-        <a class="btn gold" href="numerologia.html"><span>➜</span> Abrir módulo</a>
-      </div>
-      <ul class="slim">
-        <li>Mensaje del día + acciones</li>
-        <li>Camino, Expresión, Alma, Personalidad, Actitud & Madurez</li>
-      </ul>
-    </section>
+    <article class="card">
+      <div class="title">Numerología Vibracional</div>
+      <div class="desc">Cálculo e interpretación vibracional diaria y de nombres.</div>
+      <a class="btn" href="numerologia.html"><span>➜</span> Abrir módulo</a>
+    </article>
 
-    <section class="card">
-      <h3>Órdenes de Trabajo</h3>
-      <div class="tag">Crear · Editar · Cerrar · Exportar CSV · Imprimir PDF</div>
-      <p style="margin:10px 0 0;color:var(--muted)">Gestión ágil de OT con guardado local (sin servidor) y filtros.</p>
-      <div class="cta">
-        <a class="btn gold" href="ordenes-trabajo.html"><span>➜</span> Abrir módulo</a>
-        <span class="tag">En evolución</span>
-      </div>
-      <ul class="slim">
-        <li>Búsqueda y filtros por estado/prioridad/equipo</li>
-        <li>Detalle rápido y edición con un toque</li>
-      </ul>
-    </section>
+    <article class="card">
+      <div class="title">Órdenes de Trabajo <span class="chip">Nuevo</span></div>
+      <div class="desc">Crear · Editar · Cerrar OT · Exportar CSV · Imprimir PDF (local, sin servidor).</div>
+      <a class="btn" href="ot.html"><span>➜</span> Abrir módulo</a>
+    </article>
 
-  </main>
+  </section>
+</main>
 
-  <footer class="wrap">
-    <p>© 2025 AURUM∞. Todos los derechos reservados.</p>
-  </footer>
+<footer>© 2025 AURUM∞. Todos los derechos reservados.</footer>
 </body>
 </html>
