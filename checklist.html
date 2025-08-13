@@ -3,37 +3,74 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Checklist 3D – AURUM∞</title>
+<title>Checklist Técnico 3D – AURUM∞</title>
 <style>
-  :root{--bg:#0f1216;--panel:#151a21;--text:#e9f0ff;--muted:#a8b3c7;--gold:#ffd54a;--br:18px}
-  html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Segoe UI,Roboto,Ubuntu,Arial}
+  :root{
+    --bg:#0f1216; --panel:#151a21; --panel2:#10151b;
+    --text:#e9f0ff; --muted:#a8b3c7; --gold:#ffd54a;
+    --br:18px; --shadow:0 10px 30px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:system-ui,Segoe UI,Roboto,Ubuntu,Arial;
+  }
   a{color:inherit;text-decoration:none}
+  header{
+    position:sticky;top:0;
+    background:#0f1216;
+    border-bottom:1px solid #1f2630;
+  }
   .wrap{max-width:980px;margin:auto;padding:18px}
-  header{position:sticky;top:0;background:#0f1216;border-bottom:1px solid #1f2630}
   nav a{margin-right:16px;color:var(--muted)}
   nav a:hover{color:var(--text)}
-  h1{margin:16px 0}
-  .card{background:linear-gradient(180deg,#151a21,#10151b);border:1px solid #212a36;border-radius:var(--br);padding:18px}
-  input,select,textarea{background:#0f141b;border:1px solid #263041;border-radius:10px;color:var(--text);padding:10px;width:100%}
+  h1{margin:16px 0;color:var(--gold)}
+  .card{
+    background:linear-gradient(180deg,var(--panel) 0%,var(--panel2) 100%);
+    border:1px solid #212a36;
+    border-radius:var(--br);
+    box-shadow:var(--shadow);
+    padding:18px;
+    margin-top:18px;
+  }
+  input,select,textarea{
+    background:#0f141b;
+    border:1px solid #263041;
+    border-radius:10px;
+    color:var(--text);
+    padding:10px;
+    width:100%;
+  }
   label{color:var(--muted);font-size:.92rem}
   .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .btn{background:#16202b;border:1px solid #273140;color:var(--text);padding:10px 14px;border-radius:12px;display:inline-block}
-  .btn:hover{border-color:#3a4556}
+  .btn{
+    background:#16202b;
+    border:1px solid #273140;
+    color:var(--text);
+    padding:10px 14px;
+    border-radius:12px;
+    display:inline-block;
+    cursor:pointer;
+  }
+  .btn:hover{border-color:#3a4556;transform:translateY(-1px)}
   .muted{color:var(--muted)}
 </style>
 </head>
 <body>
+
 <header class="wrap">
   <nav>
     <a href="modulos.html">← Módulos</a>
   </nav>
-  <h1>Checklist Técnico 3D <span style="color:var(--gold)">·</span> En construcción</h1>
+  <h1>Checklist Técnico 3D</h1>
 </header>
 
 <main class="wrap">
   <section class="card">
-    <p class="muted">Este módulo permitirá inspección con modelo 3D, evidencia y cierre de hallazgos.  
-    Por ahora, puedes probar un formulario base y el guardado local.</p>
+    <p class="muted">Este módulo permitirá la inspección con modelo 3D, adjuntar evidencia y cerrar hallazgos.  
+    Por ahora puedes usar este formulario para pruebas de guardado local.</p>
 
     <div class="row" style="margin-top:8px">
       <div>
@@ -89,11 +126,16 @@ function guardar(){
     obs: document.getElementById('obs').value.trim(),
     ts: new Date().toISOString()
   };
+  if(!data.equipo || !data.operador){
+    alert("Por favor completa el equipo y el operador.");
+    return;
+  }
   const arr = JSON.parse(localStorage.getItem('aurum_checklist')||'[]');
   arr.push(data);
   localStorage.setItem('aurum_checklist', JSON.stringify(arr));
   document.getElementById('msg').textContent = '✔ Guardado localmente ('+arr.length+' registros).';
 }
+
 function limpiar(){
   ['eq','op','obs'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('estado').selectedIndex=0;
@@ -101,5 +143,6 @@ function limpiar(){
   document.getElementById('msg').textContent='';
 }
 </script>
+
 </body>
 </html>
