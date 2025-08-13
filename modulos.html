@@ -1,112 +1,104 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Módulos – AURUM∞</title>
-<meta name="theme-color" content="#0b0e12"/>
 <style>
   :root{
-    --bg:#0b0e12;--panel:#121821;--ink:#e7ecef;--muted:#a8b3bd;
-    --gold:#f3cc4d;--gold-2:#e9b935;--ink-dark:#0c0f14;
-    --radius:16px;--shadow:0 10px 26px rgba(0,0,0,.35);
+    --bg:#0f1216; --panel:#151a21; --panel2:#10151b;
+    --text:#e9f0ff; --muted:#a8b3c7; --gold:#ffd54a; --gold2:#e3b640;
+    --ok:#4ade80; --warn:#f59e0b; --card:#121820; --br:18px;
+    --shadow: 0 10px 30px rgba(0,0,0,.45);
   }
-  html,body{margin:0;background:var(--bg);color:var(--ink);
-    font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:radial-gradient(1200px 700px at 10% -10%,rgba(255,213,74,.08),transparent 60%), var(--bg); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue","Noto Sans",Arial,"Apple Color Emoji","Segoe UI Emoji"; }
   a{color:inherit;text-decoration:none}
-  header{position:sticky;top:0;background:linear-gradient(180deg,rgba(11,14,18,.95),rgba(11,14,18,.75) 65%,transparent);
-    padding:18px 14px 10px;border-bottom:1px solid rgba(243,204,77,.15)}
-  .brand{font-weight:800;letter-spacing:.4px;font-size:clamp(22px,4vw,30px)}
-  .sub{color:var(--muted);font-size:.95rem}
-  nav{margin-top:10px;display:flex;gap:12px;flex-wrap:wrap}
-  nav a{padding:8px 12px;border-radius:999px;border:1px solid rgba(243,204,77,.25);
-    color:var(--muted);background:#0e1520}
-  nav a.activo{color:var(--ink);background:linear-gradient(180deg,#f4d75c,#e9b935);border-color:#caa737}
-  main{max-width:1024px;margin:18px auto 80px;padding:0 14px}
-  h1{font-size:clamp(26px,5vw,42px);margin:8px 0 14px}
-  .gold{color:var(--gold)}
-  .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-  .mod{display:block;background:var(--panel);border:1px solid rgba(243,204,77,.22);border-radius:var(--radius);
-    padding:16px;box-shadow:var(--shadow);transition:.2s transform, .2s box-shadow, .2s border}
-  .mod:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(0,0,0,.45);border-color:rgba(243,204,77,.45)}
-  .mod h3{margin:0 0 6px;font-size:1.25rem;color:var(--gold)}
-  .muted{color:var(--muted)}
-  .bul{margin:10px 0 0 18px}
-  .badge{display:inline-block;margin-left:8px;background:#0f1726;border:1px solid rgba(243,204,77,.4);
-    color:var(--gold);font-weight:700;padding:2px 8px;border-radius:999px;font-size:.8rem}
-  footer{margin:36px 0 0;text-align:center;color:var(--muted)}
-  .logo{width:64px;vertical-align:middle;margin-right:8px;opacity:.95}
+  header{position:sticky;top:0;background:linear-gradient(180deg,#0f1216 0%, rgba(15,18,22,.85) 100%);backdrop-filter: blur(6px); border-bottom:1px solid #1f2630;}
+  .wrap{max-width:980px;margin:auto;padding:18px 18px}
+  nav a{margin-right:16px;color:var(--muted)}
+  nav a:hover{color:var(--text)}
+  h1{font-size:2.2rem; letter-spacing:.4px; margin:18px 0 6px}
+  .sub{color:var(--gold); font-weight:700; margin-bottom:20px}
+  .grid{display:grid;gap:14px}
+  .card{background:linear-gradient(180deg,var(--panel) 0%,var(--panel2) 100%); border:1px solid #212a36; border-radius:var(--br); box-shadow:var(--shadow); padding:18px}
+  .card h3{margin:0 0 4px}
+  .tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.78rem;border:1px solid #323a46;color:var(--muted)}
+  .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:#16202b;border:1px solid #273140;color:var(--text);padding:10px 14px;border-radius:12px}
+  .btn:hover{border-color:#3a4556;transform:translateY(-1px)}
+  .btn.gold{background:linear-gradient(180deg,#2a2414,#171308); border-color:#4a3a14}
+  .btn.gold span{color:var(--gold)}
+  footer{color:#7f8aa1;border-top:1px solid #1f2630;margin-top:26px}
+  ul.slim{margin:10px 0 0 18px;color:var(--muted)}
 </style>
 </head>
 <body>
+  <header>
+    <div class="wrap">
+      <nav>
+        <a href="index.html">Inicio</a>
+        <a href="vision.html">Visión</a>
+        <a href="modulos.html" style="color:var(--gold);font-weight:700;">Módulos</a>
+        <a href="contacto.html">Contacto</a>
+      </nav>
+      <h1>AURUM∞</h1>
+      <div class="sub">Módulos Disponibles</div>
+    </div>
+  </header>
 
-<header>
-  <div class="brand">
-    <img class="logo" src="logo-aurum-megalodon-dorado.png" alt="AURUM∞">
-    AURUM∞
-  </div>
-  <div class="sub">Ecosistema de módulos</div>
-  <nav>
-    <a href="index.html">Inicio</a>
-    <a href="vision.html">Visión</a>
-    <a href="modulos.html" class="activo">Módulos</a>
-    <a href="contacto.html">Contacto</a>
-  </nav>
-</header>
+  <main class="wrap grid">
 
-<main>
-  <h1>Módulos <span class="gold">Disponibles</span></h1>
-
-  <section class="grid">
-
-    <!-- Checklist Técnico 3D -->
-    <a class="mod" href="checklist3d.html">
+    <section class="card">
       <h3>Checklist Técnico 3D</h3>
-      <div class="muted">Inspección visual y técnica con modelo 3D.</div>
-      <ul class="bul">
-        <li>Marcadores y fotos sobre el modelo</li>
-        <li>Estados, firmas y evidencias</li>
-        <li>Exportable en PDF</li>
-      </ul>
-    </a>
+      <div class="tag">Inspección visual y técnica con modelo 3D</div>
+      <p style="margin:10px 0 0;color:var(--muted)">Levanta hallazgos, adjunta evidencia y cierra inspecciones guiadas.</p>
+      <div class="cta">
+        <a class="btn gold" href="checklist3d.html"><span>➜</span> Abrir módulo</a>
+        <span class="tag">Nuevo</span>
+      </div>
+    </section>
 
-    <!-- Trazabilidad Energética -->
-    <a class="mod" href="energia.html">
+    <section class="card">
       <h3>Trazabilidad Energética</h3>
-      <div class="muted">Monitoreo y registro de energía por equipo.</div>
-      <ul class="bul">
-        <li>Carga de lecturas y gráficos</li>
-        <li>Alarmas por umbral</li>
-        <li>Reportes CSV/PDF</li>
-      </ul>
-    </a>
+      <div class="tag">Monitoreo y registro de energía por equipo</div>
+      <p style="margin:10px 0 0;color:var(--muted)">Captura consumos, estados y genera histórico exportable.</p>
+      <div class="cta">
+        <a class="btn gold" href="energia.html"><span>➜</span> Abrir módulo</a>
+      </div>
+    </section>
 
-    <!-- Numerología Vibracional -->
-    <a class="mod" href="numerologia.html">
+    <section class="card">
       <h3>Numerología Vibracional</h3>
-      <div class="muted">Cálculo e interpretación vibracional diaria.</div>
-      <ul class="bul">
-        <li>Mapa completo (Camino, Expresión, Alma…)</li>
-        <li>Vibración de día/mes/año personal</li>
-        <li>Imprimir o guardar PDF</li>
+      <div class="tag">Cálculo e interpretación vibracional diaria</div>
+      <p style="margin:10px 0 0;color:var(--muted)">Estado del día, claves y detalle de números personales.</p>
+      <div class="cta">
+        <a class="btn gold" href="numerologia.html"><span>➜</span> Abrir módulo</a>
+      </div>
+      <ul class="slim">
+        <li>Mensaje del día + acciones</li>
+        <li>Camino, Expresión, Alma, Personalidad, Actitud & Madurez</li>
       </ul>
-    </a>
+    </section>
 
-    <!-- Órdenes de Trabajo (OT) -->
-    <a class="mod" href="ordenes-trabajo.html">
-      <h3>Órdenes de Trabajo <span class="badge">Nuevo</span></h3>
-      <div class="muted">Crear · Editar · Cerrar OT · Exportar CSV · Imprimir PDF.</div>
-      <ul class="bul">
+    <section class="card">
+      <h3>Órdenes de Trabajo</h3>
+      <div class="tag">Crear · Editar · Cerrar · Exportar CSV · Imprimir PDF</div>
+      <p style="margin:10px 0 0;color:var(--muted)">Gestión ágil de OT con guardado local (sin servidor) y filtros.</p>
+      <div class="cta">
+        <a class="btn gold" href="ordenes-trabajo.html"><span>➜</span> Abrir módulo</a>
+        <span class="tag">En evolución</span>
+      </div>
+      <ul class="slim">
         <li>Búsqueda y filtros por estado/prioridad/equipo</li>
         <li>Detalle rápido y edición con un toque</li>
-        <li>Guardado local (sin servidor)</li>
       </ul>
-    </a>
+    </section>
 
-  </section>
+  </main>
 
-  <footer>© 2025 AURUM∞. Todos los derechos reservados.</footer>
-</main>
-
+  <footer class="wrap">
+    <p>© 2025 AURUM∞. Todos los derechos reservados.</p>
+  </footer>
 </body>
 </html>
