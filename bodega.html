@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Bodega y Almacenamiento · AURUM∞</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="lemuria.css"/>
+  <style>
+    main{max-width:1200px;margin:0 auto;padding:16px}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
+    @media (max-width:960px){.grid{grid-template-columns:1fr}}
+    .card{background:var(--bg-card);border:1px solid var(--gold-20);border-radius:14px;box-shadow:var(--shadow)}
+    .card h2{margin:0;padding:12px 14px;border-bottom:1px solid var(--gold-20);color:var(--gold)}
+    .card .body{padding:12px 14px}
+    .row{display:flex;gap:8px;flex-wrap:wrap}
+    .row > *{flex:1}
+    input,select,textarea{width:100%;padding:8px;border-radius:8px;border:1px solid var(--gold-20);background:#0f1e21;color:var(--text)}
+    label{font-size:.92rem;color:#cbd5d9}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    button{padding:8px 12px;border-radius:10px;border:1px solid var(--gold-20);background:#0f1e21;color:var(--text);cursor:pointer}
+    .accent{background:var(--gold);color:#0d0d0d;border-color:var(--gold)}
+    .warn{background:#402; border-color:#f55; color:#fee}
+    .ok{background:#143; border-color:#2e8b57; color:#e9ffe9}
+    table{width:100%;border-collapse:collapse}
+    th,td{border-bottom:1px solid var(--gold-20);padding:8px;text-align:left;font-size:.95rem}
+    th{color:#cbd5d9}
+    .tag{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid var(--gold-20);font-size:.78rem}
+    .low{color:#ffb4b4;border-color:#ffb4b4}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+    .status{margin-top:8px;color:#a8b3b7;font-size:.92rem}
+    .muted{color:#8aa3a8}
+    .right{display:flex;gap:8px;margin-left:auto}
+    .note{font-size:.85rem;color:#a8b3b7;margin-top:6px}
+  </style>
+</head>
+<body>
+<header class="top">
+  <h1>AURUM∞</h1>
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="vision.html">Visión</a>
+    <a href="modulos.html" class="active">Módulos</a>
+    <a href="contacto.html">Contacto</a>
+  </nav>
+</header>
+
+<main>
+  <h2 style="color:var(--gold);margin:0 0 10px 0">Bodega y Almacenamiento</h2>
+  <div class="grid">
+
+    <!-- Inventario -->
+    <section class="card">
+      <h2>Inventario</h2>
+      <div class="body">
+        <div class="toolbar">
+          <input id="q" placeholder="Buscar (código, nombre, ubicación)"/>
+          <select id="f-cat">
+            <option value="">Todas las categorías</option>
+            <option>Repuesto</option>
+            <option>Herramienta</option>
+            <option>Consumible</option>
+            <option>EPPS</option>
+            <option>Otros</option>
+          </select>
+          <select id="f-stock">
+            <option value="">Stock (todos)</option>
+            <option value="low">Bajo mínimo</option>
+            <option value="ok">Suficiente</option>
+          </select>
+          <div class="right">
+            <button id="btnExport" class="accent">Exportar CSV</button>
+            <button id="btnClear" title="Borrar guardado local">Borrar guardado</button>
+          </div>
+        </div>
+
+        <table id="tbl">
+          <thead>
+            <tr>
+              <th>Código</th><th>Ítem</th><th>Categoría</th><th>Ubicación</th>
+              <th>Stock</th><th>Mín.</th><th>Estado</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <div class="status" id="status"></div>
+      </div>
+    </section>
+
+    <!-- Formulario Alta/Edición -->
+    <aside class="card">
+      <h2>Alta / Edición</h2>
+      <div class="body">
+        <div class="row">
+          <div>
+            <label for="code">Código/ID</label>
+            <input id="code" placeholder="ej: HIL-ALT-001"/>
+          </div>
+          <div>
+            <label for="name">Nombre</label>
+            <input id="name" placeholder="ej: Alternador Toyota Hilux"/>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="cat">Categoría</label>
+            <select id="cat">
+              <option>Repuesto</option><option>Herramienta</option>
+              <option>Consumible</option><option>EPPS</option><option>Otros</option>
+            </select>
+          </div>
+          <div>
+            <label for="loc">Ubicación</label>
+            <input id="loc" placeholder="ej: Estante A-3"/>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="qty">Stock</label>
+            <input id="qty" type="number" min="0" value="0"/>
+          </div>
+          <div>
+            <label for="min">Mínimo</label>
+            <input id="min" type="number" min="0" value="0"/>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="resp">Responsable</label>
+            <input id="resp" placeholder="Nombre responsable"/>
+          </div>
+          <div>
+            <label for="obs">Observación</label>
+            <input id="obs" placeholder="Nota interna"/>
+          </div>
+        </div>
+        <div class="actions">
+          <button id="btnSave" class="accent">Guardar / Actualizar</button>
+          <button id="btnNew">Nuevo</button>
+        </div>
+
+        <hr style="border-color:var(--gold-20);margin:12px 0"/>
+
+        <h3 style="margin:0 0 8px 0;color:var(--gold)">Movimientos</h3>
+        <div class="row">
+          <div>
+            <label for="movCode">Código</label>
+            <input id="movCode" placeholder="Código exacto del ítem"/>
+          </div>
+          <div>
+            <label for="movTipo">Tipo</label>
+            <select id="movTipo"><option>Entrada</option><option>Salida</option></select>
+          </div>
+          <div>
+            <label for="movCant">Cantidad</label>
+            <input id="movCant" type="number" min="1" value="1"/>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="movResp">Responsable</label>
+            <input id="movResp" placeholder="Quien realiza el movimiento"/>
+          </div>
+          <div>
+            <label for="movObs">Observación</label>
+            <input id="movObs" placeholder="ej: OT-1234 / vehículo"/>
+          </div>
+        </div>
+        <div class="actions">
+          <button id="btnMov" class="accent">Registrar movimiento</button>
+        </div>
+
+        <p class="note">Todo se guarda localmente (tu navegador). Luego lo conectamos al backend de AURUM∞.</p>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Historial -->
+  <section class="card" style="margin-top:18px">
+    <h2>Historial de movimientos</h2>
+    <div class="body">
+      <table id="tblMov">
+        <thead>
+          <tr>
+            <th>Fecha</th><th>Tipo</th><th>Código</th><th>Cant.</th><th>Responsable</th><th>Obs</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="actions" style="margin-top:10px">
+        <button id="btnMovCSV">Exportar CSV movimientos</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">© 2025 AURUM∞</footer>
+
+<script>
+/* ==== Estado ==== */
+const KEY_ITEMS = "aurum_bodega_items_v1";
+const KEY_MOV   = "aurum_bodega_mov_v1";
+let items = [];
+let movs  = [];
+
+/* ==== Util ==== */
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+function save(){ localStorage.setItem(KEY_ITEMS, JSON.stringify(items)); localStorage.setItem(KEY_MOV, JSON.stringify(movs)); }
+function load(){
+  items = JSON.parse(localStorage.getItem(KEY_ITEMS)||"[]");
+  movs  = JSON.parse(localStorage.getItem(KEY_MOV)||"[]");
+}
+function fmtDate(d=new Date()){ return d.toLocaleString(); }
+function csv(rows){
+  return rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n");
+}
+
+/* ==== Render ==== */
+const tbody = $("#tbl tbody");
+const status = $("#status");
+function render(){
+  const q = $("#q").value.trim().toLowerCase();
+  const fcat = $("#f-cat").value;
+  const fstock = $("#f-stock").value;
+  tbody.innerHTML = "";
+
+  const filtered = items.filter(it=>{
+    const hitQ = !q || [it.code,it.name,it.loc].some(x=>(x||"").toLowerCase().includes(q));
+    const hitCat = !fcat || it.cat===fcat;
+    const isLow = (Number(it.qty)||0) <= (Number(it.min)||0);
+    const hitStock = !fstock || (fstock==="low" && isLow) || (fstock==="ok" && !isLow);
+    return hitQ && hitCat && hitStock;
+  });
+
+  for(const it of filtered){
+    const tr = document.createElement("tr");
+    const low = (Number(it.qty)||0) <= (Number(it.min)||0);
+    tr.innerHTML = `
+      <td>${it.code||""}</td>
+      <td>${it.name||""}</td>
+      <td>${it.cat||""}</td>
+      <td>${it.loc||""}</td>
+      <td>${it.qty||0}</td>
+      <td>${it.min||0}</td>
+      <td>${low?'<span class="tag low">Bajo mínimo</span>':'<span class="tag">OK</span>'}</td>
+      <td>
+        <button data-edit="${it.code}">Editar</button>
+        <button data-del="${it.code}" class="warn">Eliminar</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  }
+  status.textContent = `Mostrando ${filtered.length}/${items.length} ítems.`;
+}
+
+/* ==== Form alta/edición ==== */
+function clearForm(){
+  $("#code").value=""; $("#name").value=""; $("#cat").value="Repuesto";
+  $("#loc").value=""; $("#qty").value=0; $("#min").value=0;
+  $("#resp").value=""; $("#obs").value="";
+}
+$("#btnNew").addEventListener("click", clearForm);
+
+$("#btnSave").addEventListener("click", ()=>{
+  const it = {
+    code: $("#code").value.trim(),
+    name: $("#name").value.trim(),
+    cat:  $("#cat").value,
+    loc:  $("#loc").value.trim(),
+    qty:  Number($("#qty").value||0),
+    min:  Number($("#min").value||0),
+    resp: $("#resp").value.trim(),
+    obs:  $("#obs").value.trim(),
+    updatedAt: fmtDate()
+  };
+  if(!it.code || !it.name){ alert("Código y Nombre son obligatorios."); return; }
+  const idx = items.findIndex(x=>x.code===it.code);
+  if(idx>=0) items[idx] = it; else items.push(it);
+  save(); render(); alert("Guardado.");
+});
+
+tbody.addEventListener("click", (e)=>{
+  const btn = e.target.closest("button"); if(!btn) return;
+  const code = btn.dataset.edit || btn.dataset.del;
+  const it = items.find(x=>x.code===code); if(!it) return;
+  if(btn.dataset.edit){
+    $("#code").value=it.code; $("#name").value=it.name; $("#cat").value=it.cat;
+    $("#loc").value=it.loc; $("#qty").value=it.qty; $("#min").value=it.min;
+    $("#resp").value=it.resp||""; $("#obs").value=it.obs||"";
+    window.scrollTo({top:0,behavior:"smooth"});
+  }else if(btn.dataset.del){
+    if(confirm("¿Eliminar ítem y sus datos?")){
+      items = items.filter(x=>x.code!==code);
+      save(); render();
+    }
+  }
+});
+
+/* ==== Filtros ==== */
+$("#q").addEventListener("input", render);
+$("#f-cat").addEventListener("change", render);
+$("#f-stock").addEventListener("change", render);
+
+/* ==== Borrar guardado ==== */
+$("#btnClear").addEventListener("click", ()=>{
+  if(!confirm("¿Borrar inventario y movimientos guardados localmente?")) return;
+  items=[]; movs=[]; save(); render(); renderMovs();
+});
+
+/* ==== Export CSV inventario ==== */
+$("#btnExport").addEventListener("click", ()=>{
+  const rows = [["Código","Nombre","Categoría","Ubicación","Stock","Mínimo","Responsable","Observación","Actualizado"]];
+  for(const it of items){
+    rows.push([it.code,it.name,it.cat,it.loc,it.qty,it.min,it.resp||"",it.obs||"",it.updatedAt||""]);
+  }
+  const blob = new Blob([csv(rows)],{type:"text/csv;charset=utf-8;"}); const url = URL.createObjectURL(blob);
+  const a = document.createElement("a"); a.href=url; a.download="bodega_inventario.csv"; a.click(); URL.revokeObjectURL(url);
+});
+
+/* ==== Movimientos ==== */
+const tbodyMov = $("#tblMov tbody");
+function renderMovs(){
+  tbodyMov.innerHTML="";
+  for(const m of movs){
+    const tr=document.createElement("tr");
+    tr.innerHTML = `
+      <td>${m.fecha}</td>
+      <td>${m.tipo}</td>
+      <td>${m.code}</td>
+      <td>${m.cant}</td>
+      <td>${m.resp||""}</td>
+      <td>${m.obs||""}</td>
+    `;
+    tbodyMov.appendChild(tr);
+  }
+}
+$("#btnMov").addEventListener("click", ()=>{
+  const code = $("#movCode").value.trim();
+  const tipo = $("#movTipo").value;
+  const cant = Number($("#movCant").value||0);
+  const resp = $("#movResp").value.trim();
+  const obs  = $("#movObs").value.trim();
+  if(!code || cant<=0){ alert("Código y cantidad válidos, por favor."); return; }
+  const it = items.find(x=>x.code===code);
+  if(!it){ alert("Código no existe en inventario."); return; }
+  if(tipo==="Salida" && it.qty<cant){ alert("Stock insuficiente para salida."); return; }
+  it.qty += (tipo==="Entrada" ? cant : -cant);
+  it.updatedAt = fmtDate();
+  movs.unshift({fecha:fmtDate(), tipo, code, cant, resp, obs});
+  save(); render(); renderMovs();
+  $("#movCant").value=1; $("#movObs").value="";
+});
+
+/* ==== Export CSV movimientos ==== */
+$("#btnMovCSV").addEventListener("click", ()=>{
+  const rows = [["Fecha","Tipo","Código","Cantidad","Responsable","Observación"]];
+  for(const m of movs){ rows.push([m.fecha,m.tipo,m.code,m.cant,m.resp||"",m.obs||""]); }
+  const blob = new Blob([csv(rows)],{type:"text/csv;charset=utf-8;"}); const url = URL.createObjectURL(blob);
+  const a = document.createElement("a"); a.href=url; a.download="bodega_movimientos.csv"; a.click(); URL.revokeObjectURL(url);
+});
+
+/* ==== Init ==== */
+load(); render(); renderMovs();
+</script>
+</body>
+</html>
