@@ -6,143 +6,268 @@
 <title>Checklist Técnico 3D – AURUM∞</title>
 <style>
   :root{
-    --bg:#0f1216; --panel:#151a21; --panel2:#10151b;
-    --text:#e9f0ff; --muted:#a8b3c7; --gold:#ffd54a;
-    --br:18px; --shadow:0 10px 30px rgba(0,0,0,.45);
+    --bg:#0f1216;--panel:#151a21;--panel2:#10151b;--line:#212a36;
+    --text:#e9f0ff;--muted:#a8b3c7;--gold:#ffd54a;--ok:#2fbf71;--bad:#ff6b6b;--br:18px;
   }
   *{box-sizing:border-box}
-  html,body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family:system-ui,Segoe UI,Roboto,Ubuntu,Arial;
-  }
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Segoe UI,Roboto,Ubuntu,Arial}
   a{color:inherit;text-decoration:none}
-  header{
-    position:sticky;top:0;
-    background:#0f1216;
-    border-bottom:1px solid #1f2630;
-  }
-  .wrap{max-width:980px;margin:auto;padding:18px}
-  nav a{margin-right:16px;color:var(--muted)}
-  nav a:hover{color:var(--text)}
-  h1{margin:16px 0;color:var(--gold)}
-  .card{
-    background:linear-gradient(180deg,var(--panel) 0%,var(--panel2) 100%);
-    border:1px solid #212a36;
-    border-radius:var(--br);
-    box-shadow:var(--shadow);
-    padding:18px;
-    margin-top:18px;
-  }
-  input,select,textarea{
-    background:#0f141b;
-    border:1px solid #263041;
-    border-radius:10px;
-    color:var(--text);
-    padding:10px;
-    width:100%;
-  }
-  label{color:var(--muted);font-size:.92rem}
-  .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .btn{
-    background:#16202b;
-    border:1px solid #273140;
-    color:var(--text);
-    padding:10px 14px;
-    border-radius:12px;
-    display:inline-block;
-    cursor:pointer;
-  }
+  header{position:sticky;top:0;background:#0f1216;border-bottom:1px solid var(--line);z-index:5}
+  .wrap{max-width:1100px;margin:auto;padding:18px}
+  h1{color:var(--gold);margin:12px 0}
+  .card{background:linear-gradient(180deg,var(--panel) 0%,var(--panel2) 100%);border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:14px}
+  .row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+  @media (max-width:980px){.row{grid-template-columns:1fr 1fr}}
+  label{font-size:.9rem;color:var(--muted)}
+  input,select,textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #263041;background:#0f141b;color:var(--text)}
+  .btn{background:#16202b;border:1px solid #273140;color:var(--text);padding:10px 14px;border-radius:12px;display:inline-block;cursor:pointer}
   .btn:hover{border-color:#3a4556;transform:translateY(-1px)}
+  .btn.gold{background:#1c1a11;border-color:#3b3420;color:var(--gold)}
   .muted{color:var(--muted)}
+  .tag{padding:.2rem .5rem;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:.8rem}
+  table{width:100%;border-collapse:collapse;margin-top:10px}
+  th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:.95rem}
+  th{color:var(--muted);font-weight:600}
+  tr:hover td{background:#0f141b}
+  .ok{color:var(--ok)} .bad{color:var(--bad)}
+  .thumb{width:64px;height:64px;border:1px solid var(--line);border-radius:10px;object-fit:cover}
+  .gallery{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .placeholder{height:220px;border:1px dashed var(--line);border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--muted);background:#0f141b}
+  footer{padding:30px 18px;color:var(--muted);text-align:center}
 </style>
 </head>
 <body>
-
 <header class="wrap">
-  <nav>
-    <a href="modulos.html">← Módulos</a>
-  </nav>
+  <nav><a href="modulos.html">← Módulos</a></nav>
   <h1>Checklist Técnico 3D</h1>
 </header>
 
 <main class="wrap">
-  <section class="card">
-    <p class="muted">Este módulo permitirá la inspección con modelo 3D, adjuntar evidencia y cerrar hallazgos.  
-    Por ahora puedes usar este formulario para pruebas de guardado local.</p>
 
-    <div class="row" style="margin-top:8px">
+  <!-- Encabezado -->
+  <section class="card">
+    <div class="row">
       <div>
         <label>Equipo</label>
-        <input id="eq" placeholder="Ej: HILUX-A8-001" />
+        <input id="eq" placeholder="Ej: CH440-03" />
       </div>
       <div>
-        <label>Operador</label>
-        <input id="op" placeholder="Nombre operador" />
+        <label>Ubicación / Subsistema</label>
+        <input id="ubi" placeholder="Ej: Planta Secundaria" />
       </div>
-    </div>
-
-    <div class="row" style="margin-top:8px">
       <div>
-        <label>Estado</label>
-        <select id="estado">
-          <option>Pendiente</option>
-          <option>En proceso</option>
-          <option>Completado</option>
+        <label>Folio</label>
+        <input id="folio" placeholder="Ej: INS-0001" />
+      </div>
+      <div>
+        <label>Inspector</label>
+        <input id="insp" placeholder="Nombre" />
+      </div>
+      <div>
+        <label>Fecha</label>
+        <input id="fecha" type="date" />
+      </div>
+      <div>
+        <label>Turno</label>
+        <select id="turno">
+          <option>Día</option><option>Noche</option><option>Mixto</option>
         </select>
       </div>
-      <div>
-        <label>Prioridad</label>
-        <select id="prio">
-          <option>Media</option>
-          <option>Alta</option>
-          <option>Baja</option>
-        </select>
-      </div>
     </div>
-
-    <div style="margin-top:8px">
-      <label>Observaciones</label>
-      <textarea id="obs" rows="4" placeholder="Notas de la inspección..."></textarea>
-    </div>
-
-    <div style="margin-top:12px;display:flex;gap:10px">
-      <button class="btn" onclick="guardar()">Guardar local</button>
-      <button class="btn" onclick="limpiar()">Limpiar</button>
-    </div>
-
-    <p id="msg" class="muted" style="margin-top:10px"></p>
   </section>
+
+  <!-- Visual 3D (placeholder) -->
+  <section class="card">
+    <div class="placeholder">
+      Vista 3D / Foto del equipo
+    </div>
+    <div class="gallery" id="gal"></div>
+    <div style="margin-top:8px">
+      <label class="btn" for="fotos">➕ Adjuntar foto</label>
+      <input id="fotos" type="file" accept="image/*" multiple style="display:none" onchange="cargarFotos(event)" />
+      <span class="muted">Se almacena localmente (sin servidor).</span>
+    </div>
+  </section>
+
+  <!-- Checklist -->
+  <section class="card">
+    <h3 style="margin:0 0 10px 0">Puntos de inspección</h3>
+    <div id="lista"></div>
+    <div style="margin-top:12px">
+      <label>Observaciones generales</label>
+      <textarea id="obs" rows="3" placeholder="Anota hallazgos, condiciones, repuestos, etc."></textarea>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn gold" onclick="guardar()">Guardar checklist</button>
+      <button class="btn" onclick="limpiar()">Limpiar</button>
+      <button class="btn" onclick="window.print()">Imprimir / PDF</button>
+      <span id="msg" class="muted"></span>
+    </div>
+  </section>
+
+  <!-- Registros -->
+  <section class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3 style="margin:0">Registros</h3>
+      <span class="tag" id="tagCount">0 registros</span>
+    </div>
+    <table id="tbl">
+      <thead>
+        <tr>
+          <th>Fecha</th><th>Equipo</th><th>Ubicación</th><th>Inspector</th>
+          <th>OK</th><th>NO OK</th><th>Obs.</th><th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
 </main>
 
+<footer>© 2025 AURUM∞ · Checklist Técnico 3D</footer>
+
 <script>
+const KEY='aurum_check3d';
+let data = JSON.parse(localStorage.getItem(KEY)||'[]');
+document.getElementById('fecha').value=new Date().toISOString().slice(0,10);
+
+// Definición de checklist (puedes editar los ítems)
+const items = [
+  {id:'v1', t:'Estructura/Chasis sin fisuras ni corrosión'},
+  {id:'v2', t:'Guarderas y protecciones instaladas'},
+  {id:'v3', t:'Nivel de aceite / fugas inexistentes'},
+  {id:'v4', t:'Banda/correas sin daños ni desalineación'},
+  {id:'v5', t:'Vibraciones y ruidos anormales'},
+  {id:'v6', t:'Sensores/limit switches operativos'},
+  {id:'v7', t:'Limpieza general y housekeeping'},
+  {id:'v8', t:'Etiquetado/Señalética visible'}
+];
+
+const lista = document.getElementById('lista');
+items.forEach(it=>{
+  const row = document.createElement('div');
+  row.style.display='grid';
+  row.style.gridTemplateColumns='1fr 120px 1fr';
+  row.style.gap='8px';
+  row.style.alignItems='center';
+  row.style.margin='6px 0';
+  row.innerHTML = `
+    <div>${it.t}</div>
+    <div>
+      <label class="tag"><input type="radio" name="${it.id}" value="ok" checked /> OK</label>
+      <label class="tag" style="margin-left:6px"><input type="radio" name="${it.id}" value="bad" /> NO OK</label>
+    </div>
+    <input id="${it.id}_n" placeholder="Nota opcional" />
+  `;
+  lista.appendChild(row);
+});
+
+// fotos locales (miniaturas)
+let fotos = []; // base64
+function cargarFotos(ev){
+  const files=[...ev.target.files].slice(0,12);
+  files.forEach(f=>{
+    const rd=new FileReader();
+    rd.onload=()=>{ fotos.push(rd.result); renderFotos(); };
+    rd.readAsDataURL(f);
+  });
+}
+function renderFotos(){
+  const gal=document.getElementById('gal');
+  gal.innerHTML='';
+  fotos.forEach((b64,i)=>{
+    const img=document.createElement('img');
+    img.src=b64; img.className='thumb';
+    img.title='Foto '+(i+1);
+    gal.appendChild(img);
+  });
+}
+
+// guardar
+function valorItem(id){
+  const ok = document.querySelector('input[name="'+id+'"]:checked').value;
+  const nota = document.getElementById(id+'_n').value.trim();
+  return {ok,nota};
+}
 function guardar(){
-  const data={
-    equipo: document.getElementById('eq').value.trim(),
-    operador: document.getElementById('op').value.trim(),
-    estado: document.getElementById('estado').value,
-    prioridad: document.getElementById('prio').value,
-    obs: document.getElementById('obs').value.trim(),
-    ts: new Date().toISOString()
+  const reg = {
+    id: Math.random().toString(36).slice(2,9),
+    eq: v('eq'), ubi: v('ubi'), folio: v('folio'), insp: v('insp'),
+    fecha: v('fecha'), turno: v('turno'),
+    obs: v('obs'),
+    fotos: fotos.slice(0,12),
+    det: items.map(it=>({id:it.id,t:it.t,...valorItem(it.id)}))
   };
-  if(!data.equipo || !data.operador){
-    alert("Por favor completa el equipo y el operador.");
-    return;
+  if(!reg.eq){ alert('Ingresa el Equipo'); return; }
+  const okCount = reg.det.filter(x=>x.ok==='ok').length;
+  const badCount = reg.det.length - okCount;
+  reg._ok = okCount; reg._bad = badCount;
+
+  data.push(reg);
+  localStorage.setItem(KEY, JSON.stringify(data));
+  msg('✔ Checklist guardado');
+  limpiar(true);
+  renderTabla();
+}
+
+function limpiar(keepHeader){
+  if(!keepHeader){
+    set('eq',''); set('ubi',''); set('folio',''); set('insp',''); set('obs',''); fotos=[]; renderFotos();
+  } else {
+    set('obs',''); fotos=[]; renderFotos();
   }
-  const arr = JSON.parse(localStorage.getItem('aurum_checklist')||'[]');
-  arr.push(data);
-  localStorage.setItem('aurum_checklist', JSON.stringify(arr));
-  document.getElementById('msg').textContent = '✔ Guardado localmente ('+arr.length+' registros).';
+  // reset radios y notas
+  items.forEach(it=>{
+    document.querySelector('input[name="'+it.id+'"][value="ok"]').checked=true;
+    set(it.id+'_n','');
+  });
+}
+function v(id){return document.getElementById(id).value}
+function set(id,val){document.getElementById(id).value=val}
+function msg(t){document.getElementById('msg').textContent=t; setTimeout(()=>msg(''),2000)}
+
+function renderTabla(){
+  const tb=document.querySelector('#tbl tbody');
+  tb.innerHTML='';
+  data.slice().reverse().forEach(r=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML = `
+      <td>${r.fecha}</td>
+      <td>${esc(r.eq)}</td>
+      <td>${esc(r.ubi||'')}</td>
+      <td>${esc(r.insp||'')}</td>
+      <td class="ok">${r._ok}</td>
+      <td class="bad">${r._bad}</td>
+      <td>${esc((r.obs||'').slice(0,80))}${(r.obs&&r.obs.length>80)?'…':''}</td>
+      <td><button class="btn" onclick="ver('${r.id}')">Ver</button> <button class="btn" onclick="delRow('${r.id}')">Borrar</button></td>
+    `;
+    tb.appendChild(tr);
+  });
+  document.getElementById('tagCount').textContent=data.length+' registros';
+}
+function esc(s){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+
+function delRow(id){
+  if(!confirm('¿Eliminar checklist?')) return;
+  data = data.filter(x=>x.id!==id);
+  localStorage.setItem(KEY, JSON.stringify(data));
+  renderTabla();
 }
 
-function limpiar(){
-  ['eq','op','obs'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('estado').selectedIndex=0;
-  document.getElementById('prio').selectedIndex=0;
-  document.getElementById('msg').textContent='';
+function ver(id){
+  const r = data.find(x=>x.id===id); if(!r) return;
+  // carga en formulario de lectura
+  set('eq',r.eq); set('ubi',r.ubi||''); set('folio',r.folio||''); set('insp',r.insp||'');
+  set('fecha',r.fecha); set('turno',r.turno||'Día'); set('obs',r.obs||'');
+  fotos = r.fotos||[]; renderFotos();
+  r.det.forEach(d=>{
+    document.querySelector('input[name="'+d.id+'"][value="'+d.ok+'"]').checked=true;
+    set(d.id+'_n', d.nota||'');
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
 }
+
+renderTabla();
 </script>
-
 </body>
 </html>
