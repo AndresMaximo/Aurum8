@@ -4,53 +4,35 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Checklist Técnico 3D · AURUM∞</title>
-
-  <!-- Estilos base + tema -->
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="lemuria.css" />
-
-  <!-- model-viewer -->
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-
   <style>
-    /* Layout específico del módulo */
     main{max-width:1200px;margin:0 auto;padding:16px}
-    .grid{display:grid;grid-template-columns:1fr 340px;gap:18px}
-    @media (max-width: 960px){.grid{grid-template-columns:1fr}}
-    .viewer-wrap{background:var(--bg-card);border:1px solid var(--gold-20);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
-    model-viewer{width:100%;height:65vh;background:#0d0d0d}
-    .panel{background:var(--bg-card);border:1px solid var(--gold-20);border-radius:14px;box-shadow:var(--shadow);padding:14px}
-    .panel h2{margin:0 0 8px 0;font-size:1.05rem;color:var(--gold)}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
+    @media (max-width:960px){.grid{grid-template-columns:1fr}}
+    .panel,.viewer-wrap{background:var(--bg-card);border:1px solid var(--gold-20);border-radius:14px;box-shadow:var(--shadow)}
+    .viewer-wrap{min-height:120px;display:grid;place-items:center;padding:14px;color:#a8b3b7}
+    .panel{padding:14px}
+    .panel h2{margin:0 0 8px 0;color:var(--gold)}
+    .meta{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:10px 0}
+    .meta input{width:100%;padding:8px;border-radius:8px;border:1px solid var(--gold-20);background:#0f1e21;color:var(--text)}
     .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
     .filters button{padding:6px 10px;border-radius:12px;border:1px solid var(--gold-20);background:#0f1e21;color:var(--text);cursor:pointer}
     .filters button.active{background:var(--gold);color:#0d0d0d}
     .points{display:flex;flex-direction:column;gap:8px;max-height:56vh;overflow:auto;padding-right:6px}
     .point{border:1px solid var(--gold-20);border-radius:12px;padding:10px;background:#0f1e21}
-    .point header{display:flex;align-items:center;gap:8px;justify-content:space-between}
-    .badge{min-width:28px;height:28px;border-radius:999px;background:var(--gold);color:#0d0d0d;
-           display:grid;place-items:center;font-weight:700}
+    .point header{display:flex;align-items:center;gap:10px;justify-content:space-between}
+    .badge{min-width:28px;height:28px;border-radius:999px;background:var(--gold);color:#0d0d0d;display:grid;place-items:center;font-weight:700}
     .state{display:flex;gap:6px}
     .state input{accent-color:var(--gold)}
-    .comment{width:100%;margin-top:8px;padding:8px;border-radius:8px;border:1px solid var(--gold-20);
-             background:#0f1e21;color:var(--text)}
+    .comment{width:100%;margin-top:8px;padding:8px;border-radius:8px;border:1px solid var(--gold-20);background:#0f1e21;color:var(--text)}
     .row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
     .row button{padding:8px 12px;border-radius:10px;border:1px solid var(--gold-20);background:#0f1e21;color:var(--text);cursor:pointer}
     .row button.primary{background:var(--gold);color:#0d0d0d}
-    .meta{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:10px 0}
-    .meta input{width:100%;padding:8px;border-radius:8px;border:1px solid var(--gold-20);background:#0f1e21;color:var(--text)}
     .save{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
     .save button{padding:10px 12px;border-radius:10px;border:1px solid var(--gold-20);background:#0f1e21;color:var(--text);cursor:pointer}
     .save .accent{background:var(--gold);color:#0d0d0d;border-color:var(--gold)}
-    .legend{margin-top:12px;color:#a8b3b7;font-size:.92rem}
-    /* Hotspot estilo */
-    .hotspot-btn{
-      --size:28px;
-      width:var(--size);height:var(--size);
-      border-radius:999px;border:none;
-      background:var(--gold);color:#0d0d0d;font-weight:800;
-      box-shadow:0 0 0 2px #0d0d0d55, 0 0 0 4px var(--gold-20);
-      cursor:pointer
-    }
+    .legend{margin-top:12px;color:#a8b3b7}
   </style>
 </head>
 <body>
@@ -65,33 +47,19 @@
 </header>
 
 <main>
-  <h2 style="color:var(--gold);margin:0 0 10px 0">Checklist Técnico 3D</h2>
+  <h2 style="color:var(--gold);margin:0 0 10px 0">Checklist Técnico (50 puntos)</h2>
   <div class="grid">
-    <!-- VISOR 3D -->
     <section class="viewer-wrap">
-      <model-viewer id="visor"
-        src="Modulos/Hilux/hilux.glb"  <!-- ← AJUSTA ESTA RUTA A TU GLB -->
-        camera-controls
-        camera-orbit="0deg 75deg 3.5m"
-        min-camera-orbit="auto auto 1.2m"
-        max-camera-orbit="auto auto 7m"
-        min-field-of-view="15deg"
-        max-field-of-view="60deg"
-        exposure="1" shadow-intensity="1"
-        environment-image="neutral"
-        ar ar-modes="webxr scene-viewer quick-look"
-        interaction-prompt="auto">
-      </model-viewer>
+      <small>Visor 3D temporalmente desactivado en esta versión base.</small>
     </section>
 
-    <!-- PANEL DERECHO -->
     <aside class="panel">
       <h2>Contexto</h2>
       <div class="meta">
         <input id="ctxId" placeholder="ID Activo (ej: HILUX-A8-001)" />
         <input id="ctxName" placeholder="Nombre (ej: Toyota Hilux – Check 50 pts)" />
-        <input id="ctxOper" placeholder="Operador (tu nombre)" />
-        <input id="ctxFecha" placeholder="Fecha (auto)" disabled />
+        <input id="ctxOper" placeholder="Operador" />
+        <input id="ctxFecha" placeholder="Fecha" disabled />
       </div>
 
       <div class="filters">
@@ -102,7 +70,7 @@
         <button id="btnExpand">Expandir/Colapsar</button>
       </div>
 
-      <h2>Puntos (1–50)</h2>
+      <h2>Puntos</h2>
       <div id="points" class="points"></div>
 
       <div class="save">
@@ -115,22 +83,12 @@
       <p class="legend">El guardado es local (navegador). Luego lo enviaremos al backend.</p>
     </aside>
   </div>
-
-  <section class="legend">
-    <h3 style="color:var(--gold)">Indicaciones</h3>
-    <ul>
-      <li>Los puntos se generan del 1 al 50. Pulsa el número en el modelo o en la tarjeta para enfocar.</li>
-      <li>Los filtros muestran solo los puntos con ese estado.</li>
-      <li>“Guardar local” guarda todo en tu navegador. “Exportar CSV” descarga el registro.</li>
-    </ul>
-  </section>
 </main>
 
 <footer class="foot">© 2025 AURUM∞</footer>
 
 <script>
-/* ====== CONFIG ====== */
-const TOTAL = 50;                 // ← cantidad de puntos visibles
+const TOTAL = 50;
 const DEFAULT_TEXTS = [
   "Motor / Admisión","Motor / Aceite","Motor / Refrigeración","Escape","Chasis / Bastidor",
   "Suspensión delantera","Suspensión trasera","Dirección","Frenos delanteros","Frenos traseros",
@@ -144,179 +102,98 @@ const DEFAULT_TEXTS = [
   "Cierre centralizado","Alarma","Tapicería","Pintura","Prueba ruta"
 ];
 
-/* ====== UTIL ====== */
 const $ = s => document.querySelector(s);
-const el = (tag, attrs={}) => Object.assign(document.createElement(tag), attrs);
-
-/* ====== CONTEXTO ====== */
-const ctx = {
-  id: $("#ctxId"),
-  name: $("#ctxName"),
-  oper: $("#ctxOper"),
-  fecha: $("#ctxFecha")
-};
+const ctx = { id:$("#ctxId"), name:$("#ctxName"), oper:$("#ctxOper"), fecha:$("#ctxFecha") };
 ctx.fecha.value = new Date().toLocaleString();
 
-/* ====== CREACIÓN PUNTOS ====== */
 const pointsWrap = $("#points");
-const visor = $("#visor");
-
-const data = []; // almacenamiento en memoria
-
-function addHotspot(i){
-  // Hotspots iniciales repartidos en círculo (luego ajustamos a coordenadas reales del GLB)
-  const angle = (i / TOTAL) * 2 * Math.PI;
-  const r = 0.8; // radio “virtual” en torno al vehículo
-  const x = Math.cos(angle) * r;
-  const y = 0.3; // altura aproximada
-  const z = Math.sin(angle) * r;
-
-  const btn = document.createElement("button");
-  btn.slot = `hotspot-${i}`;
-  btn.className = "hotspot-btn";
-  btn.textContent = i;
-  btn.setAttribute("data-i", i);
-  btn.setAttribute("data-position", `${x} ${y} ${z}`);
-  btn.setAttribute("data-normal", `0 1 0`);
-  btn.addEventListener("click", () => focusPoint(i));
-  visor.appendChild(btn);
-}
+const data = [];
 
 function pointCard(i){
-  const card = el("div",{className:"point", id:`p-${i}`});
-  const header = el("header");
-  const left = el("div",{style:"display:flex;align-items:center;gap:10px"});
-  const badge = el("div",{className:"badge",textContent:i});
-  const title = el("div",{textContent: DEFAULT_TEXTS[i-1] || `Ítem ${i}`});
-  left.append(badge,title);
-
-  const state = el("div",{className:"state"});
-  const ok = el("label",{innerHTML:`<input type="radio" name="s${i}" value="ok" checked> OK`});
-  const obs = el("label",{innerHTML:`<input type="radio" name="s${i}" value="obs"> Obs`});
-  const nc = el("label",{innerHTML:`<input type="radio" name="s${i}" value="nc"> No conf.`});
-  state.append(ok,obs,nc);
-
-  header.append(left,state);
-
-  const comment = el("textarea",{className:"comment",placeholder:"Comentario / hallazgo...", rows:2});
-
-  const row = el("div",{className:"row"});
-  const goBtn = el("button",{className:"primary",textContent:"Ir al punto"});
-  goBtn.addEventListener("click", ()=> focusPoint(i));
-  row.append(goBtn);
-
-  card.append(header,comment,row);
-
-  // guarda en memoria
+  const wrap = document.createElement("div");
+  wrap.className = "point"; wrap.id = `p-${i}`;
+  wrap.innerHTML = `
+    <header>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="badge">${i}</div>
+        <div>${DEFAULT_TEXTS[i-1] || ("Ítem "+i)}</div>
+      </div>
+      <div class="state">
+        <label><input type="radio" name="s${i}" value="ok" checked> OK</label>
+        <label><input type="radio" name="s${i}" value="obs"> Obs</label>
+        <label><input type="radio" name="s${i}" value="nc"> No conf.</label>
+      </div>
+    </header>
+    <textarea class="comment" rows="2" placeholder="Comentario / hallazgo..."></textarea>
+    <div class="row">
+      <button class="primary">Resaltar</button>
+    </div>
+  `;
   data[i] = {estado:"ok", comentario:""};
-  card.querySelectorAll(`input[name="s${i}"]`).forEach(r=>{
+  wrap.querySelectorAll(`input[name="s${i}"]`).forEach(r=>{
     r.addEventListener("change", ()=> data[i].estado = r.value);
   });
-  comment.addEventListener("input", ()=> data[i].comentario = comment.value);
-
-  return card;
+  wrap.querySelector(".comment").addEventListener("input", e=> data[i].comentario = e.target.value);
+  wrap.querySelector(".primary").addEventListener("click", ()=>{
+    wrap.scrollIntoView({behavior:"smooth",block:"center"});
+    wrap.style.outline="1px solid var(--gold)";
+    setTimeout(()=> wrap.style.outline="none", 1200);
+  });
+  return wrap;
 }
+for(let i=1;i<=TOTAL;i++) pointsWrap.appendChild(pointCard(i));
 
-function focusPoint(i){
-  // anima la cámara alrededor (en ausencia de coordenadas exactas del modelo)
-  const orbit = `${(i*(360/TOTAL)).toFixed(0)}deg 75deg 3.2m`;
-  visor.setAttribute("camera-orbit", orbit);
-  document.querySelectorAll(".point").forEach(p=>p.style.outline="none");
-  const card = document.getElementById(`p-${i}`);
-  if(card){ card.scrollIntoView({behavior:"smooth",block:"center"}); card.style.outline="1px solid var(--gold)"; }
-}
-
-/* Relleno UI */
-for(let i=1;i<=TOTAL;i++){
-  addHotspot(i);
-  pointsWrap.appendChild(pointCard(i));
-}
-
-/* ====== FILTROS ====== */
 const filterBtns = document.querySelectorAll(".filters button[data-filter]");
 filterBtns.forEach(b=>{
   b.addEventListener("click", ()=>{
-    filterBtns.forEach(x=>x.classList.remove("active"));
-    b.classList.add("active");
+    filterBtns.forEach(x=>x.classList.remove("active")); b.classList.add("active");
     const f = b.dataset.filter;
     for(let i=1;i<=TOTAL;i++){
-      const show =
-        f==="all" ? true :
-        (data[i]?.estado === f);
+      const show = (f==="all") ? true : (data[i]?.estado===f);
       document.getElementById(`p-${i}`).style.display = show ? "" : "none";
-      const hs = visor.querySelector(`button[slot="hotspot-${i}"]`);
-      if(hs) hs.style.display = show ? "" : "none";
     }
   });
 });
 
-/* Expandir/colapsar comentarios (rápido) */
 let expanded = true;
 $("#btnExpand").addEventListener("click", ()=>{
   expanded = !expanded;
-  document.querySelectorAll(".comment").forEach(c=>{
-    c.style.display = expanded ? "" : "none";
-  });
+  document.querySelectorAll(".comment").forEach(c=> c.style.display = expanded ? "" : "none");
 });
 
-/* ====== PERSISTENCIA LOCAL ====== */
-const KEY = "aurum_checklist_v1";
-function toPayload(){
+const KEY="aurum_checklist_v1";
+function payload(){
   return {
-    ctx:{
-      id:ctx.id.value, name:ctx.name.value, oper:ctx.oper.value, fecha:ctx.fecha.value
-    },
-    puntos: data.map((d,idx)=> d ? ({n:idx, estado:d.estado, comentario:d.comentario}) : null)
-             .filter(Boolean)
+    ctx:{id:ctx.id.value,name:ctx.name.value,oper:ctx.oper.value,fecha:ctx.fecha.value},
+    puntos: data.map((d,idx)=> d ? ({n:idx,estado:d.estado,comentario:d.comentario}) : null).filter(Boolean)
   };
 }
-function fromPayload(p){
-  ctx.id.value = p?.ctx?.id || "";
-  ctx.name.value = p?.ctx?.name || "";
-  ctx.oper.value = p?.ctx?.oper || "";
-  ctx.fecha.value = p?.ctx?.fecha || new Date().toLocaleString();
+function loadPayload(p){
+  ctx.id.value=p?.ctx?.id||""; ctx.name.value=p?.ctx?.name||""; ctx.oper.value=p?.ctx?.oper||"";
+  ctx.fecha.value=p?.ctx?.fecha||new Date().toLocaleString();
   (p?.puntos||[]).forEach(pt=>{
-    data[pt.n] = {estado:pt.estado, comentario:pt.comentario};
-    const card = document.getElementById(`p-${pt.n}`);
+    data[pt.n]={estado:pt.estado,comentario:pt.comentario};
+    const card=document.getElementById(`p-${pt.n}`);
     if(card){
-      const r = card.querySelector(`input[name="s${pt.n}"][value="${pt.estado}"]`);
-      if(r) r.checked = true;
-      const c = card.querySelector(".comment");
-      if(c) c.value = pt.comentario || "";
+      const r=card.querySelector(`input[name="s${pt.n}"][value="${pt.estado}"]`); if(r) r.checked=true;
+      const c=card.querySelector(".comment"); if(c) c.value=pt.comentario||"";
     }
   });
 }
 
-$("#btnSave").addEventListener("click", ()=>{
-  localStorage.setItem(KEY, JSON.stringify(toPayload()));
-  alert("Guardado local OK.");
-});
-$("#btnLoad").addEventListener("click", ()=>{
-  const raw = localStorage.getItem(KEY);
-  if(!raw){ alert("No hay guardado."); return; }
-  fromPayload(JSON.parse(raw));
-  alert("Cargado.");
-});
-$("#btnClear").addEventListener("click", ()=>{
-  localStorage.removeItem(KEY);
-  alert("Guardado eliminado.");
-});
+$("#btnSave").addEventListener("click",()=>{localStorage.setItem(KEY,JSON.stringify(payload()));alert("Guardado local OK.");});
+$("#btnLoad").addEventListener("click",()=>{const raw=localStorage.getItem(KEY);if(!raw) return alert("No hay guardado.");loadPayload(JSON.parse(raw));alert("Cargado.");});
+$("#btnClear").addEventListener("click",()=>{localStorage.removeItem(KEY);alert("Guardado eliminado.");});
 
-/* ====== CSV ====== */
 $("#btnCSV").addEventListener("click", ()=>{
-  const p = toPayload();
-  const rows = [
-    ["ID","Nombre","Operador","Fecha","Punto","Texto","Estado","Comentario"]
-  ];
+  const p = payload();
+  const rows = [["ID","Nombre","Operador","Fecha","Punto","Texto","Estado","Comentario"]];
   for(const pt of p.puntos){
-    rows.push([p.ctx.id, p.ctx.name, p.ctx.oper, p.ctx.fecha, pt.n, (DEFAULT_TEXTS[pt.n-1]||`Ítem ${pt.n}`), pt.estado, pt.comentario||""]);
+    rows.push([p.ctx.id,p.ctx.name,p.ctx.oper,p.ctx.fecha,pt.n,(DEFAULT_TEXTS[pt.n-1]||`Ítem ${pt.n}`),pt.estado,pt.comentario||""]);
   }
   const csv = rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\n");
-  const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url; a.download = "checklist_aurum.csv"; a.click();
-  URL.revokeObjectURL(url);
+  const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"}); const url = URL.createObjectURL(blob);
+  const a = document.createElement("a"); a.href=url; a.download="checklist_aurum.csv"; a.click(); URL.revokeObjectURL(url);
 });
 </script>
 </body>
