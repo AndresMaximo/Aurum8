@@ -1,75 +1,85 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Módulos · AURUM∞</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="stylesheet" href="lemuria.css"/>
-  <style>
-    main{max-width:1200px;margin:0 auto;padding:16px}
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    @media (max-width:1024px){.grid{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:640px){.grid{grid-template-columns:1fr}}
-    .module-card{display:block;padding:14px;border-radius:14px;background:var(--bg-card);border:1px solid var(--gold-20);text-decoration:none;color:var(--text);box-shadow:var(--shadow)}
-    .module-card h3{margin:0 0 6px 0;color:var(--gold)}
-    .module-card p{margin:0;color:#a8b3b7}
-    .badge{display:inline-block;margin-top:8px;padding:2px 8px;border-radius:999px;border:1px solid var(--gold-20);font-size:.78rem;color:#cbd5d9}
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Módulos • AURUM∞</title>
+
+  <!-- Estilos base + tema Lemuriano -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="lemuria.css" />
 </head>
 <body>
-<header class="top">
-  <h1>AURUM∞</h1>
-  <nav>
-    <a href="index.html">Inicio</a>
-    <a href="vision.html">Visión</a>
-    <a href="modulos.html" class="active">Módulos</a>
-    <a href="contacto.html">Contacto</a>
-  </nav>
-</header>
+  <header class="top">
+    <h1>AURUM∞</h1>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="vision.html">Visión</a>
+      <a href="modulos.html" class="active">Módulos</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
+  </header>
 
-<main>
-  <h2 style="color:var(--gold);margin:0 0 10px 0">Módulos disponibles</h2>
+  <main class="container">
+    <h2>Módulos Disponibles</h2>
+    <p class="lead">
+      Explora cada herramienta integrada en AURUM∞ y descubre cómo se
+      conectan entre sí.
+    </p>
 
-  <div class="grid">
-    <a class="module-card" href="checklist.html">
-      <h3>✅ Checklist Técnico (50 pts)</h3>
-      <p>Inspección guiada; filtros por estado; exportación CSV.</p>
-      <span class="badge">Activo</span>
-    </a>
+    <ul class="cards">
 
-    <a class="module-card" href="numerologia.html">
-      <h3>🔮 Numerología & Luna</h3>
-      <p>Análisis personal, vibración diaria y guía de acciones.</p>
-      <span class="badge">Activo</span>
-    </a>
+      <!-- Checklist Técnico 3D -->
+      <li>
+        <a class="card" href="checklist.html">
+          <h3>Checklist Técnico 3D</h3>
+          <p>Inspección visual y técnica con modelo 3D y puntos guiados.</p>
+        </a>
+      </li>
 
-    <a class="module-card" href="ot.html">
-      <h3>🧾 Órdenes de Trabajo</h3>
-      <p>OT con evidencias, inicio/fin y cálculo de detención.</p>
-      <span class="badge">Activo</span>
-    </a>
+      <!-- Trazabilidad Energética -->
+      <li>
+        <a class="card" href="trazabilidad.html">
+          <h3>Trazabilidad Energética</h3>
+          <p>Monitoreo y registro del estado vibracional de equipos y operadores.</p>
+        </a>
+      </li>
 
-    <a class="module-card" href="trazabilidad.html">
-      <h3>🌐 Trazabilidad Energética</h3>
-      <p>Bitácora, estados, y seguimiento de intervención.</p>
-      <span class="badge">Activo</span>
-    </a>
+      <!-- Numerología Vibracional -->
+      <li>
+        <a class="card" href="numerologia.html">
+          <h3>Numerología Vibracional</h3>
+          <p>Cálculo, interpretación profunda y vibración del día con acciones.</p>
+        </a>
+      </li>
 
-    <a class="module-card" href="bodega.html">
-      <h3>📦 Bodega y Almacenamiento</h3>
-      <p>Inventario, entradas/salidas, mínimos y reportes CSV.</p>
-      <span class="badge">Activo</span>
-    </a>
+      <!-- Órdenes de Trabajo -->
+      <li>
+        <a class="card" href="ot.html">
+          <h3>Órdenes de Trabajo</h3>
+          <p>Crear, editar, cerrar OT · Exportar CSV · Imprimir PDF · Búsquedas y filtros.</p>
+        </a>
+      </li>
 
-    <a class="module-card" href="hilux.html">
-      <h3>🚗 Toyota Hilux 3D</h3>
-      <p>Visor 3D e integración checklist (requiere hilux.glb).</p>
-      <span class="badge">Próximo</span>
-    </a>
-  </div>
-</main>
+      <!-- Hilux 3D -->
+      <li>
+        <a class="card" href="Modulos/Hilux/Index.html">
+          <h3>Hilux 3D</h3>
+          <p>Visor interactivo del vehículo con controles y checklist asociado.</p>
+        </a>
+      </li>
 
-<footer class="foot">© 2025 AURUM∞</footer>
+      <!-- Recursos Humanos (NUEVO) -->
+      <li>
+        <a class="card" href="Modulos/RecursosHumanos/index.html">
+          <h3>Recursos Humanos</h3>
+          <p>Fichas, capacitaciones, evaluaciones, permisos y asistencias.</p>
+        </a>
+      </li>
+
+    </ul>
+  </main>
+
+  <footer class="foot">© 2025 AURUM∞</footer>
 </body>
 </html>
