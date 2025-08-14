@@ -1,85 +1,184 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Módulos • AURUM∞</title>
-
-  <!-- Estilos base + tema Lemuriano -->
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="lemuria.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursos Humanos · AURUM∞</title>
+    <link rel="stylesheet" href="../../lemuria.css">
+    <style>
+        body {
+            background-color: #0d1b1e;
+            color: #f5f5f5;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: rgba(13, 27, 30, 0.95);
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 2px solid gold;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            color: gold;
+        }
+        main {
+            padding: 20px;
+        }
+        .section-title {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            color: #ffd700;
+            border-bottom: 1px solid gold;
+            padding-bottom: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: rgba(255, 255, 255, 0.05);
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            text-align: left;
+        }
+        th {
+            background-color: rgba(255, 215, 0, 0.1);
+            color: gold;
+        }
+        tr:hover {
+            background-color: rgba(255, 215, 0, 0.05);
+        }
+        .btn {
+            padding: 8px 14px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        .btn-gold {
+            background-color: gold;
+            color: #0d1b1e;
+        }
+        .btn-red {
+            background-color: crimson;
+            color: white;
+        }
+        .btn-green {
+            background-color: seagreen;
+            color: white;
+        }
+        .form-container {
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .form-container input, .form-container select {
+            padding: 8px;
+            margin-bottom: 10px;
+            width: 100%;
+            border: 1px solid gold;
+            background: rgba(0,0,0,0.3);
+            color: white;
+        }
+    </style>
 </head>
 <body>
-  <header class="top">
-    <h1>AURUM∞</h1>
-    <nav>
-      <a href="index.html">Inicio</a>
-      <a href="vision.html">Visión</a>
-      <a href="modulos.html" class="active">Módulos</a>
-      <a href="contacto.html">Contacto</a>
-    </nav>
-  </header>
 
-  <main class="container">
-    <h2>Módulos Disponibles</h2>
-    <p class="lead">
-      Explora cada herramienta integrada en AURUM∞ y descubre cómo se
-      conectan entre sí.
-    </p>
+<header>
+    <h1>Recursos Humanos · AURUM∞</h1>
+</header>
 
-    <ul class="cards">
+<main>
+    <section>
+        <div class="section-title">Listado de Personal</div>
+        <table id="tablaPersonal">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>RUT</th>
+                    <th>Cargo</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Datos dinámicos -->
+            </tbody>
+        </table>
+    </section>
 
-      <!-- Checklist Técnico 3D -->
-      <li>
-        <a class="card" href="checklist.html">
-          <h3>Checklist Técnico 3D</h3>
-          <p>Inspección visual y técnica con modelo 3D y puntos guiados.</p>
-        </a>
-      </li>
+    <section class="form-container">
+        <div class="section-title">Agregar Nuevo Personal</div>
+        <input type="text" id="nombre" placeholder="Nombre completo">
+        <input type="text" id="rut" placeholder="RUT">
+        <input type="text" id="cargo" placeholder="Cargo">
+        <select id="rol">
+            <option value="Administrador">Administrador</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="Operador">Operador</option>
+        </select>
+        <button class="btn btn-green" onclick="agregarPersonal()">Agregar</button>
+    </section>
+</main>
 
-      <!-- Trazabilidad Energética -->
-      <li>
-        <a class="card" href="trazabilidad.html">
-          <h3>Trazabilidad Energética</h3>
-          <p>Monitoreo y registro del estado vibracional de equipos y operadores.</p>
-        </a>
-      </li>
+<script>
+    let personal = JSON.parse(localStorage.getItem("personalData")) || [];
 
-      <!-- Numerología Vibracional -->
-      <li>
-        <a class="card" href="numerologia.html">
-          <h3>Numerología Vibracional</h3>
-          <p>Cálculo, interpretación profunda y vibración del día con acciones.</p>
-        </a>
-      </li>
+    function renderTabla() {
+        const tbody = document.querySelector("#tablaPersonal tbody");
+        tbody.innerHTML = "";
+        personal.forEach((p, index) => {
+            const fila = `
+                <tr>
+                    <td>${p.nombre}</td>
+                    <td>${p.rut}</td>
+                    <td>${p.cargo}</td>
+                    <td>${p.rol}</td>
+                    <td>
+                        <button class="btn btn-red" onclick="eliminarPersonal(${index})">Eliminar</button>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML += fila;
+        });
+    }
 
-      <!-- Órdenes de Trabajo -->
-      <li>
-        <a class="card" href="ot.html">
-          <h3>Órdenes de Trabajo</h3>
-          <p>Crear, editar, cerrar OT · Exportar CSV · Imprimir PDF · Búsquedas y filtros.</p>
-        </a>
-      </li>
+    function agregarPersonal() {
+        const nombre = document.getElementById("nombre").value.trim();
+        const rut = document.getElementById("rut").value.trim();
+        const cargo = document.getElementById("cargo").value.trim();
+        const rol = document.getElementById("rol").value;
 
-      <!-- Hilux 3D -->
-      <li>
-        <a class="card" href="Modulos/Hilux/Index.html">
-          <h3>Hilux 3D</h3>
-          <p>Visor interactivo del vehículo con controles y checklist asociado.</p>
-        </a>
-      </li>
+        if (!nombre || !rut || !cargo) {
+            alert("Completa todos los campos.");
+            return;
+        }
 
-      <!-- Recursos Humanos (NUEVO) -->
-      <li>
-        <a class="card" href="Modulos/RecursosHumanos/index.html">
-          <h3>Recursos Humanos</h3>
-          <p>Fichas, capacitaciones, evaluaciones, permisos y asistencias.</p>
-        </a>
-      </li>
+        personal.push({ nombre, rut, cargo, rol });
+        localStorage.setItem("personalData", JSON.stringify(personal));
+        renderTabla();
 
-    </ul>
-  </main>
+        document.getElementById("nombre").value = "";
+        document.getElementById("rut").value = "";
+        document.getElementById("cargo").value = "";
+        document.getElementById("rol").value = "Operador";
+    }
 
-  <footer class="foot">© 2025 AURUM∞</footer>
+    function eliminarPersonal(index) {
+        if (confirm("¿Seguro que quieres eliminar este registro?")) {
+            personal.splice(index, 1);
+            localStorage.setItem("personalData", JSON.stringify(personal));
+            renderTabla();
+        }
+    }
+
+    renderTabla();
+</script>
+
 </body>
 </html>
