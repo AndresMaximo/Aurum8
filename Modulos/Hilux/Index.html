@@ -1,364 +1,300 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Toyota Hilux 3D · Checklist 50 pts · AURUM∞</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="stylesheet" href="lemuria.css"/>
-  <!-- Webcomponent visor 3D (funciona en página estática) -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Toyota Hilux 3D · AURUM∞</title>
+
+  <!-- Tema base -->
+  <link rel="stylesheet" href="../../lemuria.css">
+  <link rel="stylesheet" href="./Hilux.css">
+
+  <!-- Visor 3D -->
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
   <style>
-    /* Layout */
     main{max-width:1200px;margin:0 auto;padding:16px}
-    .grid{display:grid;grid-template-columns:1.2fr 1fr;gap:16px}
-    @media (max-width:1024px){.grid{grid-template-columns:1fr}}
-    .card{background:var(--bg-card);border:1px solid var(--gold-20);border-radius:14px;box-shadow:var(--shadow)}
-    .card h2{margin:0;padding:12px 14px;border-bottom:1px solid var(--gold-20);color:var(--gold)}
-    .card .body{padding:12px 14px}
-    /* Visor */
-    model-viewer{width:100%;height:520px;background:#0b1214;border-radius:14px;border:1px solid var(--gold-20)}
-    .viewer-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    button, select, input{border-radius:10px;border:1px solid var(--gold-20);background:#0f1e21;color:var(--text);padding:8px 12px}
-    .accent{background:var(--gold);color:#0d0d0d;border-color:var(--gold)}
-    /* Checklist */
-    .section{margin-top:8px}
-    .section h3{margin:8px 0;color:#cbd5d9}
-    .item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px dashed var(--gold-20)}
-    .item label{flex:1}
-    .note{width:100%;margin-top:6px}
-    .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
-    .progress{height:10px;border-radius:999px;background:#102225;overflow:hidden;border:1px solid var(--gold-20)}
-    .bar{height:100%;background:linear-gradient(90deg,var(--gold),#ffd27a);width:0%}
-    .status{font-size:.92rem;color:#a8b3b7;margin-top:6px}
-    .tag{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid var(--gold-20);font-size:.78rem;margin-left:6px}
-    .ok{color:#9fe7b1;border-color:#2e8b57}
-    .warn{color:#ffb4b4;border-color:#f55}
-    .muted{color:#8aa3a8}
+    .wrap{display:grid;grid-template-columns:1fr;gap:16px}
+    @media (min-width:980px){.wrap{grid-template-columns:1fr 1fr}}
+    model-viewer{width:100%;height:62vh;border-radius:14px;background:#0f0f12;border:1px solid var(--gold-20)}
+    .card{background:var(--bg-card);border:1px solid var(--gold-20);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+    .card h2{margin:0 0 10px 0;color:var(--gold)}
+    .point{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;padding:10px;border-bottom:1px dashed var(--gold-10)}
+    .badge{font-size:.8rem;padding:.15rem .5rem;border-radius:999px;border:1px solid var(--gold-20);color:var(--gold-70)}
+    .ctrls{display:flex;gap:6px;flex-wrap:wrap}
+    .ctrls label{display:inline-flex;align-items:center;gap:6px;background:#15171c;border:1px solid var(--gold-20);padding:.25rem .6rem;border-radius:12px}
+    .note{grid-column:1 / -1}
+    .note input{width:100%;background:#0f1221;border:1px solid var(--gold-20);color:var(--text);padding:.55rem .7rem;border-radius:10px}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    button, .btn{background:var(--gold);color:#111;padding:.55rem .9rem;border-radius:10px;border:none;cursor:pointer}
+    .btn-ghost{background:transparent;border:1px solid var(--gold-30);color:var(--gold)}
+    .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .head small{opacity:.8}
+    .pill{background:#13211a;border:1px solid #274d34;color:#79d29d;padding:.15rem .5rem;border-radius:999px;font-size:.75rem}
   </style>
 </head>
 <body>
 <header class="top">
   <h1>AURUM∞</h1>
   <nav>
-    <a href="index.html">Inicio</a>
-    <a href="vision.html">Visión</a>
-    <a href="modulos.html" class="active">Módulos</a>
-    <a href="contacto.html">Contacto</a>
+    <a href="../../index.html">Inicio</a>
+    <a href="../../vision.html">Visión</a>
+    <a href="../../modulos.html">Módulos</a>
+    <a href="../../contacto.html">Contacto</a>
   </nav>
 </header>
 
 <main>
-  <h2 style="color:var(--gold);margin:0 0 12px 0">Toyota Hilux 3D · Checklist 50 puntos</h2>
+  <div class="wrap">
 
-  <div class="grid">
-    <!-- VISOR 3D -->
+    <!-- Visor 3D -->
     <section class="card">
-      <h2>Visor 3D</h2>
-      <div class="body">
-        <!-- Cambia la ruta si tu GLB está en otro lugar -->
-        <model-viewer id="viewer"
-          src="assets/hilux.glb"
-          alt="Toyota Hilux 3D"
-          camera-controls
-          touch-action="pan-y"
-          shadow-intensity="0.8"
-          ar
-          exposure="1.0"
-          interaction-prompt="none"
-          auto-rotate
-        ></model-viewer>
-
-        <div class="viewer-toolbar">
-          <button id="btnReset">Reiniciar vista</button>
-          <label>
-            Luz:
-            <select id="env">
-              <option value="neutral">Neutral</option>
-              <option value="legacy">Suave</option>
-              <option value="city">Urbana</option>
-            </select>
-          </label>
-          <button id="btnSnapshot" title="Descargar imagen del visor">Captura PNG</button>
-        </div>
-        <p class="muted" style="margin-top:6px">
-          Consejos: pellizca para acercar/alejar, arrastra para orbitar, doble toque para centrar un punto.
-        </p>
+      <div class="head">
+        <h2>Toyota Hilux 3D</h2>
+        <span class="pill">Zoom y órbita activados</span>
+      </div>
+      <model-viewer
+        id="visor"
+        src="../../assets/hilux.glb"
+        alt="Modelo 3D Toyota Hilux"
+        ar ar-modes="webxr scene-viewer quick-look"
+        camera-controls
+        interaction-prompt="auto"
+        camera-orbit="0deg 75deg 3.5m"
+        min-camera-orbit="auto auto 1.2m"
+        max-camera-orbit="auto auto 7m"
+        min-field-of-view="15deg"
+        max-field-of-view="60deg"
+        shadow-intensity="1"
+        environment-image="neutral"
+        exposure="1">
+      </model-viewer>
+      <div class="toolbar">
+        <button id="btnReset">Recentrar vista</button>
+        <button class="btn-ghost" id="btnTop">Vista superior</button>
+        <button class="btn-ghost" id="btnSide">Vista lateral</button>
+        <button class="btn-ghost" id="btnFront">Vista frontal</button>
       </div>
     </section>
 
-    <!-- CHECKLIST -->
-    <aside class="card">
-      <h2>Checklist técnico (50)</h2>
-      <div class="body">
-        <div class="toolbar">
-          <input id="vehId" placeholder="ID vehículo / Patente (ej: HIL-XX11)"/>
-          <button id="btnNew" title="Limpia el formulario">Nuevo</button>
-          <button id="btnExport" class="accent">Exportar CSV</button>
-          <button id="btnClear" title="Borra datos locales">Borrar guardado</button>
-        </div>
-
-        <div class="progress"><div class="bar" id="bar"></div></div>
-        <div class="status" id="status">0/50 completados</div>
-
-        <!-- Render dinámico aquí -->
-        <div id="list"></div>
-
-        <div class="toolbar" style="margin-top:10px">
-          <button id="btnMarcarOk" class="accent">Marcar todos OK</button>
-          <button id="btnMarcarPend">Marcar todos Pendiente</button>
-        </div>
-        <p class="note muted">
-          Guardado local activado. Al finalizar, exporta el CSV y adjúntalo a la OT.  
-          <span class="tag">Hilux</span> <span class="tag">AURUM∞</span>
-        </p>
+    <!-- Checklist 50 pts -->
+    <section class="card">
+      <div class="head">
+        <h2>Checklist Técnico (50 pts)</h2>
+        <small id="resume">Sin completar</small>
       </div>
-    </aside>
+
+      <div class="toolbar">
+        <button id="saveLocal">Guardar local</button>
+        <button class="btn-ghost" id="loadLocal">Cargar guardado</button>
+        <button class="btn-ghost" id="clearLocal">Borrar guardado</button>
+        <button class="btn-ghost" id="exportCsv">Exportar CSV</button>
+      </div>
+
+      <div id="points" aria-live="polite"></div>
+    </section>
+
   </div>
 </main>
 
 <footer class="foot">© 2025 AURUM∞</footer>
 
 <script>
-/* ======== CONFIG ======== */
-const STORAGE_KEY = "aurum_hilux_checklist_v1";
-const STORAGE_META = "aurum_hilux_meta_v1";
+(() => {
+  // ——— Estado único del módulo (evita duplicados) ———
+  if (window.__HILUX_CHECKLIST_READY__) return;
+  window.__HILUX_CHECKLIST_READY__ = true;
 
-/* 50 puntos Hilux (agrupados) */
-const SECTIONS = [
-  { title: "Documentación y seguridad",
-    items: [
-      "Permiso de circulación vigente",
-      "Seguro obligatorio/empresa vigente",
-      "Revisión técnica/Emisiones al día",
-      "Chaleco reflectante y triángulos",
-      "Extintor (carga y sello)",
-      "Botiquín (completo y vigente)",
-      "Cinturones (funcionan y sin cortes)",
-      "Baliza/Barra antivuelco (instalación firme)",
-      "Manual de usuario a bordo",
-      "Preguía / Check-in realizado"
-    ]
-  },
-  { title: "Luces y señalización",
-    items: [
-      "Luces bajas/altas",
-      "Posición/Estacionamiento",
-      "Intermitentes (4) y emergencia",
-      "Freno (tercer stop)",
-      "Luces de retroceso",
-      "Luces de patente",
-      "Claxon/Bocina",
-      "Espejos (posiciones/ﬁjaciones)",
-      "Limpiaparabrisas y sapito",
-      "Parabrisas (sin fisuras críticas)"
-    ]
-  },
-  { title: "Neumáticos y suspensión",
-    items: [
-      "Presión neumáticos (4)",
-      "Desgaste parejo (4)",
-      "Repuesto en condiciones",
-      "Llave/Barra y gata",
-      "Tornillos/tuercas seguros",
-      "Amortiguadores sin fugas",
-      "Resortes/Bujes sin daños",
-      "Alineación sin tironeo",
-      "Tapabarros/guardafangos",
-      "Rines sin deformaciones visibles"
-    ]
-  },
-  { title: "Fluidos y motor",
-    items: [
-      "Aceite motor (nivel)",
-      "Refrigerante (nivel y fugas)",
-      "Líquido de frenos",
-      "Líquido dirección (si aplica)",
-      "Líquido limpiaparabrisas",
-      "Batería (bornes limpios/firma)",
-      "Correas (tensión/desgaste)",
-      "Mangueras (fisuras/fugas)",
-      "Filtro de aire",
-      "Filtro de combustible (si aplica)"
-    ]
-  },
-  { title: "Frenos y transmisión",
-    items: [
-      "Freno de servicio (prueba en ruta corta)",
-      "Freno de mano (retenido en pendiente)",
-      "Discos/Tambores (ruidos anormales)",
-      "Pastillas/Zapatas (espesor)",
-      "Tracción 4x4 (si aplica)",
-      "Caja de cambios (paso fluido)",
-      "Crujidos/Vibraciones anormales",
-      "Dirección (juego excesivo)",
-      "Pedales (recorrido adecuado)",
-      "Fugas visibles (líneas/Uniones)"
-    ]
-  }
-];
+  const KEY = 'aurum_hilux_checklist_v1';
 
-/* ======== Estado ======== */
-let meta = { vehId:"", startedAt:null, endedAt:null };
-let checklist = []; // {key, label, state:"OK"|"PEND", note:"", ts:number}
+  // 50 puntos (puedes ajustar textos)
+  const items = [
+    "Motor: fugas visibles",
+    "Motor: niveles (aceite/refrigerante)",
+    "Batería y bornes",
+    "Correas y mangueras",
+    "Filtro de aire",
+    "Escape y uniones",
+    "Inyección / riel",
+    "Radiador y ventiladores",
+    "Dirección (juego)",
+    "Amortiguadores",
+    "Resortes / Ballestas",
+    "Bujes suspensión",
+    "Rótulas",
+    "Terminales de dirección",
+    "Frenos (pastas / discos)",
+    "Freno de mano",
+    "Mangueras de freno",
+    "Neumáticos (desgaste/presión)",
+    "Llantas y tuercas",
+    "Alineación visual",
+    "Luces bajas/altas",
+    "Luces de freno",
+    "Señaleros / balizas",
+    "Luz de retroceso",
+    "Tablero sin testigos críticos",
+    "Bocina",
+    "Limpiaparabrisas y líquido",
+    "Cinturones de seguridad",
+    "Airbags (indicador)",
+    "Extintor / Botiquín",
+    "Espejos y cristales",
+    "Cierre puertas",
+    "Bisagras / pestillos",
+    "Tapabarros / guardapolvos",
+    "Chasis / bastidor (fisuras)",
+    "Anclajes carrocería",
+    "Parachoques",
+    "Batea / pick-up (daños)",
+    "Ganchos de remolque",
+    "Herramientas y gata",
+    "Llave de ruedas",
+    "Nivel combustible",
+    "Filtro combustible",
+    "Fugas hidráulicas",
+    "Cableado expuesto",
+    "ECU (lectura básica)",
+    "Prueba en marcha (ruidos)",
+    "Vibraciones anómalas",
+    "Frenado recto",
+    "Documentación al día"
+  ];
 
-/* ======== Util ======== */
-const $ = s => document.querySelector(s);
-const list = $("#list");
-const bar = $("#bar");
-const status = $("#status");
-function save(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(checklist));
-  localStorage.setItem(STORAGE_META, JSON.stringify(meta));
-}
-function load(){
-  checklist = JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
-  meta = JSON.parse(localStorage.getItem(STORAGE_META)||"{}");
-  meta.vehId = meta.vehId || "";
-  meta.startedAt = meta.startedAt || new Date().toISOString();
-}
-function percent(){
-  const ok = checklist.filter(i=>i.state==="OK").length;
-  const total = checklist.length||1;
-  return Math.round((ok/total)*100);
-}
-function fmt(ts){
-  const d = new Date(ts||Date.now());
-  return d.toLocaleString();
-}
+  // Estado por punto
+  const State = { OK:'OK', OBS:'OBS', NC:'NC' };
 
-/* ======== Render ======== */
-function render(){
-  list.innerHTML = "";
-  let idx = 1;
-  for(const sec of SECTIONS){
-    const s = document.createElement("div");
-    s.className = "section";
-    s.innerHTML = `<h3>${sec.title}</h3>`;
-    for(const label of sec.items){
-      const key = "P"+String(idx).padStart(2,"0");
-      // busca o crea
-      let it = checklist.find(x=>x.key===key);
-      if(!it){
-        it = {key, label, state:"PEND", note:"", ts:null};
-        checklist.push(it);
-      }
-      const wrap = document.createElement("div");
-      wrap.className = "item";
-      wrap.innerHTML = `
-        <input type="checkbox" id="${key}" ${it.state==="OK"?"checked":""}/>
-        <label for="${key}"><strong>${key}</strong> — ${label}
-          ${it.state==="OK" ? '<span class="tag ok">OK</span>' : '<span class="tag warn">Pendiente</span>'}
-          <div class="muted" style="font-size:.78rem;margin-top:2px">Última act.: ${it.ts?fmt(it.ts):"—"}</div>
-        </label>
-      `;
-      const note = document.createElement("textarea");
-      note.className = "note";
-      note.placeholder = "Observación / No conformidad (opcional)";
-      note.value = it.note||"";
-      note.addEventListener("input", ()=>{
-        it.note = note.value;
-        save();
+  // Elementos
+  const elList = document.getElementById('points');
+  const elResume = document.getElementById('resume');
+
+  // Cargar estado guardado o inicializar
+  const loadState = () => {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; }
+    catch { return {}; }
+  };
+  const saveState = (state) => localStorage.setItem(KEY, JSON.stringify(state));
+
+  let state = loadState(); // { idx: {s:State, n:"nota"} }
+
+  // Render principal (siempre limpia primero: evita duplicados)
+  function render() {
+    elList.innerHTML = ""; // <- clave para no duplicar
+    const frag = document.createDocumentFragment();
+
+    items.forEach((label, idx) => {
+      const row = document.createElement('div');
+      row.className = 'point';
+
+      const badge = document.createElement('span');
+      badge.className = 'badge';
+      badge.textContent = `Punto ${idx+1}`;
+
+      const title = document.createElement('div');
+      title.innerHTML = `<strong>${label}</strong>`;
+
+      const ctrls = document.createElement('div');
+      ctrls.className = 'ctrls';
+
+      // Radios
+      const name = `p_${idx}`;
+      const mkRadio = (value, text) => {
+        const id = `${name}_${value}`;
+        const label = document.createElement('label');
+        label.innerHTML = `<input type="radio" name="${name}" id="${id}" value="${value}"> ${text}`;
+        label.querySelector('input').checked = (state[idx]?.s === value);
+        label.querySelector('input').addEventListener('change', () => {
+          state[idx] = state[idx] || {};
+          state[idx].s = value;
+          saveState(state);
+          refreshResume();
+        });
+        return label;
+      };
+
+      ctrls.append(
+        mkRadio(State.OK, 'OK'),
+        mkRadio(State.OBS, 'Observación'),
+        mkRadio(State.NC, 'No Conforme')
+      );
+
+      const note = document.createElement('div');
+      note.className = 'note';
+      note.innerHTML = `<input type="text" placeholder="Comentario / hallazgo..." value="${state[idx]?.n || ''}">`;
+      note.querySelector('input').addEventListener('input', (e) => {
+        state[idx] = state[idx] || {};
+        state[idx].n = e.target.value;
+        saveState(state);
       });
-      wrap.querySelector("input").addEventListener("change", (e)=>{
-        it.state = e.target.checked ? "OK" : "PEND";
-        it.ts = Date.now();
-        save(); renderHeaderOnly(); // para evitar re-render total, actualizamos barra/estado
-        // actualiza tags y timestamp en la tarjeta actual
-        const tag = wrap.querySelector(".tag");
-        tag.className = "tag " + (it.state==="OK"?"ok":"warn");
-        tag.textContent = it.state==="OK"?"OK":"Pendiente";
-        wrap.querySelector(".muted").textContent = "Última act.: " + fmt(it.ts);
-      });
-      s.appendChild(wrap);
-      s.appendChild(note);
-      idx++;
-    }
-    list.appendChild(s);
+
+      row.append(badge, title, ctrls, note);
+      frag.appendChild(row);
+    });
+
+    elList.appendChild(frag);
+    refreshResume();
   }
-  renderHeaderOnly();
-}
-function renderHeaderOnly(){
-  const p = percent();
-  bar.style.width = p + "%";
-  status.textContent = `${checklist.filter(i=>i.state==="OK").length}/50 completados · ${p}%`;
-}
 
-/* ======== CSV ======== */
-function toCSV(){
-  const rows = [["Vehículo","Inicio","Término","Clave","Ítem","Estado","Nota","Timestamp"]];
-  for(const it of checklist){
-    rows.push([meta.vehId||"", meta.startedAt||"", meta.endedAt||"",
-      it.key, it.label, it.state, (it.note||"").replace(/\n/g," "), it.ts?fmt(it.ts):""]);
+  function refreshResume(){
+    const total = items.length;
+    const done = Object.values(state).filter(v => v?.s).length;
+    const oks  = Object.values(state).filter(v => v?.s === State.OK).length;
+    const obs  = Object.values(state).filter(v => v?.s === State.OBS).length;
+    const ncs  = Object.values(state).filter(v => v?.s === State.NC).length;
+    elResume.textContent = `${done}/${total} completados · OK:${oks} · OBS:${obs} · NC:${ncs}`;
   }
-  return rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n");
-}
 
-/* ======== Eventos UI ======== */
-$("#vehId").value = meta.vehId||"";
-$("#vehId").addEventListener("input", ()=>{ meta.vehId = $("#vehId").value.trim(); save(); });
+  // Controles de almacenamiento / export
+  document.getElementById('saveLocal').addEventListener('click', () => {
+    saveState(state);
+    alert('Checklist guardado localmente.');
+  });
+  document.getElementById('loadLocal').addEventListener('click', () => {
+    state = loadState();
+    render();
+    alert('Checklist cargado.');
+  });
+  document.getElementById('clearLocal').addEventListener('click', () => {
+    localStorage.removeItem(KEY);
+    state = {};
+    render();
+    alert('Guardado local borrado.');
+  });
+  document.getElementById('exportCsv').addEventListener('click', () => {
+    const lines = [["#","Punto","Estado","Nota"]];
+    items.forEach((t,i)=>{
+      const s = state[i]?.s || "";
+      const n = (state[i]?.n || "").replaceAll('"','""');
+      lines.push([i+1, t, s, `"${n}"`]);
+    });
+    const csv = lines.map(r=>r.join(",")).join("\n");
+    const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'hilux_checklist.csv';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  });
 
-$("#btnExport").addEventListener("click", ()=>{
-  meta.endedAt = new Date().toISOString();
-  save();
-  const blob = new Blob([toCSV()],{type:"text/csv;charset=utf-8;"}); 
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href=url; a.download=`checklist_hilux_${(meta.vehId||"vehiculo")}.csv`; a.click();
-  URL.revokeObjectURL(url);
-});
+  // Controles de cámara
+  const viewer = document.getElementById('visor');
+  document.getElementById('btnReset').addEventListener('click', () => {
+    viewer.cameraOrbit = "0deg 75deg 3.5m";
+    viewer.fieldOfView = "45deg";
+  });
+  document.getElementById('btnTop').addEventListener('click', () => {
+    viewer.cameraOrbit = "0deg 0deg 4m";
+  });
+  document.getElementById('btnSide').addEventListener('click', () => {
+    viewer.cameraOrbit = "90deg 75deg 4m";
+  });
+  document.getElementById('btnFront').addEventListener('click', () => {
+    viewer.cameraOrbit = "0deg 75deg 4m";
+  });
 
-$("#btnClear").addEventListener("click", ()=>{
-  if(!confirm("¿Borrar checklist y meta guardados localmente?")) return;
-  localStorage.removeItem(STORAGE_KEY);
-  localStorage.removeItem(STORAGE_META);
-  checklist=[]; meta={vehId:"",startedAt:new Date().toISOString(),endedAt:null};
-  $("#vehId").value="";
-  render();
-});
-
-$("#btnNew").addEventListener("click", ()=>{
-  if(!confirm("¿Iniciar nuevo checklist? Se conservará un CSV si ya exportaste.")) return;
-  checklist = checklist.map(it=>({ ...it, state:"PEND", note:"", ts:null }));
-  meta.startedAt = new Date().toISOString();
-  meta.endedAt = null;
-  save(); render();
-});
-
-$("#btnMarcarOk").addEventListener("click", ()=>{
-  const now = Date.now();
-  checklist.forEach(it=>{ it.state="OK"; it.ts = now; });
-  save(); render();
-});
-$("#btnMarcarPend").addEventListener("click", ()=>{
-  checklist.forEach(it=>{ it.state="PEND"; it.ts = null; it.note=""; });
-  save(); render();
-});
-
-/* ======== Visor 3D ======== */
-const viewer = document.getElementById("viewer");
-document.getElementById("btnReset").addEventListener("click", ()=>{
-  viewer.jumpCameraToGoal();
-  viewer.cameraOrbit = "0deg 75deg 3m";
-  viewer.autoRotate = true;
-});
-document.getElementById("env").addEventListener("change", (e)=>{
-  const v = e.target.value;
-  if(v==="neutral"){ viewer.environmentImage = undefined; viewer.exposure = 1.0; }
-  if(v==="legacy"){ viewer.environmentImage = "legacy"; viewer.exposure = 0.9; }
-  if(v==="city"){ viewer.environmentImage = "city"; viewer.exposure = 1.1; }
-});
-document.getElementById("btnSnapshot").addEventListener("click", async ()=>{
-  const blob = await viewer.toBlob({mimeType:"image/png"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href=url; a.download=`hilux_snapshot_${Date.now()}.png`; a.click();
-  URL.revokeObjectURL(url);
-});
-
-/* ======== Init ======== */
-load();
-render();
+  // Render único al cargar
+  document.addEventListener('DOMContentLoaded', render, {once:true});
+})();
 </script>
 </body>
 </html>
