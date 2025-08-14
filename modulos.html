@@ -6,8 +6,8 @@
   <title>Módulos • AURUM∞</title>
 
   <!-- Estilos base + tema Lemuriano -->
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="lemuria.css" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="lemuria.css">
 </head>
 <body>
   <header class="top">
@@ -21,19 +21,22 @@
   </header>
 
   <main class="container">
-    <h2>Módulos Disponibles</h2>
-    <p class="lead">
-      Explora cada herramienta integrada en AURUM∞ y descubre cómo se
-      conectan entre sí.
-    </p>
+    <h2>Módulos</h2>
 
     <ul class="cards">
-
       <!-- Checklist Técnico 3D -->
       <li>
         <a class="card" href="checklist.html">
           <h3>Checklist Técnico 3D</h3>
-          <p>Inspección visual y técnica con modelo 3D y puntos guiados.</p>
+          <p>Inspección visual y técnica con 50 puntos y evidencia.</p>
+        </a>
+      </li>
+
+      <!-- Hilux 3D -->
+      <li>
+        <a class="card" href="hilux.html">
+          <h3>Toyota Hilux 3D</h3>
+          <p>Visor del modelo 3D + checklist y navegación por puntos.</p>
         </a>
       </li>
 
@@ -41,7 +44,7 @@
       <li>
         <a class="card" href="trazabilidad.html">
           <h3>Trazabilidad Energética</h3>
-          <p>Monitoreo y registro del estado vibracional de equipos y operadores.</p>
+          <p>Registro de eventos, estados, GPS y adjuntos por activo.</p>
         </a>
       </li>
 
@@ -49,7 +52,7 @@
       <li>
         <a class="card" href="numerologia.html">
           <h3>Numerología Vibracional</h3>
-          <p>Cálculo, interpretación profunda y vibración del día con acciones.</p>
+          <p>Cálculo e interpretación diaria con acciones sugeridas.</p>
         </a>
       </li>
 
@@ -57,29 +60,31 @@
       <li>
         <a class="card" href="ot.html">
           <h3>Órdenes de Trabajo</h3>
-          <p>Crear, editar, cerrar OT · Exportar CSV · Imprimir PDF · Búsquedas y filtros.</p>
+          <p>Crear, editar, cerrar, exportar CSV e imprimir.</p>
         </a>
       </li>
 
-      <!-- Hilux 3D -->
-      <li>
-        <a class="card" href="Modulos/Hilux/Index.html">
-          <h3>Hilux 3D</h3>
-          <p>Visor interactivo del vehículo con controles y checklist asociado.</p>
-        </a>
-      </li>
-
-      <!-- Recursos Humanos (NUEVO) -->
+      <!-- NUEVO: Recursos Humanos -->
       <li>
         <a class="card" href="Modulos/RecursosHumanos/index.html">
-          <h3>Recursos Humanos</h3>
-          <p>Fichas, capacitaciones, evaluaciones, permisos y asistencias.</p>
+          <h3>Recursos Humanos <span class="pill">Nuevo</span></h3>
+          <p>Ficha de personal, roles/permisos, turnos y asistencia.</p>
         </a>
       </li>
-
     </ul>
   </main>
 
   <footer class="foot">© 2025 AURUM∞</footer>
+
+  <!-- Estilos mínimos por si tu CSS base no define .pill -->
+  <style>
+    .pill{
+      display:inline-block; margin-left:.5rem; padding:.1rem .5rem;
+      font-size:.75rem; border:1px solid var(--gold, #ffd700);
+      border-radius:.75rem; color:var(--gold, #ffd700)
+    }
+    /* Asegura ancho del contenedor si tu style.css no lo tiene */
+    .container{max-width:1000px; margin:20px auto; padding:0 16px}
+  </style>
 </body>
 </html>
