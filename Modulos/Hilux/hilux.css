@@ -1,69 +1,244 @@
-/* Tema del módulo Hilux */
-:root {
-  --aurum-bg: #0b0b0b;
-  --aurum-ink: #e0e0e0;
-  --aurum-accent: #ffb400;
-  --panel: #141414;
-  --line: #2a2a2a;
+/* =========================================================
+   AURUM∞ · Módulo Hilux (tema Lemuriano unificado)
+   Archivo: Modulos/Hilux/hilux.css
+   ========================================================= */
+
+/* ---------- Paleta y tokens de diseño ---------- */
+:root{
+  --bg: #0b0d0b;                 /* fondo base */
+  --panel: #121516;              /* paneles / tarjetas */
+  --ink: #e8e8e8;                /* texto principal */
+  --muted: #b7bec4;              /* texto atenuado */
+  --line: #2a2a2a;               /* divisores */
+  --gold: #ffd700;               /* acento principal */
+  --gold-20: rgba(255,215,0,.2); /* borde/acento suave */
+  --accent: #ffb400;             /* segundo acento */
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+  --radius: 14px;
 }
 
-html, body {
-  margin: 0;
-  background: var(--aurum-bg);
-  color: var(--aurum-ink);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+/* ---------- Base ---------- */
+html,body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.top {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 16px 20px;
+a{ color: var(--gold); text-decoration: none; }
+a:hover{ text-decoration: underline; }
+
+/* ---------- Layout del módulo ---------- */
+.top{
+  max-width:1200px;
+  margin:0 auto;
+  padding:18px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+.brand{
+  display:flex; align-items:center; gap:10px;
+  font-weight:800; letter-spacing:.5px;
+  color:var(--gold);
+}
+nav a{
+  color:var(--ink);
+  opacity:.85; margin-left:18px;
+}
+nav a.active{ color:var(--gold); opacity:1; }
+nav a:hover{ opacity:1; }
+
+.container{
+  max-width:1200px;
+  margin: 14px auto 60px;
+  padding: 0 16px;
 }
 
-.top h1 {
-  margin: 0 0 8px 0;
-  font-weight: 700;
-  letter-spacing: .3px;
-}
-
-.top nav a {
-  color: var(--aurum-ink);
-  opacity: .9;
-  margin-right: 16px;
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-}
-.top nav a.active,
-.top nav a:hover { border-bottom-color: var(--aurum-accent); }
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 10px 20px 40px;
-}
-
-.viewer-wrap {
+/* ---------- Tarjetas genéricas ---------- */
+.card{
   background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.legend {
-  margin-top: 18px;
+  border: 1px solid var(--gold-20);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
   padding: 16px;
-  background: #111;
-  border: 1px solid var(--line);
-  border-radius: 12px;
+}
+.card h3{ margin:0 0 8px 0; }
+.muted{ color: var(--muted); }
+
+/* ---------- Viewer 3D (model-viewer) ---------- */
+.viewer-wrap{
+  margin: 18px 0;
+}
+model-viewer{
+  width:100%;
+  height:60vh;              /* móvil */
+  border-radius: var(--radius);
+  border:1px solid var(--gold-20);
+  background:#111;
+  overflow:hidden;
+  box-shadow: var(--shadow);
 }
 
-.legend h3 {
-  margin: 0 0 8px 0;
-  color: var(--aurum-accent);
+/* Alturas mayores para pantallas amplias */
+@media (min-width: 880px){
+  model-viewer{ height:72vh; }
 }
 
-.foot {
-  padding: 24px 20px 40px;
-  text-align: center;
-  color: #8a8a8a;
+/* Hotspots / tags (cuando se usen) */
+.hotspot{
+  --size: 16px;
+  width:var(--size); height:var(--size);
+  border-radius:999px;
+  background: var(--gold);
+  box-shadow: 0 0 0 3px rgba(0,0,0,.35);
+  border:2px solid #000;
 }
+.tag{
+  display:inline-block;
+  background: rgba(255,215,0,.08);
+  color: var(--ink);
+  border: 1px solid var(--gold-20);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: .92rem;
+}
+
+/* ---------- Barra de herramientas del visor ---------- */
+.toolbar{
+  display:flex; gap:8px; flex-wrap:wrap;
+  align-items:center; justify-content:flex-end;
+  margin:10px 0 0;
+}
+.btn{
+  appearance: none;
+  border:1px solid var(--gold-20);
+  background: #171a1b;
+  color: var(--ink);
+  padding:10px 14px;
+  border-radius:10px;
+  font-weight:600;
+  cursor:pointer;
+}
+.btn:hover{ border-color: var(--gold); }
+.btn.primary{
+  background: linear-gradient(180deg, #ffdf5a 0%, #ffcc00 100%);
+  color:#0d0d0d;
+  border-color:#ffcc00;
+}
+.btn.ghost{
+  background: transparent;
+}
+
+/* ---------- Checklist de 50 puntos (estilos compartidos) ---------- */
+.section-title{
+  font-size:1.15rem; font-weight:800;
+  letter-spacing:.3px; margin: 22px 0 10px;
+  color: var(--gold);
+}
+
+.grid{
+  display:grid; gap:12px;
+  grid-template-columns: 1fr;
+}
+@media (min-width:720px){
+  .grid{ grid-template-columns: repeat(2,1fr); }
+}
+@media (min-width:1100px){
+  .grid{ grid-template-columns: repeat(3,1fr); }
+}
+
+.point{
+  background: var(--panel);
+  border:1px solid var(--gold-20);
+  border-radius: var(--radius);
+  padding:14px;
+}
+.point h4{
+  margin:0 0 8px; font-size:1.02rem;
+}
+
+/* Estados */
+.state{
+  display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+  margin: 8px 0 10px;
+}
+.pill{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:6px 10px; border-radius:999px; font-weight:700;
+  border:1px solid transparent; cursor:pointer; user-select:none;
+}
+.pill input{ display:none; }
+
+/* Visual de estados */
+.pill.ok{ background:#0e3f25; color:#b7ffd3; border-color:#1aa35c; }
+.pill.obs{ background:#3b2f07; color:#ffe9a6; border-color:#caa72a; }
+.pill.nc{ background:#4a1111; color:#ffb6b6; border-color:#c24545; }
+
+/* Comentario / Observación */
+.point textarea,
+.point input[type="text"]{
+  width:100%; background:#0f1214; color:var(--ink);
+  border:1px solid var(--gold-20);
+  border-radius:10px; padding:10px 12px; resize: vertical;
+  font-size: .98rem;
+}
+.point textarea:focus,
+.point input[type="text"]:focus{
+  outline:none; border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(255,215,0,.08);
+}
+
+/* Botonera inferior del checklist */
+.actions{
+  display:flex; gap:10px; flex-wrap:wrap;
+  margin-top: 12px;
+}
+
+/* ---------- Evidencias / Adjuntos ---------- */
+.upload{
+  background: #0f1214; border:1px dashed var(--gold-20);
+  border-radius:12px; padding:12px; color: var(--muted);
+}
+input[type="file"]{
+  color:var(--muted);
+}
+
+/* ---------- Tabla / Resúmenes ---------- */
+.table{
+  width:100%; border-collapse: collapse;
+  background: var(--panel);
+  border:1px solid var(--gold-20);
+  border-radius: var(--radius);
+  overflow:hidden;
+}
+.table th, .table td{
+  padding:10px 12px; border-bottom:1px solid var(--line);
+}
+.table th{
+  background: rgba(255,215,0,.06);
+  color: var(--gold);
+  text-align:left; font-weight:800;
+}
+
+/* ---------- Notas y microcopy ---------- */
+.note{
+  margin-top:10px; color: var(--muted);
+  font-size:.95rem;
+}
+
+/* ---------- Utilidades ---------- */
+.row{ display:flex; gap:12px; flex-wrap:wrap; }
+.right{ margin-left:auto; }
+.center{ text-align:center; }
+
+/* ---------- Ajustes responsivos suaves ---------- */
+@media (max-width: 420px){
+  .top{ padding:14px 12px; }
+  .btn{ padding:9px 12px; }
+}
+
+/* ---------- Fin ---------- */
