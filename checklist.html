@@ -1,200 +1,146 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Checklist Técnico 3D · AURUM∞</title>
+  <title>Checklist Técnico 3D • AURUM∞</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="lemuria.css" />
   <style>
-    main{max-width:1200px;margin:0 auto;padding:16px}
-    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
-    @media (max-width:960px){.grid{grid-template-columns:1fr}}
-    .panel,.viewer-wrap{background:var(--bg-card);border:1px solid var(--gold-20);border-radius:14px;box-shadow:var(--shadow)}
-    .viewer-wrap{min-height:120px;display:grid;place-items:center;padding:14px;color:#a8b3b7}
-    .panel{padding:14px}
-    .panel h2{margin:0 0 8px 0;color:var(--gold)}
-    .meta{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:10px 0}
-    .meta input{width:100%;padding:8px;border-radius:8px;border:1px solid var(--gold-20);background:#0f1e21;color:var(--text)}
-    .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-    .filters button{padding:6px 10px;border-radius:12px;border:1px solid var(--gold-20);background:#0f1e21;color:var(--text);cursor:pointer}
-    .filters button.active{background:var(--gold);color:#0d0d0d}
-    .points{display:flex;flex-direction:column;gap:8px;max-height:56vh;overflow:auto;padding-right:6px}
-    .point{border:1px solid var(--gold-20);border-radius:12px;padding:10px;background:#0f1e21}
-    .point header{display:flex;align-items:center;gap:10px;justify-content:space-between}
-    .badge{min-width:28px;height:28px;border-radius:999px;background:var(--gold);color:#0d0d0d;display:grid;place-items:center;font-weight:700}
-    .state{display:flex;gap:6px}
-    .state input{accent-color:var(--gold)}
-    .comment{width:100%;margin-top:8px;padding:8px;border-radius:8px;border:1px solid var(--gold-20);background:#0f1e21;color:var(--text)}
-    .row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
-    .row button{padding:8px 12px;border-radius:10px;border:1px solid var(--gold-20);background:#0f1e21;color:var(--text);cursor:pointer}
-    .row button.primary{background:var(--gold);color:#0d0d0d}
-    .save{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    .save button{padding:10px 12px;border-radius:10px;border:1px solid var(--gold-20);background:#0f1e21;color:var(--text);cursor:pointer}
-    .save .accent{background:var(--gold);color:#0d0d0d;border-color:var(--gold)}
-    .legend{margin-top:12px;color:#a8b3b7}
+    .grid{display:grid;gap:16px}
+    @media(min-width:900px){.grid{grid-template-columns:1.2fr .8fr}}
+    .panel{background:var(--bg-card);border:1px solid var(--gold-20);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+    .point{border-bottom:1px dashed var(--gold-20);padding:10px 0}
+    .point:last-child{border-bottom:0}
+    .badges{display:flex;gap:10px;align-items:center;margin:8px 0}
+    .pill{padding:.2rem .55rem;border-radius:999px;font-size:.85rem}
+    .ok{background:#0b4; color:#eaffea}
+    .obs{background:#b8860b; color:#fff3cd}
+    .nc{background:#7a0b0b; color:#ffdede}
+    .tools{display:flex;gap:8px;flex-wrap:wrap}
+    .sticky{position:sticky; top:82px}
   </style>
 </head>
 <body>
-<header class="top">
-  <h1>AURUM∞</h1>
-  <nav>
-    <a href="index.html">Inicio</a>
-    <a href="vision.html">Visión</a>
-    <a href="modulos.html" class="active">Módulos</a>
-    <a href="contacto.html">Contacto</a>
-  </nav>
-</header>
+  <header class="top">
+    <h1>AURUM∞</h1>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="vision.html">Visión</a>
+      <a href="modulos.html">Módulos</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
+  </header>
 
-<main>
-  <h2 style="color:var(--gold);margin:0 0 10px 0">Checklist Técnico (50 puntos)</h2>
-  <div class="grid">
-    <section class="viewer-wrap">
-      <small>Visor 3D temporalmente desactivado en esta versión base.</small>
+  <main class="container grid">
+    <section class="panel">
+      <h2>Checklist Técnico · 50 puntos</h2>
+      <p class="muted">Equipo: <strong>Toyota Hilux</strong> · ID: <input id="ctxId" placeholder="HILUX-A8-001" /></p>
+
+      <div id="points"></div>
     </section>
 
-    <aside class="panel">
-      <h2>Contexto</h2>
-      <div class="meta">
-        <input id="ctxId" placeholder="ID Activo (ej: HILUX-A8-001)" />
-        <input id="ctxName" placeholder="Nombre (ej: Toyota Hilux – Check 50 pts)" />
-        <input id="ctxOper" placeholder="Operador" />
-        <input id="ctxFecha" placeholder="Fecha" disabled />
+    <aside class="panel sticky">
+      <h3>Controles</h3>
+      <div class="tools">
+        <button id="btnSave" class="btn gold">Guardar local</button>
+        <button id="btnLoad" class="btn">Cargar</button>
+        <button id="btnClear" class="btn">Borrar</button>
+        <button id="btnCSV" class="btn gold">Exportar CSV</button>
       </div>
 
-      <div class="filters">
-        <button data-filter="all" class="active">Todos</button>
-        <button data-filter="ok">OK</button>
-        <button data-filter="obs">Obs</button>
-        <button data-filter="nc">No Conforme</button>
-        <button id="btnExpand">Expandir/Colapsar</button>
+      <h4 style="margin-top:16px">Ir al punto</h4>
+      <select id="goto" style="width:100%"></select>
+
+      <div style="margin-top:16px">
+        <label>Adjuntar evidencia</label>
+        <input id="files" type="file" multiple />
+        <p class="muted">Las evidencias no se exportan; se conservarán cuando conectemos backend.</p>
       </div>
-
-      <h2>Puntos</h2>
-      <div id="points" class="points"></div>
-
-      <div class="save">
-        <button id="btnSave" class="accent">Guardar local</button>
-        <button id="btnLoad">Cargar guardado</button>
-        <button id="btnClear">Borrar guardado</button>
-        <button id="btnCSV">Exportar CSV</button>
-      </div>
-
-      <p class="legend">El guardado es local (navegador). Luego lo enviaremos al backend.</p>
     </aside>
-  </div>
-</main>
+  </main>
 
-<footer class="foot">© 2025 AURUM∞</footer>
+  <footer class="footer">© 2025 AURUM∞</footer>
 
-<script>
-const TOTAL = 50;
-const DEFAULT_TEXTS = [
-  "Motor / Admisión","Motor / Aceite","Motor / Refrigeración","Escape","Chasis / Bastidor",
-  "Suspensión delantera","Suspensión trasera","Dirección","Frenos delanteros","Frenos traseros",
-  "Neumáticos","Rines","Luces delanteras","Luces traseras","Señalización",
-  "Parabrisas","Ventanas","Espejos","Cinturones","Airbags",
-  "Batería","Alternador","Cableado","Fusibles","Unidad de control",
-  "Filtro de aire","Filtro de combustible","Filtro de cabina","Correas","Mangueras",
-  "Caja de cambios","Embrague","Cardanes","Diferenciales","Ejes",
-  "Depósito combustible","Escape fugas","Nivel de fluidos","Herramientas","Gata",
-  "Kit primeros aux.","Extintor","Triángulos","GPS/Telem.","Cámara retroceso",
-  "Cierre centralizado","Alarma","Tapicería","Pintura","Prueba ruta"
-];
+  <script>
+    const N = 50;
+    const KEY = 'aurum_checklist_50';
+    const labels = [
+      'Carrocería','Luces','Neumáticos','Llantas','Chasis / Bastidor','Frenos','Dirección','Suspensión','Amortiguadores','Motor',
+      'Transmisión','Radiador','Batería','Bocina','Cinturones','Airbags','Espejos','Parabrisas','Limpiaparabrisas','Fluidos',
+      'Escape','Filtro aire','Filtro aceite','Filtro combustible','Sistema eléctrico','Conexiones','Computador a bordo','OBD','Climatización','Compresor A/C',
+      'Tapicería','Asientos','Alfombras','Gomas puertas','Cerraduras','Ventanas','Puertas','Capó','Pick-up/Carrocería trasera','Pernos / torque',
+      'Gata / herramientas','Kit emergencia','Extintor','Triángulos','Botiquín','Documentación','Etiqueta QR','Señalética','Ruidos / vibraciones','Prueba ruta'
+    ];
+    const pointsEl = document.getElementById('points');
+    const gotoSel = document.getElementById('goto');
 
-const $ = s => document.querySelector(s);
-const ctx = { id:$("#ctxId"), name:$("#ctxName"), oper:$("#ctxOper"), fecha:$("#ctxFecha") };
-ctx.fecha.value = new Date().toLocaleString();
-
-const pointsWrap = $("#points");
-const data = [];
-
-function pointCard(i){
-  const wrap = document.createElement("div");
-  wrap.className = "point"; wrap.id = `p-${i}`;
-  wrap.innerHTML = `
-    <header>
-      <div style="display:flex;align-items:center;gap:10px">
-        <div class="badge">${i}</div>
-        <div>${DEFAULT_TEXTS[i-1] || ("Ítem "+i)}</div>
-      </div>
-      <div class="state">
-        <label><input type="radio" name="s${i}" value="ok" checked> OK</label>
-        <label><input type="radio" name="s${i}" value="obs"> Obs</label>
-        <label><input type="radio" name="s${i}" value="nc"> No conf.</label>
-      </div>
-    </header>
-    <textarea class="comment" rows="2" placeholder="Comentario / hallazgo..."></textarea>
-    <div class="row">
-      <button class="primary">Resaltar</button>
-    </div>
-  `;
-  data[i] = {estado:"ok", comentario:""};
-  wrap.querySelectorAll(`input[name="s${i}"]`).forEach(r=>{
-    r.addEventListener("change", ()=> data[i].estado = r.value);
-  });
-  wrap.querySelector(".comment").addEventListener("input", e=> data[i].comentario = e.target.value);
-  wrap.querySelector(".primary").addEventListener("click", ()=>{
-    wrap.scrollIntoView({behavior:"smooth",block:"center"});
-    wrap.style.outline="1px solid var(--gold)";
-    setTimeout(()=> wrap.style.outline="none", 1200);
-  });
-  return wrap;
-}
-for(let i=1;i<=TOTAL;i++) pointsWrap.appendChild(pointCard(i));
-
-const filterBtns = document.querySelectorAll(".filters button[data-filter]");
-filterBtns.forEach(b=>{
-  b.addEventListener("click", ()=>{
-    filterBtns.forEach(x=>x.classList.remove("active")); b.classList.add("active");
-    const f = b.dataset.filter;
-    for(let i=1;i<=TOTAL;i++){
-      const show = (f==="all") ? true : (data[i]?.estado===f);
-      document.getElementById(`p-${i}`).style.display = show ? "" : "none";
+    function row(i, label){
+      return `
+      <div class="point" id="p${i}">
+        <h4>Punto ${i+1} · ${label}</h4>
+        <div class="badges">
+          <label><input type="radio" name="st${i}" value="OK"> <span class="pill ok">OK</span></label>
+          <label><input type="radio" name="st${i}" value="OBS"> <span class="pill obs">Observación</span></label>
+          <label><input type="radio" name="st${i}" value="NC"> <span class="pill nc">No Conforme</span></label>
+        </div>
+        <input placeholder="Comentario / hallazgo…" id="c${i}" />
+      </div>`;
     }
-  });
-});
 
-let expanded = true;
-$("#btnExpand").addEventListener("click", ()=>{
-  expanded = !expanded;
-  document.querySelectorAll(".comment").forEach(c=> c.style.display = expanded ? "" : "none");
-});
-
-const KEY="aurum_checklist_v1";
-function payload(){
-  return {
-    ctx:{id:ctx.id.value,name:ctx.name.value,oper:ctx.oper.value,fecha:ctx.fecha.value},
-    puntos: data.map((d,idx)=> d ? ({n:idx,estado:d.estado,comentario:d.comentario}) : null).filter(Boolean)
-  };
-}
-function loadPayload(p){
-  ctx.id.value=p?.ctx?.id||""; ctx.name.value=p?.ctx?.name||""; ctx.oper.value=p?.ctx?.oper||"";
-  ctx.fecha.value=p?.ctx?.fecha||new Date().toLocaleString();
-  (p?.puntos||[]).forEach(pt=>{
-    data[pt.n]={estado:pt.estado,comentario:pt.comentario};
-    const card=document.getElementById(`p-${pt.n}`);
-    if(card){
-      const r=card.querySelector(`input[name="s${pt.n}"][value="${pt.estado}"]`); if(r) r.checked=true;
-      const c=card.querySelector(".comment"); if(c) c.value=pt.comentario||"";
+    function build(){
+      pointsEl.innerHTML = labels.map((l,i)=>row(i,l)).join('');
+      gotoSel.innerHTML = labels.map((l,i)=>`<option value="${i}">#${i+1} · ${l}</option>`).join('');
     }
-  });
-}
 
-$("#btnSave").addEventListener("click",()=>{localStorage.setItem(KEY,JSON.stringify(payload()));alert("Guardado local OK.");});
-$("#btnLoad").addEventListener("click",()=>{const raw=localStorage.getItem(KEY);if(!raw) return alert("No hay guardado.");loadPayload(JSON.parse(raw));alert("Cargado.");});
-$("#btnClear").addEventListener("click",()=>{localStorage.removeItem(KEY);alert("Guardado eliminado.");});
+    function read(){
+      const data = { ctxId: document.getElementById('ctxId').value, pts: [] };
+      for(let i=0;i<N;i++){
+        const st = document.querySelector(`input[name="st${i}"]:checked`);
+        data.pts.push({ s: st?st.value:'', c: document.getElementById('c'+i).value });
+      }
+      return data;
+    }
 
-$("#btnCSV").addEventListener("click", ()=>{
-  const p = payload();
-  const rows = [["ID","Nombre","Operador","Fecha","Punto","Texto","Estado","Comentario"]];
-  for(const pt of p.puntos){
-    rows.push([p.ctx.id,p.ctx.name,p.ctx.oper,p.ctx.fecha,pt.n,(DEFAULT_TEXTS[pt.n-1]||`Ítem ${pt.n}`),pt.estado,pt.comentario||""]);
-  }
-  const csv = rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\n");
-  const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"}); const url = URL.createObjectURL(blob);
-  const a = document.createElement("a"); a.href=url; a.download="checklist_aurum.csv"; a.click(); URL.revokeObjectURL(url);
-});
-</script>
+    function apply(d){
+      if(!d) return;
+      document.getElementById('ctxId').value = d.ctxId||'';
+      (d.pts||[]).forEach((p,i)=>{
+        if(p.s){ const r = document.querySelector(`input[name="st${i}"][value="${p.s}"]`); if(r) r.checked = true; }
+        document.getElementById('c'+i).value = p.c||'';
+      });
+    }
+
+    function save(){ localStorage.setItem(KEY, JSON.stringify(read())); alert('Guardado local.'); }
+    function load(){ apply(JSON.parse(localStorage.getItem(KEY)||'null')); }
+    function clearAll(){ if(confirm('¿Borrar guardado local del checklist?')){ localStorage.removeItem(KEY); location.reload(); } }
+    function csv(){
+      const d = read();
+      const head = ['Punto','Etiqueta','Estado','Comentario'];
+      const rows = labels.map((l,i)=>{
+        const st = document.querySelector(`input[name="st${i}"]:checked`);
+        return [i+1, l, st?st.value:'', document.getElementById('c'+i).value];
+      });
+      const esc = v => `"${(v||'').toString().replace(/"/g,'""')}"`;
+      const csv = [head.map(esc).join(',')].concat(rows.map(r=>r.map(esc).join(','))).join('\n');
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = (d.ctxId||'checklist')+'_50pts.csv';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    document.getElementById('btnSave').onclick = save;
+    document.getElementById('btnLoad').onclick = load;
+    document.getElementById('btnClear').onclick = clearAll;
+    document.getElementById('btnCSV').onclick = csv;
+    document.getElementById('goto').onchange = e => {
+      const i = +e.target.value;
+      document.getElementById('p'+i).scrollIntoView({behavior:'smooth', block:'start'});
+    };
+
+    build(); load();
+  </script>
 </body>
 </html>
