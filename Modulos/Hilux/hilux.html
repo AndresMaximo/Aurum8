@@ -1,1 +1,86 @@
-hhhh
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Toyota Hilux 3D · AURUM∞</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="lemuria.css">
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    /* Contexto (igual que en trazabilidad) */
+    .ctx-wrap{position:sticky;top:0;z-index:999;background:linear-gradient(180deg,#0e1e21 0%,#0f1e21ee 100%);border-bottom:1px solid rgba(212,175,55,.25);box-shadow:0 6px 14px rgba(0,0,0,.25);backdrop-filter:blur(6px)}
+    .ctx{max-width:1100px;margin:0 auto;padding:12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;align-items:center;color:#e9ecf1;font-size:.95rem}
+    .ctx b{color:#f1c84c} .ctx input{width:100%;padding:6px 10px;border-radius:8px;border:1px solid rgba(212,175,55,.35);background:#0f1e21;color:#e9ecf1}
+    .ctx .mini{display:flex;flex-wrap:wrap;gap:10px}.ctx .pill{padding:6px 10px;border:1px solid rgba(212,175,55,.35);border-radius:999px;color:#f1c84c;text-decoration:none}
+    .ctx .pill.active{background:#1b2a2e;border-color:#f1c84c}.ctx .btn{background:#f1c84c;color:#0f1e21;border:none;border-radius:10px;padding:6px 10px;font-weight:700;cursor:pointer}
+    @media (max-width:720px){.ctx{grid-template-columns:1fr}}
+    /* Página */
+    main{max-width:1100px;margin:24px auto;padding:0 16px}
+    .viewer{border:1px solid rgba(212,175,55,.35);border-radius:14px;overflow:hidden;background:#0f1e21}
+    model-viewer{width:100%;height:min(70vh,720px);background:#0a1518}
+    .row{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-top:16px}
+    @media (max-width:960px){.row{grid-template-columns:1fr}}
+    .card{background:#0f1e21;border:1px solid rgba(212,175,55,.25);border-radius:14px;padding:16px}
+    .btn{background:#f1c84c;color:#0f1e21;border:none;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
+    ul{margin:.5rem 0 0 1rem}
+  </style>
+</head>
+<body>
+<!-- Contexto -->
+<div class="ctx-wrap"><div class="ctx">
+  <div><label><b>ID Activo</b></label><input id="ctx-id" placeholder="Ej: HILUX-A8-001"></div>
+  <div><label><b>Nombre</b></label><input id="ctx-name" placeholder="Ej: Toyota Hilux"></div>
+  <div><label><b>Operador</b></label><input id="ctx-op" placeholder="Ej: Andrés Bello"></div>
+  <div class="mini">
+    <a class="pill" href="checklist.html">Checklist 3D</a>
+    <a class="pill" href="trazabilidad.html">Trazabilidad</a>
+    <a class="pill" href="numerologia.html">Numerología</a>
+    <a class="pill active" href="hilux.html">Hilux 3D</a>
+    <button class="btn" id="ctx-clear">Limpiar</button>
+  </div>
+</div></div>
+
+<main>
+  <h1>Toyota Hilux 3D</h1>
+  <div class="row">
+    <div class="viewer">
+      <model-viewer id="mv"
+        src="assets/hilux.glb"
+        camera-controls
+        auto-rotate
+        ar
+        ar-modes="webxr scene-viewer quick-look"
+        exposure="1.1" shadow-intensity="1.2"
+        poster="assets/hilux-poster.jpg"
+        alt="Modelo 3D Toyota Hilux">
+      </model-viewer>
+    </div>
+
+    <div class="card">
+      <h3>Inspección rápida</h3>
+      <p>Usa el checklist de 50 puntos y vincula resultados a la trazabilidad.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn" href="checklist.html?id=HILUX-A8-001&name=Toyota%20Hilux">Abrir Checklist</a>
+        <a class="btn" href="trazabilidad.html?id=HILUX-A8-001&name=Toyota%20Hilux">Registrar Intervención</a>
+      </div>
+      <h4 style="margin-top:16px">Sugerencias de uso</h4>
+      <ul>
+        <li>Pincha y arrastra para orbitar; doble toque para enfocar.</li>
+        <li>Activa AR si tu dispositivo lo permite.</li>
+      </ul>
+    </div>
+  </div>
+</main>
+
+<script>
+/* Contexto mínimo */
+(function(){const $=s=>document.querySelector(s),id=$('#ctx-id'),nm=$('#ctx-name'),op=$('#ctx-op');
+const saved=JSON.parse(localStorage.getItem('aurum_ctx')||'{}');if(saved.id)id.value=saved.id;if(saved.name)nm.value=saved.name;if(saved.op)op.value=saved.op;
+const q=new URLSearchParams(location.search);['id','name','op'].forEach(k=>{if(q.get(k)){if(k==='id')id.value=q.get(k);if(k==='name')nm.value=q.get(k);if(k==='op')op.value=q.get(k);}});
+save();[id,nm,op].forEach(e=>e.addEventListener('input',save));function save(){localStorage.setItem('aurum_ctx',JSON.stringify({id:id.value.trim(),name:nm.value.trim(),op:op.value.trim()}));}
+document.querySelector('#ctx-clear').addEventListener('click',()=>{localStorage.removeItem('aurum_ctx');id.value=nm.value=op.value='';});})();
+</script>
+</body>
+</html>
