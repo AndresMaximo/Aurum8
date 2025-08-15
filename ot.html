@@ -1,224 +1,125 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Órdenes de Trabajo – AURUM∞</title>
-<style>
-  :root{--bg:#0f1216;--panel:#151a21;--text:#e9f0ff;--muted:#a8b3c7;--gold:#ffd54a;--br:18px}
-  html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Segoe UI,Roboto,Ubuntu,Arial}
-  a{color:inherit;text-decoration:none}
-  .wrap{max-width:1100px;margin:auto;padding:18px}
-  header{position:sticky;top:0;background:#0f1216;border-bottom:1px solid #1f2630}
-  nav a{margin-right:16px;color:var(--muted)}
-  nav a:hover{color:var(--text)}
-  h1{margin:16px 0}
-  .panel{background:linear-gradient(180deg,#151a21,#10151b);border:1px solid #212a36;border-radius:var(--br);padding:18px}
-  .row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
-  input,select,textarea{background:#0f141b;border:1px solid #263041;border-radius:10px;color:var(--text);padding:10px;width:100%}
-  label{color:var(--muted);font-size:.9rem}
-  .btn{background:#16202b;border:1px solid #273140;color:var(--text);padding:10px 14px;border-radius:12px;display:inline-block}
-  .btn:hover{border-color:#3a4556}
-  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
-  table{width:100%;border-collapse:collapse;margin-top:10px}
-  th,td{border-bottom:1px solid #232a35;padding:10px;text-align:left;color:#cfe1ff}
-  th{color:var(--muted);font-weight:600}
-  .pill{padding:2px 8px;border-radius:999px;font-size:.78rem;border:1px solid #323a46;color:#c0cee3;display:inline-block}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Órdenes de Trabajo • AURUM∞</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="lemuria.css" />
+  <style>
+    .grid{display:grid;gap:16px}
+    @media(min-width:920px){.grid{grid-template-columns:1fr 2fr}}
+    .card{background:var(--bg-card);border:1px solid var(--gold-20);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+    table{width:100%;border-collapse:collapse}
+    th,td{border-bottom:1px dashed var(--gold-20);padding:10px 8px;text-align:left}
+    th{color:var(--gold)}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  </style>
 </head>
 <body>
-<header class="wrap">
+<header class="top">
+  <h1>AURUM∞</h1>
   <nav>
-    <a href="modulos.html">← Módulos</a>
+    <a href="index.html">Inicio</a>
+    <a href="vision.html">Visión</a>
+    <a href="modulos.html">Módulos</a>
+    <a href="contacto.html">Contacto</a>
   </nav>
-  <h1>Órdenes de Trabajo</h1>
 </header>
 
-<main class="wrap">
-
-  <!-- Formulario -->
-  <section class="panel">
-    <div class="row">
-      <div style="grid-column: span 2;">
-        <label>Código OT</label>
-        <input id="ot" placeholder="OT-0001" />
+<main class="container grid">
+  <section class="card">
+    <h2>Nueva OT</h2>
+    <form id="frm" autocomplete="off">
+      <input type="hidden" id="idx" value="-1" />
+      <label>Código</label><input id="cod" placeholder="OT-0001" required />
+      <label>Activo</label><input id="act" placeholder="HILUX-A8-001" />
+      <label>Prioridad</label>
+      <select id="pri"><option>Alta</option><option>Media</option><option>Baja</option></select>
+      <label>Estado</label>
+      <select id="est"><option>Pendiente</option><option>En curso</option><option>Cerrada</option></select>
+      <label>Descripción</label><textarea id="des" rows="4" placeholder="Trabajo a realizar…"></textarea>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+        <button class="btn gold">Guardar</button>
+        <button type="button" id="limpiar" class="btn">Limpiar</button>
       </div>
-      <div style="grid-column: span 2;">
-        <label>Equipo</label>
-        <input id="equipo" placeholder="Ej: CH440-03" />
-      </div>
-      <div>
-        <label>Estado</label>
-        <select id="estado">
-          <option>Abierta</option>
-          <option>En progreso</option>
-          <option>Cerrada</option>
-        </select>
-      </div>
-      <div>
-        <label>Prioridad</label>
-        <select id="prio">
-          <option>Media</option>
-          <option>Alta</option>
-          <option>Baja</option>
-        </select>
-      </div>
-
-      <div style="grid-column: span 3;">
-        <label>Título</label>
-        <input id="titulo" placeholder="Descripción corta de la intervención" />
-      </div>
-      <div style="grid-column: span 3;">
-        <label>Responsable</label>
-        <input id="resp" placeholder="Nombre responsable" />
-      </div>
-
-      <div style="grid-column: span 6;">
-        <label>Detalle</label>
-        <textarea id="detalle" rows="3" placeholder="Trabajo a realizar, repuestos, riesgos, etc."></textarea>
-      </div>
-    </div>
-
-    <div class="toolbar">
-      <button class="btn" onclick="guardar()">Guardar / Actualizar</button>
-      <button class="btn" onclick="limpiar()">Limpiar</button>
-      <button class="btn" onclick="exportarCSV()">Exportar CSV</button>
-      <button class="btn" onclick="imprimir()">Imprimir</button>
-    </div>
-
-    <small style="color:#8fa1bb">Los datos se guardan en tu navegador (sin servidor). ID automático y fecha/hora se asignan al guardar.</small>
+    </form>
   </section>
 
-  <!-- Filtros -->
-  <section class="panel" style="margin-top:12px">
+  <section class="card">
+    <h2>Órdenes</h2>
     <div class="toolbar">
-      <input id="q" placeholder="Buscar por código, equipo o texto…" oninput="render()" style="flex:1" />
-      <select id="fEstado" onchange="render()">
-        <option value="">Estado: Todos</option>
-        <option>Abierta</option>
-        <option>En progreso</option>
-        <option>Cerrada</option>
+      <input id="q" type="search" placeholder="Buscar…" />
+      <select id="fEstado">
+        <option value="">Estado: todos</option>
+        <option>Pendiente</option><option>En curso</option><option>Cerrada</option>
       </select>
-      <select id="fPrio" onchange="render()">
-        <option value="">Prioridad: Todas</option>
-        <option>Alta</option>
-        <option>Media</option>
-        <option>Baja</option>
+      <select id="fPri">
+        <option value="">Prioridad: todas</option>
+        <option>Alta</option><option>Media</option><option>Baja</option>
       </select>
+      <div style="flex:1"></div>
+      <button id="csv" class="btn gold">Exportar CSV</button>
+      <button id="wipe" class="btn">Borrar todo</button>
     </div>
-
-    <table id="tabla">
-      <thead><tr>
-        <th>ID</th><th>Fecha</th><th>OT</th><th>Equipo</th><th>Título</th><th>Estado</th><th>Prioridad</th><th>Acciones</th>
-      </tr></thead>
-      <tbody></tbody>
-    </table>
+    <div style="overflow:auto">
+      <table>
+        <thead><tr><th>Código</th><th>Activo</th><th>Prioridad</th><th>Estado</th><th>Descripción</th><th>Acciones</th></tr></thead>
+        <tbody id="body"></tbody>
+      </table>
+    </div>
   </section>
-
 </main>
 
+<footer class="footer">© 2025 AURUM∞</footer>
+
 <script>
-const KEY='aurum_ot_v1';
+  const KEY='aurum_ot';
+  const $=s=>document.querySelector(s);
+  const frm=$('#frm'), body=$('#body');
+  const leer=()=>JSON.parse(localStorage.getItem(KEY)||'[]');
+  const guardar=arr=>localStorage.setItem(KEY,JSON.stringify(arr));
 
-function uid(){ return Math.random().toString(36).slice(2,8); }
-
-function getList(){ return JSON.parse(localStorage.getItem(KEY)||'[]'); }
-function setList(arr){ localStorage.setItem(KEY, JSON.stringify(arr)); }
-
-function limpiar(){
-  ['ot','equipo','titulo','resp','detalle','q'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('estado').selectedIndex=0;
-  document.getElementById('prio').selectedIndex=0;
-  document.getElementById('fEstado').selectedIndex=0;
-  document.getElementById('fPrio').selectedIndex=0;
-  render();
-}
-
-function guardar(){
-  const rec={
-    id: document.getElementById('ot').dataset.id || uid(),
-    ts: new Date().toISOString(),
-    ot: document.getElementById('ot').value.trim(),
-    equipo: document.getElementById('equipo').value.trim(),
-    estado: document.getElementById('estado').value,
-    prioridad: document.getElementById('prio').value,
-    titulo: document.getElementById('titulo').value.trim(),
-    responsable: document.getElementById('resp').value.trim(),
-    detalle: document.getElementById('detalle').value.trim()
-  };
-  if(!rec.ot || !rec.equipo || !rec.titulo){ alert('Completa OT, Equipo y Título'); return; }
-  const arr=getList();
-  const i=arr.findIndex(x=>x.id===rec.id);
-  if(i>=0) arr[i]=rec; else arr.unshift(rec);
-  setList(arr);
-  document.getElementById('ot').dataset.id='';
-  limpiar();
-}
-
-function editar(id){
-  const x=getList().find(r=>r.id===id); if(!x) return;
-  document.getElementById('ot').dataset.id = x.id;
-  document.getElementById('ot').value = x.ot;
-  document.getElementById('equipo').value = x.equipo;
-  document.getElementById('estado').value = x.estado;
-  document.getElementById('prio').value = x.prioridad;
-  document.getElementById('titulo').value = x.titulo;
-  document.getElementById('resp').value = x.responsable;
-  document.getElementById('detalle').value = x.detalle;
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function borrar(id){
-  if(!confirm('¿Eliminar OT?')) return;
-  setList(getList().filter(r=>r.id!==id));
-  render();
-}
-
-function render(){
-  const q = document.getElementById('q').value.toLowerCase();
-  const fe = document.getElementById('fEstado').value;
-  const fp = document.getElementById('fPrio').value;
-  let arr=getList();
-  if(q){
-    arr=arr.filter(x=>(x.ot+x.equipo+x.titulo+x.detalle).toLowerCase().includes(q));
+  function pintar(){
+    const q=$('#q').value.toLowerCase(), fe=$('#fEstado').value, fp=$('#fPri').value;
+    body.innerHTML = leer()
+      .map((r,i)=>({...r,i}))
+      .filter(r=>(!q|| (r.cod+r.act+r.des).toLowerCase().includes(q)) && (!fe||r.est===fe) && (!fp||r.pri===fp))
+      .map(r=>`<tr>
+        <td>${esc(r.cod)}</td><td>${esc(r.act||'')}</td><td>${esc(r.pri)}</td><td>${esc(r.est)}</td>
+        <td>${esc(r.des||'')}</td>
+        <td><button class="btn" data-e="${r.i}">Editar</button> <button class="btn" data-d="${r.i}">Borrar</button></td>
+      </tr>`).join('') || `<tr><td colspan="6" class="muted">Sin OT…</td></tr>`;
   }
-  if(fe) arr=arr.filter(x=>x.estado===fe);
-  if(fp) arr=arr.filter(x=>x.prioridad===fp);
-  const tb=document.querySelector('#tabla tbody');
-  tb.innerHTML=arr.map(x=>`
-    <tr>
-      <td>${x.id}</td>
-      <td>${new Date(x.ts).toLocaleString()}</td>
-      <td>${x.ot}</td>
-      <td>${x.equipo}</td>
-      <td>${x.titulo}</td>
-      <td><span class="pill">${x.estado}</span></td>
-      <td><span class="pill">${x.prioridad}</span></td>
-      <td>
-        <button class="btn" onclick="editar('${x.id}')">Editar</button>
-        <button class="btn" onclick="borrar('${x.id}')">Borrar</button>
-      </td>
-    </tr>
-  `).join('');
-}
+  function esc(s){return (s??'').toString().replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));}
 
-function exportarCSV(){
-  const arr=getList();
-  if(!arr.length){ alert('No hay datos.'); return; }
-  const cols=['id','ts','ot','equipo','estado','prioridad','titulo','responsable','detalle'];
-  const csv=[cols.join(',')].concat(arr.map(o=>cols.map(k=>`"${String(o[k]||'').replaceAll('"','""')}"`).join(','))).join('\n');
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='ordenes_trabajo.csv';
-  a.click();
-}
+  frm.addEventListener('submit',e=>{
+    e.preventDefault();
+    const r={cod:$('#cod').value.trim(), act:$('#act').value.trim(), pri:$('#pri').value, est:$('#est').value, des:$('#des').value.trim()};
+    const arr=leer(); const i=parseInt($('#idx').value,10);
+    if(Number.isInteger(i)&&i>=0) arr[i]=r; else arr.push(r);
+    guardar(arr); limpiar(); pintar();
+  });
+  function limpiar(){ frm.reset(); $('#idx').value=-1; $('#cod').focus(); }
+  $('#limpiar').onclick=limpiar;
 
-function imprimir(){
-  window.print();
-}
+  body.addEventListener('click',e=>{
+    const iE=e.target.getAttribute('data-e'), iD=e.target.getAttribute('data-d');
+    if(iE){ const r=leer()[+iE]; $('#idx').value=iE; $('#cod').value=r.cod; $('#act').value=r.act||''; $('#pri').value=r.pri; $('#est').value=r.est; $('#des').value=r.des||''; window.scrollTo({top:0,behavior:'smooth'}); }
+    if(iD){ const arr=leer(); arr.splice(+iD,1); guardar(arr); pintar(); }
+  });
 
-render();
+  $('#q').oninput=$('#fEstado').onchange=$('#fPri').onchange=pintar;
+
+  $('#csv').onclick=()=>{
+    const head=['Código','Activo','Prioridad','Estado','Descripción'];
+    const esc=v=>`"${(v||'').toString().replace(/"/g,'""')}"`;
+    const csv=[head.join(',')].concat(leer().map(r=>[r.cod,r.act,r.pri,r.est,r.des].map(esc).join(','))).join('\n');
+    const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}); const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob); a.download='ot_aurum.csv'; a.click(); URL.revokeObjectURL(a.href);
+  };
+  $('#wipe').onclick=()=>{ if(confirm('¿Borrar todas las OT locales?')){ localStorage.removeItem(KEY); pintar(); } };
+  pintar();
 </script>
 </body>
 </html>
