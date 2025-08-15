@@ -1,148 +1,96 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Trazabilidad de Activo · AURUM∞</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="lemuria.css">
+  <title>Trazabilidad Energética • AURUM∞</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="lemuria.css" />
   <style>
-    /* ====== Banner de Contexto AURUM∞ ====== */
-    .ctx-wrap{position:sticky;top:0;z-index:999;background:linear-gradient(180deg,#0e1e21 0%,#0f1e21ee 100%);border-bottom:1px solid rgba(212,175,55,.25);box-shadow:0 6px 14px rgba(0,0,0,.25);backdrop-filter:blur(6px)}
-    .ctx{max-width:1100px;margin:0 auto;padding:12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;align-items:center;color:#e9ecf1;font-size:.95rem}
-    .ctx b{color:#f1c84c;font-weight:700;letter-spacing:.2px}
-    .ctx input{width:100%;padding:6px 10px;border-radius:8px;border:1px solid rgba(212,175,55,.35);background:#0f1e21;color:#e9ecf1;outline:none}
-    .ctx .mini{display:flex;flex-wrap:wrap;gap:10px}
-    .ctx .pill{padding:6px 10px;border:1px solid rgba(212,175,55,.35);border-radius:999px;color:#f1c84c;text-decoration:none}
-    .ctx .pill.active{background:#1b2a2e;border-color:#f1c84c}
-    .ctx .btn{background:#f1c84c;color:#0f1e21;border:none;border-radius:10px;padding:6px 10px;font-weight:700;cursor:pointer}
-    @media (max-width:720px){.ctx{grid-template-columns:1fr}}
-    /* ====== Página ====== */
-    main{max-width:1000px;margin:24px auto;padding:0 16px}
-    .card{background:var(--bg-card,#0f1e21);border:1px solid rgba(212,175,55,.25);border-radius:14px;padding:18px;box-shadow:var(--shadow,0 8px 22px rgba(0,0,0,.35));}
-    .field{display:flex;flex-direction:column;gap:6px;margin:12px 0}
-    .field label{font-weight:600;color:#f1c84c}
-    .field input,.field select,.field textarea{background:#0f1e21;border:1px solid rgba(212,175,55,.35);border-radius:10px;color:#e9ecf1;padding:12px 14px;font-size:1rem;outline:none}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
-    .btn{background:#f1c84c;color:#0f1e21;border:none;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
-    .muted{opacity:.85}
+    .card{background:var(--bg-card);border:1px solid var(--gold-20);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+    .row{display:grid;gap:10px}
+    @media(min-width:760px){.row{grid-template-columns:repeat(2,1fr)}}
   </style>
 </head>
 <body>
+<header class="top">
+  <h1>AURUM∞</h1>
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="vision.html">Visión</a>
+    <a href="modulos.html">Módulos</a>
+    <a href="contacto.html">Contacto</a>
+  </nav>
+</header>
 
-<!-- ===== CONTEXTO AURUM∞ ===== -->
-<div class="ctx-wrap">
-  <div class="ctx" id="ctx">
-    <div><label><b>ID Activo</b></label><input id="ctx-id" placeholder="Ej: HILUX-A8-001"></div>
-    <div><label><b>Nombre</b></label><input id="ctx-name" placeholder="Ej: Toyota Hilux"></div>
-    <div><label><b>Operador</b></label><input id="ctx-op" placeholder="Ej: Andrés Bello"></div>
-    <div class="mini">
-      <a class="pill" href="checklist.html">Checklist 3D</a>
-      <a class="pill active" href="trazabilidad.html">Trazabilidad</a>
-      <a class="pill" href="numerologia.html">Numerología</a>
-      <a class="pill" href="hilux.html">Hilux 3D</a>
-      <button class="btn" id="ctx-clear">Limpiar</button>
-    </div>
-  </div>
-</div>
-<!-- ===== / CONTEXTO ===== -->
+<main class="container">
+  <h2>Trazabilidad de Activo / Intervención</h2>
 
-<main>
-  <h1>Trazabilidad de Activo / Intervención</h1>
-  <div class="card">
-    <div class="field">
-      <label for="assetId">ID Activo (QR / Código interno)</label>
-      <input id="assetId" placeholder="Ej: HILUX-A8-001">
-    </div>
-
-    <div class="field">
-      <label for="assetName">Nombre / Descripción</label>
-      <input id="assetName" placeholder="Toyota Hilux – Check 50 pts / Intervención">
-    </div>
-
+  <section class="card">
     <div class="row">
-      <div class="field">
-        <label for="state">Estado</label>
-        <select id="state">
-          <option>Pendiente</option>
-          <option>En curso</option>
-          <option>Completado</option>
-          <option>Observado</option>
+      <div>
+        <label>ID Activo (QR / código)</label>
+        <input id="id" placeholder="HILUX-A8-001" />
+      </div>
+      <div>
+        <label>Nombre / Descripción</label>
+        <input id="desc" placeholder="Toyota Hilux – Check 50 pts / Intervención" />
+      </div>
+      <div>
+        <label>Estado</label>
+        <select id="estado">
+          <option>Pendiente</option><option>En proceso</option><option>Terminado</option>
         </select>
       </div>
-      <div class="field">
+      <div>
         <label>Ubicación (GPS)</label>
-        <div class="actions">
-          <button class="btn" id="gpsBtn">Obtener ubicación</button>
-          <span class="muted" id="gpsOut">Lat: —, Lng: —</span>
+        <div style="display:flex; gap:8px">
+          <button id="gps" class="btn">Obtener ubicación</button>
+          <input id="lat" placeholder="Lat" />
+          <input id="lng" placeholder="Lng" />
         </div>
-        <small class="muted">Se almacena la última posición registrada para este activo.</small>
+      </div>
+      <div class="row" style="grid-column:1/-1">
+        <label>Evidencia (imágenes, PDFs)</label>
+        <input id="files" type="file" multiple />
       </div>
     </div>
-
-    <div class="field">
-      <label for="operator">Operador</label>
-      <input id="operator" placeholder="Nombre del operador">
+    <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap">
+      <button id="save" class="btn gold">Guardar local</button>
+      <button id="load" class="btn">Cargar</button>
+      <button id="clear" class="btn">Borrar</button>
+      <button id="csv" class="btn gold">Exportar CSV</button>
     </div>
-
-    <div class="field">
-      <label for="evidence">Adjuntar evidencia (imágenes, PDFs)</label>
-      <input id="evidence" type="file" multiple />
-    </div>
-
-    <div class="actions">
-      <button class="btn" id="saveBtn">Guardar Registro</button>
-      <span id="saveMsg" class="muted"></span>
-    </div>
-  </div>
+    <p class="muted" style="margin-top:8px">El guardado es local (navegador). Se conectará a backend más adelante.</p>
+  </section>
 </main>
 
+<footer class="footer">© 2025 AURUM∞</footer>
+
 <script>
-/* ===== Contexto compartido ===== */
-(function(){
-  const $=s=>document.querySelector(s);
-  const idI=$('#ctx-id'), nameI=$('#ctx-name'), opI=$('#ctx-op');
-  const saved=JSON.parse(localStorage.getItem('aurum_ctx')||'{}');
-  if(saved.id)idI.value=saved.id; if(saved.name)nameI.value=saved.name; if(saved.op)opI.value=saved.op;
-  const q=new URLSearchParams(location.search);
-  ['id','name','op'].forEach(k=>{ if(q.get(k)){ if(k==='id')idI.value=q.get(k); if(k==='name')nameI.value=q.get(k); if(k==='op')opI.value=q.get(k);} });
-  save(); [idI,nameI,opI].forEach(el=>el.addEventListener('input',save));
-  function save(){ localStorage.setItem('aurum_ctx', JSON.stringify({id:idI.value.trim(),name:nameI.value.trim(),op:opI.value.trim()})); }
-  $('#ctx-clear').addEventListener('click',()=>{localStorage.removeItem('aurum_ctx');idI.value=nameI.value=opI.value='';});
-  window.AURUM_CTX={get id(){return idI.value.trim()},get name(){return nameI.value.trim()},get op(){return opI.value.trim()}};
-})();
+ const KEY='aurum_trz';
+ const $=s=>document.querySelector(s);
+ const read=()=>({
+    id:$('#id').value, desc:$('#desc').value, estado:$('#estado').value,
+    lat:$('#lat').value, lng:$('#lng').value, ts:new Date().toISOString()
+  });
+ const apply=d=>{ if(!d) return; $('#id').value=d.id||''; $('#desc').value=d.desc||''; $('#estado').value=d.estado||'Pendiente'; $('#lat').value=d.lat||''; $('#lng').value=d.lng||''; };
 
-/* ===== Precarga desde Contexto ===== */
-document.querySelector('#assetId').value = AURUM_CTX.id || '';
-document.querySelector('#assetName').value = AURUM_CTX.name || '';
-document.querySelector('#operator').value = AURUM_CTX.op || '';
+ $('#gps').onclick=()=>navigator.geolocation && navigator.geolocation.getCurrentPosition(p=>{ $('#lat').value=p.coords.latitude.toFixed(6); $('#lng').value=p.coords.longitude.toFixed(6); });
 
-/* ===== GPS ===== */
-document.querySelector('#gpsBtn').addEventListener('click', ()=>{
-  const out = document.querySelector('#gpsOut');
-  if(!navigator.geolocation){ out.textContent='GPS no disponible'; return;}
-  navigator.geolocation.getCurrentPosition(
-    p=>{ out.textContent=`Lat: ${p.coords.latitude.toFixed(6)}, Lng: ${p.coords.longitude.toFixed(6)}`; },
-    _=>{ out.textContent='No se pudo obtener ubicación'; },
-    {enableHighAccuracy:true,timeout:8000}
-  );
-});
+ $('#save').onclick=()=>{ localStorage.setItem(KEY, JSON.stringify(read())); alert('Guardado.'); };
+ $('#load').onclick=()=>apply(JSON.parse(localStorage.getItem(KEY)||'null'));
+ $('#clear').onclick=()=>{ if(confirm('¿Borrar tarjeta local?')){ localStorage.removeItem(KEY); location.reload(); } };
+ $('#csv').onclick=()=>{
+   const d=read();
+   const esc=v=>`"${(v||'').toString().replace(/"/g,'""')}"`;
+   const head=['ID','Descripción','Estado','Lat','Lng','Fecha'];
+   const row=[d.id,d.desc,d.estado,d.lat,d.lng,d.ts].map(esc).join(',');
+   const blob=new Blob([[head.join(','),row].join('\n')],{type:'text/csv;charset=utf-8;'});
+   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=(d.id||'trazabilidad')+'.csv'; a.click(); URL.revokeObjectURL(a.href);
+ };
 
-/* ===== Guardado local simple (demo) ===== */
-document.querySelector('#saveBtn').addEventListener('click', ()=>{
-  const rec = {
-    id: document.querySelector('#assetId').value.trim(),
-    name: document.querySelector('#assetName').value.trim(),
-    state: document.querySelector('#state').value,
-    operator: document.querySelector('#operator').value.trim(),
-    when: new Date().toISOString()
-  };
-  const key = 'aurum_traza_'+(rec.id||'sin-id');
-  const arr = JSON.parse(localStorage.getItem(key)||'[]');
-  arr.push(rec); localStorage.setItem(key, JSON.stringify(arr));
-  document.querySelector('#saveMsg').textContent = 'Registro guardado localmente ✔';
-});
+ apply(JSON.parse(localStorage.getItem(KEY)||'null'));
 </script>
 </body>
 </html>
