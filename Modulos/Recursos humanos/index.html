@@ -1,303 +1,263 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Recursos Humanos • AURUM∞</title>
 
-  <!-- Hereda tu tema Lemuriano desde la raíz -->
-  <link rel="stylesheet" href="../../style.css">
-  <link rel="stylesheet" href="../../lemuria.css">
+  <!-- Hereda tema Lemuriano desde la raíz -->
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../../lemuria.css" />
 
   <style>
     /* Ajustes suaves para tarjetas y tabla con variables del tema */
     .grid {display:grid; gap:16px}
     @media (min-width: 720px){ .grid.cols-3{grid-template-columns:repeat(3,1fr)} }
-    .card{background:var(--bg-card); border:1px solid var(--gold-20); border-radius:14px; padding:16px; box-shadow:var(--shadow)}
-    .card h3{margin:0 0 6px}
-    .muted{opacity:.85}
-    .toolbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:8px 0 16px}
-    .toolbar input[type="search"]{flex:1; min-width:180px; background:#0f1e21; color:var(--text); border:1px solid var(--gold-20); border-radius:10px; padding:10px 12px}
-    .btn{display:inline-flex; align-items:center; gap:8px; border-radius:10px; padding:10px 14px; font-weight:600; cursor:pointer; border:1px solid var(--gold-20); background:#0f1e21; color:var(--text)}
-    .btn.gold{background:var(--gold); color:#0d0d0d; border-color:transparent}
-    .btn.ghost{background:transparent}
-    .table-wrap{overflow:auto; border:1px solid var(--gold-20); border-radius:14px}
-    table{width:100%; border-collapse:collapse; font-size:.95rem; background:var(--bg-card)}
-    thead th{position:sticky; top:0; background:#0f1e21; color:var(--gold); text-align:left; padding:12px}
-    tbody td{padding:10px 12px; border-top:1px solid var(--gold-20)}
-    .tag{display:inline-block; padding:2px 8px; border-radius:999px; font-size:.8rem; border:1px solid var(--gold-20)}
-    .tag.admin{background:#ffd70022}
-    .actions{display:flex; gap:6px}
-    .empty{padding:20px; text-align:center; opacity:.8}
 
-    dialog.modal{
-      border:none; border-radius:16px; padding:0; max-width:560px; width:92%;
-      background:var(--bg-card); color:var(--text); box-shadow:0 10px 40px #00000066; overflow:hidden
-    }
-    .modal header{padding:14px 16px; background:linear-gradient(90deg,#0f1e21,#102a2f); border-bottom:1px solid var(--gold-20)}
-    .modal header h3{margin:0}
-    .modal .body{padding:16px}
-    .row{display:grid; gap:12px; grid-template-columns:1fr}
-    @media (min-width:560px){ .row.two{grid-template-columns:1fr 1fr} }
-    label{font-weight:600}
-    input, select{width:100%; background:#0f1e21; color:var(--text); border:1px solid var(--gold-20); border-radius:10px; padding:10px 12px}
-    .modal footer{display:flex; gap:10px; justify-content:flex-end; padding:12px 16px; border-top:1px solid var(--gold-20)}
+    .card{background:var(--bg-card); border:1px solid var(--gold-20);
+          border-radius:14px; padding:16px; box-shadow:var(--shadow)}
+    .card h3{margin:0 0 6px}
+
+    .toolbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:8px 0 16px}
+    .toolbar input[type="search"]{min-width:220px}
+    .toolbar .spacer{flex:1}
+
+    table.rh{width:100%; border-collapse:collapse; overflow:auto}
+    .rh th,.rh td{border-bottom:1px dashed var(--gold-20); padding:10px 8px; text-align:left}
+    .rh th{color:var(--gold); font-weight:700}
+    .rh tr:hover{background:rgba(255,215,0,.05)}
+    .muted{opacity:.85}
+
+    .pill{display:inline-block; padding:.2rem .5rem; border-radius:999px; font-size:.85rem}
+    .pill.ok{background:#134e4a; color:#c7f9cc}
+    .pill.off{background:#4a1f1f; color:#ffd6d6}
+
+    form#frmEmpleado{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    form#frmEmpleado .full{grid-column:1/-1}
+    form#frmEmpleado input, form#frmEmpleado select{width:100%}
+    .actions{display:flex; gap:8px; flex-wrap:wrap}
   </style>
 </head>
 <body>
-<header class="top">
-  <h1>AURUM∞</h1>
-  <nav>
-    <a href="../../index.html">Inicio</a>
-    <a href="../../vision.html">Visión</a>
-    <a href="../../modulos.html" class="active">Módulos</a>
-    <a href="../../contacto.html">Contacto</a>
-  </nav>
-</header>
+  <header class="top">
+    <h1>AURUM∞</h1>
+    <nav>
+      <a href="../../index.html">Inicio</a>
+      <a href="../../vision.html">Visión</a>
+      <a href="../../modulos.html" class="active">Módulos</a>
+      <a href="../../contacto.html">Contacto</a>
+    </nav>
+  </header>
 
-<main class="container">
-  <h2>Recursos Humanos</h2>
+  <main class="container">
+    <h2>Recursos Humanos</h2>
 
-  <!-- Tarjetas de acceso rápido -->
-  <section class="grid cols-3" aria-label="Accesos rápidos">
-    <article class="card">
-      <h3>Personal</h3>
-      <p class="muted">Altas, bajas y actualización de datos.</p>
-      <button class="btn gold" id="btnNuevoEmpleado">➕ Agregar empleado</button>
-    </article>
+    <div class="grid">
+      <!-- Formulario de alta / edición -->
+      <section class="card">
+        <h3>Empleado</h3>
+        <form id="frmEmpleado" autocomplete="off">
+          <input type="hidden" id="idx" value="-1" />
+          <div>
+            <label>RUT / ID</label>
+            <input id="rut" required />
+          </div>
+          <div>
+            <label>Nombre completo</label>
+            <input id="nombre" required />
+          </div>
+          <div>
+            <label>Cargo</label>
+            <input id="cargo" />
+          </div>
+          <div>
+            <label>Estado</label>
+            <select id="estado">
+              <option value="ACTIVO">ACTIVO</option>
+              <option value="INACTIVO">INACTIVO</option>
+            </select>
+          </div>
+          <div>
+            <label>Fecha ingreso</label>
+            <input id="fecha" type="date" />
+          </div>
+          <div>
+            <label>Teléfono</label>
+            <input id="fono" inputmode="tel" />
+          </div>
+          <div class="full actions">
+            <button type="submit" class="btn gold">Guardar</button>
+            <button type="button" id="btnLimpiar" class="btn">Limpiar</button>
+          </div>
+        </form>
+        <p class="muted" style="margin-top:8px">Los datos quedan en este dispositivo (LocalStorage). Luego los conectaremos al backend.</p>
+      </section>
 
-    <article class="card">
-      <h3>Roles y Accesos</h3>
-      <p class="muted">Perfiles: Administrador, Supervisor, Operador e Invitado.</p>
-      <button class="btn ghost" disabled>Configurar (pronto)</button>
-    </article>
+      <!-- Tabla de empleados -->
+      <section class="card" style="grid-column:1/-1">
+        <div class="toolbar">
+          <input id="q" type="search" placeholder="Buscar por nombre, RUT o cargo…" />
+          <div class="spacer"></div>
+          <button id="btnExport" class="btn gold">Exportar CSV</button>
+          <button id="btnWipe" class="btn">Borrar todo</button>
+        </div>
 
-    <article class="card">
-      <h3>Asistencia</h3>
-      <p class="muted">Registro diario (integración próxima).</p>
-      <button class="btn ghost" disabled>Ver asistencia (pronto)</button>
-    </article>
-  </section>
-
-  <!-- Listado / CRUD de empleados -->
-  <section class="card" style="margin-top:16px">
-    <h3 style="margin-top:0">Empleados</h3>
-
-    <div class="toolbar">
-      <input type="search" id="q" placeholder="Buscar por nombre, Rut o cargo…" />
-      <input type="file" id="importCsv" accept=".csv" hidden />
-      <button class="btn" onclick="document.getElementById('importCsv').click()">📥 Importar CSV</button>
-      <button class="btn" id="btnExport">📤 Exportar CSV</button>
-      <button class="btn gold" id="btnNuevoEmpleado2">➕ Nuevo</button>
+        <div style="overflow:auto">
+          <table class="rh" id="tbl">
+            <thead>
+              <tr>
+                <th>RUT / ID</th>
+                <th>Nombre</th>
+                <th>Cargo</th>
+                <th>Estado</th>
+                <th>Ingreso</th>
+                <th>Fono</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="body">
+              <!-- filas -->
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
+  </main>
 
-    <div class="table-wrap">
-      <table id="tbl">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>RUT / ID</th>
-            <th>Cargo</th>
-            <th>Rol</th>
-            <th>Estado</th>
-            <th style="min-width:120px">Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="rows">
-          <tr><td class="empty" colspan="6">Sin registros aún. Usa “Nuevo” para crear el primero.</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <p>© 2025 AURUM∞</p>
-</footer>
-
-<!-- Modal alta/edición -->
-<dialog class="modal" id="dlg">
-  <header><h3 id="dlgTitle">Nuevo empleado</h3></header>
-  <form id="frm" class="body" method="dialog">
-    <input type="hidden" id="idx" value="" />
-    <div class="row">
-      <label>Nombre completo
-        <input id="nombre" required placeholder="Nombre y Apellido">
-      </label>
-    </div>
-    <div class="row two">
-      <label>RUT / ID
-        <input id="rut" required placeholder="12.345.678-9">
-      </label>
-      <label>Cargo
-        <input id="cargo" placeholder="Técnico Mecánico">
-      </label>
-    </div>
-    <div class="row two">
-      <label>Rol
-        <select id="rol">
-          <option>Operador</option>
-          <option>Supervisor</option>
-          <option>Administrador</option>
-          <option>Invitado</option>
-        </select>
-      </label>
-      <label>Estado
-        <select id="estado">
-          <option>Activo</option>
-          <option>Licencia</option>
-          <option>Inactivo</option>
-        </select>
-      </label>
-    </div>
-  </form>
-  <footer>
-    <button class="btn" id="btnCancel">Cancelar</button>
-    <button class="btn gold" id="btnSave">Guardar</button>
+  <footer class="footer">
+    © 2025 AURUM∞ · Módulo de RR.HH.
   </footer>
-</dialog>
 
-<script>
-/** ===== RH • Estado local ===== */
-const KEY = 'rh.empleados.v1';
-let empleados = load();
+  <script>
+    // --- utilidades ---
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+    const KEY = 'rrhh_empleados';
 
-/** ===== Utilidades ===== */
-function load(){
-  try{ return JSON.parse(localStorage.getItem(KEY)) || [] }catch{ return [] }
-}
-function save(){ localStorage.setItem(KEY, JSON.stringify(empleados)) }
-function uid(){ return Math.random().toString(36).slice(2,9) }
+    const leer = () => JSON.parse(localStorage.getItem(KEY) || '[]');
+    const guardar = data => localStorage.setItem(KEY, JSON.stringify(data));
 
-/** ===== Render ===== */
-const rows = document.getElementById('rows');
-const q = document.getElementById('q');
+    const form = $('#frmEmpleado');
+    const body = $('#body');
+    const q = $('#q');
 
-function render(list = empleados){
-  const query = (q.value || '').toLowerCase().trim();
-  let data = list;
-  if(query){
-    data = list.filter(e =>
-      (e.nombre||'').toLowerCase().includes(query) ||
-      (e.rut||'').toLowerCase().includes(query) ||
-      (e.cargo||'').toLowerCase().includes(query)
-    );
-  }
-  if(!data.length){
-    rows.innerHTML = `<tr><td class="empty" colspan="6">Sin resultados.</td></tr>`;
-    return;
-  }
-  rows.innerHTML = data.map((e,i) => `
-    <tr>
-      <td>${e.nombre||''}</td>
-      <td>${e.rut||''}</td>
-      <td>${e.cargo||''}</td>
-      <td><span class="tag ${e.rol==='Administrador'?'admin':''}">${e.rol||'Operador'}</span></td>
-      <td>${e.estado||'Activo'}</td>
-      <td class="actions">
-        <button class="btn" onclick="edit('${e.id}')">Editar</button>
-        <button class="btn" onclick="delEmp('${e.id}')">Borrar</button>
-      </td>
-    </tr>
-  `).join('');
-}
-render();
-q.addEventListener('input', () => render());
+    function pintar(filtro=''){
+      const rows = leer();
+      const f = (filtro || '').trim().toLowerCase();
+      body.innerHTML = rows
+        .map((r, i) => ({...r, i}))
+        .filter(r => !f || (r.rut+r.nombre+r.cargo).toLowerCase().includes(f))
+        .map(r => `
+          <tr>
+            <td>${esc(r.rut)}</td>
+            <td>${esc(r.nombre)}</td>
+            <td>${esc(r.cargo||'-')}</td>
+            <td>
+              <span class="pill ${r.estado==='ACTIVO'?'ok':'off'}">
+                ${r.estado}
+              </span>
+            </td>
+            <td>${esc(r.fecha||'-')}</td>
+            <td>${esc(r.fono||'-')}</td>
+            <td>
+              <button class="btn" data-edit="${r.i}">Editar</button>
+              <button class="btn" data-del="${r.i}">Borrar</button>
+            </td>
+          </tr>
+        `).join('') || `<tr><td colspan="7" class="muted">Sin registros…</td></tr>`;
+    }
 
-/** ===== Modal ===== */
-const dlg = document.getElementById('dlg');
-const frm = document.getElementById('frm');
-const dlgTitle = document.getElementById('dlgTitle');
-const btnSave = document.getElementById('btnSave');
-const btnCancel = document.getElementById('btnCancel');
+    function esc(s){ return (s??'').toString().replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
 
-function openNew(){
-  frm.reset();
-  document.getElementById('idx').value = '';
-  dlgTitle.textContent = 'Nuevo empleado';
-  dlg.showModal();
-}
-document.getElementById('btnNuevoEmpleado').onclick = openNew;
-document.getElementById('btnNuevoEmpleado2').onclick = openNew;
-btnCancel.onclick = () => dlg.close();
+    // alta / edición
+    form.addEventListener('submit', e=>{
+      e.preventDefault();
+      const data = leer();
+      const reg = {
+        rut: $('#rut').value.trim(),
+        nombre: $('#nombre').value.trim(),
+        cargo: $('#cargo').value.trim(),
+        estado: $('#estado').value,
+        fecha: $('#fecha').value,
+        fono: $('#fono').value.trim()
+      };
+      const idx = parseInt($('#idx').value, 10);
+      if (Number.isInteger(idx) && idx >= 0) {
+        data[idx] = reg;
+      } else {
+        data.push(reg);
+      }
+      guardar(data);
+      limpiar();
+      pintar(q.value);
+    });
 
-btnSave.onclick = () => {
-  const id = document.getElementById('idx').value || uid();
-  const emp = {
-    id,
-    nombre: document.getElementById('nombre').value.trim(),
-    rut: document.getElementById('rut').value.trim(),
-    cargo: document.getElementById('cargo').value.trim(),
-    rol: document.getElementById('rol').value,
-    estado: document.getElementById('estado').value
-  };
-  if(!emp.nombre || !emp.rut){
-    alert('Nombre y RUT/ID son obligatorios.');
-    return;
-  }
-  const i = empleados.findIndex(x => x.id===id);
-  if(i>=0) empleados[i] = emp; else empleados.push(emp);
-  save(); render(); dlg.close();
-};
+    function limpiar(){
+      form.reset();
+      $('#idx').value = -1;
+      $('#rut').focus();
+    }
+    $('#btnLimpiar').addEventListener('click', limpiar);
 
-window.edit = (id) => {
-  const e = empleados.find(x => x.id===id);
-  if(!e) return;
-  document.getElementById('idx').value = e.id;
-  document.getElementById('nombre').value = e.nombre||'';
-  document.getElementById('rut').value = e.rut||'';
-  document.getElementById('cargo').value = e.cargo||'';
-  document.getElementById('rol').value = e.rol||'Operador';
-  document.getElementById('estado').value = e.estado||'Activo';
-  dlgTitle.textContent = 'Editar empleado';
-  dlg.showModal();
-};
+    // acciones tabla
+    body.addEventListener('click', e=>{
+      const iEdit = e.target.getAttribute('data-edit');
+      const iDel  = e.target.getAttribute('data-del');
+      if (iEdit !== null){
+        const data = leer()[+iEdit];
+        $('#idx').value = iEdit;
+        $('#rut').value = data.rut || '';
+        $('#nombre').value = data.nombre || '';
+        $('#cargo').value = data.cargo || '';
+        $('#estado').value = data.estado || 'ACTIVO';
+        $('#fecha').value = data.fecha || '';
+        $('#fono').value = data.fono || '';
+        window.scrollTo({top:0, behavior:'smooth'});
+      }
+      if (iDel !== null){
+        const arr = leer();
+        arr.splice(+iDel, 1);
+        guardar(arr);
+        pintar(q.value);
+      }
+    });
 
-window.delEmp = (id) => {
-  if(!confirm('¿Eliminar este registro?')) return;
-  empleados = empleados.filter(x => x.id!==id);
-  save(); render();
-};
+    // búsqueda
+    q.addEventListener('input', ()=>pintar(q.value));
 
-/** ===== CSV ===== */
-function toCSV(list){
-  const head = ['nombre','rut','cargo','rol','estado'];
-  const rows = list.map(e => head.map(h => (e[h]||'').toString().replaceAll('"','""')));
-  const csv = [head.join(','), ...rows.map(r => r.map(x=>`"${x}"`).join(','))].join('\n');
-  return csv;
-}
-document.getElementById('btnExport').onclick = () => {
-  const blob = new Blob([toCSV(empleados)], {type:'text/csv;charset=utf-8;'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'empleados_aurum.csv';
-  a.click();
-  URL.revokeObjectURL(a.href);
-};
+    // export CSV
+    $('#btnExport').addEventListener('click', ()=>{
+      const rows = leer();
+      const head = ['RUT','Nombre','Cargo','Estado','Ingreso','Fono'];
+      const csv = [head.join(',')].concat(
+        rows.map(r => [r.rut, r.nombre, r.cargo||'', r.estado, r.fecha||'', r.fono||'']
+          .map(v => `"${(v||'').toString().replace(/"/g,'""')}"`).join(','))
+      ).join('\n');
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'empleados_aurum.csv';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
 
-document.getElementById('importCsv').addEventListener('change', async (ev) => {
-  const file = ev.target.files?.[0];
-  if(!file) return;
-  const text = await file.text();
-  const [headLine, ...lines] = text.split(/\r?\n/).filter(Boolean);
-  const headers = headLine.split(',').map(h => h.trim().replace(/^"|"$/g,''));
-  const idx = (k) => headers.indexOf(k);
-  const n = (s) => s?.trim().replace(/^"|"$/g,'').replaceAll('""','"') || '';
-  const imported = lines.map(l => {
-    const cols = l.match(/("([^"]|"")*"|[^,]+)/g) || [];
-    return {
-      id: uid(),
-      nombre: n(cols[idx('nombre')]),
-      rut:    n(cols[idx('rut')]),
-      cargo:  n(cols[idx('cargo')]),
-      rol:    n(cols[idx('rol')]) || 'Operador',
-      estado: n(cols[idx('estado')]) || 'Activo'
-    };
-  }).filter(e => e.nombre && e.rut);
-  if(!imported.length){ alert('No se encontraron filas válidas.'); return; }
-  empleados = [...empleados, ...imported];
-  save(); render(); ev.target.value = '';
-});
-</script>
+    // borrar todo
+    $('#btnWipe').addEventListener('click', ()=>{
+      if (confirm('¿Borrar todos los registros locales de RR.HH.?')){
+        localStorage.removeItem(KEY);
+        pintar(q.value);
+      }
+    });
+
+    // demo inicial si no hay datos
+    if (!leer().length){
+      guardar([
+        {rut:'11.111.111-1', nombre:'Operador Base', cargo:'Operador', estado:'ACTIVO', fecha:'2023-03-01', fono:'+56 9 1111 1111'},
+        {rut:'22.222.222-2', nombre:'Técnico Mantenimiento', cargo:'Técnico', estado:'ACTIVO', fecha:'2024-06-15', fono:'+56 9 2222 2222'},
+        {rut:'33.333.333-3', nombre:'Supervisor Turno', cargo:'Supervisor', estado:'INACTIVO', fecha:'2022-11-20', fono:'+56 9 3333 3333'}
+      ]);
+    }
+    pintar();
+  </script>
 </body>
-</html> 
+</html>
