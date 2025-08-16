@@ -1,46 +1,52 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Inicio • AURUM∞</title>
-  <link rel="stylesheet" href="lemuria.css" />
-  <script defer src="aurum.js"></script>
+  <meta charset="UTF-8">
+  <title>AURUM∞ - Plataforma</title>
+  <link rel="stylesheet" href="lemuria.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #111, #333);
+      color: #ffd700;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 40px;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+    nav ul li {
+      margin: 20px 0;
+    }
+    nav a {
+      display: inline-block;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      color: #111;
+      background: #ffd700;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    nav a:hover {
+      background: #ffea70;
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 <body>
-  <header class="top">
-    <h1>AURUM∞</h1>
-    <nav>
-      <a class="active" href="index.html">Inicio</a>
-      <a href="contacto.html">Contacto</a>
-      <a href="login.html">Iniciar sesión</a>
-    </nav>
-  </header>
-
-  <main class="container">
-    <h2>Módulos Disponibles</h2>
-    <ul class="cards">
-      <li>
-        <a class="card" href="Modulos/hilux/">
-          <h3>Hilux • Checklist 3D (50 pts)</h3>
-          <p>Inspección técnica enfocada en Toyota Hilux.</p>
-        </a>
-      </li>
-      <li>
-        <a class="card" href="Modulos/ot/">
-          <h3>Órdenes de Trabajo</h3>
-          <p>Crear, editar, cerrar y exportar OT.</p>
-        </a>
-      </li>
-      <li>
-        <a class="card" href="Modulos/recursos-humanos/">
-          <h3>Recursos Humanos</h3>
-          <p>Registro de personal, roles y competencias.</p>
-        </a>
-      </li>
+  <h1>✨ Bienvenido a AURUM∞ ✨</h1>
+  <nav>
+    <ul>
+      <li><a href="Modulos/hilux/index.html">🚙 Módulo Hilux</a></li>
+      <li><a href="Modulos/ot/index.html">📝 Órdenes de Trabajo</a></li>
+      <li><a href="Modulos/recursos-humanos/index.html">👥 Recursos Humanos</a></li>
     </ul>
-  </main>
-
-  <footer class="foot">© 2025 AURUM∞</footer>
+  </nav>
 </body>
 </html>
