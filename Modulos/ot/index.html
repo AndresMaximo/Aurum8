@@ -2,400 +2,421 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Órdenes de Trabajo • AURUM∞</title>
 
-  <!-- Tema base (si tienes lemuria.css en la raíz) -->
-  <link rel="stylesheet" href="../../lemuria.css">
-
+  <!-- Estilos rápidos (usa tu lemuria.css si quieres, pero esto ya corre solo) -->
   <style>
-    main{max-width:1000px;margin:24px auto;padding:0 16px}
-    .card{background:var(--bg-card,#0b0b0b);border:1px solid var(--gold-20,#2a2a2a);
-          border-radius:14px;padding:16px 18px;box-shadow:var(--shadow,0 0 0 / 0%);margin:16px 0}
-    .row{display:grid;gap:12px}
-    @media (min-width:720px){.row.cols-2{grid-template-columns:1fr 1fr}}
-    label{font-weight:600;color:var(--gold,#f4d25f)}
-    input,select,textarea{background:#0f1e21;border:1px solid var(--gold-20,#2a2a2a);
-      border-radius:10px;color:var(--text,#e0e0e0);padding:10px 12px;font-size:1rem;outline:none}
-    textarea{min-height:110px}
-    .chipbox{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-    .chip{background:#122126;border:1px solid #28353a;border-radius:999px;padding:6px 10px;display:flex;gap:8px;align-items:center}
-    .chip button{background:transparent;border:0;color:#bbb;cursor:pointer;font-size:14px}
-    .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:flex-end;margin-top:16px}
-    .btn{border:1px solid var(--gold-20,#2a2a2a);background:#121a1c;color:var(--text,#e0e0e0);
-         border-radius:10px;padding:10px 14px;cursor:pointer}
-    .btn.primary{background:#f4b400;color:#111;font-weight:700;border-color:#f4b400}
-    .muted{opacity:.85}
-    table{width:100%;border-collapse:collapse;margin-top:10px}
-    th,td{border-bottom:1px solid #243036;padding:10px;text-align:left}
-    th{color:var(--gold,#f4d25f)}
-    .ok{background:#0f4726;border-color:#1d854e}
-    .obs{background:#3b300a;border-color:#7d671a}
-    .nc{background:#4a1717;border-color:#a73b3b}
-    .state-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
-    .state-ok{background:#27c26c}.state-obs{background:#f5c542}.state-nc{background:#ff5f5f}
+    :root{
+      --bg:#0b0f13;--panel:#121820;--ink:#e9edf1;--gold:#ffd43b;--gold-2:#c9a227;
+      --ok:#1fbf75;--warn:#ffb200;--bad:#ff4d4d;--line:#1e2630;--muted:#9fb0c3;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    a{color:var(--gold);text-decoration:none}
+    header.top{position:sticky;top:0;z-index:3;background:linear-gradient(180deg,rgba(0,0,0,.85),rgba(0,0,0,.35));backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--line)}
+    .wrap{max-width:1100px;margin:0 auto;padding:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand h1{font-size:22px;margin:0}
+    .crumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+    .crumbs a{font-size:14px;opacity:.9}
+    main .grid{display:grid;gap:16px;grid-template-columns: 1fr}
+    @media (min-width: 980px){ main .grid{grid-template-columns: 420px 1fr} }
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.35)}
+    .card h2{margin:0;padding:14px 16px;border-bottom:1px dashed var(--line);font-size:18px}
+    .card .body{padding:16px}
+    label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
+    input[type="text"],input[type="date"],select,textarea{
+      width:100%;background:#0d131a;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:15px;outline:none
+    }
+    textarea{min-height:90px;resize:vertical}
+    .row{display:grid;gap:10px}
+    .row-2{grid-template-columns:repeat(2,1fr)}
+    .row-3{grid-template-columns:repeat(3,1fr)}
+    .badges{display:flex;gap:8px;flex-wrap:wrap}
+    .badge{padding:6px 10px;border-radius:999px;font-size:12px;border:1px solid var(--line);background:#0d131a}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    button{
+      background:var(--gold);color:#141414;border:0;border-radius:10px;padding:10px 14px;font-weight:600;cursor:pointer
+    }
+    button.ghost{background:#0d131a;color:var(--ink);border:1px solid var(--line)}
+    button.red{background:var(--bad);color:#fff}
+    button.green{background:var(--ok);color:#00110a}
+    button.yellow{background:var(--warn);color:#221800}
+    .list-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+    .pill{border:1px solid var(--line);border-radius:999px;padding:6px 10px;background:#0d131a}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:14px}
+    tr:hover{background:#0e141b}
+    .status{font-weight:700}
+    .status.abierta{color:var(--warn)}
+    .status.en-progreso{color:var(--gold)}
+    .status.cerrada{color:var(--ok)}
+    small.hint{color:var(--muted);display:block;margin-top:6px}
+    .chips{display:flex;gap:6px;flex-wrap:wrap}
+    .chip{background:#0e141b;border:1px solid var(--line);border-radius:999px;padding:4px 8px;font-size:12px}
+    footer{color:var(--muted);text-align:center;padding:30px}
   </style>
 </head>
 <body>
+  <!-- ENCABEZADO / MIGAS -->
   <header class="top">
-    <h1>AURUM∞</h1>
-    <nav>
-      <a href="../../index.html">Inicio</a>
-      <a href="../../vision.html">Visión</a>
-      <a href="../../modulos.html" class="active">Módulos</a>
-      <a href="../../contacto.html">Contacto</a>
-    </nav>
+    <div class="wrap">
+      <div class="brand">
+        <div style="width:28px;height:28px;border-radius:8px;background:radial-gradient(60% 80% at 30% 20%,#ffe88b,transparent 60%),linear-gradient(160deg,#ffe074,#af8922)"></div>
+        <h1>AURUM∞ • Órdenes de Trabajo</h1>
+      </div>
+      <nav class="crumbs">
+        <a href="../../index.html">🏠 Inicio</a>
+        <span>›</span>
+        <a href="../../index.html#modulos">Módulos</a>
+        <span>›</span>
+        <span style="opacity:.72">OT</span>
+      </nav>
+    </div>
   </header>
 
-  <main>
-    <h2>Órdenes de Trabajo</h2>
+  <main class="wrap" id="app">
+    <div class="grid">
+      <!-- LADO IZQUIERDO • FORMULARIO -->
+      <section class="card">
+        <h2>Nueva / Editar OT</h2>
+        <div class="body">
+          <div class="row row-2">
+            <div>
+              <label>N° OT</label>
+              <input id="f-id" type="text" placeholder="Se genera automático si lo dejas vacío">
+            </div>
+            <div>
+              <label>Equipo / Activo</label>
+              <input id="f-equipo" type="text" placeholder="Ej: Hilux A8-001">
+            </div>
+          </div>
 
-    <!-- Datos generales de la OT -->
-    <section class="card">
-      <h3>Datos de la OT</h3>
-      <div class="row cols-2">
-        <div>
-          <label for="otId">ID / Código</label>
-          <input id="otId" placeholder="OT-0001">
-        </div>
-        <div>
-          <label for="equipo">Equipo / Activo</label>
-          <input id="equipo" placeholder="Ej: HILUX-A8-001">
-        </div>
-        <div>
-          <label for="titulo">Título / Trabajo</label>
-          <input id="titulo" placeholder="Ej: Mantenimiento preventivo 50 pts">
-        </div>
-        <div>
-          <label for="prioridad">Prioridad</label>
-          <select id="prioridad">
-            <option value="Media">Media</option>
-            <option value="Alta">Alta</option>
-            <option value="Baja">Baja</option>
-          </select>
-        </div>
-        <div>
-          <label for="estado">Estado</label>
-          <select id="estado">
-            <option value="Abierta">Abierta</option>
-            <option value="Proceso">En proceso</option>
-            <option value="Cerrada">Cerrada</option>
-          </select>
-        </div>
-        <div>
-          <label for="fecha">Fecha</label>
-          <input id="fecha" type="date">
-        </div>
-      </div>
-      <div class="row">
-        <div>
-          <label for="descripcion">Descripción</label>
-          <textarea id="descripcion" placeholder="Describe el alcance, riesgos, EPP, bloqueo/etiquetado, etc."></textarea>
-        </div>
-      </div>
-    </section>
+          <div class="row row-2">
+            <div>
+              <label>Prioridad</label>
+              <select id="f-prioridad">
+                <option value="Baja">Baja</option>
+                <option value="Media" selected>Media</option>
+                <option value="Alta">Alta</option>
+                <option value="Crítica">Crítica</option>
+              </select>
+            </div>
+            <div>
+              <label>Estado</label>
+              <select id="f-estado">
+                <option value="Abierta" selected>Abierta</option>
+                <option value="En progreso">En progreso</option>
+                <option value="Cerrada">Cerrada</option>
+              </select>
+            </div>
+          </div>
 
-    <!-- Personal que interviene -->
-    <section class="card">
-      <h3>Personal que interviene</h3>
+          <div class="row row-2">
+            <div>
+              <label>Fecha inicio</label>
+              <input id="f-inicio" type="date">
+            </div>
+            <div>
+              <label>Fecha cierre</label>
+              <input id="f-cierre" type="date">
+            </div>
+          </div>
 
-      <div class="row cols-2">
-        <div>
-          <label for="buscarPersona">Agregar trabajador</label>
-          <input id="buscarPersona" list="listaPersonas" placeholder="Escribe un nombre y presiona Enter">
-          <datalist id="listaPersonas"></datalist>
-          <p class="muted" style="margin-top:6px">Sugerencias cargan desde memoria local. Podrás editarlas en “Gestionar base local”.</p>
+          <div>
+            <label>Título</label>
+            <input id="f-titulo" type="text" placeholder="Cambio de pastillas, revisión eléctrica, etc.">
+          </div>
+
+          <div>
+            <label>Descripción</label>
+            <textarea id="f-desc" placeholder="Breve detalle de la intervención, condiciones, piezas, etc."></textarea>
+          </div>
+
+          <div>
+            <label>Trabajadores asignados</label>
+            <div class="row row-2">
+              <div>
+                <select id="f-trabajadores" multiple style="min-height:120px"></select>
+                <small class="hint">Ctrl/Cmd + clic para seleccionar múltiples.</small>
+              </div>
+              <div>
+                <label style="margin-top:0">Agregar trabajador rápido</label>
+                <input id="f-nuevo-trabajador" type="text" placeholder="Nombre y apellido">
+                <div class="toolbar" style="margin-top:8px">
+                  <button class="ghost" id="btn-add-worker">+ Agregar a base local</button>
+                  <button class="ghost" id="btn-del-worker">Eliminar seleccionado</button>
+                </div>
+                <small class="hint">La base de trabajadores se guarda en este navegador. Luego la conectaremos a la BD.</small>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label>Evidencia (sólo nombre/URL por ahora)</label>
+            <input id="f-evidencia" type="text" placeholder="Ej: foto_123.jpg o https://...">
+          </div>
+
+          <div class="toolbar" style="margin-top:14px">
+            <button class="green" id="btn-save">Guardar OT</button>
+            <button class="ghost" id="btn-clear">Limpiar</button>
+            <button class="red" id="btn-delete" title="Elimina si estás editando una OT">Eliminar</button>
+          </div>
         </div>
-        <div>
-          <label for="rolPersona">Rol</label>
-          <select id="rolPersona">
-            <option value="Técnico">Técnico</option>
-            <option value="Supervisor">Supervisor</option>
-            <option value="Ayudante">Ayudante</option>
-            <option value="Ingeniero">Ingeniero</option>
-          </select>
+      </section>
+
+      <!-- LADO DERECHO • LISTADO -->
+      <section class="card">
+        <h2>Listado y filtros</h2>
+        <div class="body">
+          <div class="list-head">
+            <input id="q" class="pill" type="text" placeholder="Buscar por N° OT, equipo, título..." style="flex:1;min-width:220px">
+            <select id="flt-estado" class="pill">
+              <option value="">Estado: todos</option>
+              <option>Abierta</option>
+              <option>En progreso</option>
+              <option>Cerrada</option>
+            </select>
+            <select id="flt-prioridad" class="pill">
+              <option value="">Prioridad: todas</option>
+              <option>Baja</option>
+              <option>Media</option>
+              <option>Alta</option>
+              <option>Crítica</option>
+            </select>
+            <button class="ghost" id="btn-reset">Reiniciar</button>
+          </div>
+
+          <div class="toolbar" style="margin:8px 0 16px">
+            <button class="yellow" id="btn-export">Exportar CSV</button>
+            <button class="ghost" onclick="window.print()">Imprimir</button>
+            <span style="flex:1"></span>
+            <span id="count" class="hint"></span>
+          </div>
+
+          <div style="overflow:auto">
+            <table id="tbl">
+              <thead>
+                <tr>
+                  <th>N° OT</th>
+                  <th>Título</th>
+                  <th>Equipo</th>
+                  <th>Prioridad</th>
+                  <th>Estado</th>
+                  <th>Inicio</th>
+                  <th>Cierre</th>
+                  <th>Trabajadores</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
         </div>
-      </div>
-
-      <div class="chipbox" id="chipsPersonas"></div>
-
-      <div class="toolbar">
-        <button class="btn" id="limpiarPersonas">Limpiar lista</button>
-      </div>
-
-      <table id="tablaPersonal">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Rol</th>
-            <th>Firma</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </section>
-
-    <!-- Tareas / hallazgos rápidos -->
-    <section class="card">
-      <h3>Tareas / Hallazgos</h3>
-      <div class="row cols-2">
-        <div>
-          <label for="tareaTxt">Nueva tarea / hallazgo</label>
-          <input id="tareaTxt" placeholder="Ej: Punto 12: revisar fugas en línea de retorno">
-        </div>
-        <div>
-          <label for="tareaEstado">Estado</label>
-          <select id="tareaEstado">
-            <option value="OK">OK</option>
-            <option value="OBS">Observación</option>
-            <option value="NC">No conforme</option>
-          </select>
-        </div>
-      </div>
-      <div class="toolbar">
-        <button class="btn" id="agregarTarea">Agregar</button>
-      </div>
-
-      <table id="tablaTareas">
-        <thead>
-          <tr>
-            <th>Estado</th>
-            <th>Detalle</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </section>
-
-    <!-- Acciones -->
-    <section class="card">
-      <h3>Acciones</h3>
-      <div class="toolbar">
-        <button class="btn" id="guardarLocal">Guardar local</button>
-        <button class="btn" id="cargarLocal">Cargar local</button>
-        <button class="btn" id="borrarLocal">Borrar local</button>
-        <button class="btn" id="exportarCSV">Exportar CSV</button>
-        <button class="btn primary" id="imprimir">Imprimir</button>
-      </div>
-      <p class="muted">Por ahora el guardado es local (navegador). Luego conectaremos a Supabase.</p>
-    </section>
-
-    <!-- Gestión de base local (sólo para sugerencias de nombres) -->
-    <section class="card">
-      <h3>Gestionar base local de trabajadores</h3>
-      <div class="row cols-2">
-        <div>
-          <label for="nuevoNombre">Nuevo nombre</label>
-          <input id="nuevoNombre" placeholder="Ej: Andrés Bello">
-        </div>
-        <div>
-          <label for="nuevoRol">Rol sugerido</label>
-          <select id="nuevoRol">
-            <option value="Técnico">Técnico</option>
-            <option value="Supervisor">Supervisor</option>
-            <option value="Ayudante">Ayudante</option>
-            <option value="Ingeniero">Ingeniero</option>
-          </select>
-        </div>
-      </div>
-      <div class="toolbar">
-        <button class="btn" id="agregarBase">Agregar a sugerencias</button>
-        <button class="btn" id="resetBase">Restablecer sugerencias</button>
-      </div>
-    </section>
-
+      </section>
+    </div>
   </main>
 
-  <footer class="top" style="margin-top:24px">
-    <p>© 2025 AURUM∞ • Órdenes de Trabajo</p>
-  </footer>
+  <footer>© 2025 AURUM∞ • Módulo de Órdenes de Trabajo (local)</footer>
 
+  <!-- LÓGICA -->
   <script>
-    // ======= Utiles =======
+    const LS_KEY_OTS = 'aurum_ot_v1';
+    const LS_KEY_WORKERS = 'aurum_workers_v1';
     const $ = sel => document.querySelector(sel);
-    const $$ = sel => document.querySelectorAll(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
 
-    // ======= Base local (sugerencias de personas) =======
-    const BASE_KEY = 'aurum_ot_base_personas';
-    const DEFAULT_BASE = [
-      {nombre:'Andrés Bello', rol:'Supervisor'},
-      {nombre:'María Torres', rol:'Técnico'},
-      {nombre:'Juan Pérez', rol:'Ayudante'},
-      {nombre:'Elena Rojas', rol:'Ingeniero'}
-    ];
-    function getBase(){
-      try{ return JSON.parse(localStorage.getItem(BASE_KEY)) || DEFAULT_BASE; }
-      catch{ return DEFAULT_BASE; }
-    }
-    function setBase(arr){ localStorage.setItem(BASE_KEY, JSON.stringify(arr)); buildDatalist(); }
-    function buildDatalist(){
-      const list = $('#listaPersonas'); list.innerHTML='';
-      getBase().forEach(p=>{
+    // ------- Trabajadores (base local)
+    function loadWorkers(){
+      const arr = JSON.parse(localStorage.getItem(LS_KEY_WORKERS)||'[]');
+      const sel = $('#f-trabajadores');
+      sel.innerHTML = '';
+      arr.forEach(n=>{
         const opt = document.createElement('option');
-        opt.value = p.nombre;
-        list.appendChild(opt);
+        opt.value = n; opt.textContent = n;
+        sel.appendChild(opt);
       });
+      return arr;
+    }
+    function saveWorkers(arr){
+      localStorage.setItem(LS_KEY_WORKERS, JSON.stringify(arr));
+      loadWorkers();
     }
 
-    // ======= Estado de la OT (lo que se guarda/carga) =======
-    const SAVE_KEY = 'aurum_ot_current';
-    const state = {
-      header: { otId:'', equipo:'', titulo:'', prioridad:'Media', estado:'Abierta', fecha:'', descripcion:'' },
-      personal: [],   // {nombre, rol, firmado:false}
-      tareas: []      // {estado:'OK|OBS|NC', texto:''}
-    };
-
-    function syncFromForm(){
-      state.header.otId = $('#otId').value.trim();
-      state.header.equipo = $('#equipo').value.trim();
-      state.header.titulo = $('#titulo').value.trim();
-      state.header.prioridad = $('#prioridad').value;
-      state.header.estado = $('#estado').value;
-      state.header.fecha = $('#fecha').value;
-      state.header.descripcion = $('#descripcion').value.trim();
+    // ------- Órdenes de trabajo
+    function loadOTs(){
+      return JSON.parse(localStorage.getItem(LS_KEY_OTS)||'[]');
     }
-    function syncToForm(){
-      $('#otId').value = state.header.otId||'';
-      $('#equipo').value = state.header.equipo||'';
-      $('#titulo').value = state.header.titulo||'';
-      $('#prioridad').value = state.header.prioridad||'Media';
-      $('#estado').value = state.header.estado||'Abierta';
-      $('#fecha').value = state.header.fecha||'';
-      $('#descripcion').value = state.header.descripcion||'';
+    function saveOTs(arr){
+      localStorage.setItem(LS_KEY_OTS, JSON.stringify(arr));
+      render();
+    }
+    function genId(){
+      return 'OT-' + Math.random().toString(36).slice(2,7).toUpperCase();
     }
 
-    // ======= Personal =======
-    function renderPersonal(){
-      const tbody = $('#tablaPersonal tbody'); tbody.innerHTML='';
-      const chips = $('#chipsPersonas'); chips.innerHTML='';
-      state.personal.forEach((p,idx)=>{
-        // fila
+    // ------- CRUD básico
+    function readForm(){
+      const options = Array.from($('#f-trabajadores').selectedOptions).map(o=>o.value);
+      return {
+        id: ($('#f-id').value || genId()).trim(),
+        equipo: $('#f-equipo').value.trim(),
+        prioridad: $('#f-prioridad').value,
+        estado: $('#f-estado').value,
+        inicio: $('#f-inicio').value,
+        cierre: $('#f-cierre').value,
+        titulo: $('#f-titulo').value.trim(),
+        desc: $('#f-desc').value.trim(),
+        evidencia: $('#f-evidencia').value.trim(),
+        trabajadores: options
+      };
+    }
+    function fillForm(ot){
+      $('#f-id').value = ot.id || '';
+      $('#f-equipo').value = ot.equipo||'';
+      $('#f-prioridad').value = ot.prioridad||'Media';
+      $('#f-estado').value = ot.estado||'Abierta';
+      $('#f-inicio').value = ot.inicio||'';
+      $('#f-cierre').value = ot.cierre||'';
+      $('#f-titulo').value = ot.titulo||'';
+      $('#f-desc').value = ot.desc||'';
+      $('#f-evidencia').value = ot.evidencia||'';
+      // seleccionar trabajadores
+      const sel = $('#f-trabajadores');
+      Array.from(sel.options).forEach(o=>o.selected = (ot.trabajadores||[]).includes(o.value));
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+    function clearForm(){
+      $$('input, textarea').forEach(el=>{ if(el.type!=='date') el.value=''; });
+      $('#f-inicio').value = ''; $('#f-cierre').value='';
+      $('#f-prioridad').value='Media'; $('#f-estado').value='Abierta';
+      Array.from($('#f-trabajadores').options).forEach(o=>o.selected=false);
+    }
+
+    // ------- Render listado + filtros
+    function render(){
+      const tbody = $('#tbl tbody');
+      const all = loadOTs();
+      const q = $('#q').value.toLowerCase();
+      const fE = $('#flt-estado').value;
+      const fP = $('#flt-prioridad').value;
+      const rows = all.filter(o=>{
+        const text = (o.id+' '+o.equipo+' '+o.titulo).toLowerCase();
+        const okQ = !q || text.includes(q);
+        const okE = !fE || o.estado===fE;
+        const okP = !fP || o.prioridad===fP;
+        return okQ && okE && okP;
+      });
+      $('#count').textContent = rows.length+' de '+all.length+' OT';
+      tbody.innerHTML = '';
+      rows.forEach(o=>{
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>${p.nombre}</td>
-          <td>${p.rol}</td>
-          <td><input type="checkbox" ${p.firmado?'checked':''} data-firma="${idx}"></td>
-          <td><button class="btn" data-delp="${idx}">Quitar</button></td>
-        `;
-        tbody.appendChild(tr);
-        // chip
-        const chip = document.createElement('div');
-        chip.className='chip';
-        chip.innerHTML = `<span>${p.nombre} • ${p.rol}</span><button title="Quitar" data-delp="${idx}">×</button>`;
-        chips.appendChild(chip);
-      });
-    }
-    function addPersona(nombre, rol){
-      if(!nombre) return;
-      if(state.personal.some(p=>p.nombre.toLowerCase()===nombre.toLowerCase())) return;
-      state.personal.push({nombre, rol, firmado:false});
-      renderPersonal();
-      $('#buscarPersona').value='';
-    }
-
-    // ======= Tareas =======
-    function renderTareas(){
-      const tbody = $('#tablaTareas tbody'); tbody.innerHTML='';
-      state.tareas.forEach((t,idx)=>{
-        const tr = document.createElement('tr');
-        const dot = t.estado==='OK'?'state-ok':(t.estado==='OBS'?'state-obs':'state-nc');
-        tr.innerHTML = `
-          <td><span class="state-dot ${dot}"></span>${t.estado}</td>
-          <td>${t.texto}</td>
-          <td><button class="btn" data-delt="${idx}">Quitar</button></td>
+          <td><a href="#" data-id="${o.id}" class="lnk">${o.id}</a></td>
+          <td>${esc(o.titulo)}</td>
+          <td>${esc(o.equipo)}</td>
+          <td>${esc(o.prioridad)}</td>
+          <td class="status ${cls(o.estado)}">${esc(o.estado)}</td>
+          <td>${o.inicio||''}</td>
+          <td>${o.cierre||''}</td>
+          <td>${(o.trabajadores||[]).map(esc).join(', ')}</td>
         `;
         tbody.appendChild(tr);
       });
+      // click para editar
+      $$('#tbl .lnk').forEach(a=>{
+        a.addEventListener('click', e=>{
+          e.preventDefault();
+          const id = a.dataset.id;
+          const ot = loadOTs().find(x=>x.id===id);
+          if(ot) fillForm(ot);
+        });
+      });
     }
-    function addTarea(texto, estado){
-      if(!texto) return;
-      state.tareas.push({estado, texto});
-      renderTareas();
-      $('#tareaTxt').value='';
-      $('#tareaEstado').value='OK';
-    }
+    function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[m]);}
+    function cls(s){return s.toLowerCase().replace(/\s+/g,'-')}
 
-    // ======= Guardar/Cargar local =======
-    $('#guardarLocal').onclick = ()=>{ syncFromForm(); localStorage.setItem(SAVE_KEY, JSON.stringify(state)); alert('Guardado en este navegador.'); }
-    $('#cargarLocal').onclick = ()=>{
-      const raw = localStorage.getItem(SAVE_KEY);
-      if(!raw){ alert('No hay guardado local.'); return; }
-      const data = JSON.parse(raw);
-      Object.assign(state, data);
-      syncToForm(); renderPersonal(); renderTareas();
-      alert('Cargado desde este navegador.');
-    };
-    $('#borrarLocal').onclick = ()=>{ localStorage.removeItem(SAVE_KEY); alert('Guardado local eliminado.'); };
-
-    // ======= Exportar CSV (sencillo) =======
-    $('#exportarCSV').onclick = ()=>{
-      syncFromForm();
-      let lines = [];
-      lines.push('Sección,Campo,Valor');
-      Object.entries(state.header).forEach(([k,v])=>lines.push(`Header,${k},"${(v||'').toString().replace(/"/g,'""')}"`));
-      lines.push('Personal,Nombre,Rol');
-      state.personal.forEach(p=>lines.push(`Personal,"${p.nombre.replace(/"/g,'""')}","${p.rol}"`));
-      lines.push('Tareas,Estado,Texto');
-      state.tareas.forEach(t=>lines.push(`Tarea,${t.estado},"${t.texto.replace(/"/g,'""')}"`));
-      const blob = new Blob([lines.join('\n')],{type:'text/csv;charset=utf-8;'});
+    // ------- Export CSV
+    function exportCSV(){
+      const data = loadOTs();
+      if(!data.length){ alert('No hay datos para exportar.'); return; }
+      const cols = ['id','titulo','equipo','prioridad','estado','inicio','cierre','trabajadores','desc','evidencia'];
+      const lines = [cols.join(';')].concat(
+        data.map(o=>cols.map(k=>{
+          const v = (k==='trabajadores') ? (o[k]||[]).join('|') : (o[k]??'');
+          return `"${String(v).replace(/"/g,'""')}"`;
+        }).join(';'))
+      );
+      const blob = new Blob([lines.join('\n')],{type:'text/csv;charset=utf-8'});
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href=url; a.download=(state.header.otId||'OT')+'.csv';
+      const a = Object.assign(document.createElement('a'),{href:url,download:'aurum_ot.csv'});
       document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-    };
+    }
 
-    // ======= Imprimir =======
-    $('#imprimir').onclick = ()=>window.print();
-
-    // ======= Eventos UI =======
-    $('#buscarPersona').addEventListener('keydown', e=>{
-      if(e.key==='Enter'){
-        addPersona(e.target.value.trim(), $('#rolPersona').value);
-      }
+    // ------- Eventos UI
+    $('#btn-save').addEventListener('click', ()=>{
+      const form = readForm();
+      if(!form.titulo){ alert('Ingresa un título.'); return; }
+      let list = loadOTs();
+      const idx = list.findIndex(x=>x.id===form.id);
+      if(idx>=0) list[idx]=form; else list.unshift(form);
+      saveOTs(list);
+      fillForm(form); // mantiene edición
     });
-    $('#limpiarPersonas').onclick = ()=>{ state.personal=[]; renderPersonal(); };
-
-    document.body.addEventListener('click', e=>{
-      const dp = e.target.getAttribute('data-delp');
-      if(dp!==null){ state.personal.splice(Number(dp),1); renderPersonal(); }
-      const dt = e.target.getAttribute('data-delt');
-      if(dt!==null){ state.tareas.splice(Number(dt),1); renderTareas(); }
+    $('#btn-clear').addEventListener('click', clearForm);
+    $('#btn-delete').addEventListener('click', ()=>{
+      const id = $('#f-id').value.trim();
+      if(!id){ alert('Primero carga una OT para eliminar.'); return; }
+      if(!confirm('¿Eliminar la OT '+id+'?')) return;
+      let list = loadOTs().filter(x=>x.id!==id);
+      saveOTs(list);
+      clearForm();
     });
-    document.body.addEventListener('change', e=>{
-      const f = e.target.getAttribute('data-firma');
-      if(f!==null){ state.personal[Number(f)].firmado = e.target.checked; }
+
+    $('#btn-add-worker').addEventListener('click', ()=>{
+      const n = $('#f-nuevo-trabajador').value.trim();
+      if(!n){ alert('Escribe un nombre.'); return; }
+      const base = loadWorkers();
+      if(base.includes(n)){ alert('Ya existe.'); return; }
+      base.push(n); saveWorkers(base);
+      $('#f-nuevo-trabajador').value='';
     });
-    $('#agregarTarea').onclick = ()=> addTarea($('#tareaTxt').value.trim(), $('#tareaEstado').value);
+    $('#btn-del-worker').addEventListener('click', ()=>{
+      const sel = $('#f-trabajadores');
+      const v = Array.from(sel.selectedOptions).map(o=>o.value);
+      if(!v.length){ alert('Selecciona al menos uno.'); return; }
+      const base = loadWorkers().filter(n=>!v.includes(n));
+      saveWorkers(base);
+    });
 
-    // ======= Gestión base local de sugerencias =======
-    $('#agregarBase').onclick = ()=>{
-      const nom = $('#nuevoNombre').value.trim();
-      const rol = $('#nuevoRol').value;
-      if(!nom) return;
-      const base = getBase();
-      if(base.some(p=>p.nombre.toLowerCase()===nom.toLowerCase())){ alert('Ya existe en sugerencias.'); return; }
-      base.push({nombre:nom, rol});
-      setBase(base);
-      $('#nuevoNombre').value='';
-      alert('Agregado a sugerencias.');
-    };
-    $('#resetBase').onclick = ()=>{ setBase(DEFAULT_BASE); alert('Sugerencias restauradas.'); };
+    $('#q').addEventListener('input', render);
+    $('#flt-estado').addEventListener('change', render);
+    $('#flt-prioridad').addEventListener('change', render);
+    $('#btn-reset').addEventListener('click', ()=>{
+      $('#q').value=''; $('#flt-estado').value=''; $('#flt-prioridad').value='';
+      render();
+    });
+    $('#btn-export').addEventListener('click', exportCSV);
 
-    // ======= Init =======
+    // ------- Bootstrap inicial
     (function init(){
-      buildDatalist();
-      // semilla por si hay guardado
-      const raw = localStorage.getItem(SAVE_KEY);
-      if(raw){
-        try { Object.assign(state, JSON.parse(raw)); } catch{}
+      // precarga algunos trabajadores de ejemplo si no hay
+      if(!localStorage.getItem(LS_KEY_WORKERS)){
+        saveWorkers(['Andrés Bello','Carla Muñoz','Diego Pizarro','Sofía Rojas']);
+      } else {
+        loadWorkers();
       }
-      syncToForm(); renderPersonal(); renderTareas();
-      // Fecha por defecto hoy si no hay
-      if(!$('#fecha').value){
-        const d = new Date(); const pad = n=>String(n).padStart(2,'0');
-        $('#fecha').value = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+      // ejemplo de OTs iniciales si no hay nada
+      if(!loadOTs().length){
+        saveOTs([
+          {id:'OT-0001', titulo:'Revisión general 10.000 km', equipo:'Hilux A8-001', prioridad:'Media', estado:'Abierta', inicio:new Date().toISOString().slice(0,10), cierre:'', trabajadores:['Andrés Bello'], desc:'Check 50 pts', evidencia:''},
+          {id:'OT-0002', titulo:'Cambio pastillas y limpieza', equipo:'Hilux A8-002', prioridad:'Alta', estado:'En progreso', inicio:new Date().toISOString().slice(0,10), cierre:'', trabajadores:['Carla Muñoz','Diego Pizarro'], desc:'Eje delantero', evidencia:''}
+        ]);
+      } else {
+        render();
       }
+      loadWorkers();
+      render();
     })();
   </script>
 </body>
