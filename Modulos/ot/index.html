@@ -1,475 +1,316 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Órdenes de Trabajo • AURUM∞</title>
-
-  <!-- Supabase JS v2 -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
     :root{
-      --bg:#0b0f13;--panel:#121820;--ink:#e9edf1;--gold:#ffd43b;--gold-2:#c9a227;
-      --ok:#1fbf75;--warn:#ffb200;--bad:#ff4d4d;--line:#1e2630;--muted:#9fb0c3;
+      --bg:#0b0b0b; --ink:#e0e0e0; --gold:#ffb400;
+      --panel:#141414; --muted:#9aa3af; --line:#2a2a2a; --ok:#16a34a; --warn:#f59e0b; --bad:#ef4444;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial}
     a{color:var(--gold);text-decoration:none}
-    header.top{position:sticky;top:0;z-index:3;background:linear-gradient(180deg,rgba(0,0,0,.85),rgba(0,0,0,.35));backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--line)}
-    .wrap{max-width:1100px;margin:0 auto;padding:16px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .brand h1{font-size:22px;margin:0}
-    .crumbs{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-    .crumbs a{font-size:14px;opacity:.9}
-    main .grid{display:grid;gap:16px;grid-template-columns: 1fr}
-    @media (min-width: 980px){ main .grid{grid-template-columns: 420px 1fr} }
-    .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.35)}
-    .card h2{margin:0;padding:14px 16px;border-bottom:1px dashed var(--line);font-size:18px}
-    .card .body{padding:16px}
-    label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
-    input[type="text"],input[type="date"],select,textarea{
-      width:100%;background:#0d131a;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:15px;outline:none
+    header.top{
+      position:sticky;top:0;background:rgba(11,11,11,.85);backdrop-filter:blur(6px);
+      border-bottom:1px solid var(--line);z-index:10
     }
-    textarea{min-height:90px;resize:vertical}
-    .row{display:grid;gap:10px}
-    .row-2{grid-template-columns:repeat(2,1fr)}
-    .row-3{grid-template-columns:repeat(3,1fr)}
-    .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    button{
-      background:var(--gold);color:#141414;border:0;border-radius:10px;padding:10px 14px;font-weight:600;cursor:pointer
+    header.top .wrap{max-width:1100px;margin:auto;display:flex;gap:16px;align-items:center;padding:12px 16px}
+    h1{font-size:22px;margin:0}
+    main{max-width:1100px;margin:24px auto;padding:0 16px;display:grid;gap:24px}
+    .card{background:linear-gradient(180deg,#0f0f0f, #0b0b0b);border:1px solid var(--line);border-radius:14px;box-shadow:0 10px 25px rgba(0,0,0,.25)}
+    .card h2{margin:0 0 12px 0;padding:0;font-size:18px}
+    .pad{padding:16px}
+    .grid{display:grid;gap:12px}
+    .grid.col2{grid-template-columns:1fr 1fr}
+    .grid.col3{grid-template-columns:repeat(3,1fr)}
+    @media (max-width:820px){.grid.col2,.grid.col3{grid-template-columns:1fr}}
+    label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+    input,select,textarea{
+      width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);
+      background:#0e0e0e;color:var(--ink);outline:none
     }
-    button.ghost{background:#0d131a;color:var(--ink);border:1px solid var(--line)}
-    button.red{background:var(--bad);color:#fff}
-    button.green{background:var(--ok);color:#00110a}
-    button.yellow{background:var(--warn);color:#221800}
-    .list-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
-    .pill{border:1px solid var(--line);border-radius:999px;padding:6px 10px;background:#0d131a}
-    table{width:100%;border-collapse:collapse}
-    th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:14px}
-    tr:hover{background:#0e141b}
-    .status{font-weight:700}
-    .status.abierta{color:var(--warn)}
-    .status.en-progreso{color:var(--gold)}
-    .status.cerrada{color:var(--ok)}
-    small.hint{color:var(--muted);display:block;margin-top:6px}
-    footer{color:var(--muted);text-align:center;padding:30px}
+    textarea{min-height:84px;resize:vertical}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{cursor:pointer;border:none;border-radius:999px;padding:10px 16px;font-weight:600}
+    .btn.gold{background:var(--gold);color:#1a1a1a}
+    .btn.ghost{background:#111;border:1px solid var(--line);color:var(--ink)}
+    .btn.red{background:var(--bad)}
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
+    .tag{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;font-size:12px;border:1px solid var(--line);gap:8px}
+    .tag.ok{border-color:#14532d;color:#22c55e}
+    .tag.warn{border-color:#713f12;color:#f59e0b}
+    .tag.bad{border-color:#7f1d1d;color:#ef4444}
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th,td{border-bottom:1px solid var(--line);padding:10px 8px;vertical-align:top}
+    th{color:#cbd5e1;text-align:left}
     .muted{color:var(--muted)}
+    .pill{padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:#121212}
+    .nowrap{white-space:nowrap}
   </style>
 </head>
 <body>
   <header class="top">
     <div class="wrap">
-      <div class="brand">
-        <div style="width:28px;height:28px;border-radius:8px;background:radial-gradient(60% 80% at 30% 20%,#ffe88b,transparent 60%),linear-gradient(160deg,#ffe074,#af8922)"></div>
-        <h1>AURUM∞ • Órdenes de Trabajo</h1>
-      </div>
-      <nav class="crumbs">
-        <a href="../../index.html">🏠 Inicio</a>
-        <span>›</span>
-        <a href="../../index.html#modulos">Módulos</a>
-        <span>›</span>
-        <span style="opacity:.72">OT</span>
-      </nav>
+      <h1>Órdenes de Trabajo</h1>
+      <div class="muted" style="margin-left:auto">AURUM∞</div>
+      <a class="pill" href="/modulos.html">← Volver a Módulos</a>
     </div>
   </header>
 
-  <main class="wrap" id="app">
-    <div class="muted" id="mode" style="margin:8px 0 18px"></div>
-    <div class="grid">
-      <!-- Formulario -->
-      <section class="card">
-        <h2>Nueva / Editar OT</h2>
-        <div class="body">
-          <div class="row row-2">
-            <div>
-              <label>N° OT</label>
-              <input id="f-id" type="text" placeholder="Se genera automático si lo dejas vacío">
-            </div>
-            <div>
-              <label>Equipo / Activo</label>
-              <input id="f-equipo" type="text" placeholder="Ej: Hilux A8-001">
-            </div>
-          </div>
-
-          <div class="row row-2">
-            <div>
-              <label>Prioridad</label>
-              <select id="f-prioridad">
-                <option value="Baja">Baja</option>
-                <option value="Media" selected>Media</option>
-                <option value="Alta">Alta</option>
-                <option value="Crítica">Crítica</option>
-              </select>
-            </div>
-            <div>
-              <label>Estado</label>
-              <select id="f-estado">
-                <option value="Abierta" selected>Abierta</option>
-                <option value="En progreso">En progreso</option>
-                <option value="Cerrada">Cerrada</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="row row-2">
-            <div>
-              <label>Fecha inicio</label>
-              <input id="f-inicio" type="date">
-            </div>
-            <div>
-              <label>Fecha cierre</label>
-              <input id="f-cierre" type="date">
-            </div>
-          </div>
-
-          <div>
-            <label>Título</label>
-            <input id="f-titulo" type="text" placeholder="Cambio de pastillas, revisión eléctrica, etc.">
-          </div>
-
-          <div>
-            <label>Descripción</label>
-            <textarea id="f-desc" placeholder="Breve detalle de la intervención, condiciones, piezas, etc."></textarea>
-          </div>
-
-          <div>
-            <label>Trabajadores asignados</label>
-            <div class="row row-2">
-              <div>
-                <select id="f-trabajadores" multiple style="min-height:120px"></select>
-                <small class="hint">Ctrl/Cmd + clic para seleccionar múltiples.</small>
-              </div>
-              <div>
-                <label style="margin-top:0">Agregar trabajador rápido</label>
-                <input id="f-nuevo-trabajador" type="text" placeholder="Nombre y apellido">
-                <div class="toolbar" style="margin-top:8px">
-                  <button class="ghost" id="btn-add-worker">+ Agregar</button>
-                  <button class="ghost" id="btn-del-worker">Eliminar seleccionado</button>
-                </div>
-                <small class="hint">Se guarda en la tabla <b>recursos_humanos</b>.</small>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <label>Evidencia (nombre/URL)</label>
-            <input id="f-evidencia" type="text" placeholder="Ej: foto_123.jpg o https://...">
-          </div>
-
-          <div class="toolbar" style="margin-top:14px">
-            <button class="green" id="btn-save">Guardar OT</button>
-            <button class="ghost" id="btn-clear">Limpiar</button>
-            <button class="red" id="btn-delete" title="Elimina si estás editando una OT">Eliminar</button>
-          </div>
+  <main>
+    <!-- Crear OT -->
+    <section class="card">
+      <div class="pad">
+        <div class="toolbar">
+          <h2>Crear nueva OT</h2>
+          <div class="muted">Completa los datos y asigna trabajadores</div>
         </div>
-      </section>
-
-      <!-- Listado -->
-      <section class="card">
-        <h2>Listado y filtros</h2>
-        <div class="body">
-          <div class="list-head">
-            <input id="q" class="pill" type="text" placeholder="Buscar por N° OT, equipo, título..." style="flex:1;min-width:220px">
-            <select id="flt-estado" class="pill">
-              <option value="">Estado: todos</option>
-              <option>Abierta</option>
-              <option>En progreso</option>
-              <option>Cerrada</option>
+        <form id="form-ot" class="grid col3">
+          <div>
+            <label>Equipo</label>
+            <input id="equipo" placeholder="Ej: Hilux DXJ-123" required />
+          </div>
+          <div>
+            <label>Tipo</label>
+            <select id="tipo" required>
+              <option value="preventiva">Preventiva</option>
+              <option value="correctiva">Correctiva</option>
+              <option value="inspección">Inspección</option>
+              <option value="otro">Otro</option>
             </select>
-            <select id="flt-prioridad" class="pill">
-              <option value="">Prioridad: todas</option>
-              <option>Baja</option>
-              <option>Media</option>
-              <option>Alta</option>
-              <option>Crítica</option>
+          </div>
+          <div>
+            <label>Estado</label>
+            <select id="estado" required>
+              <option value="pendiente" selected>Pendiente</option>
+              <option value="en_progreso">En progreso</option>
+              <option value="completada">Completada</option>
             </select>
-            <button class="ghost" id="btn-reset">Reiniciar</button>
           </div>
 
-          <div class="toolbar" style="margin:8px 0 16px">
-            <button class="yellow" id="btn-export">Exportar CSV</button>
-            <button class="ghost" onclick="window.print()">Imprimir</button>
-            <span style="flex:1"></span>
-            <span id="count" class="hint"></span>
+          <div>
+            <label>Fecha inicio</label>
+            <input id="fecha_inicio" type="datetime-local" />
+          </div>
+          <div>
+            <label>Fecha fin (opcional)</label>
+            <input id="fecha_fin" type="datetime-local" />
+          </div>
+          <div>
+            <label>Función / comentario (para el equipo asignado)</label>
+            <input id="funcion" placeholder="Ej: Soldadura, inspección visual, etc." />
           </div>
 
-          <div style="overflow:auto">
-            <table id="tbl">
-              <thead>
-                <tr>
-                  <th>N° OT</th>
-                  <th>Título</th>
-                  <th>Equipo</th>
-                  <th>Prioridad</th>
-                  <th>Estado</th>
-                  <th>Inicio</th>
-                  <th>Cierre</th>
-                  <th>Trabajadores</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
+          <div class="colspan" style="grid-column:1/-1">
+            <label>Asignar trabajadores</label>
+            <select id="trabajadores" multiple size="6" style="width:100%"></select>
+            <div class="muted" style="margin-top:6px">Mantén presionado Ctrl (o Cmd) para selección múltiple</div>
           </div>
+
+          <div class="row" style="grid-column:1/-1;justify-content:flex-end;margin-top:6px">
+            <button type="button" class="btn ghost" id="limpiar">Limpiar</button>
+            <button type="submit" class="btn gold">Crear OT</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Listado OTs -->
+    <section class="card">
+      <div class="pad">
+        <div class="toolbar">
+          <h2>Listado de OTs</h2>
+          <button class="btn ghost" id="refrescar">Refrescar</button>
         </div>
-      </section>
-    </div>
+
+        <table id="tabla-ots">
+          <thead>
+            <tr>
+              <th>Equipo</th>
+              <th>Tipo</th>
+              <th>Estado</th>
+              <th class="nowrap">Inicio</th>
+              <th class="nowrap">Fin</th>
+              <th>Trabajadores</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="body-ots">
+            <!-- filas dinámicas -->
+          </tbody>
+        </table>
+      </div>
+    </section>
   </main>
 
-  <footer>© 2025 AURUM∞ • Módulo de Órdenes de Trabajo</footer>
-
+  <!-- Supabase -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script>
-    // ============================================================
-    // 1) CONFIGURA AQUÍ TUS CREDENCIALES SUPABASE
-    //    (si las dejas vacías, el módulo usa modo LocalStorage)
-    // ============================================================
-    const SUPABASE_URL  = 'https://TU-PROJECT-URL.supabase.co';
-    const SUPABASE_ANON = 'TU-ANON-KEY';
+    const { createClient } = supabase;
 
-    // Tablas esperadas:
-    //  - recursos_humanos : id uuid pk default gen_random_uuid(), nombre text unique not null
-    //  - ot : id text pk, equipo text, prioridad text, estado text, inicio date, cierre date,
-    //         titulo text, desc text, evidencia text, trabajadores text[] default '{}',
-    //         created_at timestamp default now()
+    // 🔐 Reemplaza con tus credenciales
+    const SUPABASE_URL = "https://TU-PROYECTO.supabase.co";
+    const SUPABASE_ANON_KEY = "TU-ANON-PUBLIC-KEY";
+    const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const hasCloud = SUPABASE_URL.startsWith('http') && SUPABASE_ANON.length > 20;
-    const sb = hasCloud ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON) : null;
+    // Utilidades
+    const fmtDate = (v) => v ? new Date(v).toLocaleString() : "—";
+    const tagEstado = (estado) => {
+      const map = {
+        pendiente: 'tag warn',
+        en_progreso: 'tag',
+        completada: 'tag ok'
+      };
+      return `<span class="${map[estado] || 'tag'}">${estado.replace('_',' ')}</span>`;
+    };
 
-    const $ = sel => document.querySelector(sel);
-    const $$ = sel => Array.from(document.querySelectorAll(sel));
-    const LS_KEY_OTS = 'aurum_ot_v1';
-    const $mode = $('#mode');
+    // Cargar trabajadores al <select>
+    async function cargarTrabajadoresSelect() {
+      const sel = document.getElementById('trabajadores');
+      sel.innerHTML = '<option disabled>Cargando…</option>';
 
-    // Helpers UI
-    function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[m]);}
-    function cls(s){return s.toLowerCase().replace(/\s+/g,'-')}
-    function genId(){return 'OT-' + Math.random().toString(36).slice(2,7).toUpperCase();}
+      const { data, error } = await db.from('recursos_humanos').select('id,nombre').order('nombre');
+      if (error) { console.error(error); sel.innerHTML = ''; return; }
 
-    // ===========================================
-    // 2) TRABAJADORES
-    // ===========================================
-    async function loadWorkers(){
-      const sel = $('#f-trabajadores');
       sel.innerHTML = '';
-      let list = [];
-      if(hasCloud){
-        const { data, error } = await sb.from('recursos_humanos').select('nombre').order('nombre');
-        if(error){ console.warn('RH error', error); } else { list = data.map(r=>r.nombre); }
-      } else {
-        list = JSON.parse(localStorage.getItem('aurum_workers_v1')||'[]');
-      }
-      list.forEach(n=>{
+      data.forEach(t => {
         const opt = document.createElement('option');
-        opt.value = n; opt.textContent = n;
+        opt.value = t.id;
+        opt.textContent = t.nombre;
         sel.appendChild(opt);
       });
-      return list;
     }
 
-    async function addWorker(nombre){
-      if(!nombre) return;
-      if(hasCloud){
-        await sb.from('recursos_humanos').upsert([{ nombre }], { onConflict:'nombre' });
-      } else {
-        const base = JSON.parse(localStorage.getItem('aurum_workers_v1')||'[]');
-        if(!base.includes(nombre)){ base.push(nombre); localStorage.setItem('aurum_workers_v1', JSON.stringify(base)); }
+    // Crear OT
+    document.getElementById('form-ot').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const equipo = document.getElementById('equipo').value.trim();
+      const tipo = document.getElementById('tipo').value;
+      const estado = document.getElementById('estado').value;
+      const funcion = document.getElementById('funcion').value.trim();
+
+      const fi = document.getElementById('fecha_inicio').value;
+      const ff = document.getElementById('fecha_fin').value || null;
+
+      // Insert OT
+      const { data: nuevaOT, error: errOT } = await db
+        .from('ordenes_trabajo')
+        .insert([{
+          equipo, tipo, estado,
+          fecha_inicio: fi ? new Date(fi).toISOString() : null,
+          fecha_fin: ff ? new Date(ff).toISOString() : null
+        }])
+        .select()
+        .single();
+
+      if (errOT) { alert('Error creando OT: ' + errOT.message); return; }
+
+      // Asignaciones
+      const sel = document.getElementById('trabajadores');
+      const seleccion = Array.from(sel.selectedOptions).map(o => o.value);
+
+      if (seleccion.length) {
+        const payload = seleccion.map(trabajador_id => ({
+          ot_id: nuevaOT.id,
+          trabajador_id,
+          funcion: funcion || null
+        }));
+        const { error: errAsign } = await db.from('ot_trabajadores').insert(payload);
+        if (errAsign) { alert('OT creada pero error asignando trabajadores: ' + errAsign.message); }
       }
-      await loadWorkers();
-    }
 
-    async function delWorkers(nombres){
-      if(!nombres.length) return;
-      if(hasCloud){
-        await sb.from('recursos_humanos').delete().in('nombre', nombres);
-      } else {
-        let base = JSON.parse(localStorage.getItem('aurum_workers_v1')||'[]');
-        base = base.filter(n=>!nombres.includes(n));
-        localStorage.setItem('aurum_workers_v1', JSON.stringify(base));
+      alert('✅ OT creada con éxito');
+      e.target.reset();
+      cargarOTs();
+    });
+
+    document.getElementById('limpiar').addEventListener('click', () => {
+      document.getElementById('form-ot').reset();
+    });
+
+    document.getElementById('refrescar').addEventListener('click', cargarOTs);
+
+    // Listar OTs
+    async function cargarOTs() {
+      const tbody = document.getElementById('body-ots');
+      tbody.innerHTML = '<tr><td class="muted" colspan="7">Cargando…</td></tr>';
+
+      const [{ data: ots, error: e1 }, { data: relaciones, error: e2 }, { data: rh, error: e3 }] = await Promise.all([
+        db.from('ordenes_trabajo').select('*').order('fecha_inicio',{ascending:false}),
+        db.from('ot_trabajadores').select('ot_id, trabajador_id, funcion'),
+        db.from('recursos_humanos').select('id,nombre')
+      ]);
+
+      if (e1 || e2 || e3) {
+        console.error(e1 || e2 || e3);
+        tbody.innerHTML = '<tr><td class="muted" colspan="7">Error cargando datos</td></tr>';
+        return;
       }
-      await loadWorkers();
-    }
 
-    // ===========================================
-    // 3) ÓRDENES
-    // ===========================================
-    async function loadOTs(){
-      if(hasCloud){
-        const { data, error } = await sb.from('ot').select('*').order('created_at',{ascending:false});
-        if(error){ console.warn('Load OT error', error); return []; }
-        return data;
-      } else {
-        return JSON.parse(localStorage.getItem(LS_KEY_OTS)||'[]');
-      }
-    }
-
-    async function upsertOT(ot){
-      if(hasCloud){
-        // si no viene id, generarlo
-        ot.id = (ot.id||genId()).trim();
-        const { error } = await sb.from('ot').upsert([ot], { onConflict:'id' });
-        if(error){ alert('Error guardando OT (cloud): '+error.message); }
-      } else {
-        let list = JSON.parse(localStorage.getItem(LS_KEY_OTS)||'[]');
-        const idx = list.findIndex(x=>x.id===ot.id);
-        if(idx>=0) list[idx]=ot; else list.unshift(ot);
-        localStorage.setItem(LS_KEY_OTS, JSON.stringify(list));
-      }
-    }
-
-    async function deleteOT(id){
-      if(!id) return;
-      if(hasCloud){
-        const { error } = await sb.from('ot').delete().eq('id', id);
-        if(error){ alert('Error al eliminar (cloud): '+error.message); }
-      } else {
-        let list = JSON.parse(localStorage.getItem(LS_KEY_OTS)||'[]').filter(x=>x.id!==id);
-        localStorage.setItem(LS_KEY_OTS, JSON.stringify(list));
-      }
-    }
-
-    // ===========================================
-    // 4) UI FORM + LISTADO
-    // ===========================================
-    function readForm(){
-      const options = Array.from($('#f-trabajadores').selectedOptions).map(o=>o.value);
-      return {
-        id: ($('#f-id').value || genId()).trim(),
-        equipo: $('#f-equipo').value.trim(),
-        prioridad: $('#f-prioridad').value,
-        estado: $('#f-estado').value,
-        inicio: $('#f-inicio').value || null,
-        cierre: $('#f-cierre').value || null,
-        titulo: $('#f-titulo').value.trim(),
-        desc: $('#f-desc').value.trim(),
-        evidencia: $('#f-evidencia').value.trim(),
-        trabajadores: options
-      };
-    }
-    function fillForm(ot){
-      $('#f-id').value = ot.id||'';
-      $('#f-equipo').value = ot.equipo||'';
-      $('#f-prioridad').value = ot.prioridad||'Media';
-      $('#f-estado').value = ot.estado||'Abierta';
-      $('#f-inicio').value = ot.inicio||'';
-      $('#f-cierre').value = ot.cierre||'';
-      $('#f-titulo').value = ot.titulo||'';
-      $('#f-desc').value = ot.desc||'';
-      $('#f-evidencia').value = ot.evidencia||'';
-      const sel = $('#f-trabajadores');
-      Array.from(sel.options).forEach(o=>o.selected = (ot.trabajadores||[]).includes(o.value));
-      window.scrollTo({top:0,behavior:'smooth'});
-    }
-    function clearForm(){
-      $$('input, textarea').forEach(el=>{ if(el.type!=='date') el.value=''; });
-      $('#f-inicio').value = ''; $('#f-cierre').value='';
-      $('#f-prioridad').value='Media'; $('#f-estado').value='Abierta';
-      Array.from($('#f-trabajadores').options).forEach(o=>o.selected=false);
-    }
-
-    async function render(){
-      const tbody = $('#tbl tbody');
-      const all = await loadOTs();
-      const q = $('#q').value.toLowerCase();
-      const fE = $('#flt-estado').value;
-      const fP = $('#flt-prioridad').value;
-      const rows = all.filter(o=>{
-        const text = (o.id+' '+o.equipo+' '+o.titulo).toLowerCase();
-        const okQ = !q || text.includes(q);
-        const okE = !fE || o.estado===fE;
-        const okP = !fP || o.prioridad===fP;
-        return okQ && okE && okP;
+      const nombrePorId = new Map(rh.map(x => [x.id, x.nombre]));
+      const asignPorOT = new Map();
+      relaciones.forEach(r => {
+        if (!asignPorOT.has(r.ot_id)) asignPorOT.set(r.ot_id, []);
+        asignPorOT.get(r.ot_id).push({ id: r.trabajador_id, nombre: nombrePorId.get(r.trabajador_id) || '—', funcion: r.funcion });
       });
-      $('#count').textContent = rows.length+' de '+all.length+' OT';
+
       tbody.innerHTML = '';
-      rows.forEach(o=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><a href="#" data-id="${o.id}" class="lnk">${o.id}</a></td>
-          <td>${esc(o.titulo)}</td>
-          <td>${esc(o.equipo)}</td>
-          <td>${esc(o.prioridad)}</td>
-          <td class="status ${cls(o.estado)}">${esc(o.estado)}</td>
-          <td>${o.inicio||''}</td>
-          <td>${o.cierre||''}</td>
-          <td>${(o.trabajadores||[]).map(esc).join(', ')}</td>
+      if (!ots.length) {
+        tbody.innerHTML = '<tr><td class="muted" colspan="7">No hay OTs registradas.</td></tr>';
+        return;
+      }
+
+      for (const ot of ots) {
+        const asign = asignPorOT.get(ot.id) || [];
+        const nombres = asign.map(a => a.nombre).join(', ') || '—';
+
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+          <td>${ot.equipo}</td>
+          <td>${ot.tipo}</td>
+          <td>${tagEstado(ot.estado)}</td>
+          <td class="nowrap">${fmtDate(ot.fecha_inicio)}</td>
+          <td class="nowrap">${fmtDate(ot.fecha_fin)}</td>
+          <td>${nombres}</td>
+          <td class="nowrap">
+            <select data-accion="estado" data-id="${ot.id}">
+              <option value="pendiente" ${ot.estado==='pendiente'?'selected':''}>Pendiente</option>
+              <option value="en_progreso" ${ot.estado==='en_progreso'?'selected':''}>En progreso</option>
+              <option value="completada" ${ot.estado==='completada'?'selected':''}>Completada</option>
+            </select>
+            <button class="btn red" data-accion="borrar" data-id="${ot.id}" style="margin-left:6px">Borrar</button>
+          </td>
         `;
-        tbody.appendChild(tr);
+        tbody.appendChild(fila);
+      }
+
+      // Delegación de eventos (cambiar estado / borrar)
+      tbody.querySelectorAll('select[data-accion="estado"]').forEach(sel => {
+        sel.addEventListener('change', async (e) => {
+          const id = e.target.dataset.id;
+          const nuevo = e.target.value;
+          const { error } = await db.from('ordenes_trabajo').update({ estado: nuevo }).eq('id', id);
+          if (error) { alert('Error al actualizar estado: ' + error.message); }
+          else { cargarOTs(); }
+        });
       });
-      $$('#tbl .lnk').forEach(a=>{
-        a.addEventListener('click', async e=>{
-          e.preventDefault();
-          const id = a.dataset.id;
-          const all = await loadOTs();
-          const ot = all.find(x=>x.id===id);
-          if(ot) fillForm(ot);
+      tbody.querySelectorAll('button[data-accion="borrar"]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (!confirm('¿Borrar OT y sus asignaciones?')) return;
+          const id = btn.dataset.id;
+          const { error } = await db.from('ordenes_trabajo').delete().eq('id', id);
+          if (error) { alert('No se pudo borrar: ' + error.message); }
+          else { cargarOTs(); }
         });
       });
     }
 
-    // CSV
-    async function exportCSV(){
-      const data = await loadOTs();
-      if(!data.length){ alert('No hay datos para exportar.'); return; }
-      const cols = ['id','titulo','equipo','prioridad','estado','inicio','cierre','trabajadores','desc','evidencia'];
-      const lines = [cols.join(';')].concat(
-        data.map(o=>cols.map(k=>{
-          const v = (k==='trabajadores') ? (o[k]||[]).join('|') : (o[k]??'');
-          return `"${String(v).replace(/"/g,'""')}"`;
-        }).join(';'))
-      );
-      const blob = new Blob([lines.join('\n')],{type:'text/csv;charset=utf-8'});
-      const url = URL.createObjectURL(blob);
-      const a = Object.assign(document.createElement('a'),{href:url,download:'aurum_ot.csv'});
-      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-    }
-
-    // Eventos
-    $('#btn-save').addEventListener('click', async ()=>{
-      const form = readForm();
-      if(!form.titulo){ alert('Ingresa un título.'); return; }
-      await upsertOT(form);
-      fillForm(form);
-      await render();
-    });
-    $('#btn-clear').addEventListener('click', clearForm);
-    $('#btn-delete').addEventListener('click', async ()=>{
-      const id = $('#f-id').value.trim();
-      if(!id){ alert('Primero carga una OT para eliminar.'); return; }
-      if(!confirm('¿Eliminar la OT '+id+'?')) return;
-      await deleteOT(id);
-      clearForm();
-      await render();
-    });
-
-    $('#btn-add-worker').addEventListener('click', async ()=>{
-      const n = $('#f-nuevo-trabajador').value.trim();
-      if(!n){ alert('Escribe un nombre.'); return; }
-      await addWorker(n);
-      $('#f-nuevo-trabajador').value='';
-    });
-    $('#btn-del-worker').addEventListener('click', async ()=>{
-      const sel = $('#f-trabajadores');
-      const v = Array.from(sel.selectedOptions).map(o=>o.value);
-      if(!v.length){ alert('Selecciona al menos uno.'); return; }
-      await delWorkers(v);
-    });
-
-    $('#q').addEventListener('input', render);
-    $('#flt-estado').addEventListener('change', render);
-    $('#flt-prioridad').addEventListener('change', render);
-    $('#btn-reset').addEventListener('click', ()=>{
-      $('#q').value=''; $('#flt-estado').value=''; $('#flt-prioridad').value='';
-      render();
-    });
-    $('#btn-export').addEventListener('click', exportCSV);
-
-    // Bootstrap
+    // Inicialización
     (async function init(){
-      $mode.textContent = hasCloud
-        ? 'Modo: Conectado a Supabase'
-        : 'Modo: Local (sin credenciales SUPABASE_URL / SUPABASE_ANON)';
-      await loadWorkers();
-      await render();
+      await cargarTrabajadoresSelect();
+      await cargarOTs();
     })();
   </script>
 </body>
