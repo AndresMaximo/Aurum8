@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Órdenes de Trabajo • AURUM∞</title>
 
-  <!-- Estilos rápidos (usa tu lemuria.css si quieres, pero esto ya corre solo) -->
+  <!-- Supabase JS v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     :root{
       --bg:#0b0f13;--panel:#121820;--ink:#e9edf1;--gold:#ffd43b;--gold-2:#c9a227;
@@ -33,8 +35,6 @@
     .row{display:grid;gap:10px}
     .row-2{grid-template-columns:repeat(2,1fr)}
     .row-3{grid-template-columns:repeat(3,1fr)}
-    .badges{display:flex;gap:8px;flex-wrap:wrap}
-    .badge{padding:6px 10px;border-radius:999px;font-size:12px;border:1px solid var(--line);background:#0d131a}
     .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
     button{
       background:var(--gold);color:#141414;border:0;border-radius:10px;padding:10px 14px;font-weight:600;cursor:pointer
@@ -53,13 +53,11 @@
     .status.en-progreso{color:var(--gold)}
     .status.cerrada{color:var(--ok)}
     small.hint{color:var(--muted);display:block;margin-top:6px}
-    .chips{display:flex;gap:6px;flex-wrap:wrap}
-    .chip{background:#0e141b;border:1px solid var(--line);border-radius:999px;padding:4px 8px;font-size:12px}
     footer{color:var(--muted);text-align:center;padding:30px}
+    .muted{color:var(--muted)}
   </style>
 </head>
 <body>
-  <!-- ENCABEZADO / MIGAS -->
   <header class="top">
     <div class="wrap">
       <div class="brand">
@@ -77,8 +75,9 @@
   </header>
 
   <main class="wrap" id="app">
+    <div class="muted" id="mode" style="margin:8px 0 18px"></div>
     <div class="grid">
-      <!-- LADO IZQUIERDO • FORMULARIO -->
+      <!-- Formulario -->
       <section class="card">
         <h2>Nueva / Editar OT</h2>
         <div class="body">
@@ -145,16 +144,16 @@
                 <label style="margin-top:0">Agregar trabajador rápido</label>
                 <input id="f-nuevo-trabajador" type="text" placeholder="Nombre y apellido">
                 <div class="toolbar" style="margin-top:8px">
-                  <button class="ghost" id="btn-add-worker">+ Agregar a base local</button>
+                  <button class="ghost" id="btn-add-worker">+ Agregar</button>
                   <button class="ghost" id="btn-del-worker">Eliminar seleccionado</button>
                 </div>
-                <small class="hint">La base de trabajadores se guarda en este navegador. Luego la conectaremos a la BD.</small>
+                <small class="hint">Se guarda en la tabla <b>recursos_humanos</b>.</small>
               </div>
             </div>
           </div>
 
           <div>
-            <label>Evidencia (sólo nombre/URL por ahora)</label>
+            <label>Evidencia (nombre/URL)</label>
             <input id="f-evidencia" type="text" placeholder="Ej: foto_123.jpg o https://...">
           </div>
 
@@ -166,7 +165,7 @@
         </div>
       </section>
 
-      <!-- LADO DERECHO • LISTADO -->
+      <!-- Listado -->
       <section class="card">
         <h2>Listado y filtros</h2>
         <div class="body">
@@ -217,45 +216,120 @@
     </div>
   </main>
 
-  <footer>© 2025 AURUM∞ • Módulo de Órdenes de Trabajo (local)</footer>
+  <footer>© 2025 AURUM∞ • Módulo de Órdenes de Trabajo</footer>
 
-  <!-- LÓGICA -->
   <script>
-    const LS_KEY_OTS = 'aurum_ot_v1';
-    const LS_KEY_WORKERS = 'aurum_workers_v1';
+    // ============================================================
+    // 1) CONFIGURA AQUÍ TUS CREDENCIALES SUPABASE
+    //    (si las dejas vacías, el módulo usa modo LocalStorage)
+    // ============================================================
+    const SUPABASE_URL  = 'https://TU-PROJECT-URL.supabase.co';
+    const SUPABASE_ANON = 'TU-ANON-KEY';
+
+    // Tablas esperadas:
+    //  - recursos_humanos : id uuid pk default gen_random_uuid(), nombre text unique not null
+    //  - ot : id text pk, equipo text, prioridad text, estado text, inicio date, cierre date,
+    //         titulo text, desc text, evidencia text, trabajadores text[] default '{}',
+    //         created_at timestamp default now()
+
+    const hasCloud = SUPABASE_URL.startsWith('http') && SUPABASE_ANON.length > 20;
+    const sb = hasCloud ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON) : null;
+
     const $ = sel => document.querySelector(sel);
     const $$ = sel => Array.from(document.querySelectorAll(sel));
+    const LS_KEY_OTS = 'aurum_ot_v1';
+    const $mode = $('#mode');
 
-    // ------- Trabajadores (base local)
-    function loadWorkers(){
-      const arr = JSON.parse(localStorage.getItem(LS_KEY_WORKERS)||'[]');
+    // Helpers UI
+    function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[m]);}
+    function cls(s){return s.toLowerCase().replace(/\s+/g,'-')}
+    function genId(){return 'OT-' + Math.random().toString(36).slice(2,7).toUpperCase();}
+
+    // ===========================================
+    // 2) TRABAJADORES
+    // ===========================================
+    async function loadWorkers(){
       const sel = $('#f-trabajadores');
       sel.innerHTML = '';
-      arr.forEach(n=>{
+      let list = [];
+      if(hasCloud){
+        const { data, error } = await sb.from('recursos_humanos').select('nombre').order('nombre');
+        if(error){ console.warn('RH error', error); } else { list = data.map(r=>r.nombre); }
+      } else {
+        list = JSON.parse(localStorage.getItem('aurum_workers_v1')||'[]');
+      }
+      list.forEach(n=>{
         const opt = document.createElement('option');
         opt.value = n; opt.textContent = n;
         sel.appendChild(opt);
       });
-      return arr;
-    }
-    function saveWorkers(arr){
-      localStorage.setItem(LS_KEY_WORKERS, JSON.stringify(arr));
-      loadWorkers();
+      return list;
     }
 
-    // ------- Órdenes de trabajo
-    function loadOTs(){
-      return JSON.parse(localStorage.getItem(LS_KEY_OTS)||'[]');
-    }
-    function saveOTs(arr){
-      localStorage.setItem(LS_KEY_OTS, JSON.stringify(arr));
-      render();
-    }
-    function genId(){
-      return 'OT-' + Math.random().toString(36).slice(2,7).toUpperCase();
+    async function addWorker(nombre){
+      if(!nombre) return;
+      if(hasCloud){
+        await sb.from('recursos_humanos').upsert([{ nombre }], { onConflict:'nombre' });
+      } else {
+        const base = JSON.parse(localStorage.getItem('aurum_workers_v1')||'[]');
+        if(!base.includes(nombre)){ base.push(nombre); localStorage.setItem('aurum_workers_v1', JSON.stringify(base)); }
+      }
+      await loadWorkers();
     }
 
-    // ------- CRUD básico
+    async function delWorkers(nombres){
+      if(!nombres.length) return;
+      if(hasCloud){
+        await sb.from('recursos_humanos').delete().in('nombre', nombres);
+      } else {
+        let base = JSON.parse(localStorage.getItem('aurum_workers_v1')||'[]');
+        base = base.filter(n=>!nombres.includes(n));
+        localStorage.setItem('aurum_workers_v1', JSON.stringify(base));
+      }
+      await loadWorkers();
+    }
+
+    // ===========================================
+    // 3) ÓRDENES
+    // ===========================================
+    async function loadOTs(){
+      if(hasCloud){
+        const { data, error } = await sb.from('ot').select('*').order('created_at',{ascending:false});
+        if(error){ console.warn('Load OT error', error); return []; }
+        return data;
+      } else {
+        return JSON.parse(localStorage.getItem(LS_KEY_OTS)||'[]');
+      }
+    }
+
+    async function upsertOT(ot){
+      if(hasCloud){
+        // si no viene id, generarlo
+        ot.id = (ot.id||genId()).trim();
+        const { error } = await sb.from('ot').upsert([ot], { onConflict:'id' });
+        if(error){ alert('Error guardando OT (cloud): '+error.message); }
+      } else {
+        let list = JSON.parse(localStorage.getItem(LS_KEY_OTS)||'[]');
+        const idx = list.findIndex(x=>x.id===ot.id);
+        if(idx>=0) list[idx]=ot; else list.unshift(ot);
+        localStorage.setItem(LS_KEY_OTS, JSON.stringify(list));
+      }
+    }
+
+    async function deleteOT(id){
+      if(!id) return;
+      if(hasCloud){
+        const { error } = await sb.from('ot').delete().eq('id', id);
+        if(error){ alert('Error al eliminar (cloud): '+error.message); }
+      } else {
+        let list = JSON.parse(localStorage.getItem(LS_KEY_OTS)||'[]').filter(x=>x.id!==id);
+        localStorage.setItem(LS_KEY_OTS, JSON.stringify(list));
+      }
+    }
+
+    // ===========================================
+    // 4) UI FORM + LISTADO
+    // ===========================================
     function readForm(){
       const options = Array.from($('#f-trabajadores').selectedOptions).map(o=>o.value);
       return {
@@ -263,8 +337,8 @@
         equipo: $('#f-equipo').value.trim(),
         prioridad: $('#f-prioridad').value,
         estado: $('#f-estado').value,
-        inicio: $('#f-inicio').value,
-        cierre: $('#f-cierre').value,
+        inicio: $('#f-inicio').value || null,
+        cierre: $('#f-cierre').value || null,
         titulo: $('#f-titulo').value.trim(),
         desc: $('#f-desc').value.trim(),
         evidencia: $('#f-evidencia').value.trim(),
@@ -272,7 +346,7 @@
       };
     }
     function fillForm(ot){
-      $('#f-id').value = ot.id || '';
+      $('#f-id').value = ot.id||'';
       $('#f-equipo').value = ot.equipo||'';
       $('#f-prioridad').value = ot.prioridad||'Media';
       $('#f-estado').value = ot.estado||'Abierta';
@@ -281,7 +355,6 @@
       $('#f-titulo').value = ot.titulo||'';
       $('#f-desc').value = ot.desc||'';
       $('#f-evidencia').value = ot.evidencia||'';
-      // seleccionar trabajadores
       const sel = $('#f-trabajadores');
       Array.from(sel.options).forEach(o=>o.selected = (ot.trabajadores||[]).includes(o.value));
       window.scrollTo({top:0,behavior:'smooth'});
@@ -293,10 +366,9 @@
       Array.from($('#f-trabajadores').options).forEach(o=>o.selected=false);
     }
 
-    // ------- Render listado + filtros
-    function render(){
+    async function render(){
       const tbody = $('#tbl tbody');
-      const all = loadOTs();
+      const all = await loadOTs();
       const q = $('#q').value.toLowerCase();
       const fE = $('#flt-estado').value;
       const fP = $('#flt-prioridad').value;
@@ -323,22 +395,20 @@
         `;
         tbody.appendChild(tr);
       });
-      // click para editar
       $$('#tbl .lnk').forEach(a=>{
-        a.addEventListener('click', e=>{
+        a.addEventListener('click', async e=>{
           e.preventDefault();
           const id = a.dataset.id;
-          const ot = loadOTs().find(x=>x.id===id);
+          const all = await loadOTs();
+          const ot = all.find(x=>x.id===id);
           if(ot) fillForm(ot);
         });
       });
     }
-    function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[m]);}
-    function cls(s){return s.toLowerCase().replace(/\s+/g,'-')}
 
-    // ------- Export CSV
-    function exportCSV(){
-      const data = loadOTs();
+    // CSV
+    async function exportCSV(){
+      const data = await loadOTs();
       if(!data.length){ alert('No hay datos para exportar.'); return; }
       const cols = ['id','titulo','equipo','prioridad','estado','inicio','cierre','trabajadores','desc','evidencia'];
       const lines = [cols.join(';')].concat(
@@ -353,40 +423,35 @@
       document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
     }
 
-    // ------- Eventos UI
-    $('#btn-save').addEventListener('click', ()=>{
+    // Eventos
+    $('#btn-save').addEventListener('click', async ()=>{
       const form = readForm();
       if(!form.titulo){ alert('Ingresa un título.'); return; }
-      let list = loadOTs();
-      const idx = list.findIndex(x=>x.id===form.id);
-      if(idx>=0) list[idx]=form; else list.unshift(form);
-      saveOTs(list);
-      fillForm(form); // mantiene edición
+      await upsertOT(form);
+      fillForm(form);
+      await render();
     });
     $('#btn-clear').addEventListener('click', clearForm);
-    $('#btn-delete').addEventListener('click', ()=>{
+    $('#btn-delete').addEventListener('click', async ()=>{
       const id = $('#f-id').value.trim();
       if(!id){ alert('Primero carga una OT para eliminar.'); return; }
       if(!confirm('¿Eliminar la OT '+id+'?')) return;
-      let list = loadOTs().filter(x=>x.id!==id);
-      saveOTs(list);
+      await deleteOT(id);
       clearForm();
+      await render();
     });
 
-    $('#btn-add-worker').addEventListener('click', ()=>{
+    $('#btn-add-worker').addEventListener('click', async ()=>{
       const n = $('#f-nuevo-trabajador').value.trim();
       if(!n){ alert('Escribe un nombre.'); return; }
-      const base = loadWorkers();
-      if(base.includes(n)){ alert('Ya existe.'); return; }
-      base.push(n); saveWorkers(base);
+      await addWorker(n);
       $('#f-nuevo-trabajador').value='';
     });
-    $('#btn-del-worker').addEventListener('click', ()=>{
+    $('#btn-del-worker').addEventListener('click', async ()=>{
       const sel = $('#f-trabajadores');
       const v = Array.from(sel.selectedOptions).map(o=>o.value);
       if(!v.length){ alert('Selecciona al menos uno.'); return; }
-      const base = loadWorkers().filter(n=>!v.includes(n));
-      saveWorkers(base);
+      await delWorkers(v);
     });
 
     $('#q').addEventListener('input', render);
@@ -398,25 +463,13 @@
     });
     $('#btn-export').addEventListener('click', exportCSV);
 
-    // ------- Bootstrap inicial
-    (function init(){
-      // precarga algunos trabajadores de ejemplo si no hay
-      if(!localStorage.getItem(LS_KEY_WORKERS)){
-        saveWorkers(['Andrés Bello','Carla Muñoz','Diego Pizarro','Sofía Rojas']);
-      } else {
-        loadWorkers();
-      }
-      // ejemplo de OTs iniciales si no hay nada
-      if(!loadOTs().length){
-        saveOTs([
-          {id:'OT-0001', titulo:'Revisión general 10.000 km', equipo:'Hilux A8-001', prioridad:'Media', estado:'Abierta', inicio:new Date().toISOString().slice(0,10), cierre:'', trabajadores:['Andrés Bello'], desc:'Check 50 pts', evidencia:''},
-          {id:'OT-0002', titulo:'Cambio pastillas y limpieza', equipo:'Hilux A8-002', prioridad:'Alta', estado:'En progreso', inicio:new Date().toISOString().slice(0,10), cierre:'', trabajadores:['Carla Muñoz','Diego Pizarro'], desc:'Eje delantero', evidencia:''}
-        ]);
-      } else {
-        render();
-      }
-      loadWorkers();
-      render();
+    // Bootstrap
+    (async function init(){
+      $mode.textContent = hasCloud
+        ? 'Modo: Conectado a Supabase'
+        : 'Modo: Local (sin credenciales SUPABASE_URL / SUPABASE_ANON)';
+      await loadWorkers();
+      await render();
     })();
   </script>
 </body>
