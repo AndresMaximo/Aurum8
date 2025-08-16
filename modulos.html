@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Módulos • AURUM∞</title>
+
+  <!-- Estilos base del sitio -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="lemuria.css" />
+
+  <style>
+    /* Ajustes suaves de esta página (puedes quitarlos si prefieres) */
+    .grid { display: grid; gap: 16px; }
+    @media (min-width: 720px){ .grid.cols-3 { grid-template-columns: repeat(3, 1fr); } }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--gold-20);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+      transition: transform .12s ease, box-shadow .12s ease;
+      display: block;
+      color: inherit;
+      text-decoration: none;
+      min-height: 130px;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); }
+    .card h3 { margin: 0 0 6px; }
+    .muted { opacity: .85; }
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--gold-20);
+      background: var(--bg-card2);
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .top h1 { letter-spacing: .5px; }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <h1>AURUM∞</h1>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="vision.html">Visión</a>
+      <a href="modulos.html" class="active">Módulos</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>Módulos</h2>
+
+    <ul class="cards grid cols-3" style="list-style:none; padding:0; margin:0;">
+      <!-- Recursos Humanos -->
+      <li>
+        <a class="card" href="./Modulos/recursos-humanos/index.html">
+          <h3>Recursos Humanos <span class="badge">Nuevo</span></h3>
+          <p class="muted">
+            Alta/Baja y edición de personal, búsqueda rápida y exportación. Base para asignar técnicos a OTs.
+          </p>
+        </a>
+      </li>
+
+      <!-- Órdenes de Trabajo (OT) -->
+      <li>
+        <a class="card" href="./Modulos/ot/index.html">
+          <h3>Órdenes de Trabajo (OT)</h3>
+          <p class="muted">
+            Crear, planificar y cerrar OTs. Asigna técnicos desde RR.HH., adjunta evidencias y exporta reportes.
+          </p>
+        </a>
+      </li>
+
+      <!-- Hilux (Checklist) -->
+      <li>
+        <a class="card" href="./Modulos/Hilux/index.html">
+          <h3>Checklist Hilux</h3>
+          <p class="muted">
+            Inspección técnica de 50 puntos, guardado local y exportación. Integración futura con backend.
+          </p>
+        </a>
+      </li>
+    </ul>
+  </main>
+
+  <footer class="foot">
+    <small>© 2025 AURUM∞. Todos los derechos reservados.</small>
+  </footer>
+</body>
+</html>
