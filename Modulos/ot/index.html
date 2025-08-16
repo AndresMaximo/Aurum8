@@ -1,29 +1,402 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Órdenes de Trabajo • AURUM∞</title>
-  <link rel="stylesheet" href="../../lemuria.css" />
-  <script defer src="../../aurum.js"></script>
+
+  <!-- Tema base (si tienes lemuria.css en la raíz) -->
+  <link rel="stylesheet" href="../../lemuria.css">
+
+  <style>
+    main{max-width:1000px;margin:24px auto;padding:0 16px}
+    .card{background:var(--bg-card,#0b0b0b);border:1px solid var(--gold-20,#2a2a2a);
+          border-radius:14px;padding:16px 18px;box-shadow:var(--shadow,0 0 0 / 0%);margin:16px 0}
+    .row{display:grid;gap:12px}
+    @media (min-width:720px){.row.cols-2{grid-template-columns:1fr 1fr}}
+    label{font-weight:600;color:var(--gold,#f4d25f)}
+    input,select,textarea{background:#0f1e21;border:1px solid var(--gold-20,#2a2a2a);
+      border-radius:10px;color:var(--text,#e0e0e0);padding:10px 12px;font-size:1rem;outline:none}
+    textarea{min-height:110px}
+    .chipbox{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .chip{background:#122126;border:1px solid #28353a;border-radius:999px;padding:6px 10px;display:flex;gap:8px;align-items:center}
+    .chip button{background:transparent;border:0;color:#bbb;cursor:pointer;font-size:14px}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:flex-end;margin-top:16px}
+    .btn{border:1px solid var(--gold-20,#2a2a2a);background:#121a1c;color:var(--text,#e0e0e0);
+         border-radius:10px;padding:10px 14px;cursor:pointer}
+    .btn.primary{background:#f4b400;color:#111;font-weight:700;border-color:#f4b400}
+    .muted{opacity:.85}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{border-bottom:1px solid #243036;padding:10px;text-align:left}
+    th{color:var(--gold,#f4d25f)}
+    .ok{background:#0f4726;border-color:#1d854e}
+    .obs{background:#3b300a;border-color:#7d671a}
+    .nc{background:#4a1717;border-color:#a73b3b}
+    .state-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+    .state-ok{background:#27c26c}.state-obs{background:#f5c542}.state-nc{background:#ff5f5f}
+  </style>
 </head>
 <body>
   <header class="top">
-    <h1>Órdenes de Trabajo</h1>
+    <h1>AURUM∞</h1>
     <nav>
       <a href="../../index.html">Inicio</a>
-      <a class="active" href="./">OT</a>
+      <a href="../../vision.html">Visión</a>
+      <a href="../../modulos.html" class="active">Módulos</a>
+      <a href="../../contacto.html">Contacto</a>
     </nav>
   </header>
 
-  <main class="container">
-    <section class="section">
-      <h3 class="muted">Estado</h3>
-      <p>Listo para conectar con Supabase (OT: crear, editar, cerrar, exportar).</p>
+  <main>
+    <h2>Órdenes de Trabajo</h2>
+
+    <!-- Datos generales de la OT -->
+    <section class="card">
+      <h3>Datos de la OT</h3>
+      <div class="row cols-2">
+        <div>
+          <label for="otId">ID / Código</label>
+          <input id="otId" placeholder="OT-0001">
+        </div>
+        <div>
+          <label for="equipo">Equipo / Activo</label>
+          <input id="equipo" placeholder="Ej: HILUX-A8-001">
+        </div>
+        <div>
+          <label for="titulo">Título / Trabajo</label>
+          <input id="titulo" placeholder="Ej: Mantenimiento preventivo 50 pts">
+        </div>
+        <div>
+          <label for="prioridad">Prioridad</label>
+          <select id="prioridad">
+            <option value="Media">Media</option>
+            <option value="Alta">Alta</option>
+            <option value="Baja">Baja</option>
+          </select>
+        </div>
+        <div>
+          <label for="estado">Estado</label>
+          <select id="estado">
+            <option value="Abierta">Abierta</option>
+            <option value="Proceso">En proceso</option>
+            <option value="Cerrada">Cerrada</option>
+          </select>
+        </div>
+        <div>
+          <label for="fecha">Fecha</label>
+          <input id="fecha" type="date">
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="descripcion">Descripción</label>
+          <textarea id="descripcion" placeholder="Describe el alcance, riesgos, EPP, bloqueo/etiquetado, etc."></textarea>
+        </div>
+      </div>
     </section>
+
+    <!-- Personal que interviene -->
+    <section class="card">
+      <h3>Personal que interviene</h3>
+
+      <div class="row cols-2">
+        <div>
+          <label for="buscarPersona">Agregar trabajador</label>
+          <input id="buscarPersona" list="listaPersonas" placeholder="Escribe un nombre y presiona Enter">
+          <datalist id="listaPersonas"></datalist>
+          <p class="muted" style="margin-top:6px">Sugerencias cargan desde memoria local. Podrás editarlas en “Gestionar base local”.</p>
+        </div>
+        <div>
+          <label for="rolPersona">Rol</label>
+          <select id="rolPersona">
+            <option value="Técnico">Técnico</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="Ayudante">Ayudante</option>
+            <option value="Ingeniero">Ingeniero</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="chipbox" id="chipsPersonas"></div>
+
+      <div class="toolbar">
+        <button class="btn" id="limpiarPersonas">Limpiar lista</button>
+      </div>
+
+      <table id="tablaPersonal">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Rol</th>
+            <th>Firma</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- Tareas / hallazgos rápidos -->
+    <section class="card">
+      <h3>Tareas / Hallazgos</h3>
+      <div class="row cols-2">
+        <div>
+          <label for="tareaTxt">Nueva tarea / hallazgo</label>
+          <input id="tareaTxt" placeholder="Ej: Punto 12: revisar fugas en línea de retorno">
+        </div>
+        <div>
+          <label for="tareaEstado">Estado</label>
+          <select id="tareaEstado">
+            <option value="OK">OK</option>
+            <option value="OBS">Observación</option>
+            <option value="NC">No conforme</option>
+          </select>
+        </div>
+      </div>
+      <div class="toolbar">
+        <button class="btn" id="agregarTarea">Agregar</button>
+      </div>
+
+      <table id="tablaTareas">
+        <thead>
+          <tr>
+            <th>Estado</th>
+            <th>Detalle</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- Acciones -->
+    <section class="card">
+      <h3>Acciones</h3>
+      <div class="toolbar">
+        <button class="btn" id="guardarLocal">Guardar local</button>
+        <button class="btn" id="cargarLocal">Cargar local</button>
+        <button class="btn" id="borrarLocal">Borrar local</button>
+        <button class="btn" id="exportarCSV">Exportar CSV</button>
+        <button class="btn primary" id="imprimir">Imprimir</button>
+      </div>
+      <p class="muted">Por ahora el guardado es local (navegador). Luego conectaremos a Supabase.</p>
+    </section>
+
+    <!-- Gestión de base local (sólo para sugerencias de nombres) -->
+    <section class="card">
+      <h3>Gestionar base local de trabajadores</h3>
+      <div class="row cols-2">
+        <div>
+          <label for="nuevoNombre">Nuevo nombre</label>
+          <input id="nuevoNombre" placeholder="Ej: Andrés Bello">
+        </div>
+        <div>
+          <label for="nuevoRol">Rol sugerido</label>
+          <select id="nuevoRol">
+            <option value="Técnico">Técnico</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="Ayudante">Ayudante</option>
+            <option value="Ingeniero">Ingeniero</option>
+          </select>
+        </div>
+      </div>
+      <div class="toolbar">
+        <button class="btn" id="agregarBase">Agregar a sugerencias</button>
+        <button class="btn" id="resetBase">Restablecer sugerencias</button>
+      </div>
+    </section>
+
   </main>
 
-  <footer class="foot">© 2025 AURUM∞</footer>
+  <footer class="top" style="margin-top:24px">
+    <p>© 2025 AURUM∞ • Órdenes de Trabajo</p>
+  </footer>
+
+  <script>
+    // ======= Utiles =======
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => document.querySelectorAll(sel);
+
+    // ======= Base local (sugerencias de personas) =======
+    const BASE_KEY = 'aurum_ot_base_personas';
+    const DEFAULT_BASE = [
+      {nombre:'Andrés Bello', rol:'Supervisor'},
+      {nombre:'María Torres', rol:'Técnico'},
+      {nombre:'Juan Pérez', rol:'Ayudante'},
+      {nombre:'Elena Rojas', rol:'Ingeniero'}
+    ];
+    function getBase(){
+      try{ return JSON.parse(localStorage.getItem(BASE_KEY)) || DEFAULT_BASE; }
+      catch{ return DEFAULT_BASE; }
+    }
+    function setBase(arr){ localStorage.setItem(BASE_KEY, JSON.stringify(arr)); buildDatalist(); }
+    function buildDatalist(){
+      const list = $('#listaPersonas'); list.innerHTML='';
+      getBase().forEach(p=>{
+        const opt = document.createElement('option');
+        opt.value = p.nombre;
+        list.appendChild(opt);
+      });
+    }
+
+    // ======= Estado de la OT (lo que se guarda/carga) =======
+    const SAVE_KEY = 'aurum_ot_current';
+    const state = {
+      header: { otId:'', equipo:'', titulo:'', prioridad:'Media', estado:'Abierta', fecha:'', descripcion:'' },
+      personal: [],   // {nombre, rol, firmado:false}
+      tareas: []      // {estado:'OK|OBS|NC', texto:''}
+    };
+
+    function syncFromForm(){
+      state.header.otId = $('#otId').value.trim();
+      state.header.equipo = $('#equipo').value.trim();
+      state.header.titulo = $('#titulo').value.trim();
+      state.header.prioridad = $('#prioridad').value;
+      state.header.estado = $('#estado').value;
+      state.header.fecha = $('#fecha').value;
+      state.header.descripcion = $('#descripcion').value.trim();
+    }
+    function syncToForm(){
+      $('#otId').value = state.header.otId||'';
+      $('#equipo').value = state.header.equipo||'';
+      $('#titulo').value = state.header.titulo||'';
+      $('#prioridad').value = state.header.prioridad||'Media';
+      $('#estado').value = state.header.estado||'Abierta';
+      $('#fecha').value = state.header.fecha||'';
+      $('#descripcion').value = state.header.descripcion||'';
+    }
+
+    // ======= Personal =======
+    function renderPersonal(){
+      const tbody = $('#tablaPersonal tbody'); tbody.innerHTML='';
+      const chips = $('#chipsPersonas'); chips.innerHTML='';
+      state.personal.forEach((p,idx)=>{
+        // fila
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${p.nombre}</td>
+          <td>${p.rol}</td>
+          <td><input type="checkbox" ${p.firmado?'checked':''} data-firma="${idx}"></td>
+          <td><button class="btn" data-delp="${idx}">Quitar</button></td>
+        `;
+        tbody.appendChild(tr);
+        // chip
+        const chip = document.createElement('div');
+        chip.className='chip';
+        chip.innerHTML = `<span>${p.nombre} • ${p.rol}</span><button title="Quitar" data-delp="${idx}">×</button>`;
+        chips.appendChild(chip);
+      });
+    }
+    function addPersona(nombre, rol){
+      if(!nombre) return;
+      if(state.personal.some(p=>p.nombre.toLowerCase()===nombre.toLowerCase())) return;
+      state.personal.push({nombre, rol, firmado:false});
+      renderPersonal();
+      $('#buscarPersona').value='';
+    }
+
+    // ======= Tareas =======
+    function renderTareas(){
+      const tbody = $('#tablaTareas tbody'); tbody.innerHTML='';
+      state.tareas.forEach((t,idx)=>{
+        const tr = document.createElement('tr');
+        const dot = t.estado==='OK'?'state-ok':(t.estado==='OBS'?'state-obs':'state-nc');
+        tr.innerHTML = `
+          <td><span class="state-dot ${dot}"></span>${t.estado}</td>
+          <td>${t.texto}</td>
+          <td><button class="btn" data-delt="${idx}">Quitar</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+    function addTarea(texto, estado){
+      if(!texto) return;
+      state.tareas.push({estado, texto});
+      renderTareas();
+      $('#tareaTxt').value='';
+      $('#tareaEstado').value='OK';
+    }
+
+    // ======= Guardar/Cargar local =======
+    $('#guardarLocal').onclick = ()=>{ syncFromForm(); localStorage.setItem(SAVE_KEY, JSON.stringify(state)); alert('Guardado en este navegador.'); }
+    $('#cargarLocal').onclick = ()=>{
+      const raw = localStorage.getItem(SAVE_KEY);
+      if(!raw){ alert('No hay guardado local.'); return; }
+      const data = JSON.parse(raw);
+      Object.assign(state, data);
+      syncToForm(); renderPersonal(); renderTareas();
+      alert('Cargado desde este navegador.');
+    };
+    $('#borrarLocal').onclick = ()=>{ localStorage.removeItem(SAVE_KEY); alert('Guardado local eliminado.'); };
+
+    // ======= Exportar CSV (sencillo) =======
+    $('#exportarCSV').onclick = ()=>{
+      syncFromForm();
+      let lines = [];
+      lines.push('Sección,Campo,Valor');
+      Object.entries(state.header).forEach(([k,v])=>lines.push(`Header,${k},"${(v||'').toString().replace(/"/g,'""')}"`));
+      lines.push('Personal,Nombre,Rol');
+      state.personal.forEach(p=>lines.push(`Personal,"${p.nombre.replace(/"/g,'""')}","${p.rol}"`));
+      lines.push('Tareas,Estado,Texto');
+      state.tareas.forEach(t=>lines.push(`Tarea,${t.estado},"${t.texto.replace(/"/g,'""')}"`));
+      const blob = new Blob([lines.join('\n')],{type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download=(state.header.otId||'OT')+'.csv';
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    };
+
+    // ======= Imprimir =======
+    $('#imprimir').onclick = ()=>window.print();
+
+    // ======= Eventos UI =======
+    $('#buscarPersona').addEventListener('keydown', e=>{
+      if(e.key==='Enter'){
+        addPersona(e.target.value.trim(), $('#rolPersona').value);
+      }
+    });
+    $('#limpiarPersonas').onclick = ()=>{ state.personal=[]; renderPersonal(); };
+
+    document.body.addEventListener('click', e=>{
+      const dp = e.target.getAttribute('data-delp');
+      if(dp!==null){ state.personal.splice(Number(dp),1); renderPersonal(); }
+      const dt = e.target.getAttribute('data-delt');
+      if(dt!==null){ state.tareas.splice(Number(dt),1); renderTareas(); }
+    });
+    document.body.addEventListener('change', e=>{
+      const f = e.target.getAttribute('data-firma');
+      if(f!==null){ state.personal[Number(f)].firmado = e.target.checked; }
+    });
+    $('#agregarTarea').onclick = ()=> addTarea($('#tareaTxt').value.trim(), $('#tareaEstado').value);
+
+    // ======= Gestión base local de sugerencias =======
+    $('#agregarBase').onclick = ()=>{
+      const nom = $('#nuevoNombre').value.trim();
+      const rol = $('#nuevoRol').value;
+      if(!nom) return;
+      const base = getBase();
+      if(base.some(p=>p.nombre.toLowerCase()===nom.toLowerCase())){ alert('Ya existe en sugerencias.'); return; }
+      base.push({nombre:nom, rol});
+      setBase(base);
+      $('#nuevoNombre').value='';
+      alert('Agregado a sugerencias.');
+    };
+    $('#resetBase').onclick = ()=>{ setBase(DEFAULT_BASE); alert('Sugerencias restauradas.'); };
+
+    // ======= Init =======
+    (function init(){
+      buildDatalist();
+      // semilla por si hay guardado
+      const raw = localStorage.getItem(SAVE_KEY);
+      if(raw){
+        try { Object.assign(state, JSON.parse(raw)); } catch{}
+      }
+      syncToForm(); renderPersonal(); renderTareas();
+      // Fecha por defecto hoy si no hay
+      if(!$('#fecha').value){
+        const d = new Date(); const pad = n=>String(n).padStart(2,'0');
+        $('#fecha').value = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+      }
+    })();
+  </script>
 </body>
 </html>
