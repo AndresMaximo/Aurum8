@@ -1,143 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Recursos Humanos • AURUM∞</title>
-  <link rel="stylesheet" href="../../style.css" />
-  <link rel="stylesheet" href="../../lemuria.css" />
-  <style>
-    .grid {display:grid; gap:16px}
-    @media (min-width: 720px){ .grid.cols-3{grid-template-columns:repeat(3,1fr)} }
-    .card{background:var(--bg-card); border:1px solid var(--gold-20); border-radius:14px; padding:16px; box-shadow:var(--shadow)}
-    .card h3{margin:0 0 6px}
-    .toolbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:8px 0 16px}
-    .toolbar input[type="search"]{min-width:220px}
-    .toolbar .spacer{flex:1}
-    table.rh{width:100%; border-collapse:collapse; overflow:auto}
-    .rh th,.rh td{border-bottom:1px dashed var(--gold-20); padding:10px 8px; text-align:left}
-    .rh th{color:var(--gold); font-weight:700}
-    .rh tr:hover{background:rgba(255,215,0,.05)}
-    .muted{opacity:.85}
-    .pill{display:inline-block; padding:.2rem .5rem; border-radius:999px; font-size:.85rem}
-    .pill.ok{background:#134e4a; color:#c7f9cc}
-    .pill.off{background:#4a1f1f; color:#ffd6d6}
-    form#frmEmpleado{display:grid; grid-template-columns:1fr 1fr; gap:12px}
-    form#frmEmpleado .full{grid-column:1/-1}
-    form#frmEmpleado input, form#frmEmpleado select{width:100%}
-    .actions{display:flex; gap:8px; flex-wrap:wrap}
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recursos Humanos - AURUM∞</title>
+  <link rel="stylesheet" href="../../lemuria.css">
 </head>
 <body>
-  <header class="top">
-    <h1>AURUM∞</h1>
-    <nav>
-      <a href="../../index.html">Inicio</a>
-      <a href="../../vision.html">Visión</a>
-      <a href="../../modulos.html" class="active">Módulos</a>
-      <a href="../../contacto.html">Contacto</a>
-    </nav>
-  </header>
+  <h1>Módulo Recursos Humanos</h1>
+  <p>Gestión del personal de la empresa.</p>
 
-  <main class="container">
-    <h2>Recursos Humanos</h2>
-
-    <div class="grid">
-      <section class="card">
-        <h3>Empleado</h3>
-        <form id="frmEmpleado" autocomplete="off">
-          <input type="hidden" id="idx" value="-1" />
-          <div><label>RUT / ID</label><input id="rut" required /></div>
-          <div><label>Nombre completo</label><input id="nombre" required /></div>
-          <div><label>Cargo</label><input id="cargo" /></div>
-          <div><label>Estado</label>
-            <select id="estado"><option>ACTIVO</option><option>INACTIVO</option></select>
-          </div>
-          <div><label>Fecha ingreso</label><input id="fecha" type="date" /></div>
-          <div><label>Teléfono</label><input id="fono" inputmode="tel" /></div>
-          <div class="full actions">
-            <button type="submit" class="btn gold">Guardar</button>
-            <button type="button" id="btnLimpiar" class="btn">Limpiar</button>
-          </div>
-        </form>
-        <p class="muted" style="margin-top:8px">Los datos quedan en este dispositivo (LocalStorage). Luego los conectaremos al backend.</p>
-      </section>
-
-      <section class="card" style="grid-column:1/-1">
-        <div class="toolbar">
-          <input id="q" type="search" placeholder="Buscar por nombre, RUT o cargo…" />
-          <div class="spacer"></div>
-          <button id="btnExport" class="btn gold">Exportar CSV</button>
-          <button id="btnWipe" class="btn">Borrar todo</button>
-        </div>
-
-        <div style="overflow:auto">
-          <table class="rh" id="tbl">
-            <thead>
-              <tr><th>RUT / ID</th><th>Nombre</th><th>Cargo</th><th>Estado</th><th>Ingreso</th><th>Fono</th><th>Acciones</th></tr>
-            </thead>
-            <tbody id="body"></tbody>
-          </table>
-        </div>
-      </section>
-    </div>
-  </main>
-
-  <footer class="footer">© 2025 AURUM∞ · Módulo de RR.HH.</footer>
-
-  <script>
-    const $=s=>document.querySelector(s), KEY='rrhh_empleados';
-    const leer=()=>JSON.parse(localStorage.getItem(KEY)||'[]');
-    const guardar=d=>localStorage.setItem(KEY,JSON.stringify(d));
-    const form=$('#frmEmpleado'), body=$('#body'), q=$('#q');
-
-    function esc(s){ return (s??'').toString().replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
-    function pintar(f=''){
-      const rows=leer(), f2=(f||'').toLowerCase();
-      body.innerHTML = rows.map((r,i)=>({...r,i}))
-        .filter(r=>!f2||(r.rut+r.nombre+r.cargo).toLowerCase().includes(f2))
-        .map(r=>`<tr>
-          <td>${esc(r.rut)}</td><td>${esc(r.nombre)}</td><td>${esc(r.cargo||'-')}</td>
-          <td><span class="pill ${r.estado==='ACTIVO'?'ok':'off'}">${r.estado}</span></td>
-          <td>${esc(r.fecha||'-')}</td><td>${esc(r.fono||'-')}</td>
-          <td><button class="btn" data-edit="${r.i}">Editar</button> <button class="btn" data-del="${r.i}">Borrar</button></td>
-        </tr>`).join('') || `<tr><td colspan="7" class="muted">Sin registros…</td></tr>`;
-    }
-
-    form.addEventListener('submit',e=>{
-      e.preventDefault();
-      const data=leer();
-      const reg={ rut:$('#rut').value.trim(), nombre:$('#nombre').value.trim(), cargo:$('#cargo').value.trim(),
-                  estado:$('#estado').value, fecha:$('#fecha').value, fono:$('#fono').value.trim() };
-      const idx=parseInt($('#idx').value,10);
-      if(Number.isInteger(idx)&&idx>=0) data[idx]=reg; else data.push(reg);
-      guardar(data); limpiar(); pintar(q.value);
-    });
-    function limpiar(){ form.reset(); $('#idx').value=-1; $('#rut').focus(); }
-    $('#btnLimpiar').onclick=limpiar;
-
-    body.addEventListener('click',e=>{
-      const iE=e.target.getAttribute('data-edit'), iD=e.target.getAttribute('data-del');
-      if(iE!==null){ const r=leer()[+iE]; $('#idx').value=iE; $('#rut').value=r.rut||''; $('#nombre').value=r.nombre||''; $('#cargo').value=r.cargo||''; $('#estado').value=r.estado||'ACTIVO'; $('#fecha').value=r.fecha||''; $('#fono').value=r.fono||''; window.scrollTo({top:0,behavior:'smooth'}); }
-      if(iD!==null){ const arr=leer(); arr.splice(+iD,1); guardar(arr); pintar(q.value); }
-    });
-
-    q.addEventListener('input',()=>pintar(q.value));
-    $('#btnExport').onclick=()=>{
-      const rows=leer(), head=['RUT','Nombre','Cargo','Estado','Ingreso','Fono'];
-      const csv=[head.join(',')].concat(rows.map(r=>[r.rut,r.nombre,r.cargo||'',r.estado,r.fecha||'',r.fono||''].map(v=>`"${(v||'').toString().replace(/"/g,'""')}"`).join(','))).join('\n');
-      const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='empleados_aurum.csv'; a.click(); URL.revokeObjectURL(a.href);
-    };
-    $('#btnWipe').onclick=()=>{ if(confirm('¿Borrar todos los registros locales de RR.HH.?')){ localStorage.removeItem(KEY); pintar(q.value); } };
-
-    if(!leer().length){
-      guardar([
-        {rut:'11.111.111-1', nombre:'Operador Base', cargo:'Operador', estado:'ACTIVO', fecha:'2023-03-01', fono:'+56 9 1111 1111'},
-        {rut:'22.222.222-2', nombre:'Técnico Mantenimiento', cargo:'Técnico', estado:'ACTIVO', fecha:'2024-06-15', fono:'+56 9 2222 2222'},
-        {rut:'33.333.333-3', nombre:'Supervisor Turno', cargo:'Supervisor', estado:'INACTIVO', fecha:'2022-11-20', fono:'+56 9 3333 3333'}
-      ]);
-    }
-    pintar();
-  </script>
+  <!-- Botón volver -->
+  <a href="../../index.html">
+    <button>⬅ Volver al Inicio</button>
+  </a>
 </body>
 </html>
