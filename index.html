@@ -1,81 +1,146 @@
-<!-- AURUM∞ index v2 -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AURUM∞</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      text-align: center;
-      padding: 2rem;
-      background: rgba(0,0,0,0.4);
-    }
-    header h1 {
-      font-size: 2.5rem;
-      margin: 0;
-      color: #f1c40f;
-    }
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.5rem;
-      padding: 2rem;
-      max-width: 1100px;
-      margin: auto;
-    }
-    .card {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 12px;
-      padding: 1.5rem;
-      text-align: center;
-      transition: transform 0.2s, background 0.3s;
-    }
-    .card:hover {
-      transform: scale(1.05);
-      background: rgba(255,255,255,0.2);
-    }
-    .card a {
-      text-decoration: none;
-      color: #f1c40f;
-      font-weight: bold;
-      font-size: 1.2rem;
-    }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background: rgba(0,0,0,0.5);
-      margin-top: 2rem;
-      font-size: 0.9rem;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AURUM∞ • Portal v2</title>
+<style>
+  :root{
+    --bg:#0b0f14;--panel:#121821;--ink:#e7eef8;--sub:#9db0c7;--brand:#ffbf00;
+    --card:#0f141c;--card2:#101824;--line:#233042;--ok:#0ecb81;--warn:#f4c542;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;color:var(--ink);background:
+      radial-gradient(1200px 600px at 20% -10%, #0f2338 0%, transparent 60%),
+      radial-gradient(1200px 600px at 120% 110%, #0f2338 0%, transparent 60%),
+      var(--bg);
+    font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial,sans-serif;
+  }
+  header{
+    position:sticky;top:0;z-index:5;background:rgba(12,16,22,.75);
+    backdrop-filter: blur(8px);border-bottom:1px solid var(--line)
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:16px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand .logo{
+    width:36px;height:36px;border-radius:50%;
+    background: conic-gradient(from 0deg, var(--brand), #ffd95e, var(--brand));
+    box-shadow:0 0 24px rgba(255,191,0,.35), inset 0 0 10px rgba(0,0,0,.35)
+  }
+  .brand h1{margin:0;font-size:20px;letter-spacing:.04em}
+  .muted{color:var(--sub)}
+  main .wrap{padding:28px 16px}
+  h2{margin:0 0 8px 0;font-size:28px}
+  p.lead{margin:0 0 24px 0;color:var(--sub)}
+  .grid{
+    display:grid;gap:16px;
+    grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+  }
+  .card{
+    display:block;text-decoration:none;color:inherit;border:1px solid var(--line);
+    background:linear-gradient(180deg,var(--card),var(--card2));
+    border-radius:14px;padding:18px;min-height:140px;
+    box-shadow:0 1px 0 rgba(255,255,255,.03), 0 10px 30px rgba(0,0,0,.25);
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  .card:hover{ transform: translateY(-2px); border-color:#335075; box-shadow:0 16px 36px rgba(0,0,0,.35) }
+  .card h3{margin:8px 0 6px 0;font-size:18px}
+  .tag{display:inline-block;font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);color:var(--sub)}
+  .card .desc{color:var(--sub);font-size:14px;line-height:1.4}
+  .chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:4px 8px;border-radius:999px;border:1px dashed #2b3b51;color:#cfe3ff;background:#0e1724}
+  footer{border-top:1px solid var(--line)}
+  footer .wrap{padding:20px 16px;color:#7d8ea4;font-size:13px}
+  /* mini iconos */
+  .ico{width:22px;height:22px;border-radius:6px;display:inline-block}
+  .i-hilux{background:linear-gradient(135deg,#55a6ff,#2c4fff)}
+  .i-rh{background:linear-gradient(135deg,#00c389,#00684a)}
+  .i-ot{background:linear-gradient(135deg,#ff7a59,#b81a00)}
+  .i-bod{background:linear-gradient(135deg,#ffd166,#b38600)}
+  .i-chk{background:linear-gradient(135deg,#6ee7ff,#0ea5e9)}
+  .i-num{background:linear-gradient(135deg,#c084fc,#7c3aed)}
+  .i-ctc{background:linear-gradient(135deg,#fca5a5,#ef4444)}
+  .kbd{font:12px ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+       background:#0e1724;border:1px solid #2b3b51;border-bottom-color:#27374e;padding:2px 6px;border-radius:6px}
+</style>
 </head>
 <body>
   <header>
-    <h1>Bienvenido a AURUM∞</h1>
-    <p>Selecciona un módulo para continuar</p>
+    <div class="wrap brand">
+      <div class="logo" aria-hidden="true"></div>
+      <h1>AURUM∞ <span class="muted">• Portal v2</span></h1>
+      <div style="margin-left:auto" class="muted">
+        <span class="chip">Actualizado: <span id="today"></span></span>
+      </div>
+    </div>
   </header>
 
   <main>
-    <div class="container">
-      <div class="card"><a href="Modulos/hilux/index.html">Hilux</a></div>
-      <div class="card"><a href="Modulos/recursos-humanos/index.html">Recursos Humanos</a></div>
-      <div class="card"><a href="Modulos/ot/index.html">Órdenes de Trabajo</a></div>
-      <div class="card"><a href="#">Bodega</a></div>
-      <div class="card"><a href="#">Numerología</a></div>
+    <div class="wrap">
+      <h2>Bienvenido</h2>
+      <p class="lead">Selecciona un módulo para continuar. Este portal usa el nuevo estilo oscuro y tarjetas.</p>
+
+      <div class="grid">
+        <a class="card" href="Modulos/hilux/index.html">
+          <span class="tag"><span class="ico i-hilux"></span>&nbsp;Hilux</span>
+          <h3>Checklist Hilux (50 pts)</h3>
+          <p class="desc">Inspección técnica completa con guardado local y exportación.</p>
+        </a>
+
+        <a class="card" href="Modulos/recursos-humanos/index.html">
+          <span class="tag"><span class="ico i-rh"></span>&nbsp;Recursos Humanos</span>
+          <h3>Altas • Personal</h3>
+          <p class="desc">Gestiona trabajadores y sincroniza con Supabase.</p>
+        </a>
+
+        <a class="card" href="Modulos/ot/index.html">
+          <span class="tag"><span class="ico i-ot"></span>&nbsp;Órdenes de Trabajo</span>
+          <h3>OT • Planificación</h3>
+          <p class="desc">Crea, asigna personal y controla estados.</p>
+        </a>
+
+        <a class="card" href="bodega.html">
+          <span class="tag"><span class="ico i-bod"></span>&nbsp;Bodega</span>
+          <h3>Inventario</h3>
+          <p class="desc">Materiales, EPP y repuestos (MVP).</p>
+        </a>
+
+        <a class="card" href="checklist.html">
+          <span class="tag"><span class="ico i-chk"></span>&nbsp;Checklist 3D</span>
+          <h3>Inspección 3D</h3>
+          <p class="desc">Versión de prueba del checklist interactivo.</p>
+        </a>
+
+        <a class="card" href="numerologia.html">
+          <span class="tag"><span class="ico i-num"></span>&nbsp;Numerología</span>
+          <h3>Interpretación energética</h3>
+          <p class="desc">Herramientas de numerología.</p>
+        </a>
+
+        <a class="card" href="contacto.html">
+          <span class="tag"><span class="ico i-ctc"></span>&nbsp;Contacto</span>
+          <h3>Soporte y consultas</h3>
+          <p class="desc">¿Dudas? Escríbenos.</p>
+        </a>
+      </div>
+
+      <p class="muted" style="margin-top:18px">
+        Si sigues viendo la versión vieja, presiona <span class="kbd">Ctrl</span>+<span class="kbd">F5</span> o abre en modo incógnito.
+      </p>
     </div>
   </main>
 
   <footer>
-    © 2025 AURUM∞ - Todos los derechos reservados.
+    <div class="wrap">© 2025 AURUM∞ — Todos los derechos reservados.</div>
   </footer>
+
+  <script>
+    // fecha visible para confirmar que cargó la versión nueva
+    const d = new Date();
+    document.getElementById('today').textContent =
+      d.toLocaleDateString('es-CL',{year:'numeric',month:'2-digit',day:'2-digit'}) +
+      ' ' + d.toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});
+  </script>
 </body>
 </html>
