@@ -1,104 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Inicio · AURUM∞</title>
-
-  <!-- Estilos base + tema Lemuriano (ya existentes en la raíz) -->
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURUM∞</title>
   <link rel="stylesheet" href="lemuria.css">
-
-  <style>
-    /* Ajustes suaves solo para la portada */
-    .hero{padding:28px 18px;background:linear-gradient(180deg,rgba(255,191,0,.08),transparent);}
-    .hero h2{font-size:1.8rem;margin:0 0 8px}
-    .hero p{opacity:.9;margin:0}
-    .cards{list-style:none;padding:0;margin:18px 0;display:grid;gap:16px}
-    .card{display:block;background:var(--bg-card);border:1px solid var(--gold-20);
-      border-radius:14px;padding:16px;text-decoration:none;color:var(--text);
-      box-shadow:var(--shadow);transition:transform .15s ease, box-shadow .15s ease}
-    .card:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(0,0,0,.25)}
-    .card h3{margin:0 0 6px}
-    .muted{opacity:.85}
-    @media (min-width:720px){.cards{grid-template-columns:repeat(2,1fr)}}
-    @media (min-width:1000px){.cards{grid-template-columns:repeat(3,1fr)}}
-    footer{margin:28px 0 12px;opacity:.7;text-align:center}
-  </style>
 </head>
 <body>
-  <header class="top">
-    <h1>AURUM∞</h1>
+  <header>
+    <h1>Bienvenido a AURUM∞</h1>
     <nav>
-      <a href="index.html" class="active">Inicio</a>
-      <a href="vision.html">Visión</a>
-      <a href="modulos.html">Módulos</a>
-      <a href="contacto.html">Contacto</a>
+      <ul>
+        <li><a href="Modulos/Hilux/index.html">Hilux</a></li>
+        <li><a href="Modulos/recursos-humanos/index.html">Recursos Humanos</a></li>
+        <li><a href="Modulos/ot/index.html">Órdenes de Trabajo</a></li>
+        <li><a href="bodega.html">Bodega</a></li>
+        <li><a href="checklist.html">Checklist</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="numerologia.html">Numerología</a></li>
+      </ul>
     </nav>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <h2>Bienvenido a AURUM∞</h2>
-      <p>Integración de tecnología industrial, trazabilidad y vibración energética con estética lemuriana.</p>
-    </section>
-
-    <h2>Módulos y herramientas</h2>
-    <ul class="cards">
-
-      <!-- Hilux 3D + Checklist 50 pts (en carpeta de módulo) -->
-      <li>
-        <a class="card" href="Modulos/Hilux/">
-          <h3>Toyota Hilux · 3D + Checklist 50 pts</h3>
-          <p class="muted">Inspección visual/técnica, puntos clicables y GLB (cuando esté disponible).</p>
-        </a>
-      </li>
-
-      <!-- Órdenes de Trabajo (en carpeta de módulo) -->
-      <li>
-        <a class="card" href="Modulos/ot/">
-          <h3>Órdenes de Trabajo</h3>
-          <p class="muted">Crear, editar, cerrar OT · Exportar CSV · Impresión rápida.</p>
-        </a>
-      </li>
-
-      <!-- Recursos Humanos (en carpeta de módulo) -->
-      <li>
-        <a class="card" href="Modulos/recursos-humanos/">
-          <h3>Recursos Humanos</h3>
-          <p class="muted">Operadores, competencias, habilitaciones y asignación a OT.</p>
-        </a>
-      </li>
-
-      <!-- Numerología (página raíz existente) -->
-      <li>
-        <a class="card" href="numerologia.html">
-          <h3>Numerología Vibracional</h3>
-          <p class="muted">Cálculo e interpretación diaria con acciones sugeridas.</p>
-        </a>
-      </li>
-
-      <!-- Trazabilidad Energética (página raíz existente) -->
-      <li>
-        <a class="card" href="trazabilidad.html">
-          <h3>Trazabilidad Energética</h3>
-          <p class="muted">Registro y monitoreo del estado vibracional de equipos/operadores.</p>
-        </a>
-      </li>
-
-      <!-- Página de Módulos (catálogo general) -->
-      <li>
-        <a class="card" href="modulos.html">
-          <h3>Catálogo de Módulos</h3>
-          <p class="muted">Explora todo AURUM∞ y cómo se conectan las herramientas.</p>
-        </a>
-      </li>
-
-    </ul>
+  <main>
+    <h2>Portal Principal</h2>
+    <p>Selecciona un módulo del menú para continuar.</p>
   </main>
 
   <footer>
-    © 2025 AURUM∞. Todos los derechos reservados.
+    <p>© 2025 AURUM∞ - Todos los derechos reservados.</p>
   </footer>
 </body>
 </html>
