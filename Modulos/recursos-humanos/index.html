@@ -1,28 +1,134 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Recursos Humanos • AURUM∞</title>
-  <link rel="stylesheet" href="../../lemuria.css" />
-  <script defer src="../../aurum.js"></script>
+  <meta charset="UTF-8">
+  <title>Recursos Humanos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f4f4f9;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    form {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    input {
+      margin: 5px 0;
+      padding: 8px;
+      width: 100%;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px 15px;
+      background: #0066cc;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #004c99;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background: #eee;
+    }
+  </style>
 </head>
 <body>
-  <header class="top">
-    <h1>Recursos Humanos</h1>
-    <nav>
-      <a href="../../index.html">Inicio</a>
-      <a class="active" href="./">Recursos Humanos</a>
-    </nav>
-  </header>
 
-  <main class="container">
-    <section class="section">
-      <h3 class="muted">Estado</h3>
-      <p>Base para personal, roles y competencias. Conexión a BD en el siguiente paso.</p>
-    </section>
-  </main>
+  <h1>Recursos Humanos</h1>
 
-  <footer class="foot">© 2025 AURUM∞</footer>
+  <!-- Formulario para agregar trabajador -->
+  <h2>Agregar nuevo trabajador</h2>
+  <form id="form-trabajador">
+    <input type="text" id="nombre" placeholder="Nombre completo" required>
+    <input type="text" id="rut" placeholder="RUT" required>
+    <input type="text" id="cargo" placeholder="Cargo" required>
+    <button type="submit">Agregar</button>
+  </form>
+
+  <!-- Lista de trabajadores -->
+  <h2>Lista de trabajadores</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>RUT</th>
+        <th>Cargo</th>
+        <th>Fecha ingreso</th>
+      </tr>
+    </thead>
+    <tbody id="lista-trabajadores"></tbody>
+  </table>
+
+  <!-- Conexión con Supabase -->
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+  <script>
+    const { createClient } = supabase;
+
+    // ⚠️ REEMPLAZA estos valores con los tuyos
+    const supabaseUrl = "https://TU_PROYECTO.supabase.co";
+    const supabaseKey = "TU_ANON_PUBLIC_KEY";
+    const db = createClient(supabaseUrl, supabaseKey);
+
+    // Cargar lista de trabajadores
+    async function cargarTrabajadores() {
+      const { data, error } = await db.from("recursos_humanos").select("*").order("fecha_ingreso", { ascending: false });
+      if (error) {
+        console.error("Error cargando trabajadores:", error);
+        return;
+      }
+      const tbody = document.getElementById("lista-trabajadores");
+      tbody.innerHTML = "";
+      data.forEach(t => {
+        const row = `<tr>
+          <td>${t.nombre}</td>
+          <td>${t.rut}</td>
+          <td>${t.cargo}</td>
+          <td>${new Date(t.fecha_ingreso).toLocaleDateString()}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+
+    // Agregar trabajador
+    document.getElementById("form-trabajador").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById("nombre").value;
+      const rut = document.getElementById("rut").value;
+      const cargo = document.getElementById("cargo").value;
+
+      const { error } = await db.from("recursos_humanos").insert([{ nombre, rut, cargo }]);
+      if (error) {
+        alert("Error al agregar trabajador: " + error.message);
+      } else {
+        alert("✅ Trabajador agregado con éxito");
+        document.getElementById("form-trabajador").reset();
+        cargarTrabajadores();
+      }
+    });
+
+    // Primera carga
+    cargarTrabajadores();
+  </script>
+
 </body>
 </html>
