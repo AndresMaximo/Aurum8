@@ -1,13 +1,359 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recursos Humanos</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recursos Humanos • AURUM∞</title>
+
+  <!-- Estilos base del sitio (ajusta las rutas si cambian) -->
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../../lemuria.css" />
+
+  <style>
+    /* Ajustes suaves para esta pantalla */
+    .container { max-width: 1100px; margin: 0 auto; padding: 16px; }
+    .grid { display: grid; gap: 16px; }
+    @media (min-width: 900px){ .grid.cols-2 { grid-template-columns: 1fr 2fr; } }
+
+    .card { background: var(--bg-card); border: 1px solid var(--gold-20); border-radius: 14px; padding: 16px; box-shadow: var(--shadow); }
+    .card h3 { margin: 0 0 10px; }
+
+    .fields { display: grid; gap: 12px; grid-template-columns: 1fr; }
+    @media (min-width: 680px){ .fields { grid-template-columns: 1fr 1fr; } }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: .9rem; opacity: .85; }
+    .field input, .field select { background: var(--input-bg, #0b0b0b); color: var(--ink, #e0e0e0); border: 1px solid var(--gold-20); border-radius: 10px; padding: 10px 12px; }
+
+    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0 16px; }
+    .toolbar input[type="search"]{ padding: 10px 12px; border-radius: 10px; border: 1px solid var(--gold-20); background: var(--input-bg, #0b0b0b); color: var(--ink, #e0e0e0); }
+    .toolbar .spacer{ flex: 1 1 auto; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid var(--gold-20); text-align: left; }
+    th { font-weight: 600; opacity: .85; }
+    tbody tr:hover { background: rgba(255, 208, 64, .06); }
+
+    .btn { cursor: pointer; border: 1px solid var(--gold-20); background: var(--gold-10); color: var(--ink); padding: 10px 14px; border-radius: 12px; font-weight: 600; }
+    .btn.gold { background: var(--gold); color: #0b0b0b; border-color: transparent; }
+    .btn.ghost { background: transparent; }
+    .btn.small { padding: 6px 10px; border-radius: 10px; font-weight: 500; }
+
+    .muted { opacity: .7; font-size: .9rem; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--gold-30); font-size: .75rem; }
+    .ok { color: #35d07f; }
+    .warn { color: #ffd166; }
+    .err { color: #ff6161; }
+
+    .empty { text-align: center; padding: 36px 8px; opacity: .7; }
+
+    /* Cabecera mínima (usa el tema del sitio) */
+    header.top { max-width: 1200px; margin: 0 auto; padding: 20px 16px 8px; display:flex; align-items:center; justify-content:space-between; }
+    header.top h1 { margin: 0; letter-spacing: .5px; }
+    nav a { margin-left: 16px; opacity: .85; }
+    nav a.active { color: var(--gold); opacity: 1; border-bottom: 2px solid var(--gold); padding-bottom: 4px; }
+  </style>
 </head>
 <body>
-  <h1>Módulo de Recursos Humanos</h1>
-  <p>Bienvenido al módulo de Recursos Humanos. Aquí gestionaremos los trabajadores.</p>
-  <a href="../../modulos.html">⬅ Volver a Módulos</a>
+  <!-- Cabecera / Menú -->
+  <header class="top">
+    <h1>AURUM∞</h1>
+    <nav>
+      <a href="../../index.html">Inicio</a>
+      <a href="../../vision.html">Visión</a>
+      <a href="../../modulos.html" class="active">Módulos</a>
+      <a href="../../contacto.html">Contacto</a>
+    </nav>
+  </header>
+
+  <main class="container grid cols-2">
+    <!-- Panel de captura -->
+    <section class="card">
+      <h3>➕ Nuevo trabajador</h3>
+      <p class="muted">Registra o edita colaboradores del sistema. Los datos se guardan en Supabase.</p>
+
+      <div class="fields">
+        <div class="field">
+          <label for="nombre">Nombre completo</label>
+          <input id="nombre" type="text" placeholder="Ej: Andrea Soto"/>
+        </div>
+
+        <div class="field">
+          <label for="rut">RUT / Identificador</label>
+          <input id="rut" type="text" placeholder="Ej: 12.345.678-9"/>
+        </div>
+
+        <div class="field">
+          <label for="cargo">Cargo</label>
+          <input id="cargo" type="text" placeholder="Ej: Técnico Mecánico"/>
+        </div>
+
+        <div class="field">
+          <label for="fecha_ingreso">Fecha de ingreso</label>
+          <input id="fecha_ingreso" type="date"/>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:8px; margin-top:14px;">
+        <button id="btnGuardar" class="btn gold">Guardar</button>
+        <button id="btnLimpiar" class="btn ghost">Limpiar</button>
+        <span id="estadoForm" class="muted" style="margin-left:8px;"></span>
+      </div>
+    </section>
+
+    <!-- Panel de consulta -->
+    <section class="card">
+      <h3>👥 Listado de trabajadores</h3>
+
+      <div class="toolbar">
+        <input id="txtBuscar" type="search" placeholder="Buscar por nombre, RUT o cargo…" />
+        <div class="spacer"></div>
+        <button id="btnRefrescar" class="btn small">Refrescar</button>
+      </div>
+
+      <div class="muted" style="margin: 6px 0 12px;">
+        Estado de conexión: <span id="estadoConexion" class="badge">verificando…</span>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>RUT</th>
+              <th>Cargo</th>
+              <th>Ingreso</th>
+              <th style="width:120px;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyTrabajadores">
+            <tr><td colspan="5" class="empty">Cargando datos…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer style="text-align:center; opacity:.7; padding:28px 12px;">
+    © 2025 AURUM∞. Todos los derechos reservados.
+  </footer>
+
+  <!-- Supabase JS desde CDN (MÓDULO) -->
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+    /******************************************************************
+     * 1) CONFIGURA TUS CREDENCIALES DE SUPABASE
+     ******************************************************************/
+    const SUPABASE_URL = "Pega_AQUÍ_TU_URL_SUPABASE";
+    const SUPABASE_ANON_KEY = "Pega_AQUÍ_TU_ANON_KEY";
+
+    // CREA el cliente
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Referencias de UI
+    const tbody = document.getElementById("tbodyTrabajadores");
+    const txtBuscar = document.getElementById("txtBuscar");
+    const lblConn = document.getElementById("estadoConexion");
+    const lblForm = document.getElementById("estadoForm");
+
+    const inputNombre = document.getElementById("nombre");
+    const inputRut = document.getElementById("rut");
+    const inputCargo = document.getElementById("cargo");
+    const inputFecha = document.getElementById("fecha_ingreso");
+
+    const btnGuardar = document.getElementById("btnGuardar");
+    const btnLimpiar = document.getElementById("btnLimpiar");
+    const btnRefrescar = document.getElementById("btnRefrescar");
+
+    // Estado de edición (si es null => inserta; si tiene valor => actualiza)
+    let editId = null;
+    let cache = []; // cache local para filtros rápidos
+
+    // ------------------------ Utilidades UI --------------------------
+    const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+    function setConn(status, tone="") {
+      lblConn.textContent = status;
+      lblConn.className = "badge " + (tone || "");
+    }
+
+    function setFormMsg(msg, tone="") {
+      lblForm.textContent = msg || "";
+      lblForm.className = "muted " + (tone || "");
+    }
+
+    function clearForm() {
+      editId = null;
+      inputNombre.value = "";
+      inputRut.value = "";
+      inputCargo.value = "";
+      inputFecha.value = "";
+      btnGuardar.textContent = "Guardar";
+      setFormMsg("");
+    }
+
+    function rowTemplate({ id, nombre, rut, cargo, fecha_ingreso }) {
+      const f = fecha_ingreso ? new Date(fecha_ingreso).toISOString().slice(0,10) : "—";
+      return `
+        <tr data-id="${id}">
+          <td>${escapeHtml(nombre)}</td>
+          <td>${escapeHtml(rut)}</td>
+          <td>${escapeHtml(cargo)}</td>
+          <td>${f}</td>
+          <td>
+            <button class="btn small ghost" data-act="edit">Editar</button>
+            <button class="btn small" data-act="del">Borrar</button>
+          </td>
+        </tr>
+      `;
+    }
+
+    function render(list) {
+      if (!list || list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="empty">Sin registros</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = list.map(rowTemplate).join("");
+    }
+
+    function escapeHtml(s = "") {
+      return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;'}[m]));
+    }
+
+    // ------------------------ Datos (CRUD) ---------------------------
+    async function testConexion() {
+      try {
+        const { error } = await supabase.from("recursos_humanos").select("id").limit(1);
+        if (error) throw error;
+        setConn("conectado", "ok");
+      } catch (err) {
+        setConn("error de conexión", "err");
+        console.error(err);
+      }
+    }
+
+    async function cargar() {
+      try {
+        const { data, error } = await supabase
+          .from("recursos_humanos")
+          .select("*")
+          .order("nombre", { ascending: true });
+
+        if (error) throw error;
+        cache = data || [];
+        aplicarFiltro();
+      } catch (err) {
+        console.error(err);
+        tbody.innerHTML = `<tr><td colspan="5" class="empty">Error al cargar datos.</td></tr>`;
+      }
+    }
+
+    function aplicarFiltro() {
+      const q = (txtBuscar.value || "").trim().toLowerCase();
+      if (!q) { render(cache); return; }
+      const filtered = cache.filter(r =>
+        (r.nombre || "").toLowerCase().includes(q) ||
+        (r.rut || "").toLowerCase().includes(q) ||
+        (r.cargo || "").toLowerCase().includes(q)
+      );
+      render(filtered);
+    }
+
+    async function guardar() {
+      const payload = {
+        nombre: inputNombre.value.trim(),
+        rut: inputRut.value.trim(),
+        cargo: inputCargo.value.trim(),
+        fecha_ingreso: inputFecha.value ? inputFecha.value : null
+      };
+
+      if (!payload.nombre || !payload.rut || !payload.cargo) {
+        setFormMsg("Completa nombre, RUT y cargo.", "warn");
+        return;
+      }
+
+      setFormMsg("Guardando…");
+
+      try {
+        if (editId) {
+          const { error } = await supabase
+            .from("recursos_humanos")
+            .update(payload)
+            .eq("id", editId);
+
+          if (error) throw error;
+          setFormMsg("Actualizado ✅", "ok");
+        } else {
+          const { error } = await supabase
+            .from("recursos_humanos")
+            .insert(payload);
+
+          if (error) throw error;
+          setFormMsg("Registrado ✅", "ok");
+        }
+
+        await sleep(400);
+        clearForm();
+        await cargar();
+      } catch (err) {
+        console.error(err);
+        setFormMsg("Error al guardar", "err");
+      }
+    }
+
+    async function borrar(id) {
+      if (!confirm("¿Eliminar este trabajador?")) return;
+      try {
+        const { error } = await supabase
+          .from("recursos_humanos")
+          .delete()
+          .eq("id", id);
+
+        if (error) throw error;
+        await cargar();
+      } catch (err) {
+        console.error(err);
+        alert("No se pudo eliminar.");
+      }
+    }
+
+    function prepararEdicion(id) {
+      const row = cache.find(r => r.id === id);
+      if (!row) return;
+      inputNombre.value = row.nombre || "";
+      inputRut.value = row.rut || "";
+      inputCargo.value = row.cargo || "";
+      inputFecha.value = row.fecha_ingreso ? new Date(row.fecha_ingreso).toISOString().slice(0,10) : "";
+      editId = id;
+      btnGuardar.textContent = "Actualizar";
+      setFormMsg("Editando…");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // ------------------------ Eventos -------------------------------
+    btnGuardar.addEventListener("click", guardar);
+    btnLimpiar.addEventListener("click", clearForm);
+    btnRefrescar.addEventListener("click", cargar);
+    txtBuscar.addEventListener("input", aplicarFiltro);
+
+    tbody.addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-act]");
+      if (!btn) return;
+
+      const tr = e.target.closest("tr[data-id]");
+      const id = tr?.dataset?.id;
+      if (!id) return;
+
+      const act = btn.dataset.act;
+      if (act === "edit") prepararEdicion(id);
+      if (act === "del") borrar(id);
+    });
+
+    // ------------------------ Boot -------------------------------
+    (async function init(){
+      await testConexion();
+      await cargar();
+    })();
+  </script>
 </body>
 </html>
