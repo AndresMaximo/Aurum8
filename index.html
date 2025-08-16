@@ -1,34 +1,46 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AURUM∞</title>
-  <link rel="stylesheet" href="lemuria.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inicio • AURUM∞</title>
+  <link rel="stylesheet" href="lemuria.css" />
+  <script defer src="aurum.js"></script>
 </head>
 <body>
-  <header>
-    <h1>Bienvenido a AURUM∞</h1>
+  <header class="top">
+    <h1>AURUM∞</h1>
     <nav>
-      <ul>
-        <li><a href="Modulos/Hilux/index.html">Hilux</a></li>
-        <li><a href="Modulos/recursos-humanos/index.html">Recursos Humanos</a></li>
-        <li><a href="Modulos/ot/index.html">Órdenes de Trabajo</a></li>
-        <li><a href="bodega.html">Bodega</a></li>
-        <li><a href="checklist.html">Checklist</a></li>
-        <li><a href="contacto.html">Contacto</a></li>
-        <li><a href="numerologia.html">Numerología</a></li>
-      </ul>
+      <a class="active" href="index.html">Inicio</a>
+      <a href="contacto.html">Contacto</a>
+      <a href="login.html">Iniciar sesión</a>
     </nav>
   </header>
 
-  <main>
-    <h2>Portal Principal</h2>
-    <p>Selecciona un módulo del menú para continuar.</p>
+  <main class="container">
+    <h2>Módulos Disponibles</h2>
+    <ul class="cards">
+      <li>
+        <a class="card" href="Modulos/hilux/">
+          <h3>Hilux • Checklist 3D (50 pts)</h3>
+          <p>Inspección técnica enfocada en Toyota Hilux.</p>
+        </a>
+      </li>
+      <li>
+        <a class="card" href="Modulos/ot/">
+          <h3>Órdenes de Trabajo</h3>
+          <p>Crear, editar, cerrar y exportar OT.</p>
+        </a>
+      </li>
+      <li>
+        <a class="card" href="Modulos/recursos-humanos/">
+          <h3>Recursos Humanos</h3>
+          <p>Registro de personal, roles y competencias.</p>
+        </a>
+      </li>
+    </ul>
   </main>
 
-  <footer>
-    <p>© 2025 AURUM∞ - Todos los derechos reservados.</p>
-  </footer>
+  <footer class="foot">© 2025 AURUM∞</footer>
 </body>
 </html>
