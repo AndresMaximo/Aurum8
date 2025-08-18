@@ -1,63 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Órdenes de Trabajo • AURUM∞</title>
 
-<!DOCTYPE html><html lang="es"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Órdenes de Trabajo • AURUM∞</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../aurum-theme.css">
-</head><body>
-<header><h1>Órdenes de Trabajo <span class="muted">• AURUM∞</span></h1></header>
+  <!-- Tipografías + tema global (mismo del portal) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/aurum-theme.css" />
 
-<main class="grid" style="grid-template-columns:1.2fr .8fr;">
-  <section class="card">
-    <h2 class="k">Listado</h2>
-    <table id="tbl">
-      <thead><tr><th>Equipo</th><th>Tipo</th><th>Estado</th><th>Inicio</th></tr></thead>
-      <tbody></tbody>
-    </table>
-  </section>
+  <style>
+    .screen{max-width:1100px;margin:40px auto;padding:24px}
+    header.top{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:12px}
+    header.top h1{font-family:var(--brand);font-size:clamp(22px,4vw,32px);letter-spacing:.08em;color:var(--ink);text-shadow:0 0 18px rgba(0,255,160,.15)}
+    .navlinks a{color:var(--ink);opacity:.85;margin-left:12px;text-decoration:none}
+    .navlinks a:hover{opacity:1;text-shadow:0 0 10px rgba(0,255,160,.4)}
 
-  <section class="card">
-    <h2 class="k">Crear OT</h2>
-    <form id="f">
-      <label>Equipo<input name="equipo" required></label><br><br>
-      <label>Tipo<select name="tipo" required>
-        <option value="preventivo">Preventivo</option>
-        <option value="correctivo">Correctivo</option>
-      </select></label><br><br>
-      <label>Estado<select name="estado">
-        <option value="pendiente">Pendiente</option>
-        <option value="en_proceso">En proceso</option>
-        <option value="cerrado">Cerrado</option>
-      </select></label><br><br>
-      <button class="btn" type="submit">Guardar OT</button>
+    .toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+    .chip{border:1px solid var(--gold-20);background:var(--bg-card);padding:6px 10px;border-radius:10px;opacity:.9}
+
+    form.ot{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      margin:18px 0 10px;background:var(--bg-card);border:1px solid var(--gold-20);
+      border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+    form.ot label{font:600 12px/1 var(--ui);letter-spacing:.06em;opacity:.9}
+    form.ot input, form.ot select, form.ot textarea{
+      margin-top:6px;width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);
+      background:rgba(255,255,255,.02);color:var(--ink);outline:none}
+    form.ot textarea{min-height:84px;grid-column:1/-1}
+    .actions{display:flex;gap:10px;align-items:center;justify-content:flex-end;grid-column:1/-1}
+    button.primary{padding:10px 14px;border-radius:12px;border:1px solid var(--gold-20);
+      background:linear-gradient(130deg,#00ffd0 0%,#38ffa6 100%);color:#001a18;font-weight:700;letter-spacing:.04em;
+      box-shadow:0 0 18px rgba(0,255,160,.25)}
+    button.ghost{padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--ink)}
+
+    .table{overflow:auto;border:1px solid var(--gold-20);border-radius:16px;background:var(--bg-card);box-shadow:var(--shadow)}
+    table{width:100%;border-collapse:collapse;min-width:740px}
+    thead th{position:sticky;top:0;background:linear-gradient(180deg,rgba(0,255,200,.07),rgba(0,0,0,.2));
+      font:600 12px var(--ui);text-transform:uppercase;letter-spacing:.1em;color:var(--ink);padding:12px;border-bottom:1px solid var(--line)}
+    tbody td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06);font:400 14px var(--ui)}
+    tbody tr:hover{background:rgba(0,255,200,.04)}
+    .right{text-align:right}
+    .muted{opacity:.7}
+    .tag{display:inline-block;padding:.25rem .5rem;border:1px solid var(--gold-20);border-radius:999px;margin:.1rem .15rem 0 0;background:rgba(0,255,200,.06);font:600 12px var(--ui)}
+    .danger{color:#ff7b7b}
+    .spinner{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.25);border-top-color:#00ffd0;animation:spin 1s linear infinite;display:inline-block;vertical-align:-3px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+  <div class="screen">
+    <header class="top">
+      <h1>Órdenes de Trabajo</h1>
+      <div class="navlinks">
+        <a href="/">Portal</a>
+        <a href="/Modulos/recursos-humanos/index.html">Recursos Humanos</a>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <span class="chip">Base: <strong class="muted">ordenes_trabajo</strong></span>
+      <label class="chip">Buscar:
+        <input id="q" placeholder="Equipo, tipo o estado" style="margin-left:8px;border:0;background:transparent;color:var(--ink);outline:none">
+      </label>
+      <button id="btnReload" class="ghost">Refrescar</button>
+    </div>
+
+    <!-- Formulario de creación -->
+    <form class="ot" id="form">
+      <div>
+        <label>Equipo / Activo
+          <input id="equipo" required placeholder="Ej: Hilux ABC-123 ó Compresor #4">
+        </label>
+      </div>
+      <div>
+        <label>Tipo
+          <select id="tipo" required>
+            <option value="preventivo">Preventivo</option>
+            <option value="correctivo">Correctivo</option>
+            <option value="inspeccion">Inspección</option>
+          </select>
+        </label>
+      </div>
+      <div>
+        <label>Estado
+          <select id="estado">
+            <option value="pendiente">Pendiente</option>
+            <option value="en_proceso">En proceso</option>
+            <option value="finalizada">Finalizada</option>
+          </select>
+        </label>
+      </div>
+      <div>
+        <label>Inicio
+          <input id="fini" type="datetime-local">
+        </label>
+      </div>
+      <div>
+        <label>Término
+          <input id="ffin" type="datetime-local">
+        </label>
+      </div>
+
+      <div style="grid-column:1/-1">
+        <label>Trabajadores (mantén Ctrl/Shift para multi-selección)
+          <select id="trabajadores" multiple style="margin-top:6px;min-height:120px"></select>
+        </label>
+      </div>
+
+      <label style="grid-column:1/-1">Descripción / Alcance
+        <textarea id="desc" placeholder="Detalle del trabajo a realizar…"></textarea>
+      </label>
+
+      <div class="actions">
+        <button type="button" class="ghost" id="btnClear">Limpiar</button>
+        <button type="submit" class="primary">Crear OT</button>
+      </div>
     </form>
-  </section>
-</main>
 
-<footer><a class="btn" href="../../index.html">← Volver al portal</a></footer>
+    <!-- Tabla -->
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Equipo</th>
+            <th>Tipo</th>
+            <th>Estado</th>
+            <th>Inicio</th>
+            <th>Trabajadores</th>
+            <th class="right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <p class="muted" id="status" style="margin-top:10px"></p>
+  </div>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="../../aurum.js"></script>
-<script>
-async function cargar(){
-  const { data, error } = await db.from('ordenes_trabajo').select('*').order('fecha_inicio',{ascending:false});
-  if(error){ toast(error.message); return; }
-  const tbody = document.querySelector('#tbl tbody'); tbody.innerHTML='';
-  data.forEach(ot=>{
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${ot.equipo}</td><td>${ot.tipo}</td><td>${ot.estado||'pendiente'}</td>
-                    <td>${(ot.fecha_inicio||'').toString().substring(0,16).replace('T',' ')}</td>`;
-    tbody.appendChild(tr);
-  });
-}
-document.querySelector('#f').addEventListener('submit', async e=>{
-  e.preventDefault();
-  const fd = new FormData(e.target);
-  const payload = { equipo:fd.get('equipo'), tipo:fd.get('tipo'), estado:fd.get('estado') };
-  const { error } = await db.from('ordenes_trabajo').insert(payload);
-  if(error){ toast(error.message); return; }
-  e.target.reset(); toast('OT creada'); cargar();
-});
-cargar();
-</script>
-</body></html>
+  <!-- Conexión global -->
+  <script src="/aurum.js"></script>
+  <script>
+    const $ = (s, c=document)=>c.querySelector(s);
+    const $$ = (s, c=document)=>[...c.querySelectorAll(s)];
+    const tbody = $('#tbody');
+    const statusEl = $('#status');
+
+    function fmtDT(v){
+      if(!v) return '—';
+      const d = new Date(v);
+      return d.toLocaleString('es-CL', {year:'2-digit',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+    }
+
+    function rowTemplate(ot, nombres=[]){
+      return `
+        <tr data-id="${ot.id}">
+          <td>${ot.equipo}</td>
+          <td class="muted">${ot.tipo}</td>
+          <td>${ot.estado}</td>
+          <td class="muted">${fmtDT(ot.fecha_inicio)}</td>
+          <td>${nombres.length? nombres.map(n=>`<span class="tag">${n}</span>`).join('') : '<span class="muted">—</span>'}</td>
+          <td class="right">
+            <button class="ghost danger" data-del="${ot.id}">Eliminar</button>
+          </td>
+        </tr>`;
+    }
+
+    // Cargar lista de trabajadores en el multiselect
+    async function cargarTrabajadores(){
+      const { data, error } = await window.db.from('recursos_humanos').select('id,nombre').order('nombre');
+      if(error){ window.toast?.('Error cargando RRHH'); return; }
+      const sel = $('#trabajadores');
+      sel.innerHTML = data.map(p=>`<option value="${p.id}">${p.nombre}</option>`).join('');
+    }
+
+    // Cargar tabla de OTs + participantes
+    async function cargarOT(queryText=''){
+      statusEl.innerHTML = '<span class="spinner"></span> Cargando…';
+
+      let q = window.db.from('ordenes_trabajo')
+        .select('id,equipo,tipo,estado,fecha_inicio,fecha_fin')
+        .order('fecha_inicio', { ascending: false })
+        .limit(200);
+
+      if(queryText){
+        q = q.or(`equipo.ilike.%${queryText}%,tipo.ilike.%${queryText}%,estado.ilike.%${queryText}%`);
+      }
+
+      const { data: ots, error } = await q;
+      if(error){ statusEl.textContent = 'Error: '+error.message; return; }
+      if(ots.length===0){
+        tbody.innerHTML = `<tr><td colspan="6" class="muted" style="text-align:center;padding:18px">Sin OTs</td></tr>`;
+        statusEl.textContent = '0 órdenes';
+        return;
+      }
+
+      const otIds = ots.map(o=>o.id);
+      const { data: enlaces } = await window.db.from('ot_trabajadores')
+        .select('ot_id,trabajador_id')
+        .in('ot_id', otIds);
+
+      const workerIds = [...new Set(enlaces.map(e=>e.trabajador_id))];
+      let nombresById = {};
+      if(workerIds.length){
+        const { data: personas } = await window.db.from('recursos_humanos')
+          .select('id,nombre').in('id', workerIds);
+        nombresById = Object.fromEntries(personas.map(p=>[p.id,p.nombre]));
+      }
+
+      const nombresPorOT = {};
+      for(const e of (enlaces||[])){
+        (nombresPorOT[e.ot_id] ||= []).push(nombresById[e.trabajador_id] || '—');
+      }
+
+      tbody.innerHTML = ots.map(o=>rowTemplate(o, nombresPorOT[o.id]||[])).join('');
+      statusEl.textContent = `${ots.length} orden(es)`;
+    }
+
+    // Crear OT
+    $('#form').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const payload = {
+        equipo: $('#equipo').value.trim(),
+        tipo: $('#tipo').value,
+        estado: $('#estado').value,
+        fecha_inicio: $('#fini').value || null,
+        fecha_fin: $('#ffin').value || null
+      };
+      if(!payload.equipo){ window.toast?.('Escribe el equipo/activo'); return; }
+
+      const selected = [...$('#trabajadores').selectedOptions].map(o=>o.value);
+
+      // Crear la OT
+      const { data: ot, error } = await window.db.from('ordenes_trabajo').insert(payload).select('*').single();
+      if(error){ alert(error.message); return; }
+
+      // Vincular trabajadores (si hay)
+      if(selected.length){
+        const filas = selected.map(id=>({ ot_id: ot.id, trabajador_id: id }));
+        const { error: e2 } = await window.db.from('ot_trabajadores').insert(filas);
+        if(e2){ window.toast?.('OT creada, pero no se pudieron asociar trabajadores'); }
+      }
+
+      window.toast?.('OT creada ✅');
+      $('#form').reset();
+      cargarOT($('#q').value.trim());
+    });
+
+    // Eliminar OT
+    tbody.addEventListener('click', async (e)=>{
+      const id = e.target?.dataset?.del;
+      if(!id) return;
+      if(!confirm('¿Eliminar esta OT?')) return;
+      const tr = tbody.querySelector(`tr[data-id="${id}"]`);
+      tr?.remove();
+      const { error } = await window.db.from('ordenes_trabajo').delete().eq('id', id);
+      if(error){ alert(error.message); cargarOT($('#q').value.trim()); }
+      else { window.toast?.('OT eliminada 🗑️'); cargarOT($('#q').value.trim()); }
+    });
+
+    // Buscar / Refrescar / Limpiar
+    $('#q').addEventListener('input', (e)=>cargarOT(e.target.value.trim()));
+    $('#btnReload').addEventListener('click', ()=>cargarOT($('#q').value.trim()));
+    $('#btnClear').addEventListener('click', ()=>$('#form').reset());
+
+    // Inicial
+    cargarTrabajadores();
+    cargarOT();
+  </script>
+</body>
+</html>
