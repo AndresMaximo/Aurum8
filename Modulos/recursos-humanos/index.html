@@ -1,55 +1,315 @@
-<!DOCTYPE html><html lang="es"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Recursos Humanos • AURUM∞</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../aurum-theme.css">
-</head><body>
-<header><h1>Recursos Humanos <span class="muted">• AURUM∞</span></h1></header>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recursos Humanos • AURUM∞</title>
 
-<main class="grid" style="grid-template-columns:1.1fr .9fr;">
-  <section class="card">
-    <h2 class="k">Trabajadores</h2>
-    <table id="tbl">
-      <thead><tr><th>Nombre</th><th>RUT</th><th>Cargo</th><th>Ingreso</th></tr></thead>
-      <tbody></tbody>
-    </table>
-  </section>
+  <!-- Tipografías y tema global -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
 
-  <section class="card">
-    <h2 class="k">Agregar</h2>
-    <form id="f">
-      <label>Nombre<input name="nombre" required></label><br><br>
-      <label>RUT<input name="rut" required></label><br><br>
-      <label>Cargo<input name="cargo" required></label><br><br>
-      <button class="btn" type="submit">Guardar</button>
+  <!-- Tu hoja de estilo del tema (mismo diseño del portal) -->
+  <link rel="stylesheet" href="/aurum-theme.css">
+
+  <style>
+    /* Ajustes locales del módulo */
+    .screen {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 24px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .chip {
+      border: 1px solid var(--gold-20);
+      background: var(--bg-card);
+      padding: 6px 10px;
+      border-radius: 10px;
+      opacity: .9;
+    }
+
+    form.rh {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      margin: 18px 0 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--gold-20);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    form.rh label { font: 600 12px/1 var(--ui); letter-spacing:.06em; opacity:.9 }
+    form.rh input, form.rh select {
+      margin-top: 6px;
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.02);
+      color: var(--ink);
+      outline: none;
+    }
+    .actions {
+      display: flex; gap: 10px; align-items: center; justify-content: flex-end;
+      grid-column: 1/-1;
+    }
+    button.primary {
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--gold-20);
+      background: linear-gradient(130deg,#00ffd0 0%,#38ffa6 100%);
+      color: #001a18; font-weight: 700; letter-spacing:.04em;
+      box-shadow: 0 0 18px rgba(0,255,160,.25);
+    }
+    button.ghost {
+      padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line);
+      background: transparent; color: var(--ink);
+    }
+
+    .table {
+      overflow: auto;
+      border: 1px solid var(--gold-20);
+      border-radius: 16px;
+      background: var(--bg-card);
+      box-shadow: var(--shadow);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 680px;
+    }
+    thead th {
+      position: sticky; top: 0;
+      background: linear-gradient(180deg, rgba(0,255,200,.07), rgba(0,0,0,.2));
+      font: 600 12px var(--ui);
+      text-transform: uppercase; letter-spacing:.1em;
+      color: var(--ink); padding: 12px; border-bottom: 1px solid var(--line);
+    }
+    tbody td {
+      padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,.06);
+      font: 400 14px var(--ui);
+    }
+    tbody tr:hover { background: rgba(0,255,200,.04); }
+    .right { text-align: right; }
+    .muted { opacity:.7 }
+    .danger { color: #ff7b7b }
+    .spinner {
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.25); border-top-color:#00ffd0;
+      animation: spin 1s linear infinite; display:inline-block; vertical-align:-3px;
+    }
+    @keyframes spin { to { transform: rotate(360deg) } }
+
+    header.top {
+      display:flex; gap:16px; align-items:center; justify-content:space-between;
+      margin-bottom: 12px;
+    }
+    header.top h1 {
+      font-family: var(--brand);
+      font-size: clamp(22px, 4vw, 32px);
+      letter-spacing:.08em;
+      color: var(--ink);
+      text-shadow: 0 0 18px rgba(0,255,160,.15);
+    }
+    .navlinks a { color: var(--ink); opacity:.85; margin-left: 12px; text-decoration:none }
+    .navlinks a:hover { opacity:1; text-shadow:0 0 10px rgba(0,255,160,.4) }
+  </style>
+</head>
+<body>
+  <div class="screen">
+    <header class="top">
+      <h1>Recursos Humanos</h1>
+      <div class="navlinks">
+        <a href="/">Portal</a>
+        <a href="/Modulos/ot/index.html">Órdenes de Trabajo</a>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <span class="chip">Base: <strong class="muted">recursos_humanos</strong></span>
+      <label class="chip">
+        Buscar:
+        <input id="q" placeholder="Nombre, RUT o Cargo" style="margin-left:8px; border:0; background:transparent; color:var(--ink); outline:none;">
+      </label>
+      <button id="btnReload" class="ghost">Refrescar</button>
+    </div>
+
+    <!-- Formulario -->
+    <form class="rh" id="form">
+      <div>
+        <label>Nombre
+          <input id="nombre" required placeholder="Ej: Andrea Soto">
+        </label>
+      </div>
+      <div>
+        <label>RUT / Identificación
+          <input id="rut" required placeholder="11.111.111-1">
+        </label>
+      </div>
+      <div>
+        <label>Cargo
+          <input id="cargo" required placeholder="Técnico Mecánico">
+        </label>
+      </div>
+      <div>
+        <label>Fecha de Ingreso
+          <input id="fecha" type="date">
+        </label>
+      </div>
+      <div class="actions">
+        <button type="button" class="ghost" id="btnClear">Limpiar</button>
+        <button type="submit" class="primary">Agregar trabajador</button>
+      </div>
     </form>
-  </section>
-</main>
 
-<footer><a class="btn" href="../../index.html">← Volver al portal</a></footer>
+    <!-- Tabla -->
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>RUT</th>
+            <th>Cargo</th>
+            <th>Ingreso</th>
+            <th class="right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <!-- filas dinámicas -->
+        </tbody>
+      </table>
+    </div>
+    <p class="muted" id="status" style="margin-top:10px"></p>
+  </div>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="../../aurum.js"></script>
-<script>
-async function cargar(){
-  const { data, error } = await db.from('recursos_humanos').select('*').order('fecha_ingreso',{ascending:false});
-  if(error){ toast(error.message); return; }
-  const tbody = document.querySelector('#tbl tbody'); tbody.innerHTML='';
-  data.forEach(r=>{
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${r.nombre}</td><td>${r.rut}</td><td>${r.cargo}</td>
-                    <td>${(r.fecha_ingreso||'').toString().substring(0,10)}</td>`;
-    tbody.appendChild(tr);
-  });
-}
-document.querySelector('#f').addEventListener('submit', async e=>{
-  e.preventDefault();
-  const fd = new FormData(e.target);
-  const payload = { nombre:fd.get('nombre'), rut:fd.get('rut'), cargo:fd.get('cargo') };
-  const { error } = await db.from('recursos_humanos').insert(payload);
-  if(error){ toast(error.message); return; }
-  e.target.reset(); toast('Trabajador agregado'); cargar();
-});
-cargar();
-</script>
-</body></html>
+  <!-- SDK y conexión global (ya configurada en tu proyecto) -->
+  <script src="/aurum.js"></script>
+  <script>
+    // Helpers UI
+    const $ = (sel, ctx=document)=>ctx.querySelector(sel);
+    const $$ = (sel, ctx=document)=>[...ctx.querySelectorAll(sel)];
+    const tbody = $('#tbody');
+    const statusEl = $('#status');
+
+    function fmt(dateStr){
+      if (!dateStr) return '—';
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('es-CL', {year:'numeric', month:'2-digit', day:'2-digit'});
+    }
+
+    function rowTemplate(r){
+      return `
+        <tr data-id="${r.id}">
+          <td>${r.nombre || ''}</td>
+          <td class="muted">${r.rut || ''}</td>
+          <td>${r.cargo || ''}</td>
+          <td class="muted">${fmt(r.fecha_ingreso)}</td>
+          <td class="right">
+            <button class="ghost danger" data-del="${r.id}">Eliminar</button>
+          </td>
+        </tr>`;
+    }
+
+    async function cargarTabla(queryText=''){
+      statusEl.innerHTML = '<span class="spinner"></span> Cargando…';
+      const db = window.db;
+      let q = db.from('recursos_humanos').select('*').order('fecha_ingreso', {ascending:false}).limit(200);
+
+      if (queryText){
+        // Búsqueda simple: OR sobre columnas más comunes
+        q = q.or(`nombre.ilike.%${queryText}%,rut.ilike.%${queryText}%,cargo.ilike.%${queryText}%`);
+      }
+
+      const { data, error } = await q;
+      if (error){
+        statusEl.textContent = 'Error al cargar: ' + error.message;
+        window.toast?.('Error al cargar');
+        return;
+      }
+      tbody.innerHTML = data.map(rowTemplate).join('') || `
+        <tr><td colspan="5" class="muted" style="text-align:center;padding:18px">Sin registros.</td></tr>`;
+      statusEl.textContent = `${data.length} registro(s)`;
+    }
+
+    // Crear
+    $('#form').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const payload = {
+        nombre: $('#nombre').value.trim(),
+        rut: $('#rut').value.trim(),
+        cargo: $('#cargo').value.trim(),
+      };
+      const fecha = $('#fecha').value;
+      if (fecha) payload.fecha_ingreso = fecha;
+
+      if (!payload.nombre || !payload.rut || !payload.cargo){
+        window.toast?.('Completa todos los campos');
+        return;
+      }
+
+      // Optimistic UI (opcional)
+      const tempId = 'tmp-' + Math.random().toString(36).slice(2);
+      tbody.insertAdjacentHTML('afterbegin', rowTemplate({ id: tempId, ...payload, fecha_ingreso: fecha || new Date().toISOString() }));
+
+      const { data, error } = await window.db.from('recursos_humanos').insert(payload).select('*').single();
+
+      if (error){
+        // revertir fila temporal
+        const tr = tbody.querySelector(`tr[data-id="${tempId}"]`);
+        tr && tr.remove();
+        window.toast?.('No se pudo guardar');
+        alert(error.message);
+        return;
+      }
+
+      // Reemplazar fila temporal por fila real
+      const tr = tbody.querySelector(`tr[data-id="${tempId}"]`);
+      if (tr) tr.outerHTML = rowTemplate(data);
+      else tbody.insertAdjacentHTML('afterbegin', rowTemplate(data));
+
+      // limpiar
+      $('#form').reset();
+      window.toast?.('Guardado ✅');
+      cargarTabla($('#q').value.trim());
+    });
+
+    // Eliminar
+    tbody.addEventListener('click', async (e)=>{
+      const id = e.target?.dataset?.del;
+      if (!id) return;
+      if (!confirm('¿Eliminar este registro?')) return;
+
+      const tr = tbody.querySelector(`tr[data-id="${id}"]`);
+      tr?.remove(); // optimista
+
+      const { error } = await window.db.from('recursos_humanos').delete().eq('id', id);
+      if (error){
+        window.toast?.('No se pudo eliminar');
+        alert(error.message);
+        cargarTabla($('#q').value.trim()); // revertir/recargar
+      } else {
+        window.toast?.('Eliminado 🗑️');
+        cargarTabla($('#q').value.trim());
+      }
+    });
+
+    // Buscar + refrescar
+    $('#q').addEventListener('input', (e)=>cargarTabla(e.target.value.trim()));
+    $('#btnReload').addEventListener('click', ()=>cargarTabla($('#q').value.trim()));
+    $('#btnClear').addEventListener('click', ()=>$('#form').reset());
+
+    // Inicial
+    cargarTabla();
+  </script>
+</body>
+</html>
