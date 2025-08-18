@@ -1,0 +1,55 @@
+/* aurum-theme.css — AURUM∞ UI (geometría sagrada) */
+:root{
+  --bg0:#0c0f14; --bg1:#0f1420; --ink:#e8f1ff; --muted:#a9b6d3;
+  --gold:#f6c453; --indigo:#6a7dff; --teal:#36d1c4; --ring:rgba(255,255,255,.08);
+}
+*{box-sizing:border-box} html,body{height:100%}
+body{
+  margin:0; color:var(--ink);
+  background:
+    radial-gradient(1200px 800px at 85% -10%, rgba(106,125,255,.18), transparent 60%),
+    radial-gradient(1000px 700px at -10% 25%, rgba(54,209,196,.14), transparent 60%),
+    linear-gradient(180deg, var(--bg1), var(--bg0));
+  font-family:"DM Sans",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  overflow-x:hidden;
+}
+/* textura: flor de la vida */
+.flower{position:fixed; inset:-5vmax; z-index:0; opacity:.22; pointer-events:none;
+  background-image:url('data:image/svg+xml;utf8,\
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">\
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">\
+<stop offset="0" stop-color="#6a7dff" stop-opacity=".45"/><stop offset="1" stop-color="#f6c453" stop-opacity=".45"/>\
+</linearGradient></defs><g fill="none" stroke="url(#g)" stroke-width="0.8">\
+<g transform="translate(120,120)"><circle r="40"/><circle r="40" cx="34.64" cy="-20"/><circle r="40" cx="34.64" cy="20"/>\
+<circle r="40" cx="-34.64" cy="-20"/><circle r="40" cx="-34.64" cy="20"/><circle r="40" cy="-40"/><circle r="40" cy="40"/></g>\
+</g></svg>');
+  background-size:260px 260px}
+header{position:relative; z-index:2; padding:28px 24px 6px; display:flex; align-items:center; justify-content:space-between}
+.brand{font-family:"Josefin Sans",sans-serif; font-weight:700; letter-spacing:.06em; text-transform:uppercase; font-size:24px}
+.brand .logo{background:linear-gradient(90deg,var(--gold),var(--indigo)); -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 2px 0 rgba(0,0,0,.5))}
+.mantra{font:12px/1 "DM Sans"; color:var(--muted); letter-spacing:.12em; text-transform:uppercase; display:block}
+nav{display:flex; gap:10px; flex-wrap:wrap}
+.chip{font:12px/1.2 "DM Sans"; letter-spacing:.03em; padding:8px 12px; border:1px solid var(--ring);
+  background:rgba(255,255,255,.03); color:var(--muted); border-radius:999px; text-decoration:none; transition:.2s; backdrop-filter:blur(3px)}
+.chip:hover{color:var(--ink); border-color:rgba(255,255,255,.25); background:rgba(255,255,255,.06)}
+main{position:relative; z-index:1; padding:24px}
+.container{width:min(1100px,92vw); margin:0 auto}
+.panel{position:relative; isolation:isolate; border-radius:18px; padding:22px;
+  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.015)), rgba(255,255,255,.02);
+  border:1px solid var(--ring); box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.panel h1{margin:0 0 6px; font-family:"Josefin Sans",sans-serif; font-weight:700;
+  background:linear-gradient(90deg,#fff,#b9c4ff 70%,#fff);
+  -webkit-background-clip:text; background-clip:text; color:transparent}
+.panel p.lead{color:var(--muted); margin-top:0}
+label{font-size:14px; color:var(--muted)}
+input,select,textarea{width:100%; padding:12px 14px; border-radius:12px; background:rgba(255,255,255,.04); color:var(--ink);
+  border:1px solid var(--ring); outline:none; transition:.15s}
+input:focus,select:focus,textarea:focus{border-color:rgba(255,255,255,.28)}
+.row{display:grid; gap:14px; grid-template-columns:repeat(auto-fit, minmax(240px,1fr))}
+.btn{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:999px; border:1px solid var(--ring);
+  background:linear-gradient(90deg,var(--gold),var(--teal)); color:#121822; font-weight:700; text-decoration:none}
+.btn.ghost{background:transparent; color:var(--ink)}
+.table{width:100%; border-collapse:collapse; margin-top:14px}
+.table th,.table td{padding:10px 12px; border-bottom:1px solid var(--ring); font-size:14px}
+footer{color:var(--muted); text-align:center; padding:22px 16px 40px; font:12px/1.4 "DM Sans"}
+@media (max-width:560px){header{padding:20px 16px 0}}
