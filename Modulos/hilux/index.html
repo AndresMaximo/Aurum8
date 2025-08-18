@@ -1,13 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Toyota Hilux</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AURUM∞ • Hilux</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Josefin+Sans:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/aurum-theme.css">
 </head>
 <body>
-  <h1>Módulo Toyota Hilux</h1>
-  <p>Checklist de 50 puntos y trazabilidad de la Hilux.</p>
-  <a href="../../modulos.html">⬅ Volver a Módulos</a>
+  <div class="flower" aria-hidden="true"></div>
+  <header class="container">
+    <div class="brand"><span class="logo">AURUM∞</span><span class="mantra">geometría sagrada • ϕ</span></div>
+    <nav><a class="chip" href="/">Inicio</a><a class="chip" href="/contacto.html">Contacto</a></nav>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <h1>Hilux • Checklist 50 puntos</h1>
+      <p class="lead">Inspección técnica guiada, fotografías y trazabilidad.</p>
+
+      <div class="row">
+        <div>
+          <label>Patente</label>
+          <input id="patente" placeholder="ABCD-12">
+        </div>
+        <div>
+          <label>KM actuales</label>
+          <input id="km" type="number" min="0" step="1" placeholder="0">
+        </div>
+        <div>
+          <label>Técnico responsable</label>
+          <input id="tecnico" placeholder="Nombre y Apellido">
+        </div>
+      </div>
+
+      <div style="margin-top:14px">
+        <a class="btn" href="/Modulos/Hilux/checklist.html">Abrir checklist 3D (50 pts)</a>
+        <a class="btn ghost" href="/">Volver</a>
+      </div>
+
+      <table class="table" id="ultimos">
+        <thead><tr><th>Fecha</th><th>Patente</th><th>Técnico</th><th>Estado</th></tr></thead>
+        <tbody><!-- registros --> </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>© 2025 AURUM∞</footer>
+  <script src="/aurum.js" defer></script>
 </body>
 </html>
