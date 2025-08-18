@@ -1,56 +1,90 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Recursos Humanos</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AURUM∞ • Recursos Humanos</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Josefin+Sans:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/aurum-theme.css">
 </head>
 <body>
-  <h1>Módulo de Recursos Humanos</h1>
+  <div class="flower" aria-hidden="true"></div>
+  <header class="container">
+    <div class="brand"><span class="logo">AURUM∞</span><span class="mantra">geometría sagrada • ϕ</span></div>
+    <nav><a class="chip" href="/">Inicio</a><a class="chip" href="/contacto.html">Contacto</a></nav>
+  </header>
 
-  <table border="1">
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>RUT</th>
-        <th>Cargo</th>
-        <th>Fecha Ingreso</th>
-      </tr>
-    </thead>
-    <tbody id="tabla-trabajadores"></tbody>
-  </table>
+  <main class="container">
+    <section class="panel">
+      <h1>Recursos Humanos</h1>
+      <p class="lead">Altas y gestión de trabajadores sincronizados con Supabase.</p>
 
+      <form id="form-rh">
+        <div class="row">
+          <div>
+            <label>Nombre</label>
+            <input name="nombre" required placeholder="Nombre Apellido">
+          </div>
+          <div>
+            <label>RUT / ID</label>
+            <input name="rut" required placeholder="12.345.678-9">
+          </div>
+          <div>
+            <label>Cargo</label>
+            <input name="cargo" required placeholder="Mecánico / Supervisor">
+          </div>
+          <div>
+            <label>Fecha de ingreso</label>
+            <input name="fecha_ingreso" type="date">
+          </div>
+        </div>
+        <div style="margin-top:14px">
+          <button class="btn" type="submit">Guardar trabajador</button>
+          <a class="btn ghost" href="/">Volver</a>
+        </div>
+      </form>
+
+      <table class="table" id="tabla-rh">
+        <thead><tr><th>Nombre</th><th>RUT</th><th>Cargo</th><th>Ingreso</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>© 2025 AURUM∞</footer>
+
+  <!-- Supabase (cargar desde CDN) -->
   <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-    const SUPABASE_URL = "https://TU-PROYECTO.supabase.co";   // 👈 pega aquí tu URL de API
-    const SUPABASE_ANON_KEY = "eyJhbGciOi...";                // 👈 pega aquí tu anon key
+    const SUPABASE_URL = "TU_SUPABASE_URL";
+    const SUPABASE_ANON_KEY = "TU_SUPABASE_ANON_KEY";
+    const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    async function listarTrabajadores() {
-      const { data, error } = await supabase
-        .from("recursos_humanos")
-        .select("*");
-
-      if (error) {
-        console.error("Error obteniendo:", error);
-      } else {
-        console.log("Lista de trabajadores:", data);
-        const tabla = document.getElementById("tabla-trabajadores");
-        tabla.innerHTML = "";
-        data.forEach(t => {
-          const fila = `<tr>
-            <td>${t.nombre}</td>
-            <td>${t.rut}</td>
-            <td>${t.cargo}</td>
-            <td>${t.fecha_ingreso}</td>
-          </tr>`;
-          tabla.innerHTML += fila;
-        });
-      }
+    async function cargarTabla(){
+      const { data, error } = await db.from('recursos_humanos').select('*').order('fecha_ingreso', {ascending:false});
+      if(error) return console.error(error);
+      const tbody = document.querySelector('#tabla-rh tbody');
+      tbody.innerHTML = data.map(r => `
+        <tr>
+          <td>${r.nombre ?? ''}</td>
+          <td>${r.rut ?? ''}</td>
+          <td>${r.cargo ?? ''}</td>
+          <td>${(r.fecha_ingreso || '').toString().slice(0,10)}</td>
+        </tr>`).join('');
     }
 
-    listarTrabajadores();
+    document.querySelector('#form-rh').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const payload = Object.fromEntries(fd.entries());
+      const { error } = await db.from('recursos_humanos').insert(payload);
+      if(error){ alert('Error: '+error.message); return; }
+      e.target.reset(); cargarTabla();
+    });
+
+    cargarTabla();
   </script>
 </body>
 </html>
