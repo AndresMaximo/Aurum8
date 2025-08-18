@@ -1,138 +1,62 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AURUM∞ • Órdenes de Trabajo</title>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Josefin+Sans:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/aurum-theme.css">
-</head>
-<body>
-  <div class="flower" aria-hidden="true"></div>
-  <header class="container">
-    <div class="brand"><span class="logo">AURUM∞</span><span class="mantra">geometría sagrada • ϕ</span></div>
-    <nav><a class="chip" href="/">Inicio</a><a class="chip" href="/contacto.html">Contacto</a></nav>
-  </header>
+<!DOCTYPE html><html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Órdenes de Trabajo • AURUM∞</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../aurum-theme.css">
+</head><body>
+<header><h1>Órdenes de Trabajo <span class="muted">• AURUM∞</span></h1></header>
 
-  <main class="container">
-    <section class="panel">
-      <h1>Órdenes de Trabajo</h1>
-      <p class="lead">Planifique y asigne equipos y personal, con estados y fechas.</p>
+<main class="grid" style="grid-template-columns:1.2fr .8fr;">
+  <section class="card">
+    <h2 class="k">Listado</h2>
+    <table id="tbl">
+      <thead><tr><th>Equipo</th><th>Tipo</th><th>Estado</th><th>Inicio</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
 
-      <form id="form-ot">
-        <div class="row">
-          <div>
-            <label>Equipo</label>
-            <input name="equipo" required placeholder="Hilux / Prensa / etc.">
-          </div>
-          <div>
-            <label>Tipo</label>
-            <select name="tipo">
-              <option>Mantenimiento</option>
-              <option>Correctivo</option>
-              <option>Preventivo</option>
-              <option>Inspección</option>
-            </select>
-          </div>
-          <div>
-            <label>Estado</label>
-            <select name="estado">
-              <option value="pendiente">Pendiente</option>
-              <option value="en_proceso">En proceso</option>
-              <option value="finalizado">Finalizado</option>
-            </select>
-          </div>
-        </div>
-        <div style="margin-top:14px">
-          <button class="btn" type="submit">Crear OT</button>
-          <a class="btn ghost" href="/">Volver</a>
-        </div>
-      </form>
+  <section class="card">
+    <h2 class="k">Crear OT</h2>
+    <form id="f">
+      <label>Equipo<input name="equipo" required></label><br><br>
+      <label>Tipo<select name="tipo" required>
+        <option value="preventivo">Preventivo</option>
+        <option value="correctivo">Correctivo</option>
+      </select></label><br><br>
+      <label>Estado<select name="estado">
+        <option value="pendiente">Pendiente</option>
+        <option value="en_proceso">En proceso</option>
+        <option value="cerrado">Cerrado</option>
+      </select></label><br><br>
+      <button class="btn" type="submit">Guardar OT</button>
+    </form>
+  </section>
+</main>
 
-      <table class="table" id="tabla-ot">
-        <thead><tr><th>Creación</th><th>Equipo</th><th>Tipo</th><th>Estado</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </section>
+<footer><a class="btn" href="../../index.html">← Volver al portal</a></footer>
 
-    <section class="panel" style="margin-top:18px">
-      <h1>Asignación de trabajadores</h1>
-      <p class="lead">Vincule RR·HH a una OT existente.</p>
-      <form id="form-asigna">
-        <div class="row">
-          <div>
-            <label>OT (ID)</label>
-            <input name="ot_id" required placeholder="uuid de la OT">
-          </div>
-          <div>
-            <label>Trabajador (ID)</label>
-            <input name="trabajador_id" required placeholder="uuid de RR·HH">
-          </div>
-          <div>
-            <label>Función</label>
-            <input name="funcion" placeholder="Ej.: Técnico eléctrico">
-          </div>
-        </div>
-        <div style="margin-top:14px">
-          <button class="btn" type="submit">Asignar</button>
-        </div>
-      </form>
-
-      <table class="table" id="tabla-asig">
-        <thead><tr><th>OT</th><th>Trabajador</th><th>Función</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </section>
-  </main>
-
-  <footer>© 2025 AURUM∞</footer>
-
-  <script type="module">
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-    const SUPABASE_URL = "TU_SUPABASE_URL";
-    const SUPABASE_ANON_KEY = "TU_SUPABASE_ANON_KEY";
-    const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    async function cargarOT(){
-      const { data, error } = await db.from('ordenes_trabajo').select('*').order('fecha_inicio',{ascending:false});
-      if(error) return console.error(error);
-      const tbody = document.querySelector('#tabla-ot tbody');
-      tbody.innerHTML = data.map(r=>`
-        <tr>
-          <td>${(r.fecha_inicio||'').toString().slice(0,19).replace('T',' ')}</td>
-          <td>${r.equipo??''}</td>
-          <td>${r.tipo??''}</td>
-          <td>${r.estado??''}</td>
-        </tr>`).join('');
-    }
-    async function cargarAsig(){
-      const { data, error } = await db.from('ot_trabajadores').select('ot_id, trabajador_id, funcion').order('id');
-      if(error) return console.error(error);
-      const tbody = document.querySelector('#tabla-asig tbody');
-      tbody.innerHTML = data.map(r=>`
-        <tr><td>${r.ot_id}</td><td>${r.trabajador_id}</td><td>${r.funcion??''}</td></tr>`).join('');
-    }
-
-    document.querySelector('#form-ot').addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const fd = new FormData(e.target);
-      const payload = Object.fromEntries(fd.entries());
-      const { error } = await db.from('ordenes_trabajo').insert(payload);
-      if(error){ alert('Error: '+error.message); return; }
-      e.target.reset(); cargarOT();
-    });
-
-    document.querySelector('#form-asigna').addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const fd = new FormData(e.target);
-      const payload = Object.fromEntries(fd.entries());
-      const { error } = await db.from('ot_trabajadores').insert(payload);
-      if(error){ alert('Error: '+error.message); return; }
-      e.target.reset(); cargarAsig();
-    });
-
-    cargarOT(); cargarAsig();
-  </script>
-</body>
-</html>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="../../aurum.js"></script>
+<script>
+async function cargar(){
+  const { data, error } = await db.from('ordenes_trabajo').select('*').order('fecha_inicio',{ascending:false});
+  if(error){ toast(error.message); return; }
+  const tbody = document.querySelector('#tbl tbody'); tbody.innerHTML='';
+  data.forEach(ot=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${ot.equipo}</td><td>${ot.tipo}</td><td>${ot.estado||'pendiente'}</td>
+                    <td>${(ot.fecha_inicio||'').toString().substring(0,16).replace('T',' ')}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+document.querySelector('#f').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const payload = { equipo:fd.get('equipo'), tipo:fd.get('tipo'), estado:fd.get('estado') };
+  const { error } = await db.from('ordenes_trabajo').insert(payload);
+  if(error){ toast(error.message); return; }
+  e.target.reset(); toast('OT creada'); cargar();
+});
+cargar();
+</script>
+</body></html>
