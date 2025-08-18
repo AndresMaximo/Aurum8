@@ -1,193 +1,73 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>AURUM∞ • Recursos Humanos</title>
-
-  <!-- Fuentes + tema global -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/aurum-theme.css" />
-
+  <link rel="stylesheet" href="/aurum-theme.css"/>
   <style>
-    .screen{max-width:1100px;margin:40px auto;padding:24px}
-    header.top{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:14px}
-    header.top h1{font-family:var(--brand);font-size:clamp(22px,4vw,32px);letter-spacing:.08em;color:var(--ink);text-shadow:0 0 18px rgba(0,255,160,.15)}
-    .navlinks a{color:var(--ink);opacity:.85;margin-left:12px;text-decoration:none}
-    .navlinks a:hover{opacity:1;text-shadow:0 0 10px rgba(0,255,160,.4)}
-    .panel{background:var(--bg-card);border:1px solid var(--gold-20);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin:18px 0}
-    .row{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-    label{font:600 12px var(--ui);letter-spacing:.06em}
-    input,select{margin-top:6px;width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink);outline:none}
-    .actions{display:flex;gap:10px;justify-content:flex-end}
-    button.primary{padding:10px 14px;border-radius:12px;border:1px solid var(--gold-20);
-      background:linear-gradient(130deg,#00ffd0 0%,#38ffa6 100%);color:#001a18;font-weight:700;letter-spacing:.04em;
-      box-shadow:0 0 18px rgba(0,255,160,.25)}
-    button.ghost{padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--ink)}
-    .muted{opacity:.75}
-    .table{overflow:auto;border:1px solid var(--gold-20);border-radius:16px;background:var(--bg-card);box-shadow:var(--shadow)}
-    table{width:100%;border-collapse:collapse;min-width:780px}
-    thead th{position:sticky;top:0;background:linear-gradient(180deg,rgba(0,255,200,.07),rgba(0,0,0,.2));
-      font:600 12px var(--ui);text-transform:uppercase;letter-spacing:.1em;color:var(--ink);padding:12px;border-bottom:1px solid var(--line)}
-    tbody td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06);font:400 14px var(--ui)}
-    tbody tr:hover{background:rgba(0,255,200,.04)}
-    .right{text-align:right}
-    .spinner{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.25);border-top-color:#00ffd0;animation:spin 1s linear infinite;display:inline-block;vertical-align:-3px}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    td[contenteditable="true"]{outline:none}
-    td[contenteditable="true"]:focus{background:rgba(0,255,180,.06)}
+    .wrap{max-width:1100px;margin:40px auto;padding:24px}
+    header h1{margin:0 0 14px 0;font-family:var(--brand);letter-spacing:.08em;color:var(--ink)}
+    table{width:100%;border-collapse:collapse;background:rgba(0,0,0,.25);border:1px solid var(--gold-20);border-radius:12px;overflow:hidden}
+    th,td{padding:10px 12px;border-bottom:1px solid var(--line)}
+    th{text-align:left;font:600 12px var(--ui);letter-spacing:.12em;text-transform:uppercase;color:var(--ink)}
+    tr:last-child td{border-bottom:none}
+    .btn{display:inline-block;padding:8px 12px;border-radius:10px;border:1px solid var(--gold-20);text-decoration:none;color:var(--ink)}
+    .actions{display:flex;gap:8px}
   </style>
 </head>
 <body>
-  <div class="screen">
-    <header class="top">
+  <div class="wrap">
+    <header>
       <h1>Recursos Humanos</h1>
-      <div class="navlinks">
-        <a href="/">Portal</a>
-        <a href="/Modulos/ot/index.html">Órdenes de Trabajo</a>
-        <a href="/Modulos/hilux/index.html">Hilux • Checklist</a>
-      </div>
+      <p class="muted">Ejemplo de nómina local (puedes conectar a Supabase más adelante).</p>
     </header>
 
-    <!-- Alta rápida -->
-    <div class="panel">
-      <div class="row">
-        <label>Nombre
-          <input id="nombre" placeholder="Ej: Juan Pérez" />
-        </label>
-        <label>RUT / ID
-          <input id="rut" placeholder="12.345.678-9" />
-        </label>
-        <label>Cargo
-          <input id="cargo" placeholder="Mecánico, Operador, etc." />
-        </label>
-      </div>
-      <div class="actions" style="margin-top:10px">
-        <button id="btnAdd" class="primary">Agregar trabajador</button>
-        <button id="btnReload" class="ghost">Refrescar</button>
-      </div>
-    </div>
-
-    <!-- Filtros -->
-    <div class="panel" style="margin-top:10px">
-      <div class="row">
-        <label>Búsqueda
-          <input id="q" placeholder="Buscar por nombre, RUT o cargo">
-        </label>
-        <label>Ordenar por
-          <select id="sortBy">
-            <option value="nombre">Nombre</option>
-            <option value="rut">RUT</option>
-            <option value="cargo">Cargo</option>
-            <option value="fecha_ingreso">Fecha ingreso</option>
-          </select>
-        </label>
-      </div>
-    </div>
-
-    <!-- Tabla -->
-    <div class="table">
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>RUT</th>
-            <th>Cargo</th>
-            <th>Ingreso</th>
-            <th class="right">Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="tbody"></tbody>
-      </table>
-    </div>
-    <p id="status" class="muted" style="margin-top:10px"></p>
+    <table id="tabla">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>RUT / ID</th>
+          <th>Cargo</th>
+          <th>Fecha Nac.</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
   </div>
 
-  <script src="/aurum.js"></script>
   <script>
-    const $ = (s,c=document)=>c.querySelector(s);
-    const tbody = $('#tbody');
-    const statusEl = $('#status');
+    const dataEjemplo = [
+      { nombre:"IGNACIO ANDRÉS SALAZAR ESCOBAR", rut:"XX.XXX.XXX-X", cargo:"Supervisor", fecha_nac:"1989-04-09" },
+      { nombre:"EVELYN GLORIA SILVA MONDACA", rut:"YY.YYY.YYY-Y", cargo:"Operadora", fecha_nac:"1982-04-11" }
+    ];
 
-    function row(r){
-      return `
-        <tr data-id="${r.id}">
-          <td contenteditable="true" data-f="nombre">${r.nombre}</td>
-          <td contenteditable="true" data-f="rut">${r.rut}</td>
-          <td contenteditable="true" data-f="cargo">${r.cargo}</td>
-          <td>${new Date(r.fecha_ingreso).toLocaleDateString('es-CL')}</td>
-          <td class="right">
-            <button class="ghost" data-save="${r.id}">Guardar</button>
-            <button class="ghost" data-del="${r.id}">Eliminar</button>
-          </td>
-        </tr>`;
+    function diagnosticoURL(persona){
+      const q = new URLSearchParams({
+        nombre: persona.nombre || '',
+        fechaNac: persona.fecha_nac || '',
+        fechaHoy: new Date().toISOString().slice(0,10)
+      });
+      return `/Modulos/numerologia/index.html?${q.toString()}`;
     }
 
-    async function cargarTabla(){
-      statusEl.innerHTML = '<span class="spinner"></span> Cargando…';
-      const q = ($('#q')?.value || '').trim();
-      const sortBy = $('#sortBy')?.value || 'nombre';
-
-      let req = window.db.from('recursos_humanos')
-        .select('id,nombre,rut,cargo,fecha_ingreso')
-        .order(sortBy, { ascending: true });
-
-      if(q){
-        req = req.or(`nombre.ilike.%${q}%,rut.ilike.%${q}%,cargo.ilike.%${q}%`);
-      }
-      const { data, error } = await req;
-      if(error){ statusEl.textContent='Error: '+error.message; return; }
-
-      tbody.innerHTML = data.length ? data.map(row).join('') :
-        `<tr><td colspan="5" class="muted" style="text-align:center;padding:18px">Sin registros</td></tr>`;
-      statusEl.textContent = `${data.length} registro(s)`;
+    function renderFila(p){
+      const tr=document.createElement('tr');
+      tr.innerHTML = `
+        <td>${p.nombre}</td>
+        <td>${p.rut}</td>
+        <td>${p.cargo}</td>
+        <td>${p.fecha_nac||''}</td>
+        <td class="actions">
+          <a class="btn" href="${diagnosticoURL(p)}">Informe numerológico</a>
+        </td>`;
+      return tr;
     }
 
-    // Alta rápida
-    $('#btnAdd').addEventListener('click', async ()=>{
-      const nombre = $('#nombre').value.trim();
-      const rut    = $('#rut').value.trim();
-      const cargo  = $('#cargo').value.trim();
-      if(!nombre || !rut || !cargo){ window.toast?.('Completa nombre, RUT y cargo'); return; }
-      const { error } = await window.db.from('recursos_humanos').insert({ nombre, rut, cargo });
-      if(error){ alert(error.message); return; }
-      $('#nombre').value=''; $('#rut').value=''; $('#cargo').value='';
-      window.toast?.('Trabajador agregado ✅');
-      cargarTabla();
-    });
-
-    // Guardar / Eliminar
-    tbody.addEventListener('click', async (e)=>{
-      const id = e.target.dataset.save || e.target.dataset.del;
-      if(!id) return;
-
-      if(e.target.dataset.save){
-        const tr = e.target.closest('tr');
-        const payload = {};
-        tr.querySelectorAll('[data-f]').forEach(td => payload[td.dataset.f] = td.textContent.trim());
-        const { error } = await window.db.from('recursos_humanos').update(payload).eq('id', id);
-        if(error) return alert(error.message);
-        window.toast?.('Guardado ✅');
-      }
-      if(e.target.dataset.del){
-        if(!confirm('¿Eliminar trabajador?')) return;
-        const { error } = await window.db.from('recursos_humanos').delete().eq('id', id);
-        if(error) return alert(error.message);
-        window.toast?.('Eliminado 🗑️');
-      }
-      cargarTabla();
-    });
-
-    // Filtros
-    $('#q')?.addEventListener('input', debounce(cargarTabla, 250));
-    $('#sortBy')?.addEventListener('change', cargarTabla);
-
-    function debounce(fn, ms=300){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
-
-    // Inicial
-    cargarTabla();
+    const tbody = document.getElementById('tbody');
+    dataEjemplo.forEach(p=>tbody.appendChild(renderFila(p)));
   </script>
 </body>
 </html>
