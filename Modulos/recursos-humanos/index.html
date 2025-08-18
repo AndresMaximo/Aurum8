@@ -1,90 +1,55 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AURUM∞ • Recursos Humanos</title>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Josefin+Sans:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/aurum-theme.css">
-</head>
-<body>
-  <div class="flower" aria-hidden="true"></div>
-  <header class="container">
-    <div class="brand"><span class="logo">AURUM∞</span><span class="mantra">geometría sagrada • ϕ</span></div>
-    <nav><a class="chip" href="/">Inicio</a><a class="chip" href="/contacto.html">Contacto</a></nav>
-  </header>
+<!DOCTYPE html><html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recursos Humanos • AURUM∞</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../aurum-theme.css">
+</head><body>
+<header><h1>Recursos Humanos <span class="muted">• AURUM∞</span></h1></header>
 
-  <main class="container">
-    <section class="panel">
-      <h1>Recursos Humanos</h1>
-      <p class="lead">Altas y gestión de trabajadores sincronizados con Supabase.</p>
+<main class="grid" style="grid-template-columns:1.1fr .9fr;">
+  <section class="card">
+    <h2 class="k">Trabajadores</h2>
+    <table id="tbl">
+      <thead><tr><th>Nombre</th><th>RUT</th><th>Cargo</th><th>Ingreso</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
 
-      <form id="form-rh">
-        <div class="row">
-          <div>
-            <label>Nombre</label>
-            <input name="nombre" required placeholder="Nombre Apellido">
-          </div>
-          <div>
-            <label>RUT / ID</label>
-            <input name="rut" required placeholder="12.345.678-9">
-          </div>
-          <div>
-            <label>Cargo</label>
-            <input name="cargo" required placeholder="Mecánico / Supervisor">
-          </div>
-          <div>
-            <label>Fecha de ingreso</label>
-            <input name="fecha_ingreso" type="date">
-          </div>
-        </div>
-        <div style="margin-top:14px">
-          <button class="btn" type="submit">Guardar trabajador</button>
-          <a class="btn ghost" href="/">Volver</a>
-        </div>
-      </form>
+  <section class="card">
+    <h2 class="k">Agregar</h2>
+    <form id="f">
+      <label>Nombre<input name="nombre" required></label><br><br>
+      <label>RUT<input name="rut" required></label><br><br>
+      <label>Cargo<input name="cargo" required></label><br><br>
+      <button class="btn" type="submit">Guardar</button>
+    </form>
+  </section>
+</main>
 
-      <table class="table" id="tabla-rh">
-        <thead><tr><th>Nombre</th><th>RUT</th><th>Cargo</th><th>Ingreso</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </section>
-  </main>
+<footer><a class="btn" href="../../index.html">← Volver al portal</a></footer>
 
-  <footer>© 2025 AURUM∞</footer>
-
-  <!-- Supabase (cargar desde CDN) -->
-  <script type="module">
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
-    const SUPABASE_URL = "TU_SUPABASE_URL";
-    const SUPABASE_ANON_KEY = "TU_SUPABASE_ANON_KEY";
-    const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    async function cargarTabla(){
-      const { data, error } = await db.from('recursos_humanos').select('*').order('fecha_ingreso', {ascending:false});
-      if(error) return console.error(error);
-      const tbody = document.querySelector('#tabla-rh tbody');
-      tbody.innerHTML = data.map(r => `
-        <tr>
-          <td>${r.nombre ?? ''}</td>
-          <td>${r.rut ?? ''}</td>
-          <td>${r.cargo ?? ''}</td>
-          <td>${(r.fecha_ingreso || '').toString().slice(0,10)}</td>
-        </tr>`).join('');
-    }
-
-    document.querySelector('#form-rh').addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const fd = new FormData(e.target);
-      const payload = Object.fromEntries(fd.entries());
-      const { error } = await db.from('recursos_humanos').insert(payload);
-      if(error){ alert('Error: '+error.message); return; }
-      e.target.reset(); cargarTabla();
-    });
-
-    cargarTabla();
-  </script>
-</body>
-</html>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="../../aurum.js"></script>
+<script>
+async function cargar(){
+  const { data, error } = await db.from('recursos_humanos').select('*').order('fecha_ingreso',{ascending:false});
+  if(error){ toast(error.message); return; }
+  const tbody = document.querySelector('#tbl tbody'); tbody.innerHTML='';
+  data.forEach(r=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${r.nombre}</td><td>${r.rut}</td><td>${r.cargo}</td>
+                    <td>${(r.fecha_ingreso||'').toString().substring(0,10)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+document.querySelector('#f').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const payload = { nombre:fd.get('nombre'), rut:fd.get('rut'), cargo:fd.get('cargo') };
+  const { error } = await db.from('recursos_humanos').insert(payload);
+  if(error){ toast(error.message); return; }
+  e.target.reset(); toast('Trabajador agregado'); cargar();
+});
+cargar();
+</script>
+</body></html>
