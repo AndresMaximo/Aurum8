@@ -1,23 +1,87 @@
-<!DOCTYPE html><html lang="es"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AURUM∞ • Portal</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="aurum-theme.css">
-</head><body>
-<header><h1>Bienvenido a AURUM∞</h1></header>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>AURUM∞ · Inicio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/aurum-theme.css"/>
+  <style>
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    header.nav{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand h1{font-family:var(--brand);font-size:clamp(22px,4vw,32px);letter-spacing:.08em;color:var(--ink);margin:0;
+      text-shadow:0 0 18px rgba(0,255,160,.18)}
+    nav a{margin-left:14px;text-decoration:none;color:var(--ink);opacity:.9}
+    nav a:hover{opacity:1;text-shadow:0 0 10px rgba(0,255,160,.4)}
+    .hero{margin-top:22px;border:1px solid var(--gold-20);border-radius:18px;overflow:hidden;background:radial-gradient(1200px 600px at 80% -200px, rgba(0,255,200,.15), transparent), var(--bg-card)}
+    .hero-inner{padding:26px}
+    h2{font-family:var(--brand);letter-spacing:.06em;color:var(--ink)}
+    p.lead{opacity:.9}
+    .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .card{padding:16px;border:1px solid var(--gold-20);border-radius:16px;background:rgba(0,0,0,.25)}
+    .card h3{margin:0 0 8px 0;font:600 14px var(--ui);letter-spacing:.12em;text-transform:uppercase}
+    .btn{display:inline-block;margin-top:10px;padding:10px 14px;border-radius:12px;border:1px solid var(--gold-20);text-decoration:none}
+    .btn.primary{background:linear-gradient(130deg,#00ffd0 0%,#38ffa6 100%);color:#001a18;font-weight:700}
+    footer{margin:28px 0;opacity:.8}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="nav">
+      <div class="brand">
+        <img src="/logo-aurum-infinito.svg" alt="AURUM∞" style="height:28px"/>
+        <h1>AURUM∞</h1>
+      </div>
+      <nav>
+        <a href="/">Inicio</a>
+        <a href="/Vision.html">Visión</a>
+        <a href="/Modulos/index.html">Módulos</a>
+        <a href="/Modulos/numerologia/index.html">Numerología</a>
+        <a href="/Modulos/ot/index.html">Órdenes de Trabajo</a>
+        <a href="/Modulos/recursos-humanos/index.html">Recursos Humanos</a>
+        <a href="/Contacto.html">Contacto</a>
+      </nav>
+    </header>
 
-<main class="grid">
-  <a class="card" href="Modulos/hilux/index.html">Hilux</a>
-  <a class="card" href="Modulos/recursos-humanos/index.html">Recursos Humanos</a>
-  <a class="card" href="Modulos/ot/index.html">Órdenes de Trabajo</a>
-  <a class="card" href="modulos.html">Módulos</a>
-  <a class="card" href="login.html">Login</a>
-  <a class="card" href="numerologia.html">Numerología</a>
-  <a class="card" href="contacto.html">Contacto</a>
-</main>
+    <section class="hero">
+      <div class="hero-inner">
+        <h2>Tecnología • Conciencia • Energía</h2>
+        <p class="lead">Plataforma integral para operación industrial y bienestar humano, uniendo trazabilidad técnica, checklists 3D y guía emocional diaria.</p>
+        <a class="btn primary" href="/Modulos/index.html">Entrar a los Módulos</a>
+      </div>
+    </section>
 
-<footer>© 2025 AURUM∞ • Todos los derechos reservados.</footer>
+    <section style="margin-top:20px">
+      <div class="grid">
+        <div class="card">
+          <h3>Checklist 3D (Hilux)</h3>
+          <p>Inspección operativa con 50 puntos y trazabilidad de evidencias.</p>
+          <a class="btn" href="/Modulos/hilux/index.html">Abrir</a>
+        </div>
+        <div class="card">
+          <h3>Órdenes de Trabajo</h3>
+          <p>Creación, firmas, fotos “antes/después” y cálculo de tiempos.</p>
+          <a class="btn" href="/Modulos/ot/index.html">Abrir</a>
+        </div>
+        <div class="card">
+          <h3>Recursos Humanos</h3>
+          <p>Ficha de trabajadores y acceso a informe numerológico diario.</p>
+          <a class="btn" href="/Modulos/recursos-humanos/index.html">Abrir</a>
+        </div>
+        <div class="card">
+          <h3>Numerología Integral</h3>
+          <p>Pitagórica + Tántrica + Luna natal/diaria con recomendaciones.</p>
+          <a class="btn" href="/Modulos/numerologia/index.html">Abrir</a>
+        </div>
+      </div>
+    </section>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="aurum.js"></script>
-</body></html>
+    <footer>
+      <small>© 2025 AURUM∞. Todos los derechos reservados.</small>
+    </footer>
+  </div>
+</body>
+</html>
