@@ -1,226 +1,103 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="dark only" />
-  <title>AURUM∞ • Portal</title>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Josefin+Sans:wght@500;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURUM∞ Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg0:#0c0f14;
-      --bg1:#0f1420;
-      --ink:#e8f1ff;
-      --muted:#a9b6d3;
-      --gold:#f6c453;          /* dorado suave */
-      --indigo:#6a7dff;        /* índigo luminoso */
-      --teal:#36d1c4;
-      --ring: rgba(255,255,255,.08);
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; color:var(--ink);
-      background:
-        radial-gradient(1200px 800px at 85% -10%, rgba(106,125,255,.18), transparent 60%),
-        radial-gradient(1000px 700px at -10% 25%, rgba(54,209,196,.14), transparent 60%),
-        linear-gradient(180deg, var(--bg1), var(--bg0));
-      font-family:"DM Sans",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      overflow-x:hidden;
+    header {
+      background: rgba(0,0,0,0.7);
+      padding: 1rem;
+      text-align: center;
+      border-bottom: 2px solid #0ff;
     }
-
-    /* —— Patrón “Flor de la vida” en SVG como textura — */
-    .flower{
-      position:fixed; inset:-5vmax; z-index:0; opacity:.22; pointer-events:none;
-      background-image: url('data:image/svg+xml;utf8,\
-<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">\
-  <defs>\
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">\
-      <stop offset="0" stop-color="#6a7dff" stop-opacity=".45"/>\
-      <stop offset="1" stop-color="#f6c453" stop-opacity=".45"/>\
-    </linearGradient>\
-  </defs>\
-  <g fill="none" stroke="url(#g)" stroke-width="0.8">\
-    <!-- Flor de la vida: círculos entrelazados en rejilla triangular -->\
-    <g transform="translate(120,120)">\
-      <!-- anillos principales -->\
-      <circle r="40"/><circle r="40" cx="34.64" cy="-20"/><circle r="40" cx="34.64" cy="20"/>\
-      <circle r="40" cx="-34.64" cy="-20"/><circle r="40" cx="-34.64" cy="20"/><circle r="40" cy="-40"/>\
-      <circle r="40" cy="40"/>\
-      <!-- repetición en mosaico -->\
-    </g>\
-    <!-- copia en mosaico simple -->\
-    <use href="#c" />\
-  </g>\
-</svg>');
-      background-size: 260px 260px;
+    header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      color: #0ff;
     }
-
-    header{
-      position:relative; z-index:2;
-      padding:28px 24px 6px;
-      display:flex; align-items:center; justify-content:space-between;
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px;
     }
-    .brand{
-      font-family:"Josefin Sans", sans-serif;
-      font-weight:700; letter-spacing:.06em; text-transform:uppercase;
-      font-size:28px; line-height:1;
-      display:inline-grid; gap:6px;
+    .card {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid #0ff;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.3s, background 0.3s;
+      cursor: pointer;
     }
-    .brand span{display:inline-block}
-    .brand .logo{
-      background: linear-gradient(90deg, var(--gold), var(--indigo));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-      filter: drop-shadow(0 2px 0 rgba(0,0,0,.5));
+    .card:hover {
+      transform: scale(1.05);
+      background: rgba(0,255,255,0.2);
     }
-    .mantra{
-      font: 12px/1 "DM Sans", sans-serif; color:var(--muted); letter-spacing:.12em;
-      text-transform:uppercase;
+    .card a {
+      color: #0ff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.2rem;
     }
-
-    nav{display:flex; gap:10px; flex-wrap:wrap}
-    .chip{
-      font: 12px/1.2 "DM Sans", sans-serif; letter-spacing:.03em;
-      padding:8px 12px; border:1px solid var(--ring);
-      background:rgba(255,255,255,.03); color:var(--muted); border-radius:999px;
-      text-decoration:none; transition:.2s ease; backdrop-filter:blur(3px);
-    }
-    .chip:hover{color:var(--ink); border-color:rgba(255,255,255,.25); background:rgba(255,255,255,.06)}
-
-    main{position:relative; z-index:1; padding:24px}
-    .phi-wrap{
-      width:min(1200px, 92vw); margin:24px auto 80px;
-      display:grid; gap:22px;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    }
-
-    /* Tarjetas con proporción áurea: 1:1.618 */
-    .card{
-      --r: 18px;
-      position:relative; isolation:isolate;
-      aspect-ratio: 1 / 1.618;
-      border-radius: var(--r);
-      padding:18px 18px 56px;
-      color:var(--ink); text-decoration:none;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.015)),
-        radial-gradient(60% 80% at 80% 0%, rgba(246,196,83,.18), transparent 60%),
-        radial-gradient(60% 80% at 0% 100%, rgba(106,125,255,.18), transparent 60%),
-        rgba(255,255,255,.02);
-      border:1px solid var(--ring);
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
-      overflow:hidden;
-      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-    }
-    .card:hover{
-      transform: translateY(-4px);
-      border-color: rgba(255,255,255,.26);
-      box-shadow: 0 16px 40px rgba(0,0,0,.5);
-    }
-
-    /* Círculos concéntricos (mandala) decorativos */
-    .card::before,.card::after{
-      content:""; position:absolute; inset:-10%; pointer-events:none; border-radius:999px;
-      background:
-        radial-gradient(closest-side, rgba(255,255,255,.06), transparent 60%) center/40% 40% no-repeat,
-        radial-gradient(closest-side, rgba(255,255,255,.05), transparent 60%) right 10% bottom 10%/55% 55% no-repeat;
-      filter: blur(1px);
-      opacity:.5; mix-blend-mode:soft-light;
-    }
-    .card::after{
-      inset:auto; right:-35%; bottom:-35%; width:70%; height:70%; border-radius:50%;
-      background:
-        radial-gradient(closest-side, rgba(246,196,83,.28), transparent 60%);
-      filter: blur(10px); opacity:.35;
-    }
-
-    .kicker{
-      font: 11px/1 "DM Sans", sans-serif; color:var(--muted);
-      text-transform:uppercase; letter-spacing:.16em; margin-bottom:6px; display:block;
-    }
-    .title{
-      font-family:"Josefin Sans", sans-serif; font-weight:700; margin:0 0 8px;
-      font-size: clamp(18px, 2.6vw, 24px);
-      background: linear-gradient(90deg, #fff, #b9c4ff 70%, #fff);
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-    }
-    .desc{
-      font: 14px/1.5 "DM Sans", sans-serif; color:var(--muted); max-width:60ch;
-    }
-
-    .seal{
-      position:absolute; right:12px; bottom:12px;
-      font: 700 12px/1 "Josefin Sans", sans-serif; letter-spacing:.08em;
-      color:#121822; padding:8px 12px; border-radius:999px;
-      background: linear-gradient(90deg, var(--gold), var(--teal));
-      box-shadow: 0 6px 16px rgba(0,0,0,.35);
-    }
-
-    footer{
-      color:var(--muted); text-align:center; padding:22px 16px 40px;
-      font: 12px/1.4 "DM Sans", sans-serif;
-    }
-
-    @media (max-width:560px){
-      header{padding:22px 16px 2px}
-      .brand{font-size:24px}
-      .phi-wrap{gap:16px}
-      .card{padding:16px 16px 52px}
+    footer {
+      background: rgba(0,0,0,0.8);
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+      border-top: 2px solid #0ff;
     }
   </style>
 </head>
 <body>
-  <div class="flower" aria-hidden="true"></div>
-
   <header>
-    <div class="brand">
-      <span class="logo">AURUM∞</span>
-      <span class="mantra">geometría sagrada • proporción áurea</span>
-    </div>
-    <nav aria-label="Enlaces rápidos">
-      <a class="chip" href="/contacto.html">Contacto</a>
-      <a class="chip" href="/login.html">Iniciar sesión</a>
-      <a class="chip" href="https://supabase.com" target="_blank" rel="noopener">Backend</a>
-    </nav>
+    <h1>Bienvenido a AURUM∞</h1>
   </header>
 
   <main>
-    <section class="phi-wrap" aria-label="Módulos">
-      <a class="card" href="/Modulos/Hilux/index.html">
-        <span class="kicker">Módulo</span>
-        <h3 class="title">Hilux • Checklist 50 puntos</h3>
-        <p class="desc">Inspección técnica guiada, evidencia y exportación.</p>
-        <span class="seal">ϕ</span>
-      </a>
-
-      <a class="card" href="/Modulos/recursos-humanos/index.html">
-        <span class="kicker">Módulo</span>
-        <h3 class="title">Recursos Humanos</h3>
-        <p class="desc">Altas/bajas, búsqueda y envío a Supabase en tiempo real.</p>
-        <span class="seal">RR·HH</span>
-      </a>
-
-      <a class="card" href="/Modulos/ot/index.html">
-        <span class="kicker">Módulo</span>
-        <h3 class="title">Órdenes de Trabajo</h3>
-        <p class="desc">Planificación, asignación y trazabilidad de ejecución.</p>
-        <span class="seal">OT</span>
-      </a>
-
-      <a class="card" href="/bodega.html">
-        <span class="kicker">Módulo</span>
-        <h3 class="title">Bodega & Stock</h3>
-        <p class="desc">Inventario cíclico, movimientos y control de insumos.</p>
-        <span class="seal">SKU</span>
-      </a>
-    </section>
+    <div class="card"><a href="Modulos/hilux/index.html">Hilux</a></div>
+    <div class="card"><a href="Modulos/recursos-humanos/index.html">Recursos Humanos</a></div>
+    <div class="card"><a href="Modulos/ot/index.html">Órdenes de Trabajo</a></div>
+    <div class="card"><a href="modulos.html">Módulos</a></div>
+    <div class="card"><a href="login.html">Login</a></div>
+    <div class="card"><a href="numerologia.html">Numerología</a></div>
+    <div class="card"><a href="contacto.html">Contacto</a></div>
   </main>
 
   <footer>
-    © 2025 AURUM∞ • Diseño inspirado en la “flor de la vida” y ϕ.
+    <p>© 2025 AURUM∞ - Todos los derechos reservados.</p>
   </footer>
 
-  <script src="/aurum.js" defer></script>
+  <!-- SDK de Supabase -->
+  <script src="https://unpkg.com/@supabase/supabase-js"></script>
+
+  <script>
+    // Conexión a Supabase
+    const SUPABASE_URL = "https://awtsikwkfqluobpmqywi.supabase.co";
+    const SUPABASE_ANON_KEY = "TU_ANON_KEY"; // Reemplaza esto con tu anon public key
+
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Prueba de conexión
+    async function probarConexion() {
+      const { data, error } = await db.from("recursos_humanos").select("*");
+      console.log("Datos:", data);
+      console.log("Error:", error);
+    }
+
+    probarConexion();
+  </script>
 </body>
 </html>
