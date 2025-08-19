@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Órdenes de Trabajo</title>
+<link rel="stylesheet" href="/common/topbar.css">
 <style>
   body{margin:0;font-family:Orbitron,sans-serif;background:#000;color:#d8f3dc}
   main{max-width:1100px;margin:24px auto;padding:0 20px}
@@ -12,44 +13,111 @@
   button{margin-top:10px;padding:10px 14px;border-radius:10px;border:1px solid rgba(120,255,255,.3);background:#00f5d4;color:#001219;font-weight:700;cursor:pointer}
   table{width:100%;border-collapse:collapse;margin-top:10px}
   th,td{border-bottom:1px solid rgba(120,255,255,.15);padding:8px;text-align:left}
+  .muted{color:#8aa}
+  .row{display:grid;gap:10px;grid-template-columns:1fr 1fr}
 </style>
 </head>
 <body>
-<link rel="stylesheet" href="/common/topbar.css">
 <div id="topbar"></div>
-<script>fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h)</script>
 
 <main>
   <h2>Órdenes de Trabajo</h2>
 
   <div class="panel">
-    <h3>Nueva OT</h3>
-    <label>Equipo</label><input id="equipo" placeholder="Hilux / Bomba / Feeder / etc">
-    <label>Tipo</label>
-    <select id="tipo">
-      <option>Inspección</option><option>Mantenimiento</option><option>Reparación</option>
-    </select>
-    <button onclick="crear()">Crear OT (local)</button>
+    <h3>Crear OT</h3>
+    <div class="row">
+      <div>
+        <label>Equipo</label><input id="ot-equipo" placeholder="Hilux / Bomba / Feeder / ...">
+      </div>
+      <div>
+        <label>Tipo</label>
+        <select id="ot-tipo"><option>Inspección</option><option>Mantenimiento</option><option>Reparación</option></select>
+      </div>
+    </div>
+    <button id="ot-create">Crear</button>
+    <div id="ot-msg" class="muted"></div>
   </div>
 
   <div class="panel">
-    <h3>Listado (local)</h3>
-    <table><thead><tr><th>ID</th><th>Equipo</th><th>Tipo</th><th>Estado</th></tr></thead>
-      <tbody id="rows"></tbody></table>
-    <small>Nota: Persistencia real se activará cuando conectemos el backend.</small>
+    <h3>Asignar trabajadores</h3>
+    <div class="row">
+      <div>
+        <label>OT</label>
+        <select id="sel-ot"></select>
+      </div>
+      <div>
+        <label>Trabajador</label>
+        <select id="sel-trab"></select>
+      </div>
+    </div>
+    <label>Función</label><input id="ot-funcion" placeholder="Ej: Mecánico líder / Ayudante / ...">
+    <button id="ot-assign">Asignar a OT</button>
+    <div id="asig-msg" class="muted"></div>
+  </div>
+
+  <div class="panel">
+    <h3>OT recientes</h3>
+    <table>
+      <thead><tr><th>ID</th><th>Equipo</th><th>Tipo</th><th>Estado</th><th>Inicio</th></tr></thead>
+      <tbody id="ot-rows"></tbody>
+    </table>
   </div>
 </main>
 
 <script>
-const rows = document.getElementById('rows');
-function crear(){
-  const id = Math.random().toString(36).slice(2,8).toUpperCase();
-  const eq = document.getElementById('equipo').value.trim() || 'Equipo';
-  const tp = document.getElementById('tipo').value;
-  const tr = document.createElement('tr');
-  tr.innerHTML = `<td>${id}</td><td>${eq}</td><td>${tp}</td><td>pendiente</td>`;
-  rows.prepend(tr);
-}
+  fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h)
+</script>
+
+<script type="module">
+  import { supabase } from '/common/supabaseClient.js';
+
+  const $ = (id)=>document.getElementById(id);
+  const msg = $('ot-msg'), asigMsg = $('asig-msg');
+
+  async function cargarOTs(){
+    const { data, error } = await supabase.from('ordenes_trabajo').select('*').order('fecha_inicio',{ascending:false}).limit(50);
+    if(error){ msg.textContent = 'Error: '+error.message; return []; }
+    $('ot-rows').innerHTML = data.map(x=>(
+      `<tr><td>${x.id.slice(0,6)}</td><td>${x.equipo}</td><td>${x.tipo}</td><td>${x.estado}</td><td>${(x.fecha_inicio||'').slice(0,19).replace('T',' ')}</td></tr>`
+    )).join('');
+    // llenar selector
+    $('sel-ot').innerHTML = data.map(x=>`<option value="${x.id}">${x.equipo} · ${x.id.slice(0,6)}</option>`).join('');
+    return data;
+  }
+
+  async function cargarTrab(){
+    const { data, error } = await supabase.from('recursos_humanos').select('*').order('nombre');
+    if(error){ asigMsg.textContent = 'Error: '+error.message; return; }
+    $('sel-trab').innerHTML = data.map(x=>`<option value="${x.id}">${x.nombre} (${x.cargo})</option>`).join('');
+  }
+
+  async function crearOT(){
+    msg.textContent = 'Creando...';
+    const equipo = $('ot-equipo').value.trim() || 'Equipo';
+    const tipo = $('ot-tipo').value;
+    const { error } = await supabase.from('ordenes_trabajo').insert([{ equipo, tipo }]);
+    if(error){ msg.textContent = 'Error: '+error.message; return; }
+    msg.textContent = 'OT creada.';
+    $('ot-equipo').value = '';
+    await cargarOTs();
+  }
+
+  async function asignar(){
+    asigMsg.textContent = 'Asignando...';
+    const ot_id = $('sel-ot').value;
+    const trabajador_id = $('sel-trab').value;
+    const funcion = $('ot-funcion').value.trim() || 'Colaborador';
+    const { error } = await supabase.from('ot_trabajadores').insert([{ ot_id, trabajador_id, funcion }]);
+    if(error){ asigMsg.textContent = 'Error: '+error.message; return; }
+    asigMsg.textContent = 'Asignado.';
+    $('ot-funcion').value = '';
+  }
+
+  $('ot-create').addEventListener('click', crearOT);
+  $('ot-assign').addEventListener('click', asignar);
+
+  await cargarOTs();
+  await cargarTrab();
 </script>
 </body>
 </html>
