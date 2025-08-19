@@ -1,256 +1,42 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AURUM∞ · Órdenes de Trabajo</title>
-
-  <!-- Estilos globales del sitio -->
-  <link rel="stylesheet" href="/aurum-theme.css" />
-  <!-- Estilos mínimos locales por si la hoja global tarda -->
-  <style>
-    .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
-    .card{background:rgba(255,255,255,.03);border:1px solid rgba(120,255,255,.2);
-          border-radius:14px;padding:16px;margin:16px 0}
-    h1,h2,h3{margin:0 0 12px}
-    .form-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
-    .form-row select,.form-row input{
-      flex:1;min-width:160px;padding:10px;border-radius:8px;
-      border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);color:#fff
-    }
-    .btn{white-space:nowrap;flex-shrink:0;background:#00f5d4;color:#001219;border:0;
-         border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer}
-    .tabla{width:100%;border-collapse:collapse;margin-top:10px}
-    .tabla th,.tabla td{border:1px solid rgba(255,255,255,.2);padding:8px 12px;text-align:left}
-    .tabla th{background:rgba(255,255,255,.08)}
-    .muted{opacity:.7;font-size:.9rem}
-    .back a{color:#8ecae6;text-decoration:none}
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURUM∞ · Inicio</title>
+  <link rel="stylesheet" href="/aurum-theme.css">
 </head>
 <body>
-  <!-- Topbar común -->
-  <div id="topbar"></div>
+  <nav class="topbar">
+    <a class="brand" href="/index.html">AURUM∞</a>
+    <ul class="menu">
+      <li><a href="/vision.html">Visión</a></li>
+      <li><a href="/modulos.html">Módulos</a></li>
+      <li><a href="/contacto.html">Contacto</a></li>
+    </ul>
+  </nav>
 
-  <main class="wrap">
-    <div class="back" style="margin:8px 0 16px">
-      <a href="/modulos.html">← Volver a módulos</a>
-    </div>
+  <main>
+    <h1>Bienvenido a AURUM∞</h1>
+    <p>Plataforma de trazabilidad industrial y energética.</p>
 
-    <h1>Órdenes de Trabajo</h1>
-
-    <!-- Selección de OT -->
-    <div class="card">
-      <h3>Gestión de OT</h3>
-      <div class="form-row">
-        <select id="selOT">
-          <option value="">Seleccionar OT</option>
-        </select>
-
-        <select id="estado" disabled>
-          <option>pendiente / en_progreso</option>
-        </select>
+    <div class="grid">
+      <div class="card">
+        <h3>Módulos</h3>
+        <p>Accede a todas las funciones.</p>
+        <a class="btn" href="/modulos.html">Ir a Módulos</a>
       </div>
-      <div class="form-row">
-        <span id="infoEquipo" class="muted">Equipo: —</span>
-        <span id="infoInicio" class="muted">Inicio: —</span>
+      <div class="card">
+        <h3>Visión</h3>
+        <p>Conoce nuestra filosofía Lemuriana.</p>
+        <a class="btn" href="/vision.html">Ver Visión</a>
       </div>
-    </div>
-
-    <!-- Responsables -->
-    <div class="card">
-      <h3>Responsables / Personal en la OT</h3>
-      <div class="form-row">
-        <select id="trabajador">
-          <option value="">Seleccionar trabajador</option>
-        </select>
-        <input type="text" id="funcion" placeholder="Ej: Mecánico, Supervisor" />
-        <button id="btnAsignar" class="btn">Asignar a la OT</button>
+      <div class="card">
+        <h3>Contacto</h3>
+        <p>Habla con nosotros.</p>
+        <a class="btn" href="/contacto.html">Ir a Contacto</a>
       </div>
-      <small class="muted">Se guarda en <code>ot_trabajadores</code>. Puedes agregar varios responsables.</small>
-      <table class="tabla">
-        <thead><tr><th>Trabajador</th><th>Función</th><th>Acción</th></tr></thead>
-        <tbody id="listaTrabajadores"></tbody>
-      </table>
-    </div>
-
-    <!-- Consumos -->
-    <div class="card">
-      <h3>Registrar consumo de repuesto</h3>
-      <div class="form-row">
-        <input type="text" id="sku" placeholder="SKU" />
-        <input type="text" id="nombreRepuesto" placeholder="Nombre / Descripción" />
-        <input type="number" id="cantidad" placeholder="Cantidad" min="1" />
-        <button id="btnRegistrarConsumo" class="btn">Registrar consumo</button>
-      </div>
-      <table class="tabla">
-        <thead><tr><th>SKU</th><th>Nombre</th><th>Cantidad</th><th>Acción</th></tr></thead>
-        <tbody id="listaConsumos"></tbody>
-      </table>
-      <small class="muted">Se guarda en <code>consumos_almacen</code> (con referencia a la OT seleccionada).</small>
     </div>
   </main>
-
-  <!-- Carga topbar común -->
-  <script>
-    fetch('/common/topbar.html').then(r => r.text()).then(t => {
-      document.getElementById('topbar').innerHTML = t;
-    });
-  </script>
-
-  <!-- SDK Supabase + cliente global (ya definido en /aurum.js) -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2.45.4"></script>
-  <script src="/aurum.js"></script>
-
-  <!-- Lógica básica de esta vista (solo UI demo; adaptada a tu aurum.js si ya consulta datos) -->
-  <script>
-    // Cargar combos con datos (si tienes helpers en aurum.js puedes reemplazar esto)
-    async function cargarOTs() {
-      try {
-        const { data, error } = await db.from('ordenes_trabajo')
-          .select('id, equipo, estado, fecha_inicio')
-          .order('fecha_inicio', { ascending: false });
-        if (error) throw error;
-        const sel = document.getElementById('selOT');
-        sel.innerHTML = '<option value="">Seleccionar OT</option>';
-        data.forEach(ot => {
-          const opt = document.createElement('option');
-          opt.value = ot.id;
-          opt.textContent = `${ot.equipo} · ${new Date(ot.fecha_inicio).toLocaleString()}`;
-          opt.dataset.equipo = ot.equipo;
-          opt.dataset.inicio = ot.fecha_inicio;
-          sel.appendChild(opt);
-        });
-      } catch (e) { toast('No se pudieron cargar OT'); console.error(e); }
-    }
-
-    async function cargarTrabajadores() {
-      try {
-        const { data, error } = await db.from('recursos_humanos')
-          .select('id, nombre').order('nombre');
-        if (error) throw error;
-        const sel = document.getElementById('trabajador');
-        sel.innerHTML = '<option value="">Seleccionar trabajador</option>';
-        data.forEach(t => {
-          const opt = document.createElement('option');
-          opt.value = t.id; opt.textContent = t.nombre;
-          sel.appendChild(opt);
-        });
-      } catch (e) { toast('No se pudieron cargar trabajadores'); console.error(e); }
-    }
-
-    // Al cambiar OT, refrescar info de cabecera y tablas
-    document.addEventListener('change', e => {
-      if (e.target.id === 'selOT') {
-        const opt = e.target.selectedOptions[0];
-        document.getElementById('infoEquipo').textContent = 'Equipo: ' + (opt?.dataset.equipo ?? '—');
-        document.getElementById('infoInicio').textContent = 'Inicio: ' + (opt?.dataset.inicio ? new Date(opt.dataset.inicio).toLocaleString() : '—');
-        listarAsignados();
-        listarConsumos();
-      }
-    });
-
-    // Asignar responsable
-    document.getElementById('btnAsignar').addEventListener('click', async () => {
-      const ot = document.getElementById('selOT').value;
-      const trabajador = document.getElementById('trabajador').value;
-      const funcion = document.getElementById('funcion').value.trim();
-      if (!ot || !trabajador || !funcion) return toast('Completa OT, trabajador y función');
-      try {
-        const { error } = await db.from('ot_trabajadores').insert({ ot_id: ot, trabajador_id: trabajador, funcion });
-        if (error) throw error;
-        document.getElementById('funcion').value = '';
-        toast('Asignado');
-        listarAsignados();
-      } catch (e) { toast('No se pudo asignar'); console.error(e); }
-    });
-
-    async function listarAsignados() {
-      const ot = document.getElementById('selOT').value;
-      const tbody = document.getElementById('listaTrabajadores');
-      tbody.innerHTML = '';
-      if (!ot) return;
-      try {
-        const { data, error } = await db.from('ot_trabajadores')
-          .select('id, funcion, recursos_humanos(nombre)')
-          .eq('ot_id', ot);
-        if (error) throw error;
-        data.forEach(row => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${row.recursos_humanos?.nombre ?? ''}</td>
-            <td>${row.funcion ?? ''}</td>
-            <td><button data-del="${row.id}" class="btn">Quitar</button></td>`;
-          tbody.appendChild(tr);
-        });
-      } catch (e) { console.error(e); }
-    }
-
-    document.getElementById('listaTrabajadores').addEventListener('click', async e => {
-      const id = e.target?.dataset?.del;
-      if (!id) return;
-      try {
-        const { error } = await db.from('ot_trabajadores').delete().eq('id', id);
-        if (error) throw error;
-        listarAsignados();
-      } catch (er) { console.error(er); }
-    });
-
-    // Registrar consumo
-    document.getElementById('btnRegistrarConsumo').addEventListener('click', async () => {
-      const ot = document.getElementById('selOT').value;
-      const sku = document.getElementById('sku').value.trim();
-      const nombre = document.getElementById('nombreRepuesto').value.trim();
-      const cantidad = parseInt(document.getElementById('cantidad').value || '0', 10);
-      if (!ot || !sku || !nombre || !cantidad) return toast('Completa OT, SKU, nombre y cantidad');
-      try {
-        const { error } = await db.from('consumos_almacen')
-          .insert({ ot_id: ot, sku, nombre, cantidad });
-        if (error) throw error;
-        document.getElementById('sku').value = '';
-        document.getElementById('nombreRepuesto').value = '';
-        document.getElementById('cantidad').value = '';
-        toast('Consumo registrado');
-        listarConsumos();
-      } catch (e) { toast('No se pudo registrar el consumo'); console.error(e); }
-    });
-
-    async function listarConsumos() {
-      const ot = document.getElementById('selOT').value;
-      const tbody = document.getElementById('listaConsumos');
-      tbody.innerHTML = '';
-      if (!ot) return;
-      try {
-        const { data, error } = await db.from('consumos_almacen')
-          .select('id, sku, nombre, cantidad')
-          .eq('ot_id', ot)
-          .order('creado_en', { ascending: false });
-        if (error) throw error;
-        data.forEach(row => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${row.sku}</td>
-            <td>${row.nombre}</td>
-            <td>${row.cantidad}</td>
-            <td><button data-delc="${row.id}" class="btn">Quitar</button></td>`;
-          tbody.appendChild(tr);
-        });
-      } catch (e) { console.error(e); }
-    }
-
-    document.getElementById('listaConsumos').addEventListener('click', async e => {
-      const id = e.target?.dataset?.delc;
-      if (!id) return;
-      try {
-        const { error } = await db.from('consumos_almacen').delete().eq('id', id);
-        if (error) throw error;
-        listarConsumos();
-      } catch (er) { console.error(er); }
-    });
-
-    // Init
-    (async () => {
-      await Promise.all([cargarOTs(), cargarTrabajadores()]);
-    })();
-  </script>
 </body>
 </html>
