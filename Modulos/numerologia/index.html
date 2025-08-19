@@ -1,81 +1,241 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Numerología Integral</title>
-<link rel="stylesheet" href="/common/topbar.css">
-<style>
-  body{margin:0;font-family:Orbitron,sans-serif;background:#000;color:#d8f3dc}
-  main{max-width:1100px;margin:24px auto;padding:0 20px}
-  .panel{border:1px solid rgba(120,255,255,.2);border-radius:14px;padding:16px;background:rgba(255,255,255,.03);margin-bottom:16px}
-  label{display:block;margin:8px 0 4px}
-  input{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(120,255,255,.25);background:#020b0b;color:#d8f3dc}
-  button{margin-top:10px;padding:10px 14px;border-radius:10px;border:1px solid rgba(120,255,255,.3);background:#00f5d4;color:#001219;font-weight:700;cursor:pointer}
-  h3{color:#aefcff}.res{white-space:pre-wrap}
-  .muted{color:#8aa}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AURUM∞ · Numerología</title>
+
+  <link rel="stylesheet" href="/aurum-theme.css" />
+  <link rel="stylesheet" href="/Modulos/common/topbar.css" />
+  <style>
+    .page{max-width:1100px;margin:120px auto 64px;padding:0 16px}
+    .panel{background:rgba(8,22,33,.6);border:1px solid rgba(120,255,233,.22);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25),inset 0 0 40px rgba(120,255,233,.06);padding:20px;margin-bottom:24px}
+    .panel h2{margin:0 0 8px;color:#b8fff5;text-shadow:0 0 10px rgba(120,255,233,.25);letter-spacing:.04em;font-weight:700}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+    label{font-size:.9rem;color:#cfeff0;display:block;margin-bottom:8px}
+    input{width:100%;background:rgba(0,0,0,.35);border:1px solid rgba(120,255,233,.18);color:#e9fffb;padding:10px 12px;border-radius:10px;outline:none}
+    .btn{display:inline-block;padding:10px 16px;border-radius:12px;border:1px solid rgba(120,255,233,.25);color:#001f25;background:linear-gradient(135deg,#86ffe9,#18f8c2 55%,#34ffd6);font-weight:700;letter-spacing:.02em;cursor:pointer;transition:transform .12s,filter .12s}
+    .btn:hover{transform:translateY(-1px);filter:saturate(1.1)}
+    .muted{color:#a6c9cb;font-size:.9rem}
+    .report{white-space:pre-wrap;line-height:1.55;color:#e6fffb}
+    .block{background:rgba(120,255,233,.06);border:1px solid rgba(120,255,233,.15);border-radius:12px;padding:14px}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+    .tag{display:inline-block;border:1px solid rgba(120,255,233,.35);border-radius:999px;padding:4px 10px;margin-right:6px;background:rgba(120,255,233,.08);font-size:.8rem}
+  </style>
 </head>
 <body>
-<div id="topbar"></div>
+  <div id="topbar"></div>
 
-<main>
-  <h2>Numerología Integral</h2>
-  <div class="panel">
-    <label>Nombre completo</label><input id="nombre" placeholder="Ej: Ignacio Andrés Salazar Escobar">
-    <label>Fecha de nacimiento</label><input id="fecha" type="date">
-    <button id="btn-analizar">Analizar</button>
-    <button id="btn-guardar" class="ghost">Guardar informe</button>
-    <div id="msg" class="muted"></div>
-  </div>
+  <main class="page">
+    <section class="panel">
+      <h2>Nuevo análisis</h2>
+      <form id="form" class="grid">
+        <div>
+          <label>Nombre completo</label>
+          <input id="nombre" required placeholder="Ej: Ana Sofía Pérez" />
+        </div>
+        <div>
+          <label>Fecha de nacimiento</label>
+          <input id="fecha" type="date" required />
+        </div>
+        <div style="grid-column:1/-1;display:flex;gap:12px;align-items:end">
+          <button class="btn" type="submit">Generar informe</button>
+          <span id="msg" class="muted"></span>
+        </div>
+      </form>
+    </section>
 
-  <div class="panel">
-    <h3>Resultado</h3>
-    <div id="out" class="res">Ingresa tus datos y presiona Analizar.</div>
-  </div>
-</main>
+    <section class="panel">
+      <h2>Informe</h2>
+      <div id="informe" class="report muted">Completa el formulario para ver el informe aquí.</div>
+      <div id="chips" style="margin-top:10px"></div>
+      <div style="margin-top:14px">
+        <button id="guardar" class="btn" style="display:none">Guardar en historial</button>
+      </div>
+    </section>
 
-<script>
-  fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h)
-</script>
+    <section class="panel">
+      <h2>Historial reciente</h2>
+      <div class="muted" style="margin-bottom:8px">Últimos 20 informes guardados.</div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th><th>Nacimiento</th><th>Emocional del día</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"><tr><td class="muted" colspan="4">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 
-<script type="module">
-  import { supabase } from '/common/supabaseClient.js';
-  const $ = (id)=>document.getElementById(id);
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="/aurum.js"></script>
+  <script>
+    // Topbar
+    (async()=>{try{const h=await fetch('/Modulos/common/topbar.html',{cache:'no-store'}).then(r=>r.text());document.getElementById('topbar').innerHTML=h;}catch(e){}})();
 
-  function interpretar(nombre, fechaISO){
-/* —— Placeholder de interpretación simbólica ——
-   Aquí puedes enriquecer con tus textos largos por sección (pitagórica, tántrica, luna natal y fases).
-*/
-const d = new Date(fechaISO);
-const dias = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
-const tono = ["Reposo consciente","Orden suave","Comunicación clara","Estructura y foco","Creatividad aplicada","Servicio y cooperación","Introspección y ajuste"][d.getDay()];
-return `Nombre: ${nombre}
-Nacimiento: ${fechaISO} · ${dias[d.getDay()]}
+    const $form = document.getElementById('form');
+    const $nombre = document.getElementById('nombre');
+    const $fecha = document.getElementById('fecha');
+    const $msg = document.getElementById('msg');
+    const $informe = document.getElementById('informe');
+    const $chips = document.getElementById('chips');
+    const $guardar = document.getElementById('guardar');
+    const $tbody = document.getElementById('tbody');
 
-Pitagórica · Tu enfoque natural es construir con propósito y coherencia práctica.
-Tántrica · Tu energía crece cuando sirves y armonizas mente-emoción-acción.
-Luna Natal/Fases · Mantén rutinas simples; en días de alta energía lunar, canaliza a tareas finas y seguras.
+    const toast = (t)=>{ $msg.textContent=t; setTimeout(()=> $msg.textContent='', 2200); };
 
-Mensaje emocional del día · ${tono}
-Recomendación · Respira, simplifica y prioriza seguridad. Escucha señales del cuerpo.`;
-  }
+    // ---- Generador de textos (sin mostrar números) ----
+    function makeTexts(nombre, fechaStr){
+      const fecha = new Date(fechaStr + 'T00:00:00');
+      const dia = fecha.getDay();          // 0..6
+      const mes = fecha.getMonth();        // 0..11
+      const vocales = (nombre.normalize('NFD').replace(/\p{Diacritic}/gu,'').match(/[aeiouáéíóúü]/gi)||[]).length;
+      const consonantes = (nombre.normalize('NFD').replace(/\p{Diacritic}/gu,'').match(/[bcdfghjklmnñpqrstvwxyz]/gi)||[]).length;
 
-  $('btn-analizar').addEventListener('click', ()=>{
-    const nombre = $('nombre').value.trim();
-    const fecha = $('fecha').value;
-    if(!nombre || !fecha){ $('msg').textContent = 'Completa nombre y fecha.'; return; }
-    $('msg').textContent = '';
-    $('out').textContent = interpretar(nombre, fecha);
-  });
+      // Pitagórica (texto interpretativo)
+      const pit = [
+        "Estructura mental enfocada y clara; tendencia a organizar procesos y priorizar objetivos.",
+        "Intuición activa y sensibilidad para leer contextos; estilo colaborativo y diplomático.",
+        "Impulso creativo y sentido de propósito en proyectos que requieran iniciativa y visión.",
+      ][(vocales+consonantes+dia)%3];
 
-  $('btn-guardar').addEventListener('click', async ()=>{
-    const nombre = $('nombre').value.trim();
-    const fecha = $('fecha').value;
-    const informe = $('out').textContent.trim();
-    if(!nombre || !fecha || !informe){ $('msg').textContent = 'Analiza primero para guardar.'; return; }
-    const { error } = await supabase.from('diagnosticos_numerologia').insert([{ nombre, fecha_nac: fecha, informe }]);
-    $('msg').textContent = error ? ('Error: '+error.message) : 'Informe guardado.';
-  });
-</script>
+      // Tántrica (texto interpretativo)
+      const tan = [
+        "Energía vital en ascenso; conviene equilibrar la respiración y el descanso para sostener el ritmo.",
+        "Ciclo de depuración: ideal para soltar hábitos pesados y simplificar rutinas.",
+        "Magnetismo personal disponible; momento adecuado para pedir apoyo y articular alianzas.",
+      ][(vocales+mes)%3];
+
+      // Fases lunares aproximadas (solo narrativa)
+      const fases = [
+        "Momento de inicio y siembra interna; conviene gestar ideas con calma.",
+        "Periodo de crecimiento; favorece ajustar detalles y aprender de la práctica.",
+        "Etapa de plenitud; es buen momento para compartir resultados y pedir retroalimentación.",
+        "Tiempo de liberación y cierre; depura pendientes y ordena prioridades."
+      ][(dia + mes)%4];
+
+      // Luna natal (narrativa por estación/mes)
+      const lunaNatal = [
+        "Tono emocional afín al elemento Tierra: estabilidad, constancia y mirada realista.",
+        "Tono emocional afín al elemento Aire: curiosidad, comunicación y perspectiva amplia.",
+        "Tono emocional afín al elemento Agua: empatía, memoria y nutrición afectiva.",
+        "Tono emocional afín al elemento Fuego: entusiasmo, valentía y poder de decisión."
+      ][mes%4];
+
+      // Mensaje emocional del día (según día de semana)
+      const emocional = [
+        "Enfoque suave y paciente; prioriza orden y claridad.",
+        "Apertura para conversar y coordinar; escucha activa favorece acuerdos.",
+        "Impulso para avanzar; cuida el ritmo y celebra pequeños logros.",
+        "Buen día para aprender algo nuevo y afinar métodos.",
+        "Clima ideal para cerrar temas y agradecer colaboraciones.",
+        "Energía social en alza; potencia trabajo en equipo.",
+        "Repliegue consciente; recarga y cuida tu bienestar."
+      ][dia];
+
+      return {
+        pitagorico: pit,
+        tantrico: tan,
+        fases_lunares: fases,
+        luna_natal: lunaNatal,
+        mensaje_emocional: emocional
+      };
+    }
+
+    function renderReport(nombre, fecha, t){
+      $informe.classList.remove('muted');
+      $informe.innerHTML =
+`• Identidad expresiva
+${t.pitagorico}
+
+• Energía vital y manejo del ritmo
+${t.tantrico}
+
+• Ciclo lunar actual
+${t.fases_lunares}
+
+• Clima afectivo natal
+${t.luna_natal}
+
+• Mensaje emocional del día
+${t.mensaje_emocional}`;
+
+      $chips.innerHTML =
+        `<span class="tag">${nombre}</span> <span class="tag">${new Date(fecha).toLocaleDateString()}</span>`;
+      $guardar.style.display = 'inline-block';
+    }
+
+    let ultimoPayload = null;
+
+    $form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const nombre = $nombre.value.trim();
+      const fecha = $fecha.value;
+      if(!nombre || !fecha) return;
+
+      const t = makeTexts(nombre, fecha);
+      renderReport(nombre, fecha, t);
+      ultimoPayload = { nombre, fecha_nacimiento: fecha, ...t };
+      toast('Informe generado');
+    });
+
+    $guardar.addEventListener('click', async ()=>{
+      if(!ultimoPayload) return;
+      const { error } = await window.db.from('numerologia').insert(ultimoPayload);
+      if (error) return toast('Error: '+error.message);
+      toast('Guardado en historial');
+      cargarHistorial();
+    });
+
+    async function cargarHistorial(){
+      const { data, error } = await window.db
+        .from('numerologia')
+        .select('id,nombre,fecha_nacimiento,mensaje_emocional')
+        .order('created_at', { ascending:false })
+        .limit(20);
+      if (error) return $tbody.innerHTML = `<tr><td colspan="4">Error: ${error.message}</td></tr>`;
+      if (!data?.length) return $tbody.innerHTML = `<tr><td class="muted" colspan="4">Sin informes guardados.</td></tr>`;
+      $tbody.innerHTML = data.map(r=>`
+        <tr data-id="${r.id}">
+          <td>${r.nombre}</td>
+          <td>${r.fecha_nacimiento ? new Date(r.fecha_nacimiento).toLocaleDateString() : '—'}</td>
+          <td>${r.mensaje_emocional ?? '—'}</td>
+          <td><button class="btn" data-a="ver">Ver</button> <button class="btn" data-a="del">Borrar</button></td>
+        </tr>
+      `).join('');
+    }
+
+    $tbody.addEventListener('click', async (e)=>{
+      const b = e.target.closest('button'); if(!b) return;
+      const tr = e.target.closest('tr'); const id = tr?.dataset?.id; if(!id) return;
+      const act = b.dataset.a;
+
+      if (act==='del'){
+        if(!confirm('¿Eliminar informe?')) return;
+        const { error } = await window.db.from('numerologia').delete().eq('id', id);
+        if (error) return toast('Error: '+error.message);
+        toast('Eliminado'); cargarHistorial();
+      }
+
+      if (act==='ver'){
+        const { data, error } = await window.db.from('numerologia').select('*').eq('id', id).single();
+        if (error) return toast('Error: '+error.message);
+        renderReport(data.nombre, data.fecha_nacimiento, {
+          pitagorico: data.texto_pitagorico,
+          tantrico: data.texto_tantrico,
+          fases_lunares: data.fases_lunares,
+          luna_natal: data.luna_natal,
+          mensaje_emocional: data.mensaje_emocional
+        });
+        ultimoPayload = null;
+        window.scrollTo({top:0,behavior:'smooth'});
+      }
+    });
+
+    cargarHistorial();
+  </script>
 </body>
 </html>
