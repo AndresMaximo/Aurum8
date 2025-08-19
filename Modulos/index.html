@@ -1,166 +1,45 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AURUM∞ · Módulos</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Orbitron',sans-serif;background:
-      radial-gradient(1200px 600px at 15% -10%, rgba(20,40,80,.55), transparent 60%),
-      radial-gradient(900px 500px at 85% 0, rgba(0,255,200,.08), transparent 60%),
-      #000;
-      color:#d8f3dc;line-height:1.6}
-    a{color:inherit;text-decoration:none}
-    /* NAV */
-    header.nav{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;background:rgba(0,0,0,.35);border-bottom:1px solid rgba(120,255,255,.2);backdrop-filter:blur(6px)}
-    .brand{display:flex;align-items:center;gap:12px}
-    .brand img{height:28px}
-    .brand h1{font-size:20px;color:#aefcff;letter-spacing:.5px}
-    nav.menu{display:flex;gap:18px}
-    nav.menu a{font-size:15px;color:#00f5d4}
-    nav.menu a:hover{color:#fff}
-    .hamburger{display:none;position:relative;width:34px;height:28px;border:1px solid rgba(120,255,255,.35);border-radius:8px;background:transparent;cursor:pointer}
-    .hamburger span{position:absolute;left:7px;right:7px;height:2px;background:#aefcff;transition:.25s}
-    .hamburger span:nth-child(1){top:7px}.hamburger span:nth-child(2){top:13px}.hamburger span:nth-child(3){top:19px}
-    @media (max-width:768px){
-      header.nav{flex-direction:column;gap:8px}
-      .hamburger{display:block;margin-left:auto}
-      nav.menu{display:block;max-height:0;overflow:hidden;transition:max-height .28s ease;border-top:1px solid rgba(120,255,255,.15);width:100%;padding-top:6px}
-      nav.menu a{display:block;padding:10px 2px;font-size:16px}
-      .menu.is-open{max-height:480px}
-      .hamburger[aria-expanded="true"] span:nth-child(1){top:13px;transform:rotate(45deg)}
-      .hamburger[aria-expanded="true"] span:nth-child(2){opacity:0}
-      .hamburger[aria-expanded="true"] span:nth-child(3){top:13px;transform:rotate(-45deg)}
-    }
-    /* MAIN */
-    main{max-width:1100px;margin:40px auto;padding:24px;background:rgba(255,255,255,.04);border:1px solid rgba(120,255,255,.15);border-radius:14px}
-    h2{color:#90e0ef;margin-bottom:8px;text-align:center}
-    p.lead{text-align:center;color:#bde0fe;margin-bottom:22px}
-    .grid{display:grid;gap:18px;grid-template-columns:repeat(3,1fr)}
-    @media(max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:640px){.grid{grid-template-columns:1fr}}
-    .card{position:relative;display:flex;flex-direction:column;gap:10px;padding:18px;border:1px solid rgba(120,255,255,.15);border-radius:14px;background:
-      linear-gradient(160deg, rgba(255,255,255,.05), rgba(0,0,0,.35));
-      transition:transform .15s ease,border-color .15s ease, box-shadow .15s ease}
-    .card:hover{transform:translateY(-3px);border-color:rgba(120,255,255,.35);box-shadow:0 10px 30px rgba(0,255,200,.12)}
-    .card h3{color:#aefcff;font-size:18px}
-    .card p{color:#cde;min-height:52px}
-    .pill{position:absolute;top:12px;right:12px;font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid rgba(120,255,255,.25);color:#9ff;background:rgba(0,255,200,.08)}
-    .pill.warn{color:#ffc; border-color:rgba(255,255,120,.25); background:rgba(255,255,120,.08)}
-    .actions{display:flex;gap:10px;margin-top:auto}
-    .btn{display:inline-block;padding:10px 12px;border-radius:10px;font-weight:700;border:1px solid rgba(120,255,255,.25);color:#001219;background:#00f5d4}
-    .btn:hover{background:#06d6a0}
-    .btn.ghost{background:transparent;color:#aefcff}
-    .btn.ghost:hover{border-color:rgba(120,255,255,.45)}
-    footer{margin:18px 0 6px;text-align:center;color:#8aa;font-size:13px}
-  </style>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AURUM∞ · Módulos</title>
+<style>
+  body{margin:0;font-family:Orbitron,sans-serif;background:#000;color:#d8f3dc}
+  main{max-width:1100px;margin:24px auto;padding:0 20px}
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+  .card{border:1px solid rgba(120,255,255,.2);border-radius:14px;padding:16px;background:rgba(255,255,255,.03)}
+  .card a{display:inline-block;margin-top:10px;color:#00f5d4;text-decoration:none}
+</style>
 </head>
 <body>
-<header class="nav">
-  <div class="brand">
-    <img src="/logo-aurum-infinito.svg" alt="AURUM∞">
-    <h1>AURUM∞</h1>
-    <button id="menu-toggle" class="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-  <nav id="menu" class="menu">
-    <a href="/">Inicio</a>
-    <a href="/Vision.html">Visión</a>
-    <a href="/Modulos/index.html">Módulos</a>
-    <a href="/Modulos/numerologia/index.html">Numerología</a>
-    <a href="/Modulos/ot/index.html">Órdenes de Trabajo</a>
-    <a href="/Modulos/recursos-humanos/index.html">Recursos Humanos</a>
-    <a href="/Contacto.html">Contacto</a>
-  </nav>
-</header>
+<link rel="stylesheet" href="/common/topbar.css">
+<div id="topbar"></div>
+<script>fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h)</script>
 
 <main>
-  <h2>Centro de Módulos</h2>
-  <p class="lead">Selecciona el módulo que deseas utilizar. El diseño es unificado para toda la plataforma.</p>
-
-  <section class="grid">
-
-    <!-- Numerología -->
-    <a class="card" href="/Modulos/numerologia/index.html">
-      <span class="pill">Activo</span>
-      <h3>Numerología Integral</h3>
-      <p>Lectura pitagórica + tántrica, Luna Natal y Fases Lunares con mensaje emocional del día.</p>
-      <div class="actions">
-        <span class="btn">Abrir</span>
-        <span class="btn ghost">Ver guía</span>
-      </div>
-    </a>
-
-    <!-- Órdenes de Trabajo -->
-    <a class="card" href="/Modulos/ot/index.html">
-      <span class="pill">Activo</span>
-      <h3>Órdenes de Trabajo</h3>
-      <p>Crear OT, asignar personal y registrar avances en tiempo real.</p>
-      <div class="actions">
-        <span class="btn">Abrir</span>
-        <span class="btn ghost">Ver guía</span>
-      </div>
-    </a>
-
-    <!-- Hilux Checklist -->
-    <a class="card" href="/Modulos/hilux/index.html">
-      <span class="pill warn">Beta</span>
-      <h3>Checklist 3D · Hilux</h3>
-      <p>Inspección con 50 puntos y evidencias. Integración 3D (GLB) cuando el modelo esté disponible.</p>
-      <div class="actions">
-        <span class="btn">Abrir</span>
-        <span class="btn ghost">Guía</span>
-      </div>
-    </a>
-
-    <!-- Recursos Humanos -->
-    <a class="card" href="/Modulos/recursos-humanos/index.html">
-      <span class="pill">Activo</span>
-      <h3>Recursos Humanos</h3>
-      <p>Registro y consulta del personal por faena. (Integración con backend opcional).</p>
-      <div class="actions">
-        <span class="btn">Abrir</span>
-        <span class="btn ghost">Guía</span>
-      </div>
-    </a>
-
-    <!-- Bodega (placeholder) -->
-    <div class="card" aria-disabled="true">
-      <span class="pill warn">Próximamente</span>
-      <h3>Bodega & Almacenamiento</h3>
-      <p>Trazabilidad de repuestos desde recepción a instalación, con alertas de stock.</p>
-      <div class="actions">
-        <span class="btn ghost">En preparación</span>
-      </div>
+  <h2>Módulos</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Hilux · Checklist 3D</h3>
+      <p>Inspección de 50 puntos, QR y evidencias (3D listo cuando subamos `hilux.glb`).</p>
+      <a href="/Modulos/hilux/index.html">Abrir módulo</a>
     </div>
-
-    <!-- Trazabilidad energética (placeholder o enlace si ya existe) -->
-    <a class="card" href="/Trazabilidad.html">
-      <span class="pill warn">Próximamente</span>
-      <h3>Trazabilidad Energética</h3>
-      <p>Registro de estados vibracionales y correlación con seguridad/operación.</p>
-      <div class="actions">
-        <span class="btn ghost">En preparación</span>
-      </div>
-    </a>
-
-  </section>
+    <div class="card">
+      <h3>Órdenes de Trabajo</h3>
+      <p>Crear, asignar personal, fotos antes/después, tiempos.</p>
+      <a href="/Modulos/ot/index.html">Abrir módulo</a>
+    </div>
+    <div class="card">
+      <h3>Numerología Integral</h3>
+      <p>Pitagórica + Tántrica + Luna natal + Fases con mensaje diario.</p>
+      <a href="/Modulos/numerologia/index.html">Abrir módulo</a>
+    </div>
+    <div class="card">
+      <h3>Recursos Humanos</h3>
+      <p>Listado por faena; base para historial de jornadas.</p>
+      <a href="/Modulos/recursos-humanos/index.html">Abrir módulo</a>
+    </div>
+  </div>
 </main>
-
-<footer>© 2025 AURUM∞ · Todos los derechos reservados.</footer>
-
-<script>
-  // Menú responsive
-  const btn = document.getElementById('menu-toggle');
-  const nav = document.getElementById('menu');
-  btn.addEventListener('click', ()=>{
-    const open = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!open));
-    nav.classList.toggle('is-open', !open);
-  });
-</script>
 </body>
 </html>
