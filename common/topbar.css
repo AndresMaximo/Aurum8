@@ -1,43 +1,41 @@
+:root{
+  --bg:#05050a;
+  --glass:rgba(255,255,255,.06);
+  --line:rgba(120,255,255,.20);
+  --link:#00f5d4;
+  --txt:#d8f3dc;
+}
+
 .topbar{
-  position:sticky; top:0; z-index:1000;
+  position:sticky; top:0; z-index:100;
   display:flex; align-items:center; justify-content:space-between;
-  padding:10px 16px; background:rgba(0,0,0,.65); backdrop-filter:blur(8px);
-  border-bottom:1px solid rgba(120,255,255,.2);
+  padding:10px 16px; background:linear-gradient(180deg, rgba(0,0,0,.85), rgba(0,0,0,.45));
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid var(--line);
+}
+
+.brand{
+  color:#ffd166; text-decoration:none; font-weight:800; letter-spacing:.5px;
   font-family: 'Orbitron', system-ui, sans-serif;
 }
 
-/* Marca */
-.topbar .brand{
-  color:#d8f3dc; text-decoration:none; font-weight:700; letter-spacing:.5px;
-}
+.menu{display:flex; gap:14px; list-style:none; margin:0; padding:0;}
+.menu a{color:var(--txt); text-decoration:none; padding:8px 10px; border-radius:10px;}
+.menu a:hover{background:var(--glass); color:var(--link);}
 
-/* Menú desktop */
-.topbar .menu{
-  list-style:none; display:flex; gap:16px; margin:0; padding:0;
-}
-.topbar .menu a{
-  color:#a8f0e6; text-decoration:none; padding:8px 10px; border-radius:8px;
-}
-.topbar .menu a:hover{
-  background:rgba(255,255,255,.06); color:#00f5d4;
-}
-
-/* Burger */
 .burger{
-  display:none; background:transparent; border:0; cursor:pointer; padding:8px;
+  display:none; width:42px; height:42px; border:1px solid var(--line);
+  background:var(--glass); border-radius:12px; align-items:center; justify-content:center;
 }
-.burger span{
-  display:block; width:24px; height:2px; background:#d8f3dc; margin:5px 0; transition:.2s;
-}
+.burger span{display:block; width:20px; height:2px; background:var(--txt); margin:3px auto;}
 
-/* Responsive */
 @media (max-width: 900px){
-  .burger{ display:block; }
-  .topbar .menu{
-    position:fixed; inset:60px 12px auto 12px;
-    display:flex; flex-direction:column; gap:8px;
-    background:rgba(10,10,10,.95); border:1px solid rgba(120,255,255,.2);
-    border-radius:12px; padding:12px; max-height:0; overflow:hidden; transition:max-height .25s ease;
+  .burger{display:flex;}
+  .menu{
+    position:fixed; top:56px; right:12px; left:12px;
+    flex-direction:column; gap:0; padding:8px; border:1px solid var(--line);
+    background:rgba(10,10,16,.95); border-radius:16px; display:none;
   }
-  .topbar .menu.open{ max-height:70vh; }
+  .menu.open{display:flex;}
+  .menu a{padding:12px; display:block;}
 }
