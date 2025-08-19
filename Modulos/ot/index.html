@@ -1,309 +1,115 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AURUM∞ • Órdenes de Trabajo (OT)</title>
-
-  <!-- Fuentes + tema global -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/aurum-theme.css" />
-
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURUM∞ · Órdenes de Trabajo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    .screen{max-width:1100px;margin:40px auto;padding:24px}
-    header.top{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:14px}
-    header.top h1{font-family:var(--brand);font-size:clamp(22px,4vw,32px);letter-spacing:.08em;color:var(--ink);text-shadow:0 0 18px rgba(0,255,160,.15)}
-    .navlinks a{color:var(--ink);opacity:.85;margin-left:12px;text-decoration:none}
-    .navlinks a:hover{opacity:1;text-shadow:0 0 10px rgba(0,255,160,.4)}
-    .panel{background:var(--bg-card);border:1px solid var(--gold-20);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin:18px 0}
-    .row{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-    label{font:600 12px var(--ui);letter-spacing:.06em}
-    input,select,textarea{margin-top:6px;width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink);outline:none}
-    textarea{min-height:90px}
-    .actions{display:flex;gap:10px;justify-content:flex-end}
-    button.primary{padding:10px 14px;border-radius:12px;border:1px solid var(--gold-20);
-      background:linear-gradient(130deg,#00ffd0 0%,#38ffa6 100%);color:#001a18;font-weight:700;letter-spacing:.04em;box-shadow:0 0 18px rgba(0,255,160,.25)}
-    button.ghost{padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--ink)}
-    .muted{opacity:.75}
-    .table{overflow:auto;border:1px solid var(--gold-20);border-radius:16px;background:var(--bg-card);box-shadow:var(--shadow)}
-    table{width:100%;border-collapse:collapse;min-width:860px}
-    thead th{position:sticky;top:0;background:linear-gradient(180deg,rgba(0,255,200,.07),rgba(0,0,0,.2));
-      font:600 12px var(--ui);text-transform:uppercase;letter-spacing:.1em;color:var(--ink);padding:12px;border-bottom:1px solid var(--line)}
-    tbody td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06);font:400 14px var(--ui)}
-    tbody tr:hover{background:rgba(0,255,200,.04)}
-    .right{text-align:right}
-    .pill{display:inline-block;padding:.2rem .55rem;border-radius:999px;border:1px solid var(--gold-20)}
-    .ok{background:rgba(0,255,200,.1)}
-    .warn{background:rgba(250,200,0,.08);border-color:#ffd26a}
-    .bad{background:rgba(255,100,100,.1);border-color:#ff8080;color:#ff9ea1}
-    .spinner{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.25);border-top-color:#00ffd0;animation:spin 1s linear infinite;display:inline-block;vertical-align:-3px}
-    @keyframes spin{to{transform:rotate(360deg)}}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Orbitron',sans-serif;background:radial-gradient(circle at 15% -10%,#0d1b2a,#000);color:#d8f3dc}
+    a{color:#00f5d4;text-decoration:none}
+    header.nav{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;background:rgba(0,0,0,.35);border-bottom:1px solid rgba(120,255,255,.2)}
+    .brand{display:flex;align-items:center;gap:12px}.brand img{height:28px}.brand h1{font-size:20px;color:#aefcff}
+    nav.menu{display:flex;gap:18px}nav.menu a:hover{color:#fff}
+    .hamburger{display:none;position:relative;width:34px;height:28px;border:1px solid rgba(120,255,255,.35);border-radius:8px;background:transparent;cursor:pointer}
+    .hamburger span{position:absolute;left:7px;right:7px;height:2px;background:#aefcff;transition:.25s}
+    .hamburger span:nth-child(1){top:7px}.hamburger span:nth-child(2){top:13px}.hamburger span:nth-child(3){top:19px}
+    @media (max-width:768px){header.nav{flex-direction:column;gap:8px}.hamburger{display:block;margin-left:auto}
+      nav.menu{display:block;max-height:0;overflow:hidden;transition:max-height .28s ease;border-top:1px solid rgba(120,255,255,.15)}
+      nav.menu a{display:block;padding:10px 2px;font-size:16px}.menu.is-open{max-height:480px}
+      .hamburger[aria-expanded="true"] span:nth-child(1){top:13px;transform:rotate(45deg)}
+      .hamburger[aria-expanded="true"] span:nth-child(2){opacity:0}
+      .hamburger[aria-expanded="true"] span:nth-child(3){top:13px;transform:rotate(-45deg)}
+    }
+    main{max-width:1100px;margin:40px auto;padding:24px;background:rgba(255,255,255,.04);border:1px solid rgba(120,255,255,.15);border-radius:14px}
+    h2{color:#90e0ef;margin-bottom:10px;text-align:center}
+    .grid{display:grid;gap:18px;grid-template-columns:380px 1fr} @media(max-width:980px){.grid{grid-template-columns:1fr}}
+    .panel{padding:16px;border:1px solid rgba(120,255,255,.15);border-radius:12px;background:rgba(255,255,255,.03)}
+    label{font-size:14px;color:#caf0f8} input,select,textarea{width:100%;padding:10px;margin-top:6px;margin-bottom:12px;border-radius:8px;border:1px solid rgba(120,255,255,.25);background:rgba(0,0,0,.5);color:#fff}
+    button{background:#00f5d4;color:#001219;padding:11px 14px;border:none;border-radius:10px;font-weight:700;cursor:pointer} button:hover{background:#06d6a0}
+    table{width:100%;border-collapse:collapse;margin-top:8px} th,td{border-bottom:1px solid rgba(120,255,255,.15);padding:10px;text-align:left}
+    .tag{display:inline-block;padding:2px 8px;border-radius:999px;background:#163; color:#8ff}
   </style>
 </head>
 <body>
-  <div class="screen">
-    <header class="top">
-      <h1>Órdenes de Trabajo</h1>
-      <div class="navlinks">
-        <a href="/">Portal</a>
-        <a href="/Modulos/recursos-humanos/index.html">Recursos Humanos</a>
-        <a href="/Modulos/hilux/index.html">Hilux • Checklist</a>
-      </div>
-    </header>
-
-    <!-- Crear OT -->
-    <div class="panel">
-      <div class="row">
-        <label>Equipo / Activo
-          <input id="equipo" placeholder="Hilux ABC-123, Bomba 8x8, Feeder FEE43…" />
-        </label>
-        <label>Tipo de OT
-          <select id="tipo">
-            <option value="mantenimiento">Mantenimiento</option>
-            <option value="correctivo">Correctivo</option>
-            <option value="inspeccion">Inspección</option>
-          </select>
-        </label>
-        <label>Estado inicial
-          <select id="estado">
-            <option value="pendiente">Pendiente</option>
-            <option value="en_proceso">En proceso</option>
-            <option value="cerrada">Cerrada</option>
-          </select>
-        </label>
-      </div>
-
-      <div class="row">
-        <label>Descripción
-          <textarea id="desc" placeholder="Detalle breve de la intervención"></textarea>
-        </label>
-        <label>Asignar trabajadores (Ctrl/Cmd para multi‑select)
-          <select id="workers" multiple style="height:140px"></select>
-        </label>
-      </div>
-
-      <div class="actions">
-        <button id="btnCrear" class="primary">Crear OT</button>
-        <button id="btnRef" class="ghost">Refrescar listado</button>
-      </div>
-    </div>
-
-    <!-- Listado OT -->
-    <div class="panel">
-      <div class="row">
-        <label>Filtrar por estado
-          <select id="fEstado">
-            <option value="">Todos</option>
-            <option value="pendiente">Pendiente</option>
-            <option value="en_proceso">En proceso</option>
-            <option value="cerrada">Cerrada</option>
-          </select>
-        </label>
-        <label>Búsqueda
-          <input id="q" placeholder="Equipo / Tipo / Descripción">
-        </label>
-        <label>Ordenar por
-          <select id="sortBy">
-            <option value="fecha_inicio">Fecha inicio</option>
-            <option value="equipo">Equipo</option>
-            <option value="tipo">Tipo</option>
-            <option value="estado">Estado</option>
-          </select>
-        </label>
-      </div>
-    </div>
-
-    <div class="table">
-      <table>
-        <thead>
-          <tr>
-            <th>Equipo</th>
-            <th>Tipo</th>
-            <th>Estado</th>
-            <th>Inicio</th>
-            <th>Fin</th>
-            <th>Asignados</th>
-            <th class="right">Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="tbody"></tbody>
-      </table>
-    </div>
-    <p id="status" class="muted" style="margin-top:10px"></p>
+<header class="nav">
+  <div class="brand">
+    <img src="/logo-aurum-infinito.svg" alt="AURUM∞"><h1>AURUM∞</h1>
+    <button id="menu-toggle" class="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
   </div>
+  <nav id="menu" class="menu">
+    <a href="/">Inicio</a><a href="/Vision.html">Visión</a><a href="/Modulos/index.html">Módulos</a>
+    <a href="/Modulos/numerologia/index.html">Numerología</a>
+    <a href="/Modulos/ot/index.html">Órdenes de Trabajo</a>
+    <a href="/Modulos/recursos-humanos/index.html">Recursos Humanos</a>
+    <a href="/Contacto.html">Contacto</a>
+  </nav>
+</header>
 
-  <script src="/aurum.js"></script>
-  <script>
-    const $ = (s,c=document)=>c.querySelector(s);
-    const tbody   = $('#tbody');
-    const statusEl= $('#status');
+<main>
+  <h2>Órdenes de Trabajo</h2>
+  <div class="grid">
+    <section class="panel">
+      <form id="form-ot">
+        <label>Equipo / Activo</label>
+        <input type="text" name="equipo" placeholder="Ej: Hilux 4x4 - CHK-123" required>
 
-    function pillEstado(est){
-      if(est==='cerrada') return `<span class="pill ok">CERRADA</span>`;
-      if(est==='en_proceso') return `<span class="pill warn">EN PROCESO</span>`;
-      return `<span class="pill bad">PENDIENTE</span>`;
-    }
+        <label>Tipo de trabajo</label>
+        <select name="tipo" required>
+          <option value="mantenimiento">Mantenimiento</option>
+          <option value="correctivo">Correctivo</option>
+          <option value="inspeccion">Inspección</option>
+        </select>
 
-    function row(ot){
-      const asignados = (ot.trabajadores?.length || 0);
-      const fin = ot.fecha_fin ? new Date(ot.fecha_fin).toLocaleString('es-CL') : '—';
-      return `
-        <tr data-id="${ot.id}">
-          <td>${ot.equipo}</td>
-          <td class="muted">${ot.tipo}</td>
-          <td>${pillEstado(ot.estado)}</td>
-          <td>${new Date(ot.fecha_inicio).toLocaleString('es-CL')}</td>
-          <td>${fin}</td>
-          <td>
-            ${asignados} 
-            <button class="ghost" data-ver="${ot.id}" title="Ver asignados">Ver</button>
-          </td>
-          <td class="right">
-            <button class="ghost" data-proc="${ot.id}">Marcar EN PROCESO</button>
-            <button class="ghost" data-close="${ot.id}">Cerrar</button>
-            <button class="ghost" data-del="${ot.id}">Eliminar</button>
-          </td>
-        </tr>`;
-    }
+        <label>Descripción</label>
+        <textarea name="desc" rows="4" placeholder="Descripción breve de la OT"></textarea>
 
-    // Cargar select de trabajadores
-    async function cargarTrabajadoresSelect(){
-      const sel = $('#workers');
-      const { data, error } = await window.db
-        .from('recursos_humanos').select('id,nombre').order('nombre');
-      if(error){ console.error(error); return; }
-      sel.innerHTML = data.map(t => `<option value="${t.id}">${t.nombre}</option>`).join('');
-    }
+        <label>Trabajadores (selección rápida)</label>
+        <input type="text" name="workers" placeholder="Ej: Ana Soto; Luis Pérez; …">
 
-    // Crear OT + asignaciones
-    async function crearOT(){
-      const equipo = $('#equipo').value.trim();
-      const tipo   = $('#tipo').value;
-      const estado = $('#estado').value;
-      const desc   = $('#desc').value.trim() || null;
-      if(!equipo){ window.toast?.('Escribe el equipo/activo'); return; }
+        <button type="submit">Crear OT</button>
+      </form>
+    </section>
 
-      const { data, error } = await window.db
-        .from('ordenes_trabajo')
-        .insert({ equipo, tipo, estado, descripcion: desc })
-        .select('id')
-        .single();
-      if(error){ alert(error.message); return; }
+    <section class="panel">
+      <h3 style="color:#aefcff;margin-bottom:8px">Listado</h3>
+      <table id="tabla-ot">
+        <thead><tr><th>Equipo</th><th>Tipo</th><th>Estado</th><th>Inicio</th><th>Trabajadores</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </div>
+</main>
 
-      const otId = data.id;
-      // asignaciones
-      const sel = $('#workers');
-      const ids = Array.from(sel.selectedOptions).map(o => o.value);
-      if(ids.length){
-        const rows = ids.map(trabajador_id => ({ ot_id: otId, trabajador_id }));
-        const { error: e2 } = await window.db.from('ot_trabajadores').insert(rows);
-        if(e2) alert(e2.message);
-      }
+<footer style="text-align:center;color:#8aa;font-size:13px;margin:18px 0 6px">© 2025 AURUM∞ · Todos los derechos reservados.</footer>
 
-      $('#equipo').value=''; $('#desc').value='';
-      sel.selectedIndex = -1;
-      window.toast?.('OT creada ✅');
-      cargarListado();
-    }
+<script>
+  // Menú
+  const btn=document.getElementById('menu-toggle'), nav=document.getElementById('menu');
+  btn.addEventListener('click',()=>{const o=btn.getAttribute('aria-expanded')==='true';btn.setAttribute('aria-expanded',String(!o));nav.classList.toggle('is-open',!o)});
 
-    // Listado OT con trabajadores
-    async function cargarListado(){
-      statusEl.innerHTML = '<span class="spinner"></span> Cargando…';
-      const q = ($('#q')?.value || '').trim();
-      const sortBy = $('#sortBy')?.value || 'fecha_inicio';
-      const fEstado = $('#fEstado')?.value || '';
-
-      // 1) Traer OTs
-      let req = window.db
-        .from('ordenes_trabajo')
-        .select('id,equipo,tipo,estado,fecha_inicio,fecha_fin,descripcion')
-        .order(sortBy, { ascending: sortBy!=='fecha_inicio' });
-
-      if(fEstado) req = req.eq('estado', fEstado);
-      if(q) req = req.or(`equipo.ilike.%${q}%,tipo.ilike.%${q}%,descripcion.ilike.%${q}%`);
-
-      const { data: ots, error } = await req;
-      if(error){ statusEl.textContent='Error: '+error.message; return; }
-
-      // 2) Contar asignados por OT
-      const ids = ots.map(o=>o.id);
-      let asignaciones = [];
-      if(ids.length){
-        const { data: rows } = await window.db
-          .from('ot_trabajadores')
-          .select('ot_id, trabajador_id, recursos_humanos(nombre)')
-          .in('ot_id', ids);
-        asignaciones = rows || [];
-      }
-      const group = asignaciones.reduce((acc,r)=>{
-        (acc[r.ot_id] ||= []).push(r.recursos_humanos?.nombre || '—');
-        return acc;
-      }, {});
-
-      const model = ots.map(o => ({...o, trabajadores: group[o.id] || []}));
-
-      tbody.innerHTML = model.length ? model.map(row).join('') :
-        `<tr><td colspan="7" class="muted" style="text-align:center;padding:18px">Sin OTs</td></tr>`;
-      statusEl.textContent = `${model.length} OT(s)`;
-    }
-
-    // Ver asignados, cambiar estados, eliminar
-    tbody.addEventListener('click', async (e)=>{
-      const id = e.target.dataset.ver || e.target.dataset.proc || e.target.dataset.close || e.target.dataset.del;
-      if(!id) return;
-
-      // Ver asignados (alert simple)
-      if(e.target.dataset.ver){
-        const { data } = await window.db
-          .from('ot_trabajadores')
-          .select('recursos_humanos(nombre)')
-          .eq('ot_id', id);
-        const lista = (data||[]).map(r=>`• ${r.recursos_humanos?.nombre}`).join('\n') || '—';
-        alert('Trabajadores asignados:\n\n'+lista);
-      }
-
-      // Marcar EN PROCESO
-      if(e.target.dataset.proc){
-        const { error } = await window.db.from('ordenes_trabajo')
-          .update({ estado: 'en_proceso', fecha_fin: null })
-          .eq('id', id);
-        if(error) return alert(error.message);
-        cargarListado();
-      }
-
-      // Cerrar OT (setea fecha_fin)
-      if(e.target.dataset.close){
-        const { error } = await window.db.from('ordenes_trabajo')
-          .update({ estado: 'cerrada', fecha_fin: new Date().toISOString() })
-          .eq('id', id);
-        if(error) return alert(error.message);
-        cargarListado();
-      }
-
-      // Eliminar OT
-      if(e.target.dataset.del){
-        if(!confirm('¿Eliminar OT?')) return;
-        const { error } = await window.db.from('ordenes_trabajo').delete().eq('id', id);
-        if(error) return alert(error.message);
-        cargarListado();
-      }
+  // Demo: persistencia en memoria (sin backend) para ver el diseño funcionando
+  const tbody = document.querySelector('#tabla-ot tbody');
+  const rows = [];
+  const pintar = () => {
+    tbody.innerHTML = rows.map(r =>
+      `<tr><td>${r.equipo}</td><td>${r.tipo}</td><td><span class="tag">${r.estado}</span></td><td>${r.inicio}</td><td>${r.workers}</td></tr>`
+    ).join('');
+  };
+  document.getElementById('form-ot').addEventListener('submit', e=>{
+    e.preventDefault();
+    const f = new FormData(e.target);
+    rows.unshift({
+      equipo:f.get('equipo'),
+      tipo:f.get('tipo'),
+      estado:'pendiente',
+      inicio:new Date().toLocaleString(),
+      workers:(f.get('workers')||'—')
     });
-
-    // Eventos UI
-    $('#btnCrear').addEventListener('click', crearOT);
-    $('#btnRef').addEventListener('click', cargarListado);
-    $('#q')?.addEventListener('input', debounce(cargarListado, 250));
-    $('#fEstado')?.addEventListener('change', cargarListado);
-    $('#sortBy')?.addEventListener('change', cargarListado);
-    function debounce(fn, ms=300){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a),ms); }; }
-
-    // Inicio
-    (async function init(){
-      await cargarTrabajadoresSelect();
-      await cargarListado();
-    })();
-  </script>
+    e.target.reset();
+    pintar();
+  });
+  pintar();
+</script>
 </body>
 </html>
