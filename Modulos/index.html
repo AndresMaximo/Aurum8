@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>AURUM∞ · Módulos</title>
+<link rel="stylesheet" href="/common/topbar.css">
 <style>
   body{margin:0;font-family:Orbitron,sans-serif;background:#000;color:#d8f3dc}
   main{max-width:1100px;margin:24px auto;padding:0 20px}
@@ -12,34 +13,36 @@
 </style>
 </head>
 <body>
-<link rel="stylesheet" href="/common/topbar.css">
 <div id="topbar"></div>
-<script>fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h)</script>
 
 <main>
   <h2>Módulos</h2>
   <div class="grid">
     <div class="card">
       <h3>Hilux · Checklist 3D</h3>
-      <p>Inspección de 50 puntos, QR y evidencias (3D listo cuando subamos `hilux.glb`).</p>
+      <p>50 puntos, QR y evidencias. (3D activo al subir <code>hilux.glb</code>)</p>
       <a href="/Modulos/hilux/index.html">Abrir módulo</a>
     </div>
     <div class="card">
       <h3>Órdenes de Trabajo</h3>
-      <p>Crear, asignar personal, fotos antes/después, tiempos.</p>
+      <p>Crear OT y asignar personal desde RR.HH.</p>
       <a href="/Modulos/ot/index.html">Abrir módulo</a>
     </div>
     <div class="card">
       <h3>Numerología Integral</h3>
-      <p>Pitagórica + Tántrica + Luna natal + Fases con mensaje diario.</p>
+      <p>Pitagórica + Tántrica + Luna (guardar informe opcional).</p>
       <a href="/Modulos/numerologia/index.html">Abrir módulo</a>
     </div>
     <div class="card">
       <h3>Recursos Humanos</h3>
-      <p>Listado por faena; base para historial de jornadas.</p>
+      <p>Alta de colaboradores por faena.</p>
       <a href="/Modulos/recursos-humanos/index.html">Abrir módulo</a>
     </div>
   </div>
 </main>
+
+<script>
+  fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h)
+</script>
 </body>
 </html>
