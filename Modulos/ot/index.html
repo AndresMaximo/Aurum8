@@ -2,218 +2,270 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Órdenes de Trabajo · AURUM∞</title>
-
-  <!-- Tema global -->
-  <link rel="stylesheet" href="../../aurum-theme.css" />
-
-  <!-- Topbar común -->
-  <link rel="stylesheet" href="../common/topbar.css" />
-
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>AURUM∞ · Órdenes de Trabajo</title>
   <style>
-    .wrap { max-width: 1100px; margin: 0 auto; padding: 1.25rem; }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px,1fr));
-      gap: 1rem;
-      margin-top: 1rem;
+    :root{
+      --bg:#0a0d1a;--bg2:#12172e;--ink:#e8ecf7;--muted:#a7b3cf;
+      --line:rgba(158,231,255,.16);--gold:#e4c86a;--aqua:#9ee7ff;
     }
-    .card { background: rgba(10, 25, 40, .6); border: 1px solid #2c5c7a; border-radius: 14px; padding: 1rem; }
-    .card h2 { margin: .25rem 0 1rem; font-size: 1.25rem; color: #aef9f1; letter-spacing: .03em; }
-    .field { display:flex; flex-direction:column; gap:.35rem; margin-bottom:.85rem; }
-    .field label { font-size:.9rem; color:#8fd6cf; }
-    .field input, .field select {
-      background: rgba(255,255,255,.03);
-      border: 1px solid #345d70; color:#dff; padding:.6rem .7rem; border-radius:10px; outline:none;
+    html,body{margin:0;height:100%;background:
+      radial-gradient(1200px 600px at 20% 0%,#1a2142 0%,#0a0d1a 55%),
+      linear-gradient(180deg,#0a0d1a 0%,#070910 100%);
+      color:var(--ink);font-family:system-ui,Segoe UI,Inter,Roboto,Arial,sans-serif}
+    header{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:12px 18px;border-bottom:1px solid var(--line);
+      background:linear-gradient(90deg,rgba(10,13,26,.8),rgba(18,23,46,.75))
     }
-    .btn {
-      border:1px solid #36d6b4; background: rgba(54,214,180,.1);
-      color:#bffef4; padding:.65rem .9rem; border-radius:12px; cursor:pointer;
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:40px;height:40px;border-radius:12px;
+      background: radial-gradient(circle at 30% 30%, var(--gold), #6e5a17 70%);
+      display:grid;place-items:center;color:#181818;font-weight:800;font-size:22px}
+    .crumbs a{color:var(--aqua);text-decoration:none}
+    main{max-width:1100px;margin:0 auto;padding:22px}
+    h1{margin:.2rem 0 1rem;font-size:1.5rem}
+    .card{background:rgba(18,23,46,.55);border:1px solid var(--line);
+      border-radius:14px;padding:16px;margin-bottom:18px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    label{font-size:.9rem;color:var(--muted);margin-bottom:6px;display:block}
+    input,select,textarea{
+      width:100%;padding:10px;border-radius:8px;
+      border:1px solid var(--line);background:#0f1326;color:var(--ink)
     }
-    .btn:disabled { opacity:.6; cursor:not-allowed; }
-    .muted { color:#7fb6b0; font-size:.9rem; }
-
-    table { width:100%; border-collapse: collapse; }
-    th, td { padding:.65rem .6rem; border-bottom:1px solid rgba(70,130,160,.35); }
-    th { text-align:left; color:#a4f1ea; font-weight:600; }
-    tr:hover { background: rgba(255,255,255,.03); }
-    .pill {
-      display:inline-block; padding:.2rem .5rem; border-radius:999px; font-size:.75rem;
-      border:1px solid #3fa0c9; color:#aee8ff;
-    }
-    .space { height:.75rem; }
+    button{padding:10px 14px;border:none;border-radius:8px;font-weight:700;cursor:pointer}
+    .btn-gold{background:var(--gold);color:#191919}
+    .btn-ghost{background:transparent;color:var(--aqua);border:1px solid var(--line)}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    th,td{border:1px solid var(--line);padding:10px;text-align:left}
+    th{background:rgba(158,231,255,.08)}
+    .muted{color:var(--muted)}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .pill{border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:.85rem;color:var(--muted)}
+    .note{font-size:.9rem;color:var(--muted)}
   </style>
 </head>
 <body>
-  <!-- Topbar -->
-  <div id="topbar"></div>
-  <script>
-    fetch("../common/topbar.html").then(r=>r.text()).then(h=>document.getElementById("topbar").innerHTML=h);
-  </script>
-
-  <main class="wrap">
-    <h1 style="letter-spacing:.06em; color:#c0fff7;">Órdenes de Trabajo</h1>
-    <p class="muted">Crea una nueva OT y visualiza las más recientes. Todo se guarda en Supabase (si hay conexión); si no, se usa almacenamiento local para pruebas.</p>
-
-    <div class="grid">
-      <!-- Crear OT -->
-      <section class="card">
-        <h2>Nueva OT</h2>
-        <form id="form-ot">
-          <div class="field">
-            <label for="equipo">Equipo</label>
-            <input id="equipo" name="equipo" type="text" placeholder="Hilux, Bomba, Feeder, etc." required />
-          </div>
-
-          <div class="field">
-            <label for="tipo">Tipo</label>
-            <select id="tipo" name="tipo" required>
-              <option value="Inspección">Inspección</option>
-              <option value="Correctivo">Correctivo</option>
-              <option value="Preventivo">Preventivo</option>
-              <option value="Otro">Otro</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="estado">Estado</label>
-            <select id="estado" name="estado">
-              <option value="pendiente">pendiente</option>
-              <option value="en_proceso">en_proceso</option>
-              <option value="cerrada">cerrada</option>
-            </select>
-          </div>
-
-          <button class="btn" id="btn-crear" type="submit">Crear OT</button>
-          <span id="msg" class="muted" style="margin-left:.6rem;"></span>
-        </form>
-      </section>
-
-      <!-- Listado -->
-      <section class="card">
-        <h2>Listado reciente</h2>
-        <div class="space"></div>
-        <table>
-          <thead>
-            <tr>
-              <th>Equipo</th>
-              <th>Tipo</th>
-              <th>Estado</th>
-              <th>Inicio</th>
-            </tr>
-          </thead>
-          <tbody id="tbody"></tbody>
-        </table>
-      </section>
+<header>
+  <div class="brand">
+    <div class="logo">∞</div>
+    <div>
+      <div><strong>AURUM∞</strong></div>
+      <small class="muted">Órdenes de Trabajo · Registro de Consumos</small>
     </div>
-  </main>
+  </div>
+  <nav class="crumbs"><a href="/modulos.html">← Volver a Módulos</a></nav>
+</header>
 
-  <!-- SDK Supabase + cliente global -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  <script src="../../aurum.js"></script>
+<main>
+  <h1>Gestión de OT & Consumos</h1>
 
-  <script>
-    // Utilidades
-    const $ = (q, root=document) => root.querySelector(q);
-    const $$ = (q, root=document) => [...root.querySelectorAll(q)];
-    const toast = (t) => { const el=$("#msg"); if(!el) return; el.textContent=t; setTimeout(()=>el.textContent="", 3000); };
+  <!-- Filtros y contexto -->
+  <div class="card">
+    <div class="grid">
+      <div>
+        <label for="selOT">Seleccionar OT</label>
+        <select id="selOT"></select>
+      </div>
+      <div>
+        <label for="estadoOT">Estado (solo lectura)</label>
+        <input id="estadoOT" placeholder="pendiente / en_progreso / cerrada" disabled />
+      </div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <span class="pill" id="otInfoEquipo">Equipo: —</span>
+      <span class="pill" id="otInfoFecha">Inicio: —</span>
+    </div>
+  </div>
 
-    // Fallback local si no hay window.db
-    const localKey = "aurum_ot_local_v1";
-    const localOT = {
-      all: () => JSON.parse(localStorage.getItem(localKey) || "[]"),
-      push: (row) => { const a = localOT.all(); a.unshift(row); localStorage.setItem(localKey, JSON.stringify(a)); },
-    };
+  <!-- Registro de consumo -->
+  <div class="card">
+    <h2 style="margin-top:0">Registrar consumo de repuesto</h2>
+    <div class="grid">
+      <div>
+        <label for="selTrabajador">Trabajador</label>
+        <select id="selTrabajador"></select>
+      </div>
+      <div>
+        <label for="inpProducto">Producto / Repuesto</label>
+        <input id="inpProducto" placeholder="Ej: Filtro aire HILUX-FA123" />
+      </div>
+      <div>
+        <label for="inpCantidad">Cantidad</label>
+        <input id="inpCantidad" type="number" min="1" step="1" value="1" />
+      </div>
+      <div>
+        <label>&nbsp;</label>
+        <button id="btnConsumir" class="btn-gold">Registrar consumo y descontar stock</button>
+      </div>
+    </div>
+    <p class="note" style="margin-top:10px">
+      Al registrar, se inserta en <code>consumos_ot</code> y el stock de <code>bodega</code> se actualiza mediante triggers en la base de datos.
+    </p>
+  </div>
 
-    async function cargar() {
-      const tbody = $("#tbody");
-      tbody.innerHTML = `<tr><td class="muted" colspan="4">Cargando…</td></tr>`;
-
-      // Si existe Supabase
-      if (window.db) {
-        const { data, error } = await window.db
-          .from("ordenes_trabajo")
-          .select("id,equipo,tipo,estado,fecha_inicio")
-          .order("fecha_inicio", { ascending: false })
-          .limit(20);
-
-        if (error) {
-          console.error(error);
-          tbody.innerHTML = `<tr><td class="muted" colspan="4">Error al cargar. Modo local habilitado.</td></tr>`;
-          pintarLocal();
-          return;
-        }
-        pintar(data || []);
-      } else {
-        // Modo local
-        pintarLocal();
-      }
-    }
-
-    function pintarLocal() {
-      const rows = localOT.all();
-      pintar(rows);
-    }
-
-    function pintar(rows) {
-      const tbody = $("#tbody");
-      if (!rows.length) {
-        tbody.innerHTML = `<tr><td class="muted" colspan="4">Sin registros.</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = rows.map(r=>`
+  <!-- Tabla últimos consumos -->
+  <div class="card">
+    <h2 style="margin-top:0">Últimos consumos</h2>
+    <table>
+      <thead>
         <tr>
-          <td>${escapeHtml(r.equipo || "")}</td>
-          <td><span class="pill">${escapeHtml(r.tipo || "")}</span></td>
-          <td>${escapeHtml(r.estado || "")}</td>
-          <td>${fmtFecha(r.fecha_inicio)}</td>
+          <th>Fecha</th>
+          <th>OT</th>
+          <th>Trabajador</th>
+          <th>Producto</th>
+          <th>Cantidad</th>
         </tr>
-      `).join("");
-    }
+      </thead>
+      <tbody id="tbConsumos"></tbody>
+    </table>
+  </div>
+</main>
 
-    function fmtFecha(v) {
-      if (!v) return "";
-      try { return new Date(v).toLocaleString(); } catch { return v; }
-    }
-    function escapeHtml(str){
-      return String(str).replace(/[&<>"']/g, s=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[s]));
-    }
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+  // 1) Configura tu Supabase
+  const SUPABASE_URL = "https://TU_PROYECTO.supabase.co";   // ← reemplaza
+  const SUPABASE_KEY = "TU_API_KEY";                        // ← reemplaza
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    $("#form-ot").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      $("#btn-crear").disabled = true;
+  // Utilidad
+  const fmt = (d)=> new Date(d).toLocaleString();
 
-      const payload = {
-        equipo: $("#equipo").value.trim(),
-        tipo: $("#tipo").value,
-        estado: $("#estado").value,
-        fecha_inicio: new Date().toISOString()
-      };
+  // 2) Carga listas base (OTs y Trabajadores)
+  async function cargarOTs(){
+    const { data, error } = await sb
+      .from("ordenes_trabajo")
+      .select("id, equipo, tipo, estado, fecha_inicio")
+      .order("fecha_inicio", { ascending:false });
+    if(error){ console.error(error); return; }
 
-      try {
-        if (window.db) {
-          const { error } = await window.db.from("ordenes_trabajo").insert(payload);
-          if (error) throw error;
-          toast("OT creada");
-        } else {
-          // Guardar local si no hay DB
-          localOT.push({ id: crypto.randomUUID(), ...payload });
-          toast("OT creada (local)");
-        }
-        // limpiar e recargar
-        e.target.reset();
-        await cargar();
-      } catch (err) {
-        console.error(err);
-        toast("Error al crear OT");
-      } finally {
-        $("#btn-crear").disabled = false;
-      }
+    const selOT = document.getElementById("selOT");
+    selOT.innerHTML = "";
+    data.forEach(ot=>{
+      const opt = document.createElement("option");
+      opt.value = ot.id;
+      opt.textContent = `${ot.equipo} — ${ot.tipo} (${ot.estado ?? 'pendiente'})`;
+      opt.dataset.equipo = ot.equipo;
+      opt.dataset.estado = ot.estado || 'pendiente';
+      opt.dataset.fecha = ot.fecha_inicio;
+      selOT.appendChild(opt);
     });
+    if(data.length){
+      actualizarInfoOT();
+    } else {
+      document.getElementById("estadoOT").value = "";
+      document.getElementById("otInfoEquipo").textContent = "Equipo: —";
+      document.getElementById("otInfoFecha").textContent = "Inicio: —";
+    }
+  }
 
-    // inicia
-    cargar();
-  </script>
+  function actualizarInfoOT(){
+    const sel = document.getElementById("selOT");
+    const opt = sel.options[sel.selectedIndex];
+    if(!opt) return;
+    document.getElementById("estadoOT").value = opt.dataset.estado;
+    document.getElementById("otInfoEquipo").textContent = "Equipo: " + opt.dataset.equipo;
+    document.getElementById("otInfoFecha").textContent = "Inicio: " + (opt.dataset.fecha ? fmt(opt.dataset.fecha) : "—");
+  }
+
+  async function cargarTrabajadores(){
+    const { data, error } = await sb
+      .from("recursos_humanos")
+      .select("id, nombre, cargo")
+      .order("nombre");
+    if(error){ console.error(error); return; }
+
+    const sel = document.getElementById("selTrabajador");
+    sel.innerHTML = "";
+    data.forEach(t=>{
+      const opt = document.createElement("option");
+      opt.value = t.id;
+      opt.textContent = `${t.nombre} — ${t.cargo}`;
+      sel.appendChild(opt);
+    });
+  }
+
+  // 3) Registrar consumo (inserta en consumos_ot)
+  async function registrarConsumo(){
+    const otId = document.getElementById("selOT").value;
+    const trabajadorId = document.getElementById("selTrabajador").value;
+    const producto = document.getElementById("inpProducto").value.trim();
+    const cantidad = parseInt(document.getElementById("inpCantidad").value, 10);
+
+    if(!otId || !trabajadorId || !producto || !cantidad || cantidad <= 0){
+      alert("Completa OT, trabajador, producto y cantidad válida.");
+      return;
+    }
+
+    const { error } = await sb
+      .from("consumos_ot")
+      .insert([{
+        ot_id: otId,
+        trabajador_id: trabajadorId,
+        producto,
+        cantidad
+      }]);
+    if(error){ alert("Error registrando consumo: " + error.message); return; }
+
+    document.getElementById("inpProducto").value = "";
+    document.getElementById("inpCantidad").value = 1;
+    alert("Consumo registrado. Stock actualizado.");
+    cargarConsumos();
+  }
+
+  // 4) Tabla de últimos consumos (join básico por cliente)
+  async function cargarConsumos(){
+    // Obtenemos consumos
+    const { data:cons, error } = await sb
+      .from("consumos_ot")
+      .select("id, ot_id, trabajador_id, producto, cantidad, created_at")
+      .order("created_at", { ascending:false })
+      .limit(50);
+    if(error){ console.error(error); return; }
+
+    // Cache de OT y RH para mostrar nombres
+    const otIds = [...new Set(cons.map(c=>c.ot_id).filter(Boolean))];
+    const rhIds = [...new Set(cons.map(c=>c.trabajador_id).filter(Boolean))];
+
+    let ots = [];
+    if(otIds.length){
+      const { data } = await sb.from("ordenes_trabajo").select("id,equipo,tipo").in("id", otIds);
+      ots = data || [];
+    }
+    let rhs = [];
+    if(rhIds.length){
+      const { data } = await sb.from("recursos_humanos").select("id,nombre").in("id", rhIds);
+      rhs = data || [];
+    }
+
+    const mapOT = new Map(ots.map(o=>[o.id, `${o.equipo} · ${o.tipo}`]));
+    const mapRH = new Map(rhs.map(r=>[r.id, r.nombre]));
+
+    const tbody = document.getElementById("tbConsumos");
+    tbody.innerHTML = "";
+    cons.forEach(c=>{
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${fmt(c.created_at)}</td>
+        <td>${mapOT.get(c.ot_id) || c.ot_id}</td>
+        <td>${mapRH.get(c.trabajador_id) || c.trabajador_id}</td>
+        <td>${c.producto}</td>
+        <td>${c.cantidad}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Eventos
+  document.getElementById("btnConsumir").addEventListener("click", registrarConsumo);
+  document.getElementById("selOT").addEventListener("change", actualizarInfoOT);
+
+  // Inicio
+  (async function init(){
+    await Promise.all([cargarOTs(), cargarTrabajadores()]);
+    await cargarConsumos();
+  })();
+</script>
 </body>
 </html>
