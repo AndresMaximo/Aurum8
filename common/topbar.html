@@ -1,5 +1,10 @@
 <nav class="topbar">
   <a class="brand" href="/index.html">AURUM∞</a>
+
+  <button class="burger" aria-label="Abrir menú" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+
   <ul class="menu">
     <li><a href="/index.html">Inicio</a></li>
     <li><a href="/vision.html">Visión</a></li>
@@ -12,3 +17,13 @@
     <li><a href="/contacto.html">Contacto</a></li>
   </ul>
 </nav>
+
+<script>
+  // Toggle menú móvil
+  const burger = document.currentScript.previousElementSibling.querySelector('.burger');
+  const menu = document.currentScript.previousElementSibling.querySelector('.menu');
+  burger.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+</script>
