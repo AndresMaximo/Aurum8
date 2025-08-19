@@ -1,24 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Iniciar sesión • AURUM∞</title>
-  <link rel="stylesheet" href="lemuria.css" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Login · AURUM∞</title>
+  <link rel="stylesheet" href="/common/topbar.css">
+  <link rel="stylesheet" href="/aurum-theme.css">
+  <style>
+    main{max-width:420px;margin:40px auto;padding:24px;border:1px solid #2a9d8f33;border-radius:16px;background:rgba(255,255,255,.03)}
+    input,button{width:100%;padding:12px;border-radius:10px;border:1px solid #ffffff22;background:#0b2224;color:#d8f3dc;margin:6px 0}
+    .alt{display:flex;gap:10px}
+    .pill{display:inline-block;padding:4px 10px;border:1px solid #ffffff22;border-radius:999px;font-size:12px;margin-left:8px}
+  </style>
+  <script defer src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script defer src="/aurum.js"></script>
+  <script defer src="/common/guard.js"></script>
 </head>
 <body>
-  <header class="top">
-    <h1>Iniciar sesión</h1>
-    <nav>
-      <a href="index.html">Inicio</a>
-      <a class="active" href="login.html">Iniciar sesión</a>
-    </nav>
-  </header>
-  <main class="container">
-    <section class="section">
-      <p>Pantalla de login (placeholder).</p>
-    </section>
-  </main>
-  <footer class="foot">© 2025 AURUM∞</footer>
+<div id="topbar"></div>
+<main>
+  <h2>Acceso</h2>
+  <p>Ingresa con tu correo y contraseña. <span class="pill">nuevo usuario → quedará como <b>usuario</b> hasta que un admin cambie su rol</span></p>
+
+  <form id="frmLogin">
+    <input id="email" type="email" placeholder="email@empresa.com" required>
+    <input id="pwd" type="password" placeholder="Contraseña" required>
+    <div class="alt">
+      <button type="submit">Entrar</button>
+      <button type="button" id="btnSignup">Crear cuenta</button>
+    </div>
+  </form>
+
+  <p id="msg"></p>
+</main>
+
+<script>
+  // Cargar topbar
+  fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h);
+
+  const msg = (t)=>document.getElementById('msg').textContent=t;
+
+  document.getElementById('frmLogin').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('pwd').value;
+    const { error } = await window.db.auth.signInWithPassword({ email, password });
+    if(error){ msg(error.message); return; }
+    msg('¡Bienvenido!');
+    location.href = '/modulos.html';
+  });
+
+  document.getElementById('btnSignup').addEventListener('click', async ()=>{
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('pwd').value;
+    const { error } = await window.db.auth.signUp({ email, password, options:{ data:{ nombre: email.split('@')[0] } } });
+    if(error){ msg(error.message); return; }
+    msg('Cuenta creada. Revisa tu correo (si se requiere verificación). Luego inicia sesión.');
+  });
+</script>
 </body>
 </html>
