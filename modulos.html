@@ -3,93 +3,171 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Módulos • AURUM∞</title>
-
-  <!-- Estilos base del sitio -->
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="lemuria.css" />
-
+  <title>AURUM∞ · Módulos</title>
   <style>
-    /* Ajustes suaves de esta página (puedes quitarlos si prefieres) */
-    .grid { display: grid; gap: 16px; }
-    @media (min-width: 720px){ .grid.cols-3 { grid-template-columns: repeat(3, 1fr); } }
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--gold-20);
-      border-radius: 14px;
-      padding: 16px;
-      box-shadow: var(--shadow);
-      transition: transform .12s ease, box-shadow .12s ease;
-      display: block;
-      color: inherit;
-      text-decoration: none;
-      min-height: 130px;
+    :root{
+      --bg:#06070b;           /* tema oscuro futurista */
+      --panel:#0e1120;
+      --panel-2:#12162a;
+      --acc:#9ee7ff;          /* acento frío */
+      --gold:#e4c86a;         /* dorado lemuriano */
+      --muted:#a9b1c7;
+      --ok:#7ee787;
+      --warn:#ffd166;
     }
-    .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); }
-    .card h3 { margin: 0 0 6px; }
-    .muted { opacity: .85; }
-    .badge {
-      display: inline-block;
-      font-size: 12px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid var(--gold-20);
-      background: var(--bg-card2);
-      margin-left: 6px;
-      vertical-align: middle;
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;background:radial-gradient(1200px 800px at 20% 0%, #101428 0%, var(--bg) 55%);color:#e6e9f2;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    a{color:inherit;text-decoration:none}
+    header{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter:saturate(140%) blur(8px);
+      background:linear-gradient(90deg,rgba(18,22,42,.9),rgba(6,7,11,.85));
+      border-bottom:1px solid rgba(158,231,255,.12);
     }
-    .top h1 { letter-spacing: .5px; }
+    .wrap{max-width:1100px;margin:0 auto;padding:20px}
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{
+      width:42px;height:42px; border-radius:12px;
+      background: radial-gradient(circle at 30% 30%, var(--gold), #a8892a 60%, #6e5a17);
+      box-shadow: 0 0 0 2px rgba(228,200,106,.25), 0 8px 30px rgba(0,0,0,.45);
+      position:relative; overflow:hidden;
+    }
+    .logo:before{
+      content:"∞"; position:absolute; inset:0;
+      display:grid; place-items:center; font-weight:800; font-size:26px; color:#1b1b1b;
+      text-shadow:0 1px 0 rgba(255,255,255,.15);
+    }
+    .title{font-weight:800; letter-spacing:.5px}
+    .subtitle{color:var(--muted); font-size:.92rem}
+
+    .hero{
+      margin:28px 0 8px; padding:22px;
+      background:linear-gradient(180deg, rgba(18,22,42,.8), rgba(6,7,11,.8));
+      border:1px solid rgba(158,231,255,.12);
+      border-radius:18px;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.04), 0 10px 40px rgba(0,0,0,.35);
+    }
+    .hero h1{margin:0 0 8px; font-size:1.4rem}
+    .hero p{margin:0; color:var(--muted)}
+
+    .grid{
+      display:grid; gap:16px; margin:18px 0 40px;
+      grid-template-columns: repeat( auto-fit, minmax(240px, 1fr) );
+    }
+    .card{
+      position:relative; overflow:hidden;
+      background:linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+      border:1px solid rgba(158,231,255,.12);
+      border-radius:16px; padding:18px;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .card:hover{ transform: translateY(-2px); border-color: rgba(228,200,106,.45); box-shadow: 0 8px 30px rgba(0,0,0,.35)}
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:.78rem; padding:6px 10px; border-radius:999px;
+      background:rgba(158,231,255,.08); color:var(--acc); border:1px solid rgba(158,231,255,.18);
+    }
+    .chip.ok{ background:rgba(126,231,135,.08); color:var(--ok); border-color:rgba(126,231,135,.2) }
+    .chip.soon{ background:rgba(228,200,106,.08); color:var(--gold); border-color:rgba(228,200,106,.2) }
+    .card h3{margin:12px 0 8px; font-size:1.05rem}
+    .card p{margin:0;color:#cfd6ec;font-size:.92rem; line-height:1.25rem}
+    .go{
+      display:inline-flex; align-items:center; gap:10px; margin-top:14px;
+      color:var(--gold); font-weight:600; font-size:.92rem
+    }
+    .go svg{width:16px;height:16px}
+    footer{color:var(--muted); font-size:.85rem; padding:28px 0 50px}
   </style>
 </head>
 <body>
-  <header class="top">
-    <h1>AURUM∞</h1>
-    <nav>
-      <a href="index.html">Inicio</a>
-      <a href="vision.html">Visión</a>
-      <a href="modulos.html" class="active">Módulos</a>
-      <a href="contacto.html">Contacto</a>
+<header>
+  <div class="wrap" style="display:flex;justify-content:space-between;align-items:center;">
+    <div class="brand">
+      <div class="logo"></div>
+      <div>
+        <div class="title">AURUM∞</div>
+        <div class="subtitle">Centro de módulos</div>
+      </div>
+    </div>
+    <nav class="subtitle">
+      <a href="/index.html">Inicio</a>
     </nav>
-  </header>
+  </div>
+</header>
 
-  <main class="container">
-    <h2>Módulos</h2>
+<main class="wrap">
+  <section class="hero">
+    <h1>Módulos disponibles</h1>
+    <p>Selecciona un módulo para abrirlo. Los que muestran “Próximo” están preparados en la web y conectados al backend gradualmente.</p>
+  </section>
 
-    <ul class="cards grid cols-3" style="list-style:none; padding:0; margin:0;">
-      <!-- Recursos Humanos -->
-      <li>
-        <a class="card" href="./Modulos/recursos-humanos/index.html">
-          <h3>Recursos Humanos <span class="badge">Nuevo</span></h3>
-          <p class="muted">
-            Alta/Baja y edición de personal, búsqueda rápida y exportación. Base para asignar técnicos a OTs.
-          </p>
-        </a>
-      </li>
+  <section class="grid">
 
-      <!-- Órdenes de Trabajo (OT) -->
-      <li>
-        <a class="card" href="./Modulos/ot/index.html">
-          <h3>Órdenes de Trabajo (OT)</h3>
-          <p class="muted">
-            Crear, planificar y cerrar OTs. Asigna técnicos desde RR.HH., adjunta evidencias y exporta reportes.
-          </p>
-        </a>
-      </li>
+    <!-- HILUX -->
+    <a class="card" href="/modulos/hilux/index.html">
+      <span class="chip ok">Activo</span>
+      <h3>Checklist 3D · Toyota Hilux</h3>
+      <p>Inspección de 50 puntos con trazabilidad. Carga del modelo 3D <em>(GLB)</em> en proceso.</p>
+      <span class="go">Abrir módulo
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 12h10m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>
+    </a>
 
-      <!-- Hilux (Checklist) -->
-      <li>
-        <a class="card" href="./Modulos/Hilux/index.html">
-          <h3>Checklist Hilux</h3>
-          <p class="muted">
-            Inspección técnica de 50 puntos, guardado local y exportación. Integración futura con backend.
-          </p>
-        </a>
-      </li>
-    </ul>
-  </main>
+    <!-- ÓRDENES DE TRABAJO -->
+    <a class="card" href="/modulos/ot/index.html">
+      <span class="chip ok">Activo</span>
+      <h3>Órdenes de Trabajo</h3>
+      <p>Creación, seguimiento y cierre de OT. Adjunta fotos de Inicio/Fin y calcula horas de detención automáticamente.</p>
+      <span class="go">Abrir módulo
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 12h10m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>
+    </a>
 
-  <footer class="foot">
-    <small>© 2025 AURUM∞. Todos los derechos reservados.</small>
+    <!-- RECURSOS HUMANOS -->
+    <a class="card" href="/modulos/recursos-humanos/index.html">
+      <span class="chip ok">Activo</span>
+      <h3>Recursos Humanos</h3>
+      <p>Registro de personal por faena, cargos y fechas de ingreso. Integración con OT y Numerología diaria.</p>
+      <span class="go">Abrir módulo
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 12h10m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>
+    </a>
+
+    <!-- NUMEROLOGÍA -->
+    <a class="card" href="/modulos/numerologia/index.html">
+      <span class="chip ok">Activo</span>
+      <h3>Numerología & Luna</h3>
+      <p>Informe diario (pitagórica + tántrica + luna natal + fase) y mensaje emocional aplicado a turno.</p>
+      <span class="go">Abrir módulo
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 12h10m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>
+    </a>
+
+    <!-- BODEGA Y ALMACENAMIENTO (NUEVO) -->
+    <a class="card" href="/modulos/bodega/index.html">
+      <span class="chip soon">Nuevo</span>
+      <h3>Bodega y Almacenamiento</h3>
+      <p>Inventario por ubicaciones, movimientos de entrada/salida y vista de stock consolidado.</p>
+      <span class="go">Abrir módulo
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 12h10m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>
+    </a>
+
+    <!-- TRAZABILIDAD ENERGÉTICA -->
+    <a class="card" href="/modulos/trazabilidad/index.html">
+      <span class="chip soon">Próximo</span>
+      <h3>Trazabilidad Energética</h3>
+      <p>Mapa de eventos/energías por equipo y turno, con georreferencia y bitácora.</p>
+      <span class="go">Abrir módulo
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 12h10m0 0-4-4m4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>
+    </a>
+
+  </section>
+
+  <footer>
+    © 2025 AURUM∞ — Industria + Conciencia
   </footer>
+</main>
 </body>
 </html>
