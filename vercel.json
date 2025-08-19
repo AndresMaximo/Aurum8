@@ -1,7 +1,9 @@
 {
-  "cleanUrls": true,
+  "cleanUrls": false,
   "trailingSlash": false,
-  "headers": [
-    { "source": "/(.*)", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] }
+  "routes": [
+    { "src": "^/Modulos/(.*)$", "dest": "/modulos/$1", "status": 308 },
+    { "src": "^/modulos$", "dest": "/modulos.html", "status": 308 },
+    { "src": "^/Modulos$", "dest": "/modulos.html", "status": 308 }
   ]
 }
