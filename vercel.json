@@ -1,10 +1,28 @@
 {
+  "trailingSlash": false,
+
   "redirects": [
-    { "source": "/Vision", "destination": "/vision.html", "permanent": true },
-    { "source": "/Vision.html", "destination": "/vision.html", "permanent": true },
     { "source": "/Contacto", "destination": "/contacto.html", "permanent": true },
-    { "source": "/Contacto.html", "destination": "/contacto.html", "permanent": true },
+    { "source": "/contacto", "destination": "/contacto.html", "permanent": true },
+
+    { "source": "/Vision", "destination": "/vision.html", "permanent": true },
+    { "source": "/Visión", "destination": "/vision.html", "permanent": true },
+    { "source": "/vision", "destination": "/vision.html", "permanent": true },
+
     { "source": "/Modulos", "destination": "/modulos.html", "permanent": true },
-    { "source": "/Modulos.html", "destination": "/modulos.html", "permanent": true }
+    { "source": "/Módulos", "destination": "/modulos.html", "permanent": true },
+    { "source": "/modulos", "destination": "/modulos.html", "permanent": true },
+
+    { "source": "/Modulos/:rest*", "destination": "/modulos/:rest*", "permanent": true }
+  ],
+
+  "rewrites": [
+    { "source": "/numerologia", "destination": "/modulos/numerologia/index.html" },
+    { "source": "/ot", "destination": "/modulos/ot/index.html" },
+    { "source": "/recursos-humanos", "destination": "/modulos/recursos-humanos/index.html" },
+    { "source": "/hilux", "destination": "/modulos/hilux/index.html" },
+    { "source": "/bodega", "destination": "/modulos/bodega/index.html" },
+
+    { "source": "/:page(index|vision|modulos|contacto)", "destination": "/:page.html" }
   ]
 }
