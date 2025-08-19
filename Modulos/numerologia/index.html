@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Numerología Integral</title>
+<link rel="stylesheet" href="/common/topbar.css">
 <style>
   body{margin:0;font-family:Orbitron,sans-serif;background:#000;color:#d8f3dc}
   main{max-width:1100px;margin:24px auto;padding:0 20px}
@@ -10,21 +11,21 @@
   label{display:block;margin:8px 0 4px}
   input{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(120,255,255,.25);background:#020b0b;color:#d8f3dc}
   button{margin-top:10px;padding:10px 14px;border-radius:10px;border:1px solid rgba(120,255,255,.3);background:#00f5d4;color:#001219;font-weight:700;cursor:pointer}
-  h3{color:#aefcff}
-  .res{white-space:pre-wrap}
+  h3{color:#aefcff}.res{white-space:pre-wrap}
+  .muted{color:#8aa}
 </style>
 </head>
 <body>
-<link rel="stylesheet" href="/common/topbar.css">
 <div id="topbar"></div>
-<script>fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h)</script>
 
 <main>
   <h2>Numerología Integral</h2>
   <div class="panel">
     <label>Nombre completo</label><input id="nombre" placeholder="Ej: Ignacio Andrés Salazar Escobar">
     <label>Fecha de nacimiento</label><input id="fecha" type="date">
-    <button onclick="analizar()">Analizar</button>
+    <button id="btn-analizar">Analizar</button>
+    <button id="btn-guardar" class="ghost">Guardar informe</button>
+    <div id="msg" class="muted"></div>
   </div>
 
   <div class="panel">
@@ -34,31 +35,47 @@
 </main>
 
 <script>
-function interpretarBase(nombre, fecha) {
-  // Interpretación simbólica breve (placeholder)
-  const d = new Date(fecha||Date.now());
-  const dia = d.getDay();
-  const tonoDia = ["Equilibrio","Movimiento","Comunicación","Orden","Creatividad","Servicio","Introspección"][dia];
-  return (
-`• Lectura Pitagórica (resumen)
-  Enfoque en propósito, aprendizaje y talento natural. Predomina la intención de construir y dar forma práctica a las ideas.
+  fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h)
+</script>
 
-• Lectura Tántrica (resumen)
-  Energía de raíces profundas, necesidad de coherencia entre lo que sientes y haces. Fortaleza cuando sirve a otros.
+<script type="module">
+  import { supabase } from '/common/supabaseClient.js';
+  const $ = (id)=>document.getElementById(id);
 
-• Luna Natal & Fases (resumen)
-  Tendencia emocional estable si hay rutina; fases lunares pueden potenciar intuición y sensibilidad operativa.
+  function interpretar(nombre, fechaISO){
+/* —— Placeholder de interpretación simbólica ——
+   Aquí puedes enriquecer con tus textos largos por sección (pitagórica, tántrica, luna natal y fases).
+*/
+const d = new Date(fechaISO);
+const dias = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
+const tono = ["Reposo consciente","Orden suave","Comunicación clara","Estructura y foco","Creatividad aplicada","Servicio y cooperación","Introspección y ajuste"][d.getDay()];
+return `Nombre: ${nombre}
+Nacimiento: ${fechaISO} · ${dias[d.getDay()]}
 
-• Mensaje emocional del día
-  Clave: ${tonoDia}. Recomendación: respira, ordena prioridades y evita exceso de estímulos. Observa señales.`)
-}
+Pitagórica · Tu enfoque natural es construir con propósito y coherencia práctica.
+Tántrica · Tu energía crece cuando sirves y armonizas mente-emoción-acción.
+Luna Natal/Fases · Mantén rutinas simples; en días de alta energía lunar, canaliza a tareas finas y seguras.
 
-function analizar(){
-  const nombre = document.getElementById('nombre').value.trim();
-  const fecha = document.getElementById('fecha').value;
-  if(!nombre || !fecha){ document.getElementById('out').textContent = "Completa nombre y fecha."; return; }
-  document.getElementById('out').textContent = interpretarBase(nombre, fecha);
-}
+Mensaje emocional del día · ${tono}
+Recomendación · Respira, simplifica y prioriza seguridad. Escucha señales del cuerpo.`;
+  }
+
+  $('btn-analizar').addEventListener('click', ()=>{
+    const nombre = $('nombre').value.trim();
+    const fecha = $('fecha').value;
+    if(!nombre || !fecha){ $('msg').textContent = 'Completa nombre y fecha.'; return; }
+    $('msg').textContent = '';
+    $('out').textContent = interpretar(nombre, fecha);
+  });
+
+  $('btn-guardar').addEventListener('click', async ()=>{
+    const nombre = $('nombre').value.trim();
+    const fecha = $('fecha').value;
+    const informe = $('out').textContent.trim();
+    if(!nombre || !fecha || !informe){ $('msg').textContent = 'Analiza primero para guardar.'; return; }
+    const { error } = await supabase.from('diagnosticos_numerologia').insert([{ nombre, fecha_nac: fecha, informe }]);
+    $('msg').textContent = error ? ('Error: '+error.message) : 'Informe guardado.';
+  });
 </script>
 </body>
 </html>
