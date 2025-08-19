@@ -1,6 +1,4 @@
-:root{
-  --c-primary:#00f5d4;--c-accent:#aefcff;--c-text:#d8f3dc;--b-line:rgba(120,255,255,.18);
-}
+:root{--c-primary:#00f5d4;--c-accent:#aefcff;--c-text:#d8f3dc;--b-line:rgba(120,255,255,.18)}
 header.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(0,0,0,.35);border-bottom:1px solid var(--b-line);backdrop-filter:blur(6px)}
 .brand{display:flex;align-items:center;gap:12px}
 .brand h1{font:700 20px/1 'Orbitron',sans-serif;color:var(--c-accent);letter-spacing:.5px}
