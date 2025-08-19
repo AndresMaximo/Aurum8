@@ -1,95 +1,51 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AURUM∞ · Checklist 3D (Hilux)</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:'Orbitron',sans-serif;background:radial-gradient(circle at 80% -10%,#0d1b2a,#000);color:#d8f3dc}
-    a{color:#00f5d4;text-decoration:none}
-    header.nav{display:flex;align-items:center;justify-content:space-between;padding:15px 20px;background:rgba(0,0,0,.35);border-bottom:1px solid rgba(120,255,255,.2)}
-    .brand{display:flex;align-items:center;gap:12px}.brand img{height:28px}.brand h1{font-size:20px;color:#aefcff}
-    nav.menu{display:flex;gap:18px}nav.menu a:hover{color:#fff}
-    .hamburger{display:none;position:relative;width:34px;height:28px;border:1px solid rgba(120,255,255,.35);border-radius:8px;background:transparent;cursor:pointer}
-    .hamburger span{position:absolute;left:7px;right:7px;height:2px;background:#aefcff;transition:.25s}
-    .hamburger span:nth-child(1){top:7px}.hamburger span:nth-child(2){top:13px}.hamburger span:nth-child(3){top:19px}
-    @media (max-width:768px){header.nav{flex-direction:column;gap:8px}.hamburger{display:block;margin-left:auto}
-      nav.menu{display:block;max-height:0;overflow:hidden;transition:max-height .28s ease;border-top:1px solid rgba(120,255,255,.15)}
-      nav.menu a{display:block;padding:10px 2px;font-size:16px}.menu.is-open{max-height:480px}
-      .hamburger[aria-expanded="true"] span:nth-child(1){top:13px;transform:rotate(45deg)}
-      .hamburger[aria-expanded="true"] span:nth-child(2){opacity:0}
-      .hamburger[aria-expanded="true"] span:nth-child(3){top:13px;transform:rotate(-45deg)}
-    }
-    main{max-width:1000px;margin:40px auto;padding:24px;background:rgba(255,255,255,.04);border:1px solid rgba(120,255,255,.15);border-radius:14px}
-    h2{color:#90e0ef;margin-bottom:6px;text-align:center}
-    p.lead{text-align:center;color:#bde0fe;margin-bottom:22px}
-    .grid{display:grid;gap:18px;grid-template-columns:1fr 360px}@media(max-width:1000px){.grid{grid-template-columns:1fr}}
-    .panel{padding:16px;border:1px solid rgba(120,255,255,.15);border-radius:12px;background:rgba(255,255,255,.03)}
-    ul.chk{list-style:none;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-    .item{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.02);border:1px solid rgba(120,255,255,.1);padding:10px;border-radius:10px}
-    .item input{accent-color:#00f5d4}
-    button{background:#00f5d4;color:#001219;padding:11px 14px;border:none;border-radius:10px;font-weight:700;cursor:pointer}button:hover{background:#06d6a0}
-  </style>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hilux · Checklist 3D</title>
+<style>
+  body{margin:0;font-family:Orbitron,sans-serif;background:#000;color:#d8f3dc}
+  main{max-width:1100px;margin:24px auto;padding:0 20px}
+  .panel{border:1px solid rgba(120,255,255,.2);border-radius:14px;padding:16px;background:rgba(255,255,255,.03);margin-bottom:16px}
+  ul{margin-left:18px}
+</style>
 </head>
 <body>
-<header class="nav">
-  <div class="brand">
-    <img src="/logo-aurum-infinito.svg" alt="AURUM∞"><h1>AURUM∞</h1>
-    <button id="menu-toggle" class="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
-  </div>
-  <nav id="menu" class="menu">
-    <a href="/">Inicio</a><a href="/Vision.html">Visión</a><a href="/Modulos/index.html">Módulos</a>
-    <a href="/Modulos/numerologia/index.html">Numerología</a>
-    <a href="/Modulos/ot/index.html">Órdenes de Trabajo</a>
-    <a href="/Modulos/recursos-humanos/index.html">Recursos Humanos</a>
-    <a href="/Contacto.html">Contacto</a>
-  </nav>
-</header>
+<link rel="stylesheet" href="/common/topbar.css">
+<div id="topbar"></div>
+<script>fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h)</script>
 
 <main>
-  <h2>Checklist 3D · Hilux</h2>
-  <p class="lead">Inspección operativa con 50 puntos y trazabilidad de evidencias.</p>
+  <h2>Hilux · Checklist</h2>
+  <div class="panel">
+    <p><strong>Vista 3D:</strong> cuando esté disponible el archivo <code>hilux.glb</code>, se cargará aquí automáticamente.</p>
+    <!-- Placeholder del visor -->
+    <div id="viewer" style="height:300px;display:flex;align-items:center;justify-content:center;border:1px dashed rgba(120,255,255,.3);border-radius:10px;margin-top:10px">
+      <small>Visor 3D pendiente de <code>hilux.glb</code></small>
+    </div>
+  </div>
 
-  <div class="grid">
-    <section class="panel">
-      <ul class="chk" id="lista">
-        <!-- 12 ejemplos, puedes duplicar hasta 50 -->
-        <li class="item"><input type="checkbox"> Luces delanteras</li>
-        <li class="item"><input type="checkbox"> Luces traseras</li>
-        <li class="item"><input type="checkbox"> Niveles de aceite</li>
-        <li class="item"><input type="checkbox"> Líquido de frenos</li>
-        <li class="item"><input type="checkbox"> Refrigerante</li>
-        <li class="item"><input type="checkbox"> Presión de neumáticos</li>
-        <li class="item"><input type="checkbox"> Estado de neumáticos</li>
-        <li class="item"><input type="checkbox"> Dirección</li>
-        <li class="item"><input type="checkbox"> Suspensión</li>
-        <li class="item"><input type="checkbox"> Fugas visibles</li>
-        <li class="item"><input type="checkbox"> Cinturones de seguridad</li>
-        <li class="item"><input type="checkbox"> Bocina</li>
-      </ul>
-    </section>
-
-    <aside class="panel">
-      <h3 style="color:#aefcff;margin-bottom:8px">Evidencias</h3>
-      <input type="file" accept="image/*" capture="environment" multiple>
-      <div id="contador" style="margin-top:10px;color:#bde0fe">0/50 puntos</div>
-      <button id="guardar" style="margin-top:14px">Guardar inspección</button>
-    </aside>
+  <div class="panel">
+    <h3>Checklist de 50 puntos (ejemplo 1–10 visibles)</h3>
+    <ul id="listado"></ul>
   </div>
 </main>
 
-<footer style="text-align:center;color:#8aa;font-size:13px;margin:18px 0 6px">© 2025 AURUM∞ · Todos los derechos reservados.</footer>
-
 <script>
-  // Menú
-  const btn=document.getElementById('menu-toggle'), nav=document.getElementById('menu');
-  btn.addEventListener('click',()=>{const o=btn.getAttribute('aria-expanded')==='true';btn.setAttribute('aria-expanded',String(!o));nav.classList.toggle('is-open',!o)});
-  // Contador simple
-  const lista=document.getElementById('lista'), cont=document.getElementById('contador');
-  const actualizar=()=>{const c=lista.querySelectorAll('input[type="checkbox"]:checked').length;cont.textContent=`${c}/50 puntos`;}
-  lista.addEventListener('change',actualizar); actualizar();
-  document.getElementById('guardar').addEventListener('click',()=>alert('Inspección guardada (demo).'));
+const puntos = [
+  "Freno de mano", "Luces bajas/altas", "Direccionales", "Neumáticos", "Espejos",
+  "Niveles (aceite, refrigerante)", "Limpiaparabrisas", "Bocina", "Cinturón de seguridad", "Frenos",
+  "Tapabarros", "Extintor", "Gata y herramientas", "Triángulos", "Batería",
+  "Filtro de aire", "Filtro combustible", "Fugas visibles", "Suspensión", "Amortiguadores",
+  "Dirección", "Transmisión", "Chasis", "Parachoques", "Puertas",
+  "Ventanas", "Aire acondicionado", "Calefacción", "Radio", "GPS",
+  "Cámara retroceso", "Cableado visible", "Conexiones sueltas", "Ruidos anómalos", "Vibraciones",
+  "Fugas diferenciales", "Luces freno", "Luces retro", "Luces emergencia", "Claxon",
+  "Pértiga (si aplica)", "Barra antivuelco", "Estado pintura", "Corrosión", "Placas/patente",
+  "Documentación", "Seguro/Permisos", "Kilometraje", "Estado asientos", "Limpieza general"
+];
+document.getElementById("listado").innerHTML = puntos
+  .map((p,i)=>`<li>${String(i+1).padStart(2,"0")} · ${p}</li>`).join("");
 </script>
 </body>
 </html>
