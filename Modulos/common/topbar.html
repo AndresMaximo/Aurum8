@@ -1,1 +1,30 @@
-
+<header class="nav">
+  <div class="brand">
+    <img src="/logo-aurum-infinito.svg" alt="AURUM∞" style="height:28px">
+    <h1>AURUM∞</h1>
+    <button id="menu-toggle" class="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav id="menu" class="menu">
+    <a href="/">Inicio</a>
+    <a href="/Vision.html">Visión</a>
+    <a href="/Modulos/index.html">Módulos</a>
+    <a href="/Modulos/numerologia/index.html">Numerología</a>
+    <a href="/Modulos/ot/index.html">Órdenes de Trabajo</a>
+    <a href="/Modulos/hilux/index.html">Hilux</a>
+    <a href="/Modulos/recursos-humanos/index.html">Recursos Humanos</a>
+    <a href="/Contacto.html">Contacto</a>
+  </nav>
+</header>
+<script>
+  const btn = document.getElementById('menu-toggle');
+  const nav = document.getElementById('menu');
+  if(btn && nav){
+    btn.addEventListener('click', ()=>{
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      nav.classList.toggle('is-open', !open);
+    });
+  }
+</script>
