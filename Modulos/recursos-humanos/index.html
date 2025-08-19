@@ -3,40 +3,84 @@
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Recursos Humanos</title>
+<link rel="stylesheet" href="/common/topbar.css">
 <style>
   body{margin:0;font-family:Orbitron,sans-serif;background:#000;color:#d8f3dc}
   main{max-width:1100px;margin:24px auto;padding:0 20px}
   .panel{border:1px solid rgba(120,255,255,.2);border-radius:14px;padding:16px;background:rgba(255,255,255,.03);margin-bottom:16px}
-  table{width:100%;border-collapse:collapse}
+  label{display:block;margin:8px 0 4px}
+  input{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(120,255,255,.25);background:#020b0b;color:#d8f3dc}
+  button{margin-top:10px;padding:10px 14px;border-radius:10px;border:1px solid rgba(120,255,255,.3);background:#00f5d4;color:#001219;font-weight:700;cursor:pointer}
+  table{width:100%;border-collapse:collapse;margin-top:10px}
   th,td{border-bottom:1px solid rgba(120,255,255,.15);padding:8px;text-align:left}
   .muted{color:#8aa}
 </style>
 </head>
 <body>
-<link rel="stylesheet" href="/common/topbar.css">
 <div id="topbar"></div>
-<script>fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h)</script>
 
 <main>
   <h2>Recursos Humanos</h2>
 
   <div class="panel">
-    <h3>Personal (ejemplo local)</h3>
+    <h3>Agregar trabajador</h3>
+    <label>Nombre</label><input id="rh-nombre" placeholder="Ej: Juan Pérez">
+    <label>RUT</label><input id="rh-rut" placeholder="12.345.678-9">
+    <label>Cargo</label><input id="rh-cargo" placeholder="Mecánico / Operador / ...">
+    <button id="btn-add">Guardar en base</button>
+    <div id="rh-msg" class="muted"></div>
+  </div>
+
+  <div class="panel">
+    <h3>Listado</h3>
     <table>
-      <thead><tr><th>Nombre</th><th>RUT</th><th>Cargo</th><th>Fecha Ingreso</th></tr></thead>
-      <tbody id="rows"></tbody>
+      <thead><tr><th>Nombre</th><th>RUT</th><th>Cargo</th><th>Ingreso</th></tr></thead>
+      <tbody id="rh-rows"></tbody>
     </table>
-    <p class="muted">Nota: Para guardar y editar de forma real conectaremos backend (Supabase).</p>
   </div>
 </main>
 
 <script>
-const ejemplo = [
-  {n:"Operador 1", r:"11.111.111-1", c:"Operador", f:"2024-08-10"},
-  {n:"Mecánico 1", r:"22.222.222-2", c:"Mecánico", f:"2024-11-02"}
-];
-document.getElementById('rows').innerHTML = ejemplo
-  .map(x=>`<tr><td>${x.n}</td><td>${x.r}</td><td>${x.c}</td><td>${x.f}</td></tr>`).join('');
+  // Carga del menú
+  fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h)
+</script>
+
+<script type="module">
+  import { supabase } from '/common/supabaseClient.js';
+
+  const $ = (id)=>document.getElementById(id);
+  const rows = $('rh-rows');
+  const msg = $('rh-msg');
+
+  async function cargar(){
+    const { data, error } = await supabase
+      .from('recursos_humanos')
+      .select('*')
+      .order('fecha_ingreso', { ascending:false });
+
+    if(error){ msg.textContent = "Error cargando: " + error.message; return; }
+    rows.innerHTML = data.map(x=>(
+      `<tr><td>${x.nombre}</td><td>${x.rut}</td><td>${x.cargo}</td><td>${x.fecha_ingreso?.slice(0,10)||''}</td></tr>`
+    )).join('');
+    msg.textContent = `Cargados ${data.length} registros.`;
+  }
+
+  async function agregar(){
+    msg.textContent = 'Guardando...';
+    const nombre = $('rh-nombre').value.trim();
+    const rut = $('rh-rut').value.trim();
+    const cargo = $('rh-cargo').value.trim();
+    if(!nombre || !rut || !cargo){ msg.textContent = 'Completa todos los campos.'; return; }
+
+    const { error } = await supabase.from('recursos_humanos').insert([{ nombre, rut, cargo }]);
+    if(error){ msg.textContent = 'Error: ' + error.message; return; }
+    $('rh-nombre').value = $('rh-rut').value = $('rh-cargo').value = '';
+    msg.textContent = 'Guardado.';
+    cargar();
+  }
+
+  $('btn-add').addEventListener('click', agregar);
+  cargar();
 </script>
 </body>
 </html>
