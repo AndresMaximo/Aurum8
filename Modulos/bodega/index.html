@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>AURUM∞ · Bodega y Almacenamiento</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../common/aurum-base.css" />
+  <link rel="stylesheet" href="./bodega.css" />
+</head>
+<body class="bg-space">
+  <header class="topbar">
+    <a class="brand" href="../../index.html">AURUM∞</a>
+    <nav class="nav">
+      <a href="../../index.html">Inicio</a>
+      <a href="../../Modulos/index.html" class="active">Módulos</a>
+      <a href="../../Vision.html">Visión</a>
+      <a href="../../Contacto.html">Contacto</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1 class="title">Bodega y Almacenamiento</h1>
+    <p class="subtitle">Administra ítems, ubicaciones y movimientos (entradas / salidas) con stock en tiempo real.</p>
+
+    <!-- PANEL: Crear Ítem -->
+    <section class="card">
+      <h2>Nuevo ítem</h2>
+      <div class="grid2">
+        <label>SKU <input id="sku" placeholder="HILUX-FILTRO-ACEITE" /></label>
+        <label>Nombre <input id="nombre" placeholder="Filtro de aceite" /></label>
+      </div>
+      <div class="grid3">
+        <label>Categoría <input id="categoria" placeholder="Repuestos" /></label>
+        <label>Unidad <input id="unidad" placeholder="unid / kg / l" value="unid" /></label>
+        <label>Stock mínimo <input id="minimo" type="number" placeholder="0" value="0" /></label>
+      </div>
+      <button id="btnCrearItem" class="btn">Crear ítem</button>
+    </section>
+
+    <!-- PANEL: Crear Ubicación -->
+    <section class="card">
+      <h2>Nueva ubicación</h2>
+      <div class="grid2">
+        <label>Nombre <input id="ubicNombre" placeholder="Bodega Central" /></label>
+        <label>Descripción <input id="ubicDesc" placeholder="Estantería A, Nivel 2" /></label>
+      </div>
+      <button id="btnCrearUbic" class="btn">Crear ubicación</button>
+    </section>
+
+    <!-- PANEL: Registrar Movimiento -->
+    <section class="card">
+      <h2>Movimiento de inventario</h2>
+      <div class="grid4">
+        <label>Ítem
+          <select id="movItem"></select>
+        </label>
+        <label>Ubicación
+          <select id="movUbic"></select>
+        </label>
+        <label>Tipo
+          <select id="movTipo">
+            <option value="ENTRADA">ENTRADA</option>
+            <option value="SALIDA">SALIDA</option>
+          </select>
+        </label>
+        <label>Cantidad
+          <input id="movCant" type="number" min="0.01" step="0.01" value="1" />
+        </label>
+      </div>
+      <label>Observación
+        <input id="movObs" placeholder="Recepción OC#123 / Entrega a OT-0007" />
+      </label>
+      <button id="btnMov" class="btn">Registrar movimiento</button>
+    </section>
+
+    <!-- PANEL: Stock -->
+    <section class="card">
+      <h2>Stock</h2>
+      <div class="grid2">
+        <input id="filtro" placeholder="Filtra por SKU o nombre..." />
+        <button id="btnRefrescar" class="btn ghost">Actualizar</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>SKU</th><th>Nombre</th><th>Categoría</th><th>Unidad</th><th>Stock</th><th>Mínimo</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyStock"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PANEL: Últimos movimientos -->
+    <section class="card">
+      <h2>Últimos movimientos</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th><th>SKU</th><th>Ítem</th><th>Ubicación</th><th>Tipo</th><th>Cant.</th><th>Obs.</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyMovs"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">© 2025 AURUM∞ – Bodega & Almacenamiento</footer>
+
+  <!-- Supabase -->
+  <script type="module">
+    // Usa window.db si ya existe (definido en ../../common/aurum.js). Si no, crea cliente local:
+    let supabase;
+    if (window.db) {
+      supabase = window.db;
+    } else {
+      import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+      const SUPABASE_URL = "TU_SUPABASE_URL";
+      const SUPABASE_KEY = "TU_SUPABASE_ANON_KEY";
+      supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    }
+
+    // UI refs
+    const el = (id) => document.getElementById(id);
+    const sku = el('sku'), nombre = el('nombre'), categoria = el('categoria'), unidad = el('unidad'), minimo = el('minimo');
+    const ubicNombre = el('ubicNombre'), ubicDesc = el('ubicDesc');
+    const movItem = el('movItem'), movUbic = el('movUbic'), movTipo = el('movTipo'), movCant = el('movCant'), movObs = el('movObs');
+    const filtro = el('filtro'), tbodyStock = el('tbodyStock'), tbodyMovs = el('tbodyMovs');
+
+    // Helpers
+    const toast = (m)=>alert(m);
+
+    async function cargarCombos() {
+      const [{ data: items }, { data: ubics }] = await Promise.all([
+        supabase.from('inventario_items').select('id,sku,nombre').order('nombre'),
+        supabase.from('ubicaciones').select('id,nombre').order('nombre')
+      ]);
+      movItem.innerHTML = (items||[]).map(i=>`<option value="${i.id}">${i.sku} — ${i.nombre}</option>`).join('');
+      movUbic.innerHTML = (ubics||[]).map(u=>`<option value="${u.id}">${u.nombre}</option>`).join('');
+    }
+
+    async function crearItem() {
+      if(!sku.value || !nombre.value) return toast('Completa SKU y Nombre');
+      const { error } = await supabase.from('inventario_items').insert({
+        sku: sku.value.trim(),
+        nombre: nombre.value.trim(),
+        categoria: categoria.value.trim() || null,
+        unidad: unidad.value.trim() || 'unid',
+        minimo: Number(minimo.value||0)
+      });
+      if (error) return toast('Error creando ítem: ' + error.message);
+      toast('Ítem creado');
+      sku.value=nombre.value=categoria.value='';
+      minimo.value='0'; unidad.value='unid';
+      await cargarCombos();
+      await cargarStock();
+    }
+
+    async function crearUbic() {
+      if(!ubicNombre.value) return toast('Nombre de ubicación requerido');
+      const { error } = await supabase.from('ubicaciones').insert({
+        nombre: ubicNombre.value.trim(),
+        descripcion: ubicDesc.value.trim() || null
+      });
+      if (error) return toast('Error creando ubicación: ' + error.message);
+      toast('Ubicación creada');
+      ubicNombre.value=ubicDesc.value='';
+      await cargarCombos();
+    }
+
+    async function registrarMov() {
+      if(!movItem.value || !movUbic.value) return toast('Selecciona ítem y ubicación');
+      const cantidad = Number(movCant.value);
+      if(!cantidad || cantidad <= 0) return toast('Cantidad inválida');
+      const { error } = await supabase.from('movimientos').insert({
+        item_id: movItem.value,
+        ubicacion_id: movUbic.value,
+        tipo: movTipo.value,
+        cantidad,
+        observacion: movObs.value || null
+      });
+      if (error) return toast('Error registrando movimiento: ' + error.message);
+      movObs.value = '';
+      await cargarStock();
+      await cargarMovs();
+    }
+
+    async function cargarStock() {
+      const { data, error } = await supabase.from('vw_stock').select('*').order('sku');
+      if (error) { console.error(error); return; }
+      const q = (filtro.value||'').toLowerCase();
+      const rows = (data||[]).filter(r => (r.sku+r.nombre).toLowerCase().includes(q));
+      tbodyStock.innerHTML = rows.map(r => `
+        <tr class="${(r.stock||0) <= (r.minimo||0) ? 'low' : ''}">
+          <td>${r.sku}</td>
+          <td>${r.nombre}</td>
+          <td>${r.categoria||'-'}</td>
+          <td>${r.unidad||'-'}</td>
+          <td>${Number(r.stock||0).toLocaleString()}</td>
+          <td>${Number(r.minimo||0).toLocaleString()}</td>
+        </tr>
+      `).join('');
+    }
+
+    async function cargarMovs() {
+      // Traemos últimos 20 con joins simples
+      const { data, error } = await supabase
+        .from('movimientos')
+        .select(`
+          created_at, tipo, cantidad, observacion,
+          inventario_items ( sku, nombre ),
+          ubicaciones ( nombre )
+        `)
+        .order('created_at', { ascending: false })
+        .limit(20);
+      if (error) { console.error(error); return; }
+      tbodyMovs.innerHTML = (data||[]).map(m => `
+        <tr>
+          <td>${new Date(m.created_at).toLocaleString()}</td>
+          <td>${m.inventario_items?.sku||'-'}</td>
+          <td>${m.inventario_items?.nombre||'-'}</td>
+          <td>${m.ubicaciones?.nombre||'-'}</td>
+          <td>${m.tipo}</td>
+          <td>${Number(m.cantidad).toLocaleString()}</td>
+          <td>${m.observacion||''}</td>
+        </tr>
+      `).join('');
+    }
+
+    // Eventos
+    document.getElementById('btnCrearItem').onclick = crearItem;
+    document.getElementById('btnCrearUbic').onclick = crearUbic;
+    document.getElementById('btnMov').onclick = registrarMov;
+    document.getElementById('btnRefrescar').onclick = () => { cargarStock(); cargarMovs(); }
+    filtro.oninput = cargarStock;
+
+    // Init
+    (async ()=>{
+      await cargarCombos();
+      await cargarStock();
+      await cargarMovs();
+    })();
+  </script>
+</body>
+</html>
