@@ -1,86 +1,152 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Recursos Humanos</title>
-<link rel="stylesheet" href="/common/topbar.css">
-<style>
-  body{margin:0;font-family:Orbitron,sans-serif;background:#000;color:#d8f3dc}
-  main{max-width:1100px;margin:24px auto;padding:0 20px}
-  .panel{border:1px solid rgba(120,255,255,.2);border-radius:14px;padding:16px;background:rgba(255,255,255,.03);margin-bottom:16px}
-  label{display:block;margin:8px 0 4px}
-  input{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(120,255,255,.25);background:#020b0b;color:#d8f3dc}
-  button{margin-top:10px;padding:10px 14px;border-radius:10px;border:1px solid rgba(120,255,255,.3);background:#00f5d4;color:#001219;font-weight:700;cursor:pointer}
-  table{width:100%;border-collapse:collapse;margin-top:10px}
-  th,td{border-bottom:1px solid rgba(120,255,255,.15);padding:8px;text-align:left}
-  .muted{color:#8aa}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AURUM∞ · Recursos Humanos</title>
+
+  <link rel="stylesheet" href="/aurum-theme.css" />
+  <link rel="stylesheet" href="/Modulos/common/topbar.css" />
+  <style>
+    .page{max-width:1100px;margin:120px auto 64px;padding:0 16px}
+    .panel{background:rgba(8,22,33,.6);border:1px solid rgba(120,255,233,.22);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25),inset 0 0 40px rgba(120,255,233,.06);padding:20px;margin-bottom:24px}
+    .panel h2{margin:0 0 8px;color:#b8fff5;text-shadow:0 0 10px rgba(120,255,233,.25);letter-spacing:.04em;font-weight:700}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+    label{font-size:.9rem;color:#cfeff0;display:block;margin-bottom:8px}
+    input,select{width:100%;background:rgba(0,0,0,.35);border:1px solid rgba(120,255,233,.18);color:#e9fffb;padding:10px 12px;border-radius:10px;outline:none}
+    .btn{display:inline-block;padding:10px 16px;border-radius:12px;border:1px solid rgba(120,255,233,.25);color:#001f25;background:linear-gradient(135deg,#86ffe9,#18f8c2 55%,#34ffd6);font-weight:700;letter-spacing:.02em;cursor:pointer;transition:transform .12s,filter .12s}
+    .btn:hover{transform:translateY(-1px);filter:saturate(1.1)}
+    table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden}
+    thead th{text-align:left;font-size:.85rem;color:#8feee0;padding:12px;background:rgba(120,255,233,.075);border-bottom:1px solid rgba(120,255,233,.15)}
+    tbody td{padding:12px;border-bottom:1px solid rgba(120,255,233,.08);color:#e6fffb}
+    .muted{color:#a6c9cb;font-size:.9rem}
+    .row-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .row-actions .btn{background:transparent;color:#9bf3e7;border-color:rgba(120,255,233,.35);padding:6px 10px}
+  </style>
 </head>
 <body>
-<div id="topbar"></div>
+  <div id="topbar"></div>
 
-<main>
-  <h2>Recursos Humanos</h2>
+  <main class="page">
+    <section class="panel">
+      <h2>Agregar trabajador</h2>
+      <form id="form" class="grid">
+        <div>
+          <label>Nombre completo</label>
+          <input id="nombre" required placeholder="Ej: Ana Pérez" />
+        </div>
+        <div>
+          <label>RUT / ID</label>
+          <input id="rut" required placeholder="Ej: 12.345.678-9" />
+        </div>
+        <div>
+          <label>Cargo</label>
+          <input id="cargo" required placeholder="Ej: Mecánico" />
+        </div>
+        <div>
+          <label>Fecha de ingreso</label>
+          <input id="fecha" type="date" />
+        </div>
+        <div style="grid-column:1/-1;display:flex;gap:12px;align-items:end">
+          <button class="btn" type="submit">Guardar</button>
+          <span id="msg" class="muted"></span>
+        </div>
+      </form>
+    </section>
 
-  <div class="panel">
-    <h3>Agregar trabajador</h3>
-    <label>Nombre</label><input id="rh-nombre" placeholder="Ej: Juan Pérez">
-    <label>RUT</label><input id="rh-rut" placeholder="12.345.678-9">
-    <label>Cargo</label><input id="rh-cargo" placeholder="Mecánico / Operador / ...">
-    <button id="btn-add">Guardar en base</button>
-    <div id="rh-msg" class="muted"></div>
-  </div>
+    <section class="panel">
+      <h2>Listado</h2>
+      <div class="muted" style="margin-bottom:8px">Últimos 200 registros.</div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th><th>RUT</th><th>Cargo</th><th>Ingreso</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"><tr><td class="muted" colspan="5">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 
-  <div class="panel">
-    <h3>Listado</h3>
-    <table>
-      <thead><tr><th>Nombre</th><th>RUT</th><th>Cargo</th><th>Ingreso</th></tr></thead>
-      <tbody id="rh-rows"></tbody>
-    </table>
-  </div>
-</main>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="/aurum.js"></script>
+  <script>
+    // Topbar
+    (async()=>{try{const h=await fetch('/Modulos/common/topbar.html',{cache:'no-store'}).then(r=>r.text());document.getElementById('topbar').innerHTML=h;}catch(e){}})();
 
-<script>
-  // Carga del menú
-  fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h)
-</script>
+    const $tbody = document.getElementById('tbody');
+    const $msg = document.getElementById('msg');
+    const $form = document.getElementById('form');
+    const $nombre = document.getElementById('nombre');
+    const $rut = document.getElementById('rut');
+    const $cargo = document.getElementById('cargo');
+    const $fecha = document.getElementById('fecha');
 
-<script type="module">
-  import { supabase } from '/common/supabaseClient.js';
+    const toast = (t)=>{ $msg.textContent=t; setTimeout(()=> $msg.textContent='', 2200); };
 
-  const $ = (id)=>document.getElementById(id);
-  const rows = $('rh-rows');
-  const msg = $('rh-msg');
+    async function cargar() {
+      $tbody.innerHTML = `<tr><td class="muted" colspan="5">Cargando…</td></tr>`;
+      const { data, error } = await window.db
+        .from('recursos_humanos')
+        .select('*')
+        .order('fecha_ingreso', { ascending:false })
+        .limit(200);
+      if (error) return $tbody.innerHTML = `<tr><td colspan="5">Error: ${error.message}</td></tr>`;
+      if (!data?.length) return $tbody.innerHTML = `<tr><td class="muted" colspan="5">Sin datos aún.</td></tr>`;
+      $tbody.innerHTML = data.map(r => `
+        <tr data-id="${r.id}">
+          <td>${r.nombre??''}</td>
+          <td>${r.rut??''}</td>
+          <td>${r.cargo??''}</td>
+          <td>${r.fecha_ingreso? new Date(r.fecha_ingreso).toLocaleDateString():'—'}</td>
+          <td class="row-actions">
+            <button class="btn" data-a="editar">Editar</button>
+            <button class="btn" data-a="borrar">Borrar</button>
+          </td>
+        </tr>
+      `).join('');
+    }
 
-  async function cargar(){
-    const { data, error } = await supabase
-      .from('recursos_humanos')
-      .select('*')
-      .order('fecha_ingreso', { ascending:false });
+    $form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const payload = {
+        nombre: $nombre.value.trim(),
+        rut: $rut.value.trim(),
+        cargo: $cargo.value.trim(),
+        fecha_ingreso: $fecha.value || null
+      };
+      const { error } = await window.db.from('recursos_humanos').insert(payload);
+      if (error) return toast('Error: '+error.message);
+      $form.reset(); toast('Guardado'); cargar();
+    });
 
-    if(error){ msg.textContent = "Error cargando: " + error.message; return; }
-    rows.innerHTML = data.map(x=>(
-      `<tr><td>${x.nombre}</td><td>${x.rut}</td><td>${x.cargo}</td><td>${x.fecha_ingreso?.slice(0,10)||''}</td></tr>`
-    )).join('');
-    msg.textContent = `Cargados ${data.length} registros.`;
-  }
+    $tbody.addEventListener('click', async (e)=>{
+      const b = e.target.closest('button'); if(!b) return;
+      const tr = e.target.closest('tr'); const id = tr?.dataset?.id; if(!id) return;
+      const act = b.dataset.a;
 
-  async function agregar(){
-    msg.textContent = 'Guardando...';
-    const nombre = $('rh-nombre').value.trim();
-    const rut = $('rh-rut').value.trim();
-    const cargo = $('rh-cargo').value.trim();
-    if(!nombre || !rut || !cargo){ msg.textContent = 'Completa todos los campos.'; return; }
+      if (act==='borrar') {
+        if (!confirm('¿Eliminar registro?')) return;
+        const { error } = await window.db.from('recursos_humanos').delete().eq('id', id);
+        if (error) return toast('Error: '+error.message);
+        toast('Eliminado'); cargar();
+      }
 
-    const { error } = await supabase.from('recursos_humanos').insert([{ nombre, rut, cargo }]);
-    if(error){ msg.textContent = 'Error: ' + error.message; return; }
-    $('rh-nombre').value = $('rh-rut').value = $('rh-cargo').value = '';
-    msg.textContent = 'Guardado.';
+      if (act==='editar') {
+        const nombre = prompt('Nombre:', tr.children[0].textContent) ?? '';
+        const rut    = prompt('RUT/ID:', tr.children[1].textContent) ?? '';
+        const cargo  = prompt('Cargo:', tr.children[2].textContent) ?? '';
+        if (!nombre.trim() || !rut.trim() || !cargo.trim()) return;
+        const { error } = await window.db.from('recursos_humanos')
+          .update({ nombre, rut, cargo }).eq('id', id);
+        if (error) return toast('Error: '+error.message);
+        toast('Actualizado'); cargar();
+      }
+    });
+
     cargar();
-  }
-
-  $('btn-add').addEventListener('click', agregar);
-  cargar();
-</script>
+  </script>
 </body>
 </html>
