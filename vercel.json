@@ -1,9 +1,10 @@
 {
-  "cleanUrls": false,
-  "trailingSlash": false,
-  "routes": [
-    { "src": "^/Modulos/(.*)$", "dest": "/modulos/$1", "status": 308 },
-    { "src": "^/modulos$", "dest": "/modulos.html", "status": 308 },
-    { "src": "^/Modulos$", "dest": "/modulos.html", "status": 308 }
+  "redirects": [
+    { "source": "/Vision", "destination": "/vision.html", "permanent": true },
+    { "source": "/Vision.html", "destination": "/vision.html", "permanent": true },
+    { "source": "/Contacto", "destination": "/contacto.html", "permanent": true },
+    { "source": "/Contacto.html", "destination": "/contacto.html", "permanent": true },
+    { "source": "/Modulos", "destination": "/modulos.html", "permanent": true },
+    { "source": "/Modulos.html", "destination": "/modulos.html", "permanent": true }
   ]
 }
