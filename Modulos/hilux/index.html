@@ -3,49 +3,107 @@
 <head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Hilux · Checklist 3D</title>
+<link rel="stylesheet" href="/common/topbar.css">
 <style>
   body{margin:0;font-family:Orbitron,sans-serif;background:#000;color:#d8f3dc}
   main{max-width:1100px;margin:24px auto;padding:0 20px}
   .panel{border:1px solid rgba(120,255,255,.2);border-radius:14px;padding:16px;background:rgba(255,255,255,.03);margin-bottom:16px}
-  ul{margin-left:18px}
+  .grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+  .item{display:flex;align-items:center;gap:10px;border:1px solid rgba(120,255,255,.15);border-radius:10px;padding:8px}
+  .ok{color:#00f5d4}.fail{color:#ffb3c1}
+  button{padding:6px 10px;border-radius:8px;border:1px solid rgba(120,255,255,.3);background:#00f5d4;color:#001219;font-weight:700;cursor:pointer}
+  .muted{color:#8aa}
 </style>
 </head>
 <body>
-<link rel="stylesheet" href="/common/topbar.css">
 <div id="topbar"></div>
-<script>fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h)</script>
 
 <main>
   <h2>Hilux · Checklist</h2>
+
   <div class="panel">
-    <p><strong>Vista 3D:</strong> cuando esté disponible el archivo <code>hilux.glb</code>, se cargará aquí automáticamente.</p>
-    <!-- Placeholder del visor -->
-    <div id="viewer" style="height:300px;display:flex;align-items:center;justify-content:center;border:1px dashed rgba(120,255,255,.3);border-radius:10px;margin-top:10px">
-      <small>Visor 3D pendiente de <code>hilux.glb</code></small>
+    <strong>Visor 3D:</strong> se habilitará al subir <code>hilux.glb</code>.
+    <div style="height:300px;display:flex;align-items:center;justify-content:center;border:1px dashed rgba(120,255,255,.3);border-radius:10px;margin-top:10px">
+      <small>Pendiente de modelo 3D</small>
     </div>
   </div>
 
   <div class="panel">
-    <h3>Checklist de 50 puntos (ejemplo 1–10 visibles)</h3>
-    <ul id="listado"></ul>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+      <h3 style="margin:0">Checklist (base de datos)</h3>
+      <div>
+        <button id="btn-cargar">Cargar 50 puntos</button>
+        <button id="btn-refrescar" class="ghost">Refrescar</button>
+      </div>
+    </div>
+    <div id="msg" class="muted"></div>
+    <div id="list" class="grid" style="margin-top:10px"></div>
   </div>
 </main>
 
 <script>
-const puntos = [
-  "Freno de mano", "Luces bajas/altas", "Direccionales", "Neumáticos", "Espejos",
-  "Niveles (aceite, refrigerante)", "Limpiaparabrisas", "Bocina", "Cinturón de seguridad", "Frenos",
-  "Tapabarros", "Extintor", "Gata y herramientas", "Triángulos", "Batería",
-  "Filtro de aire", "Filtro combustible", "Fugas visibles", "Suspensión", "Amortiguadores",
-  "Dirección", "Transmisión", "Chasis", "Parachoques", "Puertas",
-  "Ventanas", "Aire acondicionado", "Calefacción", "Radio", "GPS",
-  "Cámara retroceso", "Cableado visible", "Conexiones sueltas", "Ruidos anómalos", "Vibraciones",
-  "Fugas diferenciales", "Luces freno", "Luces retro", "Luces emergencia", "Claxon",
-  "Pértiga (si aplica)", "Barra antivuelco", "Estado pintura", "Corrosión", "Placas/patente",
-  "Documentación", "Seguro/Permisos", "Kilometraje", "Estado asientos", "Limpieza general"
-];
-document.getElementById("listado").innerHTML = puntos
-  .map((p,i)=>`<li>${String(i+1).padStart(2,"0")} · ${p}</li>`).join("");
+  fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h)
+</script>
+
+<script type="module">
+  import { supabase } from '/common/supabaseClient.js';
+  const $ = (id)=>document.getElementById(id);
+  const msg = $('msg'), list = $('list');
+
+  const puntos = [
+    "Freno de mano","Luces bajas/altas","Direccionales","Neumáticos","Espejos",
+    "Niveles (aceite, refrigerante)","Limpiaparabrisas","Bocina","Cinturón de seguridad","Frenos",
+    "Tapabarros","Extintor","Gata y herramientas","Triángulos","Batería",
+    "Filtro de aire","Filtro combustible","Fugas visibles","Suspensión","Amortiguadores",
+    "Dirección","Transmisión","Chasis","Parachoques","Puertas",
+    "Ventanas","Aire acondicionado","Calefacción","Radio","GPS",
+    "Cámara retroceso","Cableado visible","Conexiones sueltas","Ruidos anómalos","Vibraciones",
+    "Fugas diferenciales","Luces freno","Luces retro","Luces emergencia","Claxon",
+    "Pértiga (si aplica)","Barra antivuelco","Estado pintura","Corrosión","Placas/patente",
+    "Documentación","Seguro/Permisos","Kilometraje","Estado asientos","Limpieza general"
+  ];
+
+  async function seed(){
+    msg.textContent = 'Cargando puntos...';
+    // borrar existentes para tener exactamente 50
+    await supabase.from('checklist_hilux').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    const payload = puntos.map(p=>({ punto:p, descripcion:p }));
+    const { error } = await supabase.from('checklist_hilux').insert(payload);
+    if(error){ msg.textContent = 'Error cargando: '+error.message; return; }
+    msg.textContent = '50 puntos cargados.';
+    listar();
+  }
+
+  async function toggle(id, estado){
+    const { error } = await supabase.from('checklist_hilux').update({ estado }).eq('id', id);
+    if(error){ console.error(error); }
+  }
+
+  function render(items){
+    list.innerHTML = items.map(x=>{
+      const checked = x.estado ? 'checked' : '';
+      const cls = x.estado ? 'ok' : 'fail';
+      return `<div class="item">
+        <input type="checkbox" data-id="${x.id}" ${checked}/>
+        <div><strong class="${cls}">${x.punto}</strong><div class="muted">${x.descripcion||''}</div></div>
+      </div>`;
+    }).join('');
+    list.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+      cb.addEventListener('change', e=>toggle(e.target.getAttribute('data-id'), e.target.checked));
+    });
+  }
+
+  async function listar(){
+    msg.textContent = 'Cargando...';
+    const { data, error } = await supabase.from('checklist_hilux').select('*').order('punto');
+    if(error){ msg.textContent = 'Error: '+error.message; return; }
+    msg.textContent = `Listado (${data.length})`;
+    render(data);
+  }
+
+  $('btn-cargar').addEventListener('click', seed);
+  $('btn-refrescar').addEventListener('click', listar);
+  listar();
 </script>
 </body>
 </html>
