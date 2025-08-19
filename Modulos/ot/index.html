@@ -1,161 +1,99 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AURUM∞ · Órdenes de Trabajo</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Órdenes de Trabajo · AURUM∞</title>
 
-  <!-- Tema base de AURUM (mismos colores y tipografía) -->
-  <link rel="stylesheet" href="/aurum-theme.css" />
+  <!-- Tema global -->
+  <link rel="stylesheet" href="../../aurum-theme.css" />
 
   <!-- Topbar común -->
-  <link rel="stylesheet" href="/Modulos/common/topbar.css" />
+  <link rel="stylesheet" href="../common/topbar.css" />
+
   <style>
-    /* Ajustes locales del módulo */
-    .page {
-      max-width: 1100px;
-      margin: 120px auto 64px;
-      padding: 0 16px;
-    }
-
-    .panel {
-      background: rgba(8, 22, 33, 0.6);
-      border: 1px solid rgba(120,255,233,0.22);
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25), inset 0 0 40px rgba(120,255,233,0.06);
-      padding: 20px;
-      margin-bottom: 24px;
-    }
-
-    .panel h2 {
-      margin: 0 0 8px;
-      letter-spacing: .04em;
-      color: #b8fff5;
-      text-shadow: 0 0 10px rgba(120,255,233,.25);
-      font-weight: 700;
-    }
-
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 1.25rem; }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(320px,1fr));
+      gap: 1rem;
+      margin-top: 1rem;
     }
-
-    label {
-      font-size: .9rem;
-      color: #cfeff0;
-      display: block;
-      margin-bottom: 8px;
+    .card { background: rgba(10, 25, 40, .6); border: 1px solid #2c5c7a; border-radius: 14px; padding: 1rem; }
+    .card h2 { margin: .25rem 0 1rem; font-size: 1.25rem; color: #aef9f1; letter-spacing: .03em; }
+    .field { display:flex; flex-direction:column; gap:.35rem; margin-bottom:.85rem; }
+    .field label { font-size:.9rem; color:#8fd6cf; }
+    .field input, .field select {
+      background: rgba(255,255,255,.03);
+      border: 1px solid #345d70; color:#dff; padding:.6rem .7rem; border-radius:10px; outline:none;
     }
-
-    input, select, textarea {
-      width: 100%;
-      background: rgba(0,0,0,0.35);
-      border: 1px solid rgba(120,255,233,0.18);
-      color: #e9fffb;
-      padding: 10px 12px;
-      border-radius: 10px;
-      outline: none;
-    }
-    input::placeholder, textarea::placeholder { color: #8fb3b5; }
-
     .btn {
-      display: inline-block;
-      padding: 10px 16px;
-      border-radius: 12px;
-      border: 1px solid rgba(120,255,233,0.25);
-      color: #001f25;
-      background: linear-gradient(135deg,#86ffe9,#18f8c2 55%,#34ffd6);
-      font-weight: 700;
-      letter-spacing: .02em;
-      cursor: pointer;
-      transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+      border:1px solid #36d6b4; background: rgba(54,214,180,.1);
+      color:#bffef4; padding:.65rem .9rem; border-radius:12px; cursor:pointer;
     }
-    .btn:hover { transform: translateY(-1px); filter: saturate(1.1); }
-    .btn:active { transform: translateY(0); }
+    .btn:disabled { opacity:.6; cursor:not-allowed; }
+    .muted { color:#7fb6b0; font-size:.9rem; }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      overflow: hidden;
-      border-radius: 12px;
+    table { width:100%; border-collapse: collapse; }
+    th, td { padding:.65rem .6rem; border-bottom:1px solid rgba(70,130,160,.35); }
+    th { text-align:left; color:#a4f1ea; font-weight:600; }
+    tr:hover { background: rgba(255,255,255,.03); }
+    .pill {
+      display:inline-block; padding:.2rem .5rem; border-radius:999px; font-size:.75rem;
+      border:1px solid #3fa0c9; color:#aee8ff;
     }
-    thead th {
-      text-align: left;
-      font-size: .85rem;
-      color: #8feee0;
-      padding: 12px;
-      background: rgba(120,255,233,.075);
-      border-bottom: 1px solid rgba(120,255,233,.15);
-    }
-    tbody td {
-      padding: 12px;
-      border-bottom: 1px solid rgba(120,255,233,.08);
-      color: #e6fffb;
-      vertical-align: top;
-    }
-    .status {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: .8rem;
-      border: 1px solid rgba(120,255,233,.35);
-      background: rgba(120,255,233,.08);
-    }
-    .muted { color:#a6c9cb; font-size:.85rem; }
-
-    .row-actions {
-      display:flex; gap:8px; flex-wrap:wrap;
-    }
-    .row-actions .btn {
-      background: transparent;
-      color:#9bf3e7;
-      border-color: rgba(120,255,233,.35);
-      padding:6px 10px;
-    }
+    .space { height:.75rem; }
   </style>
 </head>
 <body>
-
-  <!-- Topbar común (se inyecta por JS para reusar en todos los módulos) -->
+  <!-- Topbar -->
   <div id="topbar"></div>
+  <script>
+    fetch("../common/topbar.html").then(r=>r.text()).then(h=>document.getElementById("topbar").innerHTML=h);
+  </script>
 
-  <main class="page">
-    <section class="panel">
-      <h2>Crear nueva OT</h2>
-      <form id="ot-form" class="grid">
-        <div>
-          <label>Equipo</label>
-          <input id="equipo" type="text" placeholder="Ej: Hilux PPU-XXXX" required />
-        </div>
-        <div>
-          <label>Tipo</label>
-          <select id="tipo" required>
-            <option value="preventivo">Preventivo</option>
-            <option value="correctivo">Correctivo</option>
-            <option value="inspeccion">Inspección</option>
-            <option value="otro">Otro</option>
-          </select>
-        </div>
-        <div>
-          <label>Fecha inicio</label>
-          <input id="fecha_inicio" type="datetime-local" />
-        </div>
-        <div>
-          <label>Fecha fin (opcional)</label>
-          <input id="fecha_fin" type="datetime-local" />
-        </div>
-        <div style="grid-column: 1 / -1; display:flex; gap:12px; align-items:end;">
-          <button class="btn" type="submit">Guardar OT</button>
-          <span id="form-msg" class="muted"></span>
-        </div>
-      </form>
-    </section>
+  <main class="wrap">
+    <h1 style="letter-spacing:.06em; color:#c0fff7;">Órdenes de Trabajo</h1>
+    <p class="muted">Crea una nueva OT y visualiza las más recientes. Todo se guarda en Supabase (si hay conexión); si no, se usa almacenamiento local para pruebas.</p>
 
-    <section class="panel">
-      <h2>Listado de Órdenes de Trabajo</h2>
-      <div class="muted" style="margin-bottom:8px;">Se muestran las últimas 100 OTs.</div>
-      <div style="overflow-x:auto;">
+    <div class="grid">
+      <!-- Crear OT -->
+      <section class="card">
+        <h2>Nueva OT</h2>
+        <form id="form-ot">
+          <div class="field">
+            <label for="equipo">Equipo</label>
+            <input id="equipo" name="equipo" type="text" placeholder="Hilux, Bomba, Feeder, etc." required />
+          </div>
+
+          <div class="field">
+            <label for="tipo">Tipo</label>
+            <select id="tipo" name="tipo" required>
+              <option value="Inspección">Inspección</option>
+              <option value="Correctivo">Correctivo</option>
+              <option value="Preventivo">Preventivo</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="estado">Estado</label>
+            <select id="estado" name="estado">
+              <option value="pendiente">pendiente</option>
+              <option value="en_proceso">en_proceso</option>
+              <option value="cerrada">cerrada</option>
+            </select>
+          </div>
+
+          <button class="btn" id="btn-crear" type="submit">Crear OT</button>
+          <span id="msg" class="muted" style="margin-left:.6rem;"></span>
+        </form>
+      </section>
+
+      <!-- Listado -->
+      <section class="card">
+        <h2>Listado reciente</h2>
+        <div class="space"></div>
         <table>
           <thead>
             <tr>
@@ -163,128 +101,119 @@
               <th>Tipo</th>
               <th>Estado</th>
               <th>Inicio</th>
-              <th>Fin</th>
-              <th>Acciones</th>
             </tr>
           </thead>
-          <tbody id="ot-body">
-            <tr><td class="muted" colspan="6">Cargando…</td></tr>
-          </tbody>
+          <tbody id="tbody"></tbody>
         </table>
-      </div>
-    </section>
+      </section>
+    </div>
   </main>
 
-  <!-- SDK Supabase y cliente compartido -->
+  <!-- SDK Supabase + cliente global -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  <script src="/aurum.js"></script>
+  <script src="../../aurum.js"></script>
 
   <script>
-    // Cargar topbar común
-    (async () => {
-      try {
-        const html = await fetch('/Modulos/common/topbar.html',{cache:"no-store"}).then(r=>r.text());
-        document.getElementById('topbar').innerHTML = html;
-      } catch(e) { console.warn('Topbar no disponible:', e); }
-    })();
+    // Utilidades
+    const $ = (q, root=document) => root.querySelector(q);
+    const $$ = (q, root=document) => [...root.querySelectorAll(q)];
+    const toast = (t) => { const el=$("#msg"); if(!el) return; el.textContent=t; setTimeout(()=>el.textContent="", 3000); };
 
-    // Helpers UI
-    const toast = (msg) => {
-      const el = document.getElementById('form-msg');
-      el.textContent = msg;
-      setTimeout(()=> el.textContent = '', 2500);
+    // Fallback local si no hay window.db
+    const localKey = "aurum_ot_local_v1";
+    const localOT = {
+      all: () => JSON.parse(localStorage.getItem(localKey) || "[]"),
+      push: (row) => { const a = localOT.all(); a.unshift(row); localStorage.setItem(localKey, JSON.stringify(a)); },
     };
 
-    // Referencias DOM
-    const $body = document.getElementById('ot-body');
-    const $form = document.getElementById('ot-form');
-    const $equipo = document.getElementById('equipo');
-    const $tipo = document.getElementById('tipo');
-    const $inicio = document.getElementById('fecha_inicio');
-    const $fin = document.getElementById('fecha_fin');
+    async function cargar() {
+      const tbody = $("#tbody");
+      tbody.innerHTML = `<tr><td class="muted" colspan="4">Cargando…</td></tr>`;
 
-    // Listar OTs
-    async function cargarOTs() {
-      $body.innerHTML = `<tr><td class="muted" colspan="6">Cargando…</td></tr>`;
-      const { data, error } = await window.db
-        .from('ordenes_trabajo')
-        .select('*')
-        .order('fecha_inicio', { ascending: false })
-        .limit(100);
+      // Si existe Supabase
+      if (window.db) {
+        const { data, error } = await window.db
+          .from("ordenes_trabajo")
+          .select("id,equipo,tipo,estado,fecha_inicio")
+          .order("fecha_inicio", { ascending: false })
+          .limit(20);
 
-      if (error) {
-        $body.innerHTML = `<tr><td colspan="6">Error: ${error.message}</td></tr>`;
+        if (error) {
+          console.error(error);
+          tbody.innerHTML = `<tr><td class="muted" colspan="4">Error al cargar. Modo local habilitado.</td></tr>`;
+          pintarLocal();
+          return;
+        }
+        pintar(data || []);
+      } else {
+        // Modo local
+        pintarLocal();
+      }
+    }
+
+    function pintarLocal() {
+      const rows = localOT.all();
+      pintar(rows);
+    }
+
+    function pintar(rows) {
+      const tbody = $("#tbody");
+      if (!rows.length) {
+        tbody.innerHTML = `<tr><td class="muted" colspan="4">Sin registros.</td></tr>`;
         return;
       }
-      if (!data || !data.length) {
-        $body.innerHTML = `<tr><td class="muted" colspan="6">No hay registros aún.</td></tr>`;
-        return;
-      }
-      $body.innerHTML = data.map(ot => `
-        <tr data-id="${ot.id}">
-          <td>${ot.equipo ?? ''}</td>
-          <td>${ot.tipo ?? ''}</td>
-          <td><span class="status">${ot.estado ?? 'pendiente'}</span></td>
-          <td>${fmt(ot.fecha_inicio)}</td>
-          <td>${fmt(ot.fecha_fin)}</td>
-          <td class="row-actions">
-            <button class="btn" data-accion="cerrar">Cerrar</button>
-            <button class="btn" data-accion="eliminar">Eliminar</button>
-          </td>
+      tbody.innerHTML = rows.map(r=>`
+        <tr>
+          <td>${escapeHtml(r.equipo || "")}</td>
+          <td><span class="pill">${escapeHtml(r.tipo || "")}</span></td>
+          <td>${escapeHtml(r.estado || "")}</td>
+          <td>${fmtFecha(r.fecha_inicio)}</td>
         </tr>
-      `).join('');
+      `).join("");
     }
 
-    function fmt(x) {
-      if (!x) return '<span class="muted">—</span>';
-      try { return new Date(x).toLocaleString(); } catch { return x; }
+    function fmtFecha(v) {
+      if (!v) return "";
+      try { return new Date(v).toLocaleString(); } catch { return v; }
+    }
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, s=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[s]));
     }
 
-    // Crear OT
-    $form.addEventListener('submit', async (e) => {
+    $("#form-ot").addEventListener("submit", async (e) => {
       e.preventDefault();
+      $("#btn-crear").disabled = true;
+
       const payload = {
-        equipo: $equipo.value.trim(),
-        tipo: $tipo.value,
-        estado: 'pendiente',
-        fecha_inicio: $inicio.value ? new Date($inicio.value).toISOString() : new Date().toISOString(),
-        fecha_fin: $fin.value ? new Date($fin.value).toISOString() : null
+        equipo: $("#equipo").value.trim(),
+        tipo: $("#tipo").value,
+        estado: $("#estado").value,
+        fecha_inicio: new Date().toISOString()
       };
-      const { error } = await window.db.from('ordenes_trabajo').insert(payload);
-      if (error) { toast('Error: ' + error.message); return; }
-      $form.reset();
-      toast('OT creada');
-      cargarOTs();
-    });
 
-    // Acciones por fila
-    $body.addEventListener('click', async (e) => {
-      const btn = e.target.closest('button');
-      if (!btn) return;
-      const tr = e.target.closest('tr');
-      const id = tr?.dataset?.id;
-      if (!id) return;
-
-      const accion = btn.dataset.accion;
-      if (accion === 'cerrar') {
-        const { error } = await window.db.from('ordenes_trabajo')
-          .update({ estado: 'cerrada', fecha_fin: new Date().toISOString() })
-          .eq('id', id);
-        if (error) { toast('Error: ' + error.message); return; }
-        toast('OT cerrada');
-        cargarOTs();
-      }
-
-      if (accion === 'eliminar') {
-        if (!confirm('¿Eliminar esta OT?')) return;
-        const { error } = await window.db.from('ordenes_trabajo').delete().eq('id', id);
-        if (error) { toast('Error: ' + error.message); return; }
-        toast('OT eliminada');
-        cargarOTs();
+      try {
+        if (window.db) {
+          const { error } = await window.db.from("ordenes_trabajo").insert(payload);
+          if (error) throw error;
+          toast("OT creada");
+        } else {
+          // Guardar local si no hay DB
+          localOT.push({ id: crypto.randomUUID(), ...payload });
+          toast("OT creada (local)");
+        }
+        // limpiar e recargar
+        e.target.reset();
+        await cargar();
+      } catch (err) {
+        console.error(err);
+        toast("Error al crear OT");
+      } finally {
+        $("#btn-crear").disabled = false;
       }
     });
 
-    cargarOTs();
+    // inicia
+    cargar();
   </script>
 </body>
 </html>
