@@ -1,48 +1,78 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>AURUM∞ · modulos</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AURUM∞ · Módulos</title>
 <link rel="stylesheet" href="/common/topbar.css">
+
+<!-- Fuente Orbitron -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+
 <style>
-  body{margin:0;font-family:Orbitron,sans-serif;background:#000;color:#d8f3dc}
-  main{max-width:1100px;margin:24px auto;padding:0 20px}
-  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-  .card{border:1px solid rgba(120,255,255,.2);border-radius:14px;padding:16px;background:rgba(255,255,255,.03)}
-  .card a{display:inline-block;margin-top:10px;color:#00f5d4;text-decoration:none}
+  body {
+    margin:0;
+    font-family:'Orbitron',sans-serif;
+    background:#000;
+    color:#d8f3dc
+  }
+  main {
+    max-width:1100px;
+    margin:24px auto;
+    padding:0 20px
+  }
+  .grid {
+    display:grid;
+    gap:16px;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr))
+  }
+  .card {
+    border:1px solid rgba(120,255,255,.2);
+    border-radius:14px;
+    padding:16px;
+    background:rgba(255,255,255,.03)
+  }
+  .card a {
+    display:inline-block;
+    margin-top:10px;
+    color:#00f5d4;
+    text-decoration:none
+  }
 </style>
 </head>
 <body>
 <div id="topbar"></div>
 
 <main>
-  <h2>modulos</h2>
+  <h2>Módulos</h2>
   <div class="grid">
     <div class="card">
       <h3>Hilux · Checklist 3D</h3>
       <p>50 puntos, QR y evidencias. (3D activo al subir <code>hilux.glb</code>)</p>
-      <a href="/modulos/hilux/index.html">Abrir modulos</a>
+      <a href="/modulos/hilux/index.html">Abrir módulo</a>
     </div>
     <div class="card">
       <h3>Órdenes de Trabajo</h3>
       <p>Crear OT y asignar personal desde RR.HH.</p>
-      <a href="/modulos/ot/index.html">Abrir modulo</a>
+      <a href="/modulos/ot/index.html">Abrir módulo</a>
     </div>
     <div class="card">
       <h3>Numerología Integral</h3>
       <p>Pitagórica + Tántrica + Luna (guardar informe opcional).</p>
-      <a href="/modulos/numerologia/index.html">Abrir modulo</a>
+      <a href="/modulos/numerologia/index.html">Abrir módulo</a>
     </div>
     <div class="card">
       <h3>Recursos Humanos</h3>
       <p>Alta de colaboradores por faena.</p>
-      <a href="/modulos/recursos-humanos/index.html">Abrir modulo</a>
+      <a href="/modulos/recursos-humanos/index.html">Abrir módulo</a>
     </div>
   </div>
 </main>
 
 <script>
-  fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h)
+  fetch('/common/topbar.html')
+    .then(r => r.text())
+    .then(h => document.getElementById('topbar').innerHTML = h)
 </script>
 </body>
 </html>
