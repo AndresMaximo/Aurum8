@@ -1,246 +1,64 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>AURUM∞ • Numerología Integral</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/aurum-theme.css"/>
-  <style>
-    .screen{max-width:1100px;margin:40px auto;padding:24px}
-    header.top{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:18px}
-    header.top h1{font-family:var(--brand);font-size:clamp(22px,4vw,32px);letter-spacing:.08em;color:var(--ink);margin:0}
-    .navlinks a{color:var(--ink);opacity:.85;margin-left:12px;text-decoration:none}
-    .navlinks a:hover{opacity:1;text-shadow:0 0 10px rgba(0,255,160,.4)}
-    .panel{background:var(--bg-card);border:1px solid var(--gold-20);border-radius:16px;box-shadow:var(--shadow);padding:18px;margin:18px 0}
-    .row{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-    label{font:600 12px var(--ui);letter-spacing:.06em}
-    input{margin-top:6px;width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink)}
-    .actions{display:flex;gap:10px;justify-content:flex-end}
-    button.primary{padding:10px 14px;border-radius:12px;border:1px solid var(--gold-20);background:linear-gradient(130deg,#00ffd0 0%,#38ffa6 100%);color:#001a18;font-weight:700}
-    button.ghost{padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--ink)}
-    .section{margin-top:16px;border:1px solid var(--gold-20);border-radius:16px;overflow:hidden}
-    .sec-header{cursor:pointer;padding:14px 16px;background:linear-gradient(180deg,rgba(0,255,200,.07),rgba(0,0,0,.2));display:flex;align-items:center;justify-content:space-between}
-    .sec-header h3{margin:0;font:600 14px var(--ui);letter-spacing:.12em;text-transform:uppercase}
-    .sec-body{padding:16px;display:none;background:rgba(0,0,0,.25)}
-    .open .sec-body{display:block}
-    .tag{display:inline-block;padding:.2rem .55rem;border-radius:999px;border:1px solid var(--gold-20);margin-right:6px;margin-bottom:6px}
-    .muted{opacity:.8}.small{font-size:13px}
-  </style>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Numerología Integral</title>
+<style>
+  body{margin:0;font-family:Orbitron,sans-serif;background:#000;color:#d8f3dc}
+  main{max-width:1100px;margin:24px auto;padding:0 20px}
+  .panel{border:1px solid rgba(120,255,255,.2);border-radius:14px;padding:16px;background:rgba(255,255,255,.03);margin-bottom:16px}
+  label{display:block;margin:8px 0 4px}
+  input{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(120,255,255,.25);background:#020b0b;color:#d8f3dc}
+  button{margin-top:10px;padding:10px 14px;border-radius:10px;border:1px solid rgba(120,255,255,.3);background:#00f5d4;color:#001219;font-weight:700;cursor:pointer}
+  h3{color:#aefcff}
+  .res{white-space:pre-wrap}
+</style>
 </head>
 <body>
-  <div class="screen">
-    <header class="top">
-      <h1>Numerología Integral</h1>
-      <div class="navlinks">
-        <a href="/">Portal</a>
-        <a href="/Modulos/hilux/index.html">Hilux</a>
-        <a href="/Modulos/ot/index.html">Órdenes de Trabajo</a>
-        <a href="/Modulos/recursos-humanos/index.html">Recursos Humanos</a>
-      </div>
-    </header>
+<link rel="stylesheet" href="/common/topbar.css">
+<div id="topbar"></div>
+<script>fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h)</script>
 
-    <div class="panel">
-      <div class="row">
-        <label>Nombre completo
-          <input id="nombre" placeholder="Ej: IGNACIO ANDRÉS SALAZAR ESCOBAR">
-        </label>
-        <label>Fecha de nacimiento
-          <input id="fechaNac" type="date">
-        </label>
-        <label>Fecha de consulta
-          <input id="fechaHoy" type="date">
-        </label>
-        <label>Lugar de nacimiento (opcional)
-          <input id="lugar" placeholder="Ciudad, País (opcional)">
-        </label>
-      </div>
-      <div class="actions">
-        <button id="btnDemo" class="ghost">Cargar ejemplo</button>
-        <button id="btnGen" class="primary">Generar diagnóstico</button>
-      </div>
-      <p class="small muted">Si no hay hora/lugar, la “luna natal” se aproxima por la fase lunar del día de nacimiento.</p>
-    </div>
-
-    <div id="salida"></div>
+<main>
+  <h2>Numerología Integral</h2>
+  <div class="panel">
+    <label>Nombre completo</label><input id="nombre" placeholder="Ej: Ignacio Andrés Salazar Escobar">
+    <label>Fecha de nacimiento</label><input id="fecha" type="date">
+    <button onclick="analizar()">Analizar</button>
   </div>
 
-  <script>
-    const $ = (s,c=document)=>c.querySelector(s);
-    const todayISO = new Date().toISOString().slice(0,10);
-    $('#fechaHoy').value = todayISO;
+  <div class="panel">
+    <h3>Resultado</h3>
+    <div id="out" class="res">Ingresa tus datos y presiona Analizar.</div>
+  </div>
+</main>
 
-    // ——— Cálculos internos (sin mostrar números) ———
-    function valorNombre(nombre){
-      const map={A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
-      let total=0,v=0,c=0; const V=new Set(['A','E','I','O','U']);
-      for(const ch of nombre.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')){
-        if(map[ch]){ total+=map[ch]; if(V.has(ch)) v+=map[ch]; else c+=map[ch]; }
-      }
-      const red=n=>{while(n>9&&![11,22,33].includes(n))n=(''+n).split('').reduce((a,b)=>a+ +b,0);return n;}
-      return {esencia:red(v), personalidad:red(c), expresion:red(total)};
-    }
-    function caminoVida(fecha){
-      const red=n=>{while(n>9&&![11,22,33].includes(n))n=(''+n).split('').reduce((a,b)=>a+ +b,0);return n;}
-      const d=new Date(fecha); const nums=[d.getUTCDate(),d.getUTCMonth()+1,d.getUTCFullYear()];
-      const sum=(''+nums.join('')).split('').reduce((a,b)=>a+ +b,0); return red(sum);
-    }
-    function diaPersonal(fechaNac,fechaHoy){
-      const red=n=>{while(n>9)n=(''+n).split('').reduce((a,b)=>a+ +b,0);return n;}
-      const dN=new Date(fechaNac), dH=new Date(fechaHoy);
-      const nKey=(''+[dN.getUTCDate(),dN.getUTCMonth()+1]).split('').reduce((a,b)=>a+ +b,0);
-      const hKey=(''+[dH.getUTCDate(),dH.getUTCMonth()+1,dH.getUTCFullYear()]).split('').reduce((a,b)=>a+ +b,0);
-      return red(nKey+hKey)||1;
-    }
-    function faseLunarIdx(dateStr){
-      const d=new Date(dateStr); const lp=2551443;
-      const ref=new Date(Date.UTC(2000,0,6,18,14,0));
-      const phase=((d-ref)/1000)%lp; return Math.floor((phase/lp)*8)&7;
-    }
-    const txtFase=[
-      "Luna Nueva — inicio, intención y silencio fértil.",
-      "Creciente sutil — activar pequeñas acciones.",
-      "Cuarto Creciente — decisión y empuje.",
-      "Gibosa Creciente — perfeccionar detalles.",
-      "Luna Llena — revelación y culminación.",
-      "Gibosa Menguante — integrar y ordenar.",
-      "Cuarto Menguante — soltar con calma.",
-      "Menguante sutil — descanso e introspección."
-    ];
-    const PIT_ESENCIA={1:"Alma orientada a liderar con iniciativa propia.",
-      2:"Alma cooperativa y sensible; une y escucha.",
-      3:"Alma creativa y expresiva; comunica y alegra.",
-      4:"Alma constructora; constancia y método.",
-      5:"Alma exploradora; libertad y cambio.",
-      6:"Alma protectora; cuida y embellece.",
-      7:"Alma contemplativa; profundiza y medita.",
-      8:"Alma realizadora; logros y gestión.",
-      9:"Alma compasiva; visión amplia y servicio."};
-    const PIT_PERS={1:"Presencia directa y decidida.",2:"Presencia amable y armónica.",3:"Presencia carismática y comunicativa.",4:"Presencia confiable y metódica.",5:"Presencia dinámica y flexible.",6:"Presencia cercana y guía.",7:"Presencia reservada y reflexiva.",8:"Presencia contundente y de impacto.",9:"Presencia inspiradora y humanitaria."};
-    const PIT_EXPR={1:"Abrir camino y emprender.",
-      2:"Mediar y coordinar equipos.",
-      3:"Comunicar y enseñar.",
-      4:"Planificar y construir.",
-      5:"Innovar y transformar.",
-      6:"Cuidar personas y crear belleza.",
-      7:"Investigar y sintetizar sabiduría.",
-      8:"Dirigir recursos y negociar.",
-      9:"Inspirar causas y facilitar cierres."};
-    function tantricaArquetipos(nombre){
-      const n=nombre.toUpperCase().replace(/[^A-Z]/g,'');
-      const v=n.replace(/[^AEIOU]/g,'').length, c=n.length-v, y=/Y/.test(n);
-      const fisico=c>v?"firme, de estructura y hábitos":"fluido, adaptable y perceptivo";
-      const mente=v>c?"imaginación veloz y asociativa":"lógica organizada y foco sostenido";
-      const alma=y?"búsqueda interior con giros inesperados":"búsqueda interior constante y templada";
-      const proy=/[MN RST]/.test(n)?"proyección sobria y confiable":"proyección magnética y creativa";
-      const destino=/[AEIOU]/.test(n[0]||'')?"camino de apertura y comunicación":"camino de concreción y maestría práctica";
-      return {fisico,mente:mente,alma,proy:proy,destino};
-    }
-    function lunaNatalTexto(fechaNac){
-      const idx=faseLunarIdx(fechaNac);
-      return [
-        "Arquetipo de siembra: sensibilidad a comienzos y a poner intención clara.",
-        "Impulso de avance: te nutre ver progreso temprano.",
-        "Decidir y afirmarte: prosperas con riesgos medidos.",
-        "Perfeccionar: mente afinada al detalle y aprendizaje.",
-        "Plenitud: magnetismo social y claridad para iluminar a otros.",
-        "Integrar: recoges aprendizajes y ordenas emociones.",
-        "Cerrar ciclos: sueltas con sabiduría y enseñas a hacerlo.",
-        "Gestar desde la calma: intuición fina y valor del retiro."
-      ][idx];
-    }
-    const pick=(map,n)=>map[n]||map[(n%9)||9];
+<script>
+function interpretarBase(nombre, fecha) {
+  // Interpretación simbólica breve (placeholder)
+  const d = new Date(fecha||Date.now());
+  const dia = d.getDay();
+  const tonoDia = ["Equilibrio","Movimiento","Comunicación","Orden","Creatividad","Servicio","Introspección"][dia];
+  return (
+`• Lectura Pitagórica (resumen)
+  Enfoque en propósito, aprendizaje y talento natural. Predomina la intención de construir y dar forma práctica a las ideas.
 
-    function section(title, html){
-      return `
-        <div class="section open">
-          <div class="sec-header" onclick="this.parentElement.classList.toggle('open')">
-            <h3>${title}</h3><span class="muted small">abrir/cerrar</span>
-          </div>
-          <div class="sec-body">${html}</div>
-        </div>`;
-    }
+• Lectura Tántrica (resumen)
+  Energía de raíces profundas, necesidad de coherencia entre lo que sientes y haces. Fortaleza cuando sirve a otros.
 
-    function generar(){
-      const nombre=($('#nombre').value||'').trim();
-      const fechaNac=$('#fechaNac').value;
-      const fechaHoy=$('#fechaHoy').value||todayISO;
-      if(!nombre||!fechaNac){ alert('Ingresa nombre y fecha de nacimiento.'); return; }
+• Luna Natal & Fases (resumen)
+  Tendencia emocional estable si hay rutina; fases lunares pueden potenciar intuición y sensibilidad operativa.
 
-      const pit=valorNombre(nombre);
-      const cv=caminoVida(fechaNac);
-      const tan=tantricaArquetipos(nombre);
-      const ln=lunaNatalTexto(fechaNac);
-      const dPers=diaPersonal(fechaNac,fechaHoy);
-      const emoEtiqueta=[
-        "baja energía, prioriza básicos","inicio y foco","comunicación y acuerdos","orden/estructura",
-        "cambios y flexibilidad","cuidado y estética","introspección y estudio","gestión y resultados","cierre y servicio"
-      ][(dPers-1)%9];
-      const consejo={
-        1:"Marca el ritmo temprano y evita dispersarte.",
-        2:"Pide apoyo y negocia tiempos.",
-        3:"Prepara 3 ideas clave y escucha.",
-        4:"Bloques de trabajo profundo + pausas.",
-        5:"Deja margen a la sorpresa y documenta.",
-        6:"Cuida el tono humano y celebra logros.",
-        7:"15 minutos de silencio antes de decidir.",
-        8:"Prioriza lo que mueve la aguja.",
-        9:"Cierra con gratitud; suelta lo viejo."
-      }[dPers];
-      const lunaHoy=txtFase[faseLunarIdx(fechaHoy)];
+• Mensaje emocional del día
+  Clave: ${tonoDia}. Recomendación: respira, ordena prioridades y evita exceso de estímulos. Observa señales.`)
+}
 
-      const pitHtml=`
-        <p><span class="tag">Esencia</span> ${pick(PIT_ESENCIA,pit.esencia)}</p>
-        <p><span class="tag">Personalidad</span> ${pick(PIT_PERS,pit.personalidad)}</p>
-        <p><span class="tag">Expresión/Talento</span> ${pick(PIT_EXPR,pit.expresion)}</p>
-        <p><span class="tag">Camino de Vida</span> Orientación de aprendizaje principal en tu biografía.</p>`;
-      const tanHtml=`
-        <p><span class="tag">Cuerpo Físico</span> Tendencia ${tan.fisico}.</p>
-        <p><span class="tag">Mente</span> ${tan.mente}.</p>
-        <p><span class="tag">Alma</span> ${tan.alma}.</p>
-        <p><span class="tag">Proyección</span> ${tan.proy}.</p>
-        <p><span class="tag">Destino</span> ${tan.destino}.</p>`;
-      const lunaNatalHtml=`<p>${ln}</p>`;
-      const emoHtml=`
-        <p><span class="tag">Clima del día</span> ${emoEtiqueta}.</p>
-        <p><span class="tag">Luna hoy</span> ${lunaHoy}</p>
-        <p><span class="tag">Recomendación</span> ${consejo}</p>`;
-      const sintesis=`
-        <p><b>Resumen integrado:</b> Tu naturaleza interior pide ${pick(PIT_ESENCIA,pit.esencia).toLowerCase()}.
-        Tu impacto externo se expresa como ${pick(PIT_PERS,pit.personalidad).toLowerCase()}.
-        Tus talentos te empujan a ${pick(PIT_EXPR,pit.expresion).toLowerCase()}.
-        Hoy conviene moverte en clave <b>${emoEtiqueta}</b> acompañando la pauta lunar (“${lunaHoy.split('—')[0].trim()}”).</p>
-        <p class="muted small">Guía orientativa; tú eliges.</p>`;
-
-      $('#salida').innerHTML = [
-        section('Perfil Pitagórico', pitHtml),
-        section('Numerología Tántrica', tanHtml),
-        section('Luna Natal (arquetipo emocional)', lunaNatalHtml),
-        section('Diagnóstico Emocional del Día', emoHtml),
-        section('Síntesis Global', sintesis)
-      ].join('');
-      window.scrollTo({ top: $('#salida').offsetTop - 10, behavior:'smooth' });
-    }
-
-    $('#btnGen').addEventListener('click', generar);
-    $('#btnDemo').addEventListener('click', ()=>{
-      $('#nombre').value='IGNACIO ANDRÉS SALAZAR ESCOBAR';
-      $('#fechaNac').value='1989-04-09';
-      $('#fechaHoy').value=new Date().toISOString().slice(0,10);
-      $('#lugar').value='Limache, Chile';
-    });
-
-    // Autorrelleno por parámetros y autogeneración
-    (function autoPrefill(){
-      const p=new URLSearchParams(location.search);
-      const n=p.get('nombre')||'', fN=p.get('fechaNac')||'', fH=p.get('fechaHoy')||'';
-      if(n) $('#nombre').value=n;
-      if(fN) $('#fechaNac').value=fN;
-      if(fH) $('#fechaHoy').value=fH;
-      if(n && fN) setTimeout(()=>$('#btnGen').click(), 80);
-    })();
-  </script>
+function analizar(){
+  const nombre = document.getElementById('nombre').value.trim();
+  const fecha = document.getElementById('fecha').value;
+  if(!nombre || !fecha){ document.getElementById('out').textContent = "Completa nombre y fecha."; return; }
+  document.getElementById('out').textContent = interpretarBase(nombre, fecha);
+}
+</script>
 </body>
 </html>
