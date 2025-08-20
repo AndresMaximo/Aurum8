@@ -1,21 +1,19 @@
-<nav class="topbar" role="navigation">
+<nav class="topbar">
   <a class="brand" href="/index.html">AURUM∞</a>
-
-  <!-- Botón hamburguesa -->
-  <button class="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="main-menu">
-    <span></span><span></span><span></span>
-  </button>
-
-  <!-- Menú principal -->
-  <ul id="main-menu" class="menu">
-    <li><a href="/index.html">inicio</a></li>
-    <li><a href="/vision.html">visión</a></li>
+  <button class="hamburger" aria-label="Abrir menú" onclick="
+    document.querySelector('.menu').classList.toggle('open')
+  ">☰</button>
+  <ul class="menu">
+    <li><a href="/index.html">Inicio</a></li>
+    <li><a href="/vision.html">Visión</a></li>
     <li><a href="/modulos.html">modulos</a></li>
-    <li><a href="/modulos/numerologia/index.html">numerología</a></li>
-    <li><a href="/modulos/ot/index.html">órdenes de trabajo</a></li>
-    <li><a href="/modulos/recursos-humanos/index.html">recursos humanos</a></li>
-    <li><a href="/modulos/hilux/index.html">hilux</a></li>
-    <li><a href="/modulos/bodega/index.html">bodega</a></li>
-    <li><a href="/contacto.html">contacto</a></li>
+    <li><a href="/modulos/numerologia/index.html">Numerología</a></li>
+    <li><a href="/modulos/ot/index.html">Órdenes de Trabajo</a></li>
+    <li><a href="/modulos/recursos-humanos/index.html">Recursos Humanos</a></li>
+    <li><a href="/modulos/hilux/index.html">Hilux</a></li>
+    <li><a href="/modulos/bodega/index.html">Bodega</a></li>
+    <!-- NUEVO: Panel de Administración de Usuarios -->
+    <li><a href="/modulos/admin-usuarios/index.html">Admin Usuarios</a></li>
+    <li><a href="/contacto.html">Contacto</a></li>
   </ul>
 </nav>
