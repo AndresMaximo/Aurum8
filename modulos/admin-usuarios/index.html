@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>AURUM∞ · Administración de Usuarios</title>
   <link rel="stylesheet" href="/aurum-theme.css">
   <style>
@@ -13,7 +13,7 @@
     label{display:block;margin-bottom:6px;opacity:.9}
     input,select,button{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0c1418;color:#d8f3dc}
     input::placeholder{opacity:.6}
-    .btn{background:#00f5d4;color:#042; font-weight:700;border:none;cursor:pointer}
+    .btn{background:#00f5d4;color:#042;font-weight:700;border:none;cursor:pointer}
     .btn.secondary{background:#182429;color:#d8f3dc;border:1px solid rgba(255,255,255,.14)}
     table{width:100%;border-collapse:collapse;margin-top:10px}
     th,td{padding:12px;border-bottom:1px solid rgba(255,255,255,.08)}
@@ -27,17 +27,13 @@
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="/index.html">AURUM∞</a>
-    <button id="hamb" aria-label="Menú" class="hamb"></button>
-    <nav id="menu" class="menu">
-      <a href="/modulos.html">Módulos</a>
-      <a href="/modulos/ot/index.html">Órdenes</a>
-      <a href="/modulos/bodega/index.html">Bodega</a>
-      <a href="/modulos/recursos-humanos/index.html">RR.HH.</a>
-      <a href="/modulos/admin/index.html" class="active">Admin</a>
-    </nav>
-  </header>
+  <!-- Topbar compartida -->
+  <div id="topbar"></div>
+  <script>
+    fetch('/common/topbar.html')
+      .then(r => r.text())
+      .then(h => { document.getElementById('topbar').innerHTML = h; });
+  </script>
 
   <main>
     <h1>Administración de Usuarios</h1>
@@ -67,11 +63,11 @@
       <div class="row">
         <div>
           <label for="email">Email</label>
-          <input id="email" type="email" placeholder="usuario@empresa.com" />
+          <input id="email" type="email" placeholder="usuario@empresa.com"/>
         </div>
         <div>
           <label for="nombre">Nombre</label>
-          <input id="nombre" type="text" placeholder="Nombre y Apellido" />
+          <input id="nombre" type="text" placeholder="Nombre y Apellido"/>
         </div>
         <div>
           <label for="rol">Rol</label>
@@ -86,10 +82,7 @@
       <div class="right" style="margin-top:10px">
         <button id="btnGuardar" class="btn">Guardar</button>
       </div>
-      <p class="muted" style="margin-top:8px">
-        Consejo: puedes precargar a tus usuarios aquí. Cuando inicien sesión por primera vez, ya tendrán rol.
-      </p>
-      <div id="msgEditor" class="muted"></div>
+      <div id="msgEditor" class="muted" style="margin-top:6px"></div>
     </div>
 
     <!-- Listado -->
@@ -101,11 +94,7 @@
       <table>
         <thead>
           <tr>
-            <th>Email</th>
-            <th>Nombre</th>
-            <th>Rol</th>
-            <th>Creado</th>
-            <th></th>
+            <th>Email</th><th>Nombre</th><th>Rol</th><th>Creado</th><th></th>
           </tr>
         </thead>
         <tbody id="tbody"></tbody>
@@ -119,14 +108,11 @@
     </div>
   </main>
 
-  <script src="/superbaseClient.js"></script>
-  <script>
-    // ===== UI mínimos (hamburguesa)
-    const hamb = document.getElementById('hamb');
-    const menu = document.getElementById('menu');
-    hamb.addEventListener('click', ()=> menu.classList.toggle('open'));
+  <!-- Cliente Supabase como ES module -->
+  <script type="module">
+    import { supabase } from '/js/supabaseClient.js';
 
-    // ===== Supabase helpers
+    // ===== elementos
     const sesion = document.getElementById('sesion');
     const rolActual = document.getElementById('rolActual');
     const btnLogin = document.getElementById('btnLogin');
@@ -148,16 +134,19 @@
     let user = null;
     let rolUser = null;
 
-    // ---- Autenticación básica (email link)
+    // Login por magic-link
     btnLogin.onclick = async ()=>{
       const correo = prompt('Ingresa tu email para recibir un enlace de acceso:');
       if(!correo) return;
-      const { error } = await supabase.auth.signInWithOtp({ email: correo, options:{ emailRedirectTo: window.location.origin + '/modulos/admin/index.html' }});
+      const { error } = await supabase.auth.signInWithOtp({
+        email: correo,
+        options: { emailRedirectTo: window.location.origin + '/modulos/admin/index.html' }
+      });
       alert(error ? ('Error: '+error.message) : 'Te enviamos un enlace a tu correo.');
     };
     btnLogout.onclick = async ()=>{ await supabase.auth.signOut(); location.reload(); };
 
-    // ---- Carga de sesión + role check
+    // Carga sesión y permisos
     init();
     async function init(){
       const { data:{ user: U } } = await supabase.auth.getUser();
@@ -167,7 +156,6 @@
       btnLogin.style.display  = user ? 'none' : 'inline-block';
       btnLogout.style.display = user ? 'inline-block' : 'none';
 
-      // Obtiene rol desde tabla perfiles (por id o por email)
       rolUser = await getRoleFor(user);
       rolActual.innerHTML = rolUser ? `<span class="pill">${rolUser}</span>` : '—';
 
@@ -185,27 +173,18 @@
 
     async function getRoleFor(U){
       if(!U) return null;
-      // 1) por id
-      let { data:r1 } = await supabase
-        .from('perfiles')
-        .select('role')
-        .eq('id', U.id)
-        .maybeSingle();
+      // por id
+      let { data:r1 } = await supabase.from('perfiles').select('role').eq('id', U.id).maybeSingle();
       if(r1?.role) return r1.role;
-
-      // 2) por email (por si precargaste antes de que el usuario exista en auth)
+      // fallback: por email
       if(U.email){
-        let { data:r2 } = await supabase
-          .from('perfiles')
-          .select('role')
-          .eq('email', U.email)
-          .maybeSingle();
+        let { data:r2 } = await supabase.from('perfiles').select('role').eq('email', U.email).maybeSingle();
         if(r2?.role) return r2.role;
       }
       return null;
     }
 
-    // ---- CRUD Perfiles
+    // CRUD perfiles
     btnGuardar.onclick = async ()=>{
       msgEditor.textContent = '';
       const payload = {
@@ -215,7 +194,6 @@
       };
       if(!payload.email){ msgEditor.textContent = 'Email es obligatorio.'; return; }
 
-      // Si ya existe una fila por email, actualiza; si existe el user en auth, luego podrás setear id manualmente.
       const { error } = await supabase
         .from('perfiles')
         .upsert(payload, { onConflict: 'email' });
@@ -249,14 +227,11 @@
             </select>
           </td>
           <td class="muted">${p.created_at ? new Date(p.created_at).toLocaleString() : '—'}</td>
-          <td class="right">
-            <button class="btn secondary btn-del" data-email="${p.email||''}">Eliminar</button>
-          </td>
+          <td class="right"><button class="btn secondary btn-del" data-email="${p.email||''}">Eliminar</button></td>
         `;
         tbody.appendChild(tr);
       });
 
-      // Eventos por fila
       tbody.querySelectorAll('.sel-role').forEach(sel=>{
         sel.addEventListener('change', async (e)=>{
           const nv = e.target.value;
@@ -265,7 +240,7 @@
           const q = id ? { id } : { email };
           const { error } = await supabase.from('perfiles').update({ role:nv }).match(q);
           if(error) alert('Error: '+error.message);
-          if(user && (email===user.email)) { // si me cambié a mí mismo, refresco header
+          if(user && (email===user.email)) {
             rolUser = nv; rolActual.innerHTML = `<span class="pill">${rolUser}</span>`;
           }
         });
