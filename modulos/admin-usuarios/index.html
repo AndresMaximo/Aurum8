@@ -27,7 +27,7 @@
   </style>
 </head>
 <body>
-  <!-- Topbar compartida -->
+  <!-- Topbar compartida (no dupliques topbar dentro de /common/topbar.html) -->
   <div id="topbar"></div>
   <script>
     fetch('/common/topbar.html')
@@ -108,7 +108,10 @@
     </div>
   </main>
 
-  <!-- Cliente Supabase como ES module -->
+  <!-- Cliente Supabase (ESM) -->
+  <script type="module" src="/js/supabaseClient.js"></script>
+
+  <!-- Lógica del módulo -->
   <script type="module">
     import { supabase } from '/js/supabaseClient.js';
 
@@ -134,19 +137,19 @@
     let user = null;
     let rolUser = null;
 
-    // Login por magic-link
+    // ===== Login por magic-link (redirige a ESTE módulo)
     btnLogin.onclick = async ()=>{
       const correo = prompt('Ingresa tu email para recibir un enlace de acceso:');
       if(!correo) return;
       const { error } = await supabase.auth.signInWithOtp({
         email: correo,
-        options: { emailRedirectTo: window.location.origin + '/modulos/admin/index.html' }
+        options: { emailRedirectTo: window.location.origin + '/modulos/admin-usuarios/index.html' }
       });
       alert(error ? ('Error: '+error.message) : 'Te enviamos un enlace a tu correo.');
     };
     btnLogout.onclick = async ()=>{ await supabase.auth.signOut(); location.reload(); };
 
-    // Carga sesión y permisos
+    // ===== Carga sesión y permisos
     init();
     async function init(){
       const { data:{ user: U } } = await supabase.auth.getUser();
@@ -184,7 +187,7 @@
       return null;
     }
 
-    // CRUD perfiles
+    // ===== CRUD perfiles
     btnGuardar.onclick = async ()=>{
       msgEditor.textContent = '';
       const payload = {
@@ -232,6 +235,7 @@
         tbody.appendChild(tr);
       });
 
+      // Cambiar rol
       tbody.querySelectorAll('.sel-role').forEach(sel=>{
         sel.addEventListener('change', async (e)=>{
           const nv = e.target.value;
@@ -246,6 +250,7 @@
         });
       });
 
+      // Eliminar
       tbody.querySelectorAll('.btn-del').forEach(btn=>{
         btn.addEventListener('click', async ()=>{
           const email = btn.dataset.email;
