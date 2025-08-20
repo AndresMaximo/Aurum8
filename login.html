@@ -1,162 +1,119 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>AURUM∞ · Iniciar sesión</title>
-
-  <!-- Tu tema global (ajusta el nombre si cambió) -->
-  <link rel="stylesheet" href="/tema-aurum.css">
-  <!-- Tipografía opcional -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
-
+  <link rel="stylesheet" href="/aurum-theme.css" />
   <style>
-    :root{
-      --bg:#0b0f12; --card:#0f1419; --line:#1f2a33; --text:#d8f3dc;
-      --muted:#97b0ac; --brand:#00f5d4; --brand-2:#17ffc6; --danger:#ff5977;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:radial-gradient(1000px 600px at 120% -10%,rgba(0,255,214,.08),transparent),
-                      radial-gradient(800px 500px at -20% 120%,rgba(0,180,255,.06),transparent),
-                      var(--bg);color:var(--text);font-family:Orbitron,system-ui,Segoe UI,sans-serif}
-    header{display:flex;align-items:center;gap:16px;padding:16px 20px;border-bottom:1px solid var(--line)}
-    header .brand{font-weight:800;letter-spacing:.03em;color:var(--brand);text-decoration:none;font-size:22px}
-
-    main{max-width:520px;margin:40px auto;padding:0 20px}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.015));
-          border:1px solid var(--line);border-radius:16px;padding:22px}
-    h1{font-size:28px;margin:0 0 8px}
-    p.lead{color:var(--muted);margin:0 0 22px;font-size:14px}
-
-    label{display:block;font-size:12px;margin:14px 0 6px;color:#bfe3d6}
-    input{width:100%;padding:14px 13px;border-radius:12px;background:#0a0e12;border:1px solid #1e2933;
-          color:var(--text);outline:none}
-    input:focus{border-color:#2dd4bf;box-shadow:0 0 0 4px rgba(45,212,191,.12)}
-
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-    .btn{appearance:none;border:1px solid var(--line);background:#0d1518;color:var(--text);
-         border-radius:12px;padding:12px 14px;cursor:pointer;font-weight:700;letter-spacing:.02em}
-    .btn.primary{background:linear-gradient(180deg,var(--brand),var(--brand-2));
-                 color:#001b16;border:0}
-    .btn.ghost{background:transparent}
-    .btn.danger{background:#2b131a;border-color:#4a1f2b;color:#ffd5de}
-
-    .note{font-size:12px;color:var(--muted);margin-top:12px}
-    .ok{color:#23ffc9}
-    .error{color:var(--danger)}
-    .hidden{display:none}
+    body{margin:0;background:#000;color:#d8f3dc;font-family:Orbitron,system-ui,Segoe UI,Roboto,Arial}
+    main{max-width:980px;margin:40px auto;padding:0 20px}
+    .card{background:#0b0f12;border:1px solid #16332f;border-radius:16px;padding:24px}
+    .row{display:grid;gap:14px}
+    @media(min-width:720px){.row{grid-template-columns:1fr 1fr}}
+    label{font-size:.9rem;opacity:.85}
+    input{width:100%;padding:14px 12px;border-radius:12px;border:1px solid #24423c;background:#0a1513;color:#d8f3dc}
+    button{padding:12px 16px;border-radius:12px;border:0;background:#00f5d4;color:#001510;
+      font-weight:700;cursor:pointer}
+    .muted{opacity:.7}
+    .error{color:#ff6b6b;margin-top:8px}
+    .ok{color:#00f5d4;margin-top:8px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
+    a.btn{display:inline-block;padding:12px 16px;border-radius:12px;border:1px solid #24423c;text-decoration:none;color:#b7efe4}
   </style>
 </head>
 <body>
-  <header>
-    <a class="brand" href="/index.html">AURUM∞</a>
-  </header>
-
   <main>
+    <h1>Acceso a AURUM∞</h1>
     <div class="card">
-      <h1>Acceso</h1>
-      <p class="lead">Inicia sesión para gestionar módulos y registros.</p>
-
-      <form id="form-login">
-        <label for="email">Correo</label>
-        <input id="email" name="email" type="email" placeholder="tucorreo@dominio.com" required>
-
-        <label for="pass">Contraseña</label>
-        <input id="pass" name="pass" type="password" placeholder="••••••••" minlength="6" required>
-
-        <div class="row" style="margin-top:14px">
-          <button class="btn primary" type="submit">Iniciar sesión</button>
-          <button class="btn ghost" type="button" id="btn-signup">Crear cuenta</button>
-          <button class="btn ghost" type="button" id="btn-recovery">Recuperar contraseña</button>
+      <div class="row">
+        <div>
+          <h2>Ingresar</h2>
+          <label>Email</label>
+          <input id="email" type="email" placeholder="tucorreo@empresa.com" autocomplete="username" />
+          <label>Contraseña</label>
+          <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" />
+          <div class="actions" style="margin-top:10px">
+            <button id="btn-login">Entrar</button>
+            <a class="btn" href="/modulos.html">Volver</a>
+          </div>
+          <div id="msg" class="muted"></div>
         </div>
-      </form>
 
-      <div id="msg" class="note" role="status"></div>
-
-      <div id="sessionBox" class="hidden" style="margin-top:18px">
-        <div class="note ok">Ya hay una sesión activa.</div>
-        <div class="row" style="margin-top:10px">
-          <a class="btn primary" href="/modulos.html">Ir a Módulos</a>
-          <button class="btn danger" id="btn-logout" type="button">Salir</button>
+        <div>
+          <h2>Primera vez</h2>
+          <p class="muted">Si nunca te han creado usuario, regístrate aquí. Un administrador aprobará tu rol.</p>
+          <label>Email</label>
+          <input id="signup-email" type="email" placeholder="tucorreo@empresa.com" autocomplete="email" />
+          <label>Contraseña</label>
+          <input id="signup-pass" type="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" />
+          <div class="actions" style="margin-top:10px">
+            <button id="btn-signup">Crear cuenta</button>
+          </div>
+          <div id="msg-signup" class="muted"></div>
         </div>
       </div>
     </div>
   </main>
 
-  <!-- Supabase SDK (global) -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  <!-- Cliente con tus credenciales -->
-  <script src="/Js/supabaseClient.js"></script>
+  <script type="module">
+    import { supabase } from '/js/supabaseClient.js';
 
-  <script>
-    const $ = (s)=>document.querySelector(s);
-    const msg = $('#msg');
-    const sessionBox = $('#sessionBox');
+    const email = document.querySelector('#email');
+    const pass  = document.querySelector('#password');
+    const msg   = document.querySelector('#msg');
 
-    // 1) Si ya hay sesión, muestro opciones
-    (async ()=>{
-      const { data: { session } } = await window.sb.auth.getSession();
-      if(session){
-        sessionBox.classList.remove('hidden');
-      }
-    })();
+    const sEmail = document.querySelector('#signup-email');
+    const sPass  = document.querySelector('#signup-pass');
+    const sMsg   = document.querySelector('#msg-signup');
 
-    // 2) Iniciar sesión
-    $('#form-login').addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      msg.textContent = 'Verificando credenciales...';
-
-      const email = $('#email').value.trim();
-      const password = $('#pass').value;
-
-      const { data, error } = await window.sb.auth.signInWithPassword({ email, password });
-
-      if(error){
-        msg.innerHTML = `<span class="error">Error: ${error.message}</span>`;
-        return;
-      }
-      msg.innerHTML = '<span class="ok">¡Acceso concedido! Redirigiendo...</span>';
-      setTimeout(()=> location.href = '/modulos.html', 700);
-    });
-
-    // 3) Crear cuenta
-    $('#btn-signup').addEventListener('click', async ()=>{
-      const email = prompt('Correo para registrarte:');
-      if(!email) return;
-      const password = prompt('Elige una contraseña (mínimo 6 caracteres):');
-      if(!password) return;
-
-      msg.textContent = 'Creando cuenta...';
-      const { data, error } = await window.sb.auth.signUp({ email, password });
-      if(error){
-        msg.innerHTML = `<span class="error">Error: ${error.message}</span>`;
-        return;
-      }
-      msg.innerHTML = '<span class="ok">Cuenta creada. Revisa tu correo para confirmar.</span>';
-    });
-
-    // 4) Recuperación por email
-    $('#btn-recovery').addEventListener('click', async ()=>{
-      const email = prompt('Ingresa tu correo para recuperar la contraseña:');
-      if(!email) return;
-
-      msg.textContent = 'Enviando enlace de recuperación...';
-      const { data, error } = await window.sb.auth.resetPasswordForEmail(email, {
-        redirectTo: location.origin + '/login.html'
+    // LOGIN
+    document.querySelector('#btn-login').addEventListener('click', async () => {
+      msg.textContent = 'Conectando...';
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.value.trim(),
+        password: pass.value
       });
-      if(error){
-        msg.innerHTML = `<span class="error">Error: ${error.message}</span>`;
-        return;
+      if (error) { msg.textContent = ''; msg.className='error'; msg.textContent = 'Error: ' + error.message; return; }
+
+      // mira tu perfil para decidir adónde redirigir
+      const { data: perfil } = await supabase
+        .from('perfiles')
+        .select('role, full_name')
+        .eq('id', data.user.id)
+        .maybeSingle();
+
+      msg.className='ok';
+      msg.textContent = 'Listo. Redirigiendo...';
+      // admin → admin usuarios, si no → módulos
+      if (perfil?.role === 'admin') {
+        location.href = '/modulos/admin-usuarios/index.html';
+      } else {
+        location.href = '/modulos.html';
       }
-      msg.innerHTML = '<span class="ok">Si el correo existe, recibirás un enlace para restablecer.</span>';
     });
 
-    // 5) Cerrar sesión
-    $('#btn-logout').addEventListener('click', async ()=>{
-      await window.sb.auth.signOut();
-      msg.innerHTML = '<span class="ok">Sesión finalizada.</span>';
-      sessionBox.classList.add('hidden');
+    // SIGNUP
+    document.querySelector('#btn-signup').addEventListener('click', async () => {
+      sMsg.textContent = 'Creando...';
+      const { data, error } = await supabase.auth.signUp({
+        email: sEmail.value.trim(),
+        password: sPass.value
+      });
+      if (error) { sMsg.className='error'; sMsg.textContent='Error: '+error.message; return; }
+
+      // crea registro en perfiles como "viewer" por defecto
+      const user = data.user;
+      if (user) {
+        await supabase.from('perfiles').upsert({
+          id: user.id,
+          email: user.email,
+          full_name: user.email,
+          role: 'viewer'
+        });
+      }
+      sMsg.className='ok';
+      sMsg.textContent = 'Cuenta creada. Revisa tu correo si se exige confirmación.';
     });
   </script>
 </body>
