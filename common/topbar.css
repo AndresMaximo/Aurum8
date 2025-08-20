@@ -1,41 +1,21 @@
-:root{
-  --bg:#05050a;
-  --glass:rgba(255,255,255,.06);
-  --line:rgba(120,255,255,.20);
-  --link:#00f5d4;
-  --txt:#d8f3dc;
-}
+<nav class="topbar" role="navigation">
+  <a class="brand" href="/index.html">AURUM∞</a>
 
-.topbar{
-  position:sticky; top:0; z-index:100;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:10px 16px; background:linear-gradient(180deg, rgba(0,0,0,.85), rgba(0,0,0,.45));
-  backdrop-filter: blur(10px);
-  border-bottom:1px solid var(--line);
-}
+  <!-- Botón hamburguesa -->
+  <button class="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="main-menu">
+    <span></span><span></span><span></span>
+  </button>
 
-.brand{
-  color:#ffd166; text-decoration:none; font-weight:800; letter-spacing:.5px;
-  font-family: 'Orbitron', system-ui, sans-serif;
-}
-
-.menu{display:flex; gap:14px; list-style:none; margin:0; padding:0;}
-.menu a{color:var(--txt); text-decoration:none; padding:8px 10px; border-radius:10px;}
-.menu a:hover{background:var(--glass); color:var(--link);}
-
-.burger{
-  display:none; width:42px; height:42px; border:1px solid var(--line);
-  background:var(--glass); border-radius:12px; align-items:center; justify-content:center;
-}
-.burger span{display:block; width:20px; height:2px; background:var(--txt); margin:3px auto;}
-
-@media (max-width: 900px){
-  .burger{display:flex;}
-  .menu{
-    position:fixed; top:56px; right:12px; left:12px;
-    flex-direction:column; gap:0; padding:8px; border:1px solid var(--line);
-    background:rgba(10,10,16,.95); border-radius:16px; display:none;
-  }
-  .menu.open{display:flex;}
-  .menu a{padding:12px; display:block;}
-}
+  <!-- Menú principal -->
+  <ul id="main-menu" class="menu">
+    <li><a href="/index.html">inicio</a></li>
+    <li><a href="/vision.html">visión</a></li>
+    <li><a href="/modulos.html">modulos</a></li>
+    <li><a href="/modulos/numerologia/index.html">numerología</a></li>
+    <li><a href="/modulos/ot/index.html">órdenes de trabajo</a></li>
+    <li><a href="/modulos/recursos-humanos/index.html">recursos humanos</a></li>
+    <li><a href="/modulos/hilux/index.html">hilux</a></li>
+    <li><a href="/modulos/bodega/index.html">bodega</a></li>
+    <li><a href="/contacto.html">contacto</a></li>
+  </ul>
+</nav>
