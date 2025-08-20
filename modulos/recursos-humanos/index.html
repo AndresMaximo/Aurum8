@@ -1,157 +1,77 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AURUM∞ · Recursos Humanos</title>
-
-  <!-- Estilos mínimos embebidos para evitar dependencias rotas -->
-  <style>
-    :root{
-      --bg:#05070d; --panel:#0e1526; --line:#1f2a44; --txt:#d9e7ff; --acc:#00f5d4;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--txt)}
-    header{position:sticky;top:0;background:rgba(5,7,13,.8);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-    .topbar{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:12px 16px}
-    .brand{font-weight:700;letter-spacing:.5px;text-decoration:none;color:var(--txt)}
-    .menu{list-style:none;display:flex;gap:12px;margin:0;padding:0}
-    .menu a{color:var(--txt);text-decoration:none;opacity:.9}
-    .menu a:hover{color:var(--acc)}
-    main{max-width:1100px;margin:24px auto;padding:0 16px}
-    h1{margin:8px 0 16px;font-size:22px}
-    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-    .panel{grid-column:span 12;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
-    @media(min-width:900px){ .panel.col6{grid-column:span 6} }
-    label{display:block;font-size:13px;margin:8px 0 4px;opacity:.9}
-    input,select,button{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0a1020;color:var(--txt)}
-    button{cursor:pointer;background:linear-gradient(90deg,#00f5d4,#7cffb2);color:#051016;border:none;font-weight:700}
-    table{width:100%;border-collapse:collapse;margin-top:10px}
-    th,td{border-bottom:1px solid var(--line);padding:10px;text-align:left;font-size:14px}
-    .ok{color:#7cffb2}
-    .muted{opacity:.7;font-size:13px}
-    .note{border-left:3px solid var(--acc);padding-left:10px;margin:8px 0}
-    .pill{display:inline-block;padding:2px 8px;border:1px solid var(--line);border-radius:999px;font-size:12px;opacity:.85}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Recursos Humanos · AURUM∞</title>
+<link rel="stylesheet" href="/aurum-theme.css">
+<link rel="stylesheet" href="/common/topbar.css">
+<style>
+  .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
+  .card{background:#0b0f12;border:1px solid #1e2b33;border-radius:16px;padding:16px;margin-bottom:16px}
+  .row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  table{width:100%;border-collapse:collapse;margin-top:12px}
+  th,td{padding:10px;border-bottom:1px solid #1e2b33}
+  .btn{background:#00f5d4;border:0;padding:10px 14px;border-radius:10px;color:#001313;cursor:pointer}
+  .muted{opacity:.7}
+  @media (max-width:720px){.row{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
+<div id="topbar"></div>
 
-<header>
-  <nav class="topbar">
-    <a class="brand" href="/index.html">AURUM∞</a>
-    <ul class="menu">
-      <li><a href="/index.html">Inicio</a></li>
-      <li><a href="/vision.html">Visión</a></li>
-      <li><a href="/modulos.html">Módulos</a></li>
-      <li><a href="/modulos/ot/index.html">OT</a></li>
-      <li><a href="/modulos/hilux/index.html">Hilux</a></li>
-      <li><a href="/modulos/recursos-humanos/index.html">RR.HH.</a></li>
-      <li><a href="/modulos/bodega/index.html">Bodega</a></li>
-      <li><a href="/contacto.html">Contacto</a></li>
-    </ul>
-  </nav>
-</header>
+<main class="wrap">
+  <h1>Recursos Humanos</h1>
+  <p class="muted">Estado de conexión: <b data-conn>—</b></p>
 
-<main>
-  <h1>Recursos Humanos <span class="pill">BETA</span></h1>
-  <p class="muted">Si ves esta pantalla, la ruta está OK. Si faltan datos, es porque aún no conectamos Supabase en este módulo.</p>
+  <section class="card">
+    <h2>Nuevo colaborador</h2>
+    <form id="form-nuevo-trabajador" class="row">
+      <input name="nombre" placeholder="Nombre" required/>
+      <input name="rut" placeholder="RUT / ID"/>
+      <input name="cargo" placeholder="Cargo"/>
+      <button class="btn" style="grid-column:1/-1">Guardar</button>
+    </form>
+  </section>
 
-  <div class="grid">
-    <!-- Alta rápida -->
-    <section class="panel col6">
-      <h2 style="margin-top:0">Alta de colaborador</h2>
-      <div class="note">Este formulario guarda localmente para que puedas probar la UI sin backend.</div>
-      <label>Nombre completo</label>
-      <input id="rh_nombre" placeholder="Ej: Juan Pérez" />
-      <label>RUT / ID</label>
-      <input id="rh_rut" placeholder="Ej: 12.345.678-9" />
-      <label>Cargo</label>
-      <input id="rh_cargo" placeholder="Ej: Mecánico Mantención" />
-      <label>Fecha de ingreso</label>
-      <input id="rh_fecha" type="date" />
-      <button id="btn_alta" style="margin-top:12px">Registrar</button>
-      <p class="muted" id="msg_alta"></p>
-    </section>
-
-    <!-- Listado -->
-    <section class="panel col6">
-      <h2 style="margin-top:0">Listado</h2>
-      <table id="tabla_rh">
-        <thead>
-          <tr><th>Nombre</th><th>RUT</th><th>Cargo</th><th>Ingreso</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <p class="muted">Más tarde esto leerá/escribirá en <strong>Supabase · recursos_humanos</strong>.</p>
-    </section>
-
-    <!-- Asignación a OT -->
-    <section class="panel col6">
-      <h2 style="margin-top:0">Asignar a OT</h2>
-      <div class="note">Demostración local. La versión conectada usará la tabla <em>ot_trabajadores</em>.</div>
-      <label>Selecciona trabajador</label>
-      <select id="sel_trabajador"></select>
-      <label>ID de OT</label>
-      <input id="ot_id" placeholder="UUID o código interno" />
-      <label>Función en OT</label>
-      <input id="ot_funcion" placeholder="Ej: Jefe de turno" />
-      <button id="btn_asignar" style="margin-top:12px">Asignar</button>
-      <p class="muted" id="msg_asignar"></p>
-    </section>
-
-    <!-- Estado -->
-    <section class="panel col6">
-      <h2 style="margin-top:0">Estado de conexión</h2>
-      <p><strong>Backend:</strong> <span id="estado_backend" class="ok">Modo local (sin Supabase)</span></p>
-      <p class="muted">Cuando me pases la <em>URL</em> y <em>anon key</em> de Supabase, activo el modo conectado.</p>
-    </section>
-  </div>
+  <section class="card">
+    <h2>Listado</h2>
+    <table id="tabla-trabajadores">
+      <thead><tr><th>Nombre</th><th>RUT</th><th>Cargo</th><th>Acción</th></tr></thead>
+      <tbody><tr><td colspan="4">—</td></tr></tbody>
+    </table>
+  </section>
 </main>
 
-<script>
-  // Datos locales en memoria para probar UI sin backend:
-  const lista = [];
-  const tbody = document.querySelector('#tabla_rh tbody');
-  const sel = document.getElementById('sel_trabajador');
-  const msgAlta = document.getElementById('msg_alta');
-  const msgAsig = document.getElementById('msg_asignar');
+<script>fetch('/common/topbar.html').then(r=>r.text()).then(t=>document.getElementById('topbar').innerHTML=t)</script>
+<script type="module" src="/supabaseClient.js"></script>
+<script type="module" src="/aurum-data.js"></script>
+<script type="module">
+  import { listarTrabajadores, crearTrabajador, pintarEstadoConexion } from "/aurum-data.js";
+  pintarEstadoConexion();
 
-  function pintarTabla(){
-    tbody.innerHTML = '';
-    sel.innerHTML = '<option value="">-- Selecciona --</option>';
-    for(const r of lista){
-      const tr = document.createElement('tr');
-      tr.innerHTML = '<td>'+r.nombre+'</td><td>'+r.rut+'</td><td>'+r.cargo+'</td><td>'+r.fecha+'</td>';
-      tbody.appendChild(tr);
-
-      const opt = document.createElement('option');
-      opt.value = r.rut;
-      opt.textContent = r.nombre+' ('+r.rut+')';
-      sel.appendChild(opt);
-    }
+  const tbody = document.querySelector("#tabla-trabajadores tbody");
+  async function cargarTabla(){
+    tbody.innerHTML = '<tr><td colspan="4">Cargando…</td></tr>';
+    try{
+      const lista = await listarTrabajadores();
+      tbody.innerHTML = (lista.length? lista.map(t=>`
+        <tr><td>${t.nombre??"-"}</td><td>${t.rut??"-"}</td><td>${t.cargo??"-"}</td><td>—</td></tr>
+      `).join("") : '<tr><td colspan="4">Sin registros</td></tr>');
+    }catch(e){ console.error(e); tbody.innerHTML = '<tr><td colspan="4">Error</td></tr>'; }
   }
+  cargarTabla();
 
-  document.getElementById('btn_alta').addEventListener('click', ()=>{
-    const nombre = document.getElementById('rh_nombre').value.trim();
-    const rut    = document.getElementById('rh_rut').value.trim();
-    const cargo  = document.getElementById('rh_cargo').value.trim();
-    const fecha  = document.getElementById('rh_fecha').value || new Date().toISOString().slice(0,10);
-    if(!nombre || !rut || !cargo){ msgAlta.textContent='Completa nombre, RUT e cargo.'; return; }
-    lista.push({nombre,rut,cargo,fecha});
-    pintarTabla();
-    msgAlta.textContent='Colaborador registrado localmente (demo).';
+  document.getElementById("form-nuevo-trabajador").addEventListener("submit", async ev=>{
+    ev.preventDefault();
+    const fd = new FormData(ev.currentTarget);
+    try{
+      await crearTrabajador({ nombre:fd.get("nombre")?.trim()||null, rut:fd.get("rut")?.trim()||null, cargo:fd.get("cargo")?.trim()||null });
+      ev.currentTarget.reset();
+      await cargarTabla();
+      alert("Trabajador creado");
+    }catch(e){ console.error(e); alert("Error al crear"); }
   });
-
-  document.getElementById('btn_asignar').addEventListener('click', ()=>{
-    const trabajador = sel.value;
-    const ot = document.getElementById('ot_id').value.trim();
-    const fun = document.getElementById('ot_funcion').value.trim();
-    if(!trabajador || !ot || !fun){ msgAsig.textContent='Completa trabajador, OT y función.'; return; }
-    msgAsig.textContent='Asignación registrada localmente (demo).';
-  });
-
-  pintarTabla();
 </script>
-
 </body>
 </html>
