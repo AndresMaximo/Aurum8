@@ -1,53 +1,204 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Bodega · AURUM∞</title>
-<link rel="stylesheet" href="/aurum-theme.css">
-<link rel="stylesheet" href="/common/topbar.css">
-<style>
-  .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
-  .card{background:#0b0f12;border:1px solid #1e2b33;border-radius:16px;padding:16px;margin-bottom:16px}
-  table{width:100%;border-collapse:collapse}
-  th,td{padding:10px;border-bottom:1px solid #1e2b33}
-  .muted{opacity:.7}
-</style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AURUM∞ · Bodega</title>
+  <link rel="stylesheet" href="/aurum-theme.css">
+  <style>
+    body{margin:0;background:#000;color:#d8f3dc;font-family:Orbitron,sans-serif}
+    header{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid rgba(120,255,255,.15)}
+    header a{color:#00f5d4;text-decoration:none}
+    main{max-width:1100px;margin:24px auto;padding:0 18px}
+    .panel{background:#0a0f12;border:1px solid rgba(120,255,255,.18);border-radius:16px;padding:16px;margin-bottom:18px}
+    h1{margin:8px 0 12px 0;font-size:42px;letter-spacing:1px;color:#dffbe6}
+    .status{opacity:.8}
+    table{width:100%;border-collapse:separate;border-spacing:0 8px}
+    thead th{font-weight:600;text-align:left;padding:12px 10px;border-bottom:1px solid rgba(120,255,255,.18)}
+    tbody td{padding:10px;background:rgba(255,255,255,.03)}
+    tbody tr{border-radius:10px}
+    tbody tr td:first-child{border-top-left-radius:10px;border-bottom-left-radius:10px}
+    tbody tr td:last-child{border-top-right-radius:10px;border-bottom-right-radius:10px}
+    .row-actions{display:flex;gap:8px;justify-content:flex-end}
+    .btn{border:none;padding:10px 14px;border-radius:12px;background:#14f1c6;color:#031b1f;font-weight:700;cursor:pointer}
+    .btn.secondary{background:#112225;color:#b7ffe9;font-weight:600}
+    .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+    input{width:100%;padding:12px 10px;border-radius:12px;border:1px solid rgba(120,255,255,.2);background:#061419;color:#cffff0}
+    .muted{opacity:.65}
+    .tag{display:inline-block;padding:4px 10px;border-radius:999px;font-size:12px;margin-left:6px}
+    .ok{background:#063; color:#bfffd6}
+    .bad{background:#330; color:#ffd6bf}
+  </style>
 </head>
 <body>
-<div id="topbar"></div>
 
-<main class="wrap">
+<header>
+  <a href="/modulos.html">← Volver a módulos</a>
+  <div style="flex:1"></div>
+  <strong>AURUM∞</strong>
+</header>
+
+<main>
   <h1>Bodega</h1>
-  <p class="muted">Estado de conexión: <b data-conn>—</b></p>
+  <div class="status">Estado de conexión: <span id="conn">—</span></div>
 
-  <section class="card">
-    <h2>Inventario</h2>
-    <table id="tabla-inventario">
-      <thead><tr><th>SKU</th><th>Nombre</th><th>Stock</th></tr></thead>
-      <tbody><tr><td colspan="3">—</td></tr></tbody>
+  <section class="panel">
+    <h2 style="margin:0 0 10px 0">Inventario</h2>
+
+    <!-- Formulario rápido para crear / actualizar un ítem -->
+    <div class="grid" style="margin:8px 0 14px 0">
+      <input id="sku" placeholder="SKU (único)" />
+      <input id="nombre" placeholder="Nombre / Descripción" />
+      <input id="stock" type="number" min="0" placeholder="Stock inicial" />
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px">
+      <button class="btn" id="btnGuardar">Guardar / Actualizar ítem</button>
+      <button class="btn secondary" id="btnLimpiar">Limpiar</button>
+      <span class="muted">Se guarda en <code>inventario_items</code>.</span>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>Nombre</th>
+          <th>Stock</th>
+          <th style="text-align:right">Acción</th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+        <tr><td colspan="4" class="muted">Cargando…</td></tr>
+      </tbody>
     </table>
   </section>
 </main>
 
-<script>fetch('/common/topbar.html').then(r=>r.text()).then(t=>document.getElementById('topbar').innerHTML=t)</script>
-<script type="module" src="/supabaseClient.js"></script>
-<script type="module" src="/aurum-data.js"></script>
-<script type="module">
-  import { listarInventario, pintarEstadoConexion } from "/aurum-data.js";
-  pintarEstadoConexion();
-
-  const tbody = document.querySelector("#tabla-inventario tbody");
-  async function cargar(){
-    tbody.innerHTML = '<tr><td colspan="3">Cargando…</td></tr>';
-    try{
-      const items = await listarInventario();
-      tbody.innerHTML = items.length
-        ? items.map(i=>`<tr><td>${i.sku}</td><td>${i.nombre}</td><td>${i.stock}</td></tr>`).join("")
-        : '<tr><td colspan="3">Sin stock</td></tr>';
-    }catch(e){ console.error(e); tbody.innerHTML = '<tr><td colspan="3">Error</td></tr>'; }
+<!-- Cliente Supabase (usa tu archivo ya creado en raíz) -->
+<script src="/superbaseClient.js"></script>
+<script>
+(async () => {
+  // Verificar que el cliente exista
+  if (!window.supabase) {
+    document.getElementById('conn').innerHTML = 'local <span class="tag bad">Sin Supabase</span>';
+    console.warn('No se encontró window.supabase. Revisa /superbaseClient.js');
+    return;
   }
-  cargar();
+
+  // Chequeo rápido de conexión
+  try {
+    const { error } = await supabase.from('inventario_items').select('count', { count: 'exact', head: true });
+    if (error) throw error;
+    document.getElementById('conn').innerHTML = 'conectado <span class="tag ok">OK</span>';
+  } catch (e) {
+    document.getElementById('conn').innerHTML = 'error <span class="tag bad">Revisar claves</span>';
+    console.error(e);
+  }
+
+  const $tbody  = document.getElementById('tbody');
+  const $sku    = document.getElementById('sku');
+  const $nombre = document.getElementById('nombre');
+  const $stock  = document.getElementById('stock');
+  const $btnGuardar = document.getElementById('btnGuardar');
+  const $btnLimpiar = document.getElementById('btnLimpiar');
+
+  function limpiar() { $sku.value = ''; $nombre.value = ''; $stock.value = ''; }
+  $btnLimpiar.addEventListener('click', limpiar);
+
+  async function cargarTabla() {
+    $tbody.innerHTML = '<tr><td colspan="4" class="muted">Cargando…</td></tr>';
+    const { data, error } = await supabase
+      .from('inventario_items')
+      .select('*')
+      .order('sku', { ascending: true });
+
+    if (error) {
+      $tbody.innerHTML = '<tr><td colspan="4" class="muted">Error cargando inventario</td></tr>';
+      console.error(error);
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      $tbody.innerHTML = '<tr><td colspan="4" class="muted">No hay ítems</td></tr>';
+      return;
+    }
+
+    $tbody.innerHTML = '';
+    for (const it of data) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${it.sku ?? '—'}</td>
+        <td>${it.nombre ?? '—'}</td>
+        <td>${it.stock ?? 0}</td>
+        <td class="row-actions">
+          <button class="btn secondary" data-sku="${it.sku}" data-action="menos">–1</button>
+          <button class="btn" data-sku="${it.sku}" data-action="mas">+1</button>
+          <button class="btn secondary" data-sku="${it.sku}" data-action="editar">Editar</button>
+          <button class="btn secondary" data-sku="${it.sku}" data-action="eliminar">Eliminar</button>
+        </td>`;
+      $tbody.appendChild(tr);
+    }
+  }
+
+  // Guardar / actualizar ítem
+  $btnGuardar.addEventListener('click', async () => {
+    const payload = {
+      sku: ($sku.value || '').trim(),
+      nombre: ($nombre.value || '').trim(),
+      stock: Number($stock.value || 0)
+    };
+    if (!payload.sku) { alert('SKU es obligatorio'); return; }
+    if (payload.stock < 0) { alert('Stock no puede ser negativo'); return; }
+
+    // upsert por sku
+    const { error } = await supabase
+      .from('inventario_items')
+      .upsert(payload, { onConflict: 'sku' });
+
+    if (error) { alert('Error guardando: ' + error.message); return; }
+    limpiar(); cargarTabla();
+  });
+
+  // Delegación de eventos en la tabla
+  $tbody.addEventListener('click', async (ev) => {
+    const btn = ev.target.closest('button'); if (!btn) return;
+    const sku = btn.dataset.sku; const action = btn.dataset.action;
+
+    if (action === 'editar') {
+      // Cargar al formulario
+      const row = btn.closest('tr');
+      $sku.value    = sku;
+      $nombre.value = row.children[1].textContent;
+      $stock.value  = row.children[2].textContent;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (action === 'eliminar') {
+      if (!confirm('¿Eliminar ítem ' + sku + '?')) return;
+      const { error } = await supabase.from('inventario_items').delete().eq('sku', sku);
+      if (error) { alert('Error: ' + error.message); return; }
+      cargarTabla(); return;
+    }
+
+    // Ajuste +/- 1 (seguro)
+    if (action === 'mas' || action === 'menos') {
+      const delta = action === 'mas' ? 1 : -1;
+      // Trae stock actual para evitar condiciones de carrera simples
+      const { data, error } = await supabase
+        .from('inventario_items').select('stock').eq('sku', sku).single();
+      if (error) { alert('Error leyendo: ' + error.message); return; }
+
+      const nuevo = Math.max(0, Number(data?.stock || 0) + delta);
+      const { error: e2 } = await supabase
+        .from('inventario_items').update({ stock: nuevo }).eq('sku', sku);
+
+      if (e2) { alert('Error actualizando: ' + e2.message); return; }
+      cargarTabla(); return;
+    }
+  });
+
+  cargarTabla();
+})();
 </script>
 </body>
 </html>
