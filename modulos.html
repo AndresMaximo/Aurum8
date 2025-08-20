@@ -1,134 +1,72 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AURUM∞ · modulos</title>
-  <style>
-    :root{
-      --bg:#0a0d1a;--bg2:#12172e;--ink:#e8ecf7;--muted:#a7b3cf;
-      --line:rgba(158,231,255,.16);--gold:#e4c86a;--aqua:#9ee7ff;
-    }
-    html,body{margin:0;height:100%;background:
-      radial-gradient(1100px 520px at 20% 0%,#1a2142 0%,#0a0d1a 55%),
-      linear-gradient(180deg,#0a0d1a 0%,#070910 100%);
-      color:var(--ink);font-family:system-ui,Segoe UI,Inter,Roboto,Arial,sans-serif}
-    header{
-      display:flex;justify-content:space-between;align-items:center;
-      padding:12px 18px;border-bottom:1px solid var(--line);
-      background:linear-gradient(90deg,rgba(10,13,26,.85),rgba(18,23,46,.75))
-    }
-    .brand{display:flex;gap:12px;align-items:center}
-    .logo{width:40px;height:40px;border-radius:12px;
-      background: radial-gradient(circle at 30% 30%, var(--gold), #6e5a17 70%);
-      display:grid;place-items:center;color:#181818;font-weight:800;font-size:22px}
-    .crumbs a{color:var(--aqua);text-decoration:none}
-    main{max-width:1200px;margin:0 auto;padding:22px}
-    h1{margin:.2rem 0 1rem;font-size:1.6rem}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-    .card{
-      position:relative;border:1px solid var(--line);border-radius:14px;
-      background:rgba(18,23,46,.55);padding:16px;min-height:140px;
-      display:flex;flex-direction:column;justify-content:space-between
-    }
-    .card h3{margin:.2rem 0 .5rem}
-    .card p{margin:0 0 10px;color:var(--muted);font-size:.95rem}
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-    a.btn{display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700}
-    .btn-primary{background:var(--gold);color:#191919}
-    .btn-ghost{border:1px solid var(--line);color:var(--aqua)}
-    footer{border-top:1px solid var(--line);padding:16px;text-align:center;color:var(--muted)}
-  </style>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AURUM∞ · modulos</title>
+<link rel="stylesheet" href="/common/topbar.css">
+<link rel="stylesheet" href="/aurum-theme.css">
+<style>
+  body{margin:0;font-family:Orbitron,sans-serif;background:#000;color:#d8f3dc}
+  main{max-width:1100px;margin:24px auto;padding:0 20px}
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+  .card{border:1px solid rgba(120,255,255,.2);border-radius:14px;padding:16px;background:rgba(255,255,255,.03)}
+  .card h3{margin:0 0 6px 0}
+  .card p{margin:0 0 10px 0;opacity:.85}
+  .card a{display:inline-block;margin-top:6px;color:#00f5d4;text-decoration:none}
+  .card a:hover{text-decoration:underline}
+</style>
 </head>
 <body>
-<header>
-  <div class="brand">
-    <div class="logo">∞</div>
-    <div>
-      <div><strong>AURUM∞</strong></div>
-      <small class="muted">Centro de modulos</small>
-    </div>
-  </div>
-  <nav class="crumbs"><a href="/index.html">← Inicio</a></nav>
-</header>
+<div id="topbar"></div>
 
 <main>
-  <h1>modulos disponibles</h1>
-
+  <h2>modulos</h2>
   <div class="grid">
-    <!-- Órdenes de Trabajo -->
-    <article class="card">
-      <div>
-        <h3>Órdenes de Trabajo</h3>
-        <p>Crear/gestionar OT, asignar responsables, registrar consumos con descuento de stock.</p>
-      </div>
-      <div class="row">
-        <a class="btn btn-primary" href="/modulos/ot/index.html">Abrir OT</a>
-        <a class="btn btn-ghost" href="/modulos/recursos-humanos/index.html">Ver Personal</a>
-        <a class="btn btn-ghost" href="/modulos/bodega/index.html">Ver Bodega</a>
-      </div>
-    </article>
 
-    <!-- Hilux 3D Checklist -->
-    <article class="card">
-      <div>
-        <h3>Toyota Hilux · Checklist 3D</h3>
-        <p>Visor 3D (GLB) con 50 puntos de inspección y trazabilidad (QR por unidad).</p>
-      </div>
-      <div class="row">
-        <a class="btn btn-primary" href="/modulos/hilux/index.html">Abrir Hilux</a>
-        <a class="btn btn-ghost" href="/modulos/trazabilidad/index.html">Trazabilidad</a>
-      </div>
-    </article>
+    <div class="card">
+      <h3>Hilux · Checklist 3D</h3>
+      <p>50 puntos, QR y evidencias. (3D activo al subir <code>hilux.glb</code>)</p>
+      <a href="/modulos/hilux/index.html">Abrir módulo</a>
+    </div>
 
-    <!-- Numerología & Luna -->
-    <article class="card">
-      <div>
-        <h3>Numerología & Luna</h3>
-        <p>Informe diario (pitagórica/tántrica), luna natal y estado emocional del día.</p>
-      </div>
-      <div class="row">
-        <a class="btn btn-primary" href="/modulos/numerologia/index.html">Abrir Numerología</a>
-      </div>
-    </article>
+    <div class="card">
+      <h3>Órdenes de Trabajo</h3>
+      <p>Crear OT y asignar personal desde RR.HH.</p>
+      <a href="/modulos/ot/index.html">Abrir módulo</a>
+    </div>
 
-    <!-- Bodega y Almacenamiento -->
-    <article class="card">
-      <div>
-        <h3>Bodega y Almacenamiento</h3>
-        <p>Gestión de repuestos, entradas/salidas y stock; integrado con consumos de OT.</p>
-      </div>
-      <div class="row">
-        <a class="btn btn-primary" href="/modulos/bodega/index.html">Abrir Bodega</a>
-      </div>
-    </article>
+    <div class="card">
+      <h3>Numerología Integral</h3>
+      <p>Pitagórica + Tántrica + Luna (guardar informe opcional).</p>
+      <a href="/modulos/numerologia/index.html">Abrir módulo</a>
+    </div>
 
-    <!-- Recursos Humanos -->
-    <article class="card">
-      <div>
-        <h3>Recursos Humanos</h3>
-        <p>Altas/bajas de personal, cargos y relación con OT y registros diarios.</p>
-      </div>
-      <div class="row">
-        <a class="btn btn-primary" href="/modulos/recursos-humanos/index.html">Abrir RR.HH.</a>
-      </div>
-    </article>
+    <div class="card">
+      <h3>Recursos Humanos</h3>
+      <p>Alta de colaboradores por faena.</p>
+      <a href="/modulos/recursos-humanos/index.html">Abrir módulo</a>
+    </div>
 
-    <!-- Trazabilidad Energética -->
-    <article class="card">
-      <div>
-        <h3>Trazabilidad Energética</h3>
-        <p>Historial de inspecciones, QR por activo, evidencia y auditoría.</p>
-      </div>
-      <div class="row">
-        <a class="btn btn-primary" href="/modulos/trazabilidad/index.html">Abrir Trazabilidad</a>
-      </div>
-    </article>
+    <div class="card">
+      <h3>Bodega y Almacenamiento</h3>
+      <p>Stock, ingresos/egresos y trazabilidad por OT.</p>
+      <a href="/modulos/bodega/index.html">Abrir módulo</a>
+    </div>
+
+    <!-- NUEVO: tarjeta de administración de usuarios -->
+    <div class="card">
+      <h3>Administración de Usuarios</h3>
+      <p>Asigna roles a cuentas registradas (solo admin).</p>
+      <a href="/modulos/admin-usuarios/index.html">Abrir módulo</a>
+    </div>
+
   </div>
 </main>
 
-<footer>
-  © 2025 AURUM∞ · Tecnología del Alma
-</footer>
+<script>
+  fetch('/common/topbar.html')
+    .then(r=>r.text())
+    .then(h=>{ document.getElementById('topbar').innerHTML=h; });
+</script>
 </body>
 </html>
