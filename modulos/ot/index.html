@@ -15,7 +15,11 @@
   th,td{padding:10px;border-bottom:1px solid #1e2b33}
   .btn{background:#00f5d4;border:0;padding:10px 14px;border-radius:10px;color:#001313;cursor:pointer}
   .muted{opacity:.7}
-  @media (max-width:820px){.grid2{grid-template-columns:1fr}.row{grid-template-columns:1fr 1fr;}}
+  /* Evita solapes en móvil */
+  @media (max-width:820px){
+    .grid2{grid-template-columns:1fr}
+    .row{grid-template-columns:1fr}
+  }
 </style>
 </head>
 <body>
@@ -49,7 +53,7 @@
         <label>Función</label>
         <input id="input-funcion" placeholder="Ej: Mecánico, Supervisor"/>
       </div>
-      <div style="grid-column: span 2; text-align:right">
+      <div style="text-align:right">
         <button id="btn-asignar-ot" class="btn">Asignar a la OT</button>
       </div>
     </div>
@@ -75,13 +79,18 @@
   </section>
 </main>
 
-<script>fetch('/common/topbar.html').then(r=>r.text()).then(t=>document.getElementById('topbar').innerHTML=t)</script>
+<script>
+  // Topbar común
+  fetch('/common/topbar.html').then(r=>r.text()).then(t=>document.getElementById('topbar').innerHTML=t)
+</script>
+
 <script type="module" src="/supabaseClient.js"></script>
 <script type="module" src="/aurum-data.js"></script>
 <script type="module">
   import {
-    listarOTs, listarTrabajadores,
-    asignarTrabajadorAOT, registrarConsumo,
+    listarOTs, listarTrabajadores, listarAsignados,
+    asignarTrabajadorAOT, eliminarAsignacion,
+    registrarConsumo, listarConsumos,
     pintarEstadoConexion
   } from "/aurum-data.js";
 
@@ -93,12 +102,13 @@
   const lblEquipo = document.getElementById("lbl-equipo");
   const lblInicio = document.getElementById("lbl-inicio");
   const estadoOT = document.getElementById("estado-ot");
+  const tbodyResp = document.querySelector("#tabla-resp tbody");
+  const tbodyCons = document.querySelector("#tabla-consumos tbody");
 
-  // ===== Carga de datos en selects =====
   async function cargarOTs(){
     const ots = await listarOTs();
     selOT.innerHTML = `<option value="">Seleccionar OT</option>` +
-      ots.map(o => `<option value="${o.id}" data-equipo="${o.equipo??""}" data-estado="${o.estado??""}" data-inicio="${o.fecha_inicio??""}">
+      (ots||[]).map(o => `<option value="${o.id}" data-equipo="${o.equipo??""}" data-estado="${o.estado??""}" data-inicio="${o.fecha_inicio??""}">
         ${o.equipo??"Equipo"} · ${o.tipo??""}
       </option>`).join("");
   }
@@ -106,48 +116,73 @@
   async function cargarTrabajadores(){
     const lista = await listarTrabajadores();
     selTrab.innerHTML = `<option value="">Seleccionar trabajador</option>` +
-      lista.map(t => `<option value="${t.id}">${t.nombre}</option>`).join("");
+      (lista||[]).map(t => `<option value="${t.id}">${t.nombre}</option>`).join("");
   }
 
-  selOT.addEventListener("change", ()=>{
+  async function cargarAsignadosYConsumos(){
+    const ot_id = selOT.value;
+    // asignados
+    const asig = ot_id ? await listarAsignados(ot_id) : [];
+    tbodyResp.innerHTML = asig.length ? "" : `<tr><td colspan="3">—</td></tr>`;
+    asig.forEach(a=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${a.trabajador_nombre||'—'}</td><td>${a.funcion||'—'}</td>
+      <td><button data-id="${a.id}" class="btn btn-del" style="background:#182429;color:#d8f3dc">Quitar</button></td>`;
+      tbodyResp.appendChild(tr);
+    });
+    tbodyResp.querySelectorAll('.btn-del').forEach(b=>{
+      b.addEventListener('click', async ()=>{
+        await eliminarAsignacion(b.dataset.id);
+        await cargarAsignadosYConsumos();
+      });
+    });
+
+    // consumos
+    const cons = ot_id ? await listarConsumos(ot_id) : [];
+    tbodyCons.innerHTML = cons.length ? "" : `<tr><td colspan="4">—</td></tr>`;
+    cons.forEach(c=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${c.sku||'—'}</td><td>${c.nombre||'—'}</td><td>${c.cantidad||0}</td><td>${c.trabajador_nombre||'—'}</td>`;
+      tbodyCons.appendChild(tr);
+    });
+  }
+
+  selOT.addEventListener("change", async ()=>{
     const opt = selOT.selectedOptions[0];
     lblEquipo.textContent = opt?.dataset.equipo || "—";
     lblInicio.textContent = (opt?.dataset.inicio || "—").toString().slice(0,10);
     estadoOT.value = opt?.dataset.estado || "";
+    await cargarAsignadosYConsumos();
   });
 
-  // ===== Asignar responsable =====
   document.getElementById("btn-asignar-ot").addEventListener("click", async ()=>{
     const ot_id = selOT.value;
     const trabajador_id = selTrab.value;
     const funcion = (inputFuncion.value || "").trim();
     if(!ot_id || !trabajador_id || !funcion){ alert("Selecciona OT, trabajador y función"); return; }
-    try{
-      await asignarTrabajadorAOT(ot_id, trabajador_id, funcion);
-      alert("Asignado correctamente");
-    }catch(e){ console.error(e); alert("Error al asignar"); }
+    await asignarTrabajadorAOT(ot_id, trabajador_id, funcion);
+    inputFuncion.value = "";
+    await cargarAsignadosYConsumos();
+    alert("Asignado correctamente");
   });
 
-  // ===== Registrar consumo =====
   document.getElementById("form-consumo").addEventListener("submit", async ev=>{
     ev.preventDefault();
     const fd = new FormData(ev.currentTarget);
     const payload = {
       ot_id: selOT.value || null,
-      sku: fd.get("sku")?.trim() || null,
-      nombre: fd.get("nombre")?.trim() || null,
-      cantidad: Number(fd.get("cantidad") || 0),
+      sku: (fd.get("sku")||"").trim(),
+      nombre: (fd.get("nombre")||"").trim(),
+      cantidad: Number(fd.get("cantidad")||0),
       trabajador_id: selTrab.value || null
     };
     if(!payload.ot_id || !payload.sku || !payload.cantidad){ alert("OT, SKU y cantidad son obligatorios"); return; }
-    try{
-      await registrarConsumo(payload);
-      ev.currentTarget.reset();
-      alert("Consumo registrado");
-    }catch(e){ console.error(e); alert("Error al registrar"); }
+    await registrarConsumo(payload);
+    ev.currentTarget.reset();
+    await cargarAsignadosYConsumos();
+    alert("Consumo registrado");
   });
 
-  // Primera carga
   await cargarOTs();
   await cargarTrabajadores();
 </script>
