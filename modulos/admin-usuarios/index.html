@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AURUM∞ · Administración de Usuarios</title>
+<link rel="stylesheet" href="/common/topbar.css">
+<link rel="stylesheet" href="/aurum-theme.css">
+<style>
+  main{max-width:1100px;margin:24px auto;padding:0 20px}
+  .card{border:1px solid rgba(120,255,255,.2);border-radius:14px;padding:16px;background:rgba(255,255,255,.03);margin-bottom:16px}
+  table{width:100%;border-collapse:collapse;margin-top:8px}
+  th,td{border-bottom:1px solid rgba(255,255,255,.1);padding:10px;text-align:left;font-size:14px}
+  .role-select{background:#0b132b;color:#d8f3dc;border:1px solid #1c2541;border-radius:8px;padding:6px 8px}
+  .btn{padding:8px 12px;border-radius:10px;border:1px solid #00f5d4;background:transparent;color:#00f5d4;cursor:pointer}
+  .btn:hover{background:rgba(0,245,212,.08)}
+  .alert{padding:12px;border-radius:12px;margin:12px 0}
+  .ok{border:1px solid #00f5d4;background:rgba(0,245,212,.06)}
+  .err{border:1px solid #ff6b6b;background:rgba(255,107,107,.06)}
+  .muted{opacity:.8}
+</style>
+<script defer src="/supabaseClient.js"></script>
+</head>
+<body>
+<div id="topbar"></div>
+<main>
+  <h2>Administración de Usuarios</h2>
+  <p class="muted">Solo perfiles con rol <strong>admin</strong> pueden acceder.</p>
+
+  <div id="alert"></div>
+
+  <div id="admin-ui" class="card" style="display:none">
+    <h3>Perfiles registrados</h3>
+    <p class="muted">Para agregar a alguien nuevo: primero debe registrarse en la plataforma con su correo; luego aparecerá aquí y podrás asignarle rol.</p>
+    <table id="tbl">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Rol</th>
+          <th>Guardado</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+</main>
+
+<script>
+async function init(){
+  const top = await fetch('/common/topbar.html').then(r=>r.text());
+  document.getElementById('topbar').innerHTML = top;
+
+  // Espera a que supabaseClient esté disponible
+  if (!window.supabase) { 
+    setTimeout(init, 150); 
+    return; 
+  }
+  const sb = window.supabase;
+
+  // 1) Ver usuario logueado
+  const { data: { user }, error: uerr } = await sb.auth.getUser();
+  if(uerr || !user){
+    setAlert('err','Debes iniciar sesión para continuar.');
+    return;
+  }
+
+  // 2) Verifica que seas admin
+  const { data: myp } = await sb
+    .from('perfiles')
+    .select('role')
+    .eq('id', user.id)
+    .maybeSingle();
+
+  if(!myp || myp.role !== 'admin'){
+    setAlert('err','Acceso restringido. Solo administradores.');
+    return;
+  }
+
+  // 3) Carga perfiles
+  const { data: perfiles, error } = await sb
+    .from('perfiles')
+    .select('id, email, full_name, role, created_at')
+    .order('created_at', { ascending: false });
+
+  if(error){
+    setAlert('err','No se pudo cargar la lista de perfiles.');
+    return;
+  }
+
+  const tbody = document.getElementById('rows');
+  document.getElementById('admin-ui').style.display='block';
+
+  const roles = ['owner','admin','supervisor','operator','viewer'];
+
+  perfiles.forEach(p=>{
+    const tr = document.createElement('tr');
+
+    const tdN = document.createElement('td');
+    tdN.textContent = p.full_name || '—';
+    tr.appendChild(tdN);
+
+    const tdE = document.createElement('td');
+    tdE.textContent = p.email || '—';
+    tr.appendChild(tdE);
+
+    const tdR = document.createElement('td');
+    const sel = document.createElement('select');
+    sel.className='role-select';
+    roles.forEach(r=>{
+      const opt = document.createElement('option');
+      opt.value=r; opt.textContent=r;
+      if(p.role===r) opt.selected=true;
+      sel.appendChild(opt);
+    });
+    tdR.appendChild(sel);
+    tr.appendChild(tdR);
+
+    const tdA = document.createElement('td');
+    const btn = document.createElement('button');
+    btn.className='btn';
+    btn.textContent='Guardar';
+    btn.onclick = async ()=>{
+      btn.disabled = true;
+      const nuevo = sel.value;
+      const { error: uperr } = await sb
+        .from('perfiles')
+        .update({ role: nuevo })
+        .eq('id', p.id);
+      if(uperr){
+        tdA.innerHTML = '<span class="err alert">Error al guardar</span>';
+      } else {
+        tdA.innerHTML = '<span class="ok alert">Guardado ✓</span>';
+      }
+      btn.disabled = false;
+    };
+    tdA.appendChild(btn);
+    tr.appendChild(tdA);
+
+    tbody.appendChild(tr);
+  });
+}
+
+function setAlert(kind, msg){
+  const el = document.getElementById('alert');
+  el.className = 'alert ' + (kind==='err'?'err':'ok');
+  el.textContent = msg;
+}
+
+init();
+</script>
+</body>
+</html>
