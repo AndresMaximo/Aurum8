@@ -25,17 +25,26 @@
     }
 
     /* Header + Hamburguesa */
-    .top{position:sticky; top:0; z-index:40; backdrop-filter: blur(8px);
+    .top{
+      position:sticky; top:0; z-index:40;
+      backdrop-filter: blur(8px);
       background: linear-gradient(180deg, rgba(10,15,18,.9), rgba(10,15,18,.6));
-      border-bottom:1px solid var(--line)}
-    .nav{max-width:1100px; margin:0 auto; padding:14px 18px; display:flex; align-items:center; gap:16px}
+      border-bottom:1px solid var(--line);
+    }
+    .nav{
+      max-width:1100px; margin:0 auto; padding:14px 18px;
+      display:flex; align-items:center; gap:16px;
+    }
     .brand{font-weight:800; letter-spacing:.02em; color:var(--brand); font-size:22px; text-decoration:none}
     .spacer{flex:1}
-    .menu{display:flex; gap:14px; list-style:none; margin:0; padding:0}
+    .menu{display:flex; gap:14px}
     .menu a{color:var(--muted); text-decoration:none; font-size:14px; padding:8px 10px; border-radius:10px}
     .menu a:hover{color:var(--ink); background:rgba(255,255,255,.04); border:1px solid var(--line)}
-    .burger{display:none; border:1px solid var(--line); background:transparent; color:var(--ink); padding:8px 10px; border-radius:12px; font-weight:600}
-    .user-pill{padding:6px 10px;border-radius:999px;background:#061312;border:1px solid #1f4a42;font-size:12px;color:#9eeadf}
+
+    .burger{
+      display:none; border:1px solid var(--line); background:transparent; color:var(--ink);
+      padding:8px 10px; border-radius:12px; font-weight:600
+    }
 
     /* Hero */
     .hero{max-width:1100px; margin:34px auto 10px; padding:0 18px}
@@ -46,13 +55,18 @@
     /* Secciones */
     .wrap{max-width:1100px; margin:20px auto 70px; padding:0 18px}
     .grid{display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.01));
-      border:1px solid var(--line); border-radius:16px; padding:18px; min-height:180px; box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.01));
+      border:1px solid var(--line); border-radius:16px; padding:18px; min-height:180px;
+      box-shadow:0 10px 30px rgba(0,0,0,.35)
+    }
     .card h3{margin:0 0 8px; font-size:20px; color:#c6f7ee}
     .card p{margin:0 0 14px; color:#a8d9cb; font-size:14px}
-    .cta{display:inline-block; background:linear-gradient(90deg, var(--brand), var(--brand-2));
+    .cta{
+      display:inline-block; background:linear-gradient(90deg, var(--brand), var(--brand-2));
       color:#00120f; text-decoration:none; font-weight:800; letter-spacing:.02em;
-      padding:10px 14px; border-radius:12px; border:0; box-shadow:0 8px 18px rgba(0,245,212,.18)}
+      padding:10px 14px; border-radius:12px; border:0; box-shadow:0 8px 18px rgba(0,245,212,.18)
+    }
     .cta:active{transform:translateY(1px)}
 
     /* Footer */
@@ -69,7 +83,7 @@
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Header con hamburguesa funcional -->
   <header class="top">
     <nav class="nav">
       <a class="brand" href="/index.html">AURUM∞</a>
@@ -79,9 +93,6 @@
         <a href="/modulos.html">Módulos</a>
         <a href="/vision.html">Visión</a>
         <a href="/contacto.html">Contacto</a>
-        <span id="user-pill" class="user-pill" style="display:none"></span>
-        <a id="auth-link" href="/login.html">Login</a>
-        <a id="link-admin" href="/modulos/admin-usuarios/index.html" style="display:none">Admin</a>
       </div>
 
       <button class="burger" id="burger" aria-label="Abrir menú">☰ Menú</button>
@@ -106,11 +117,13 @@
         <p>Accede a todas las funciones operativas y de bienestar.</p>
         <a class="cta" href="/modulos.html">Ir a Módulos</a>
       </article>
+
       <article class="card">
         <h3>Visión</h3>
         <p>Nuestra inspiración y principios para integrar tecnología y conciencia.</p>
         <a class="cta" href="/vision.html">Ver Visión</a>
       </article>
+
       <article class="card">
         <h3>Contacto</h3>
         <p>¿Preguntas o ideas? Conversemos y diseñemos juntos tu operación ideal.</p>
@@ -126,51 +139,15 @@
     </div>
   </footer>
 
-  <script type="module">
-    import { supabase } from '/js/supabaseClient.js';
-
+  <script>
+    // Menú hamburguesa
     const burger = document.getElementById('burger');
     const menu = document.getElementById('menu');
-    const authLink = document.getElementById('auth-link');
-    const userPill = document.getElementById('user-pill');
-    const linkAdmin = document.getElementById('link-admin');
-
-    // Menú hamburguesa
-    burger.addEventListener('click', () => menu.classList.toggle('open'));
-    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', ()=>menu.classList.remove('open')));
-
-    // Sesión Supabase
-    async function refreshAuthUI(){
-      const { data: u } = await supabase.auth.getUser();
-      if (!u?.user){
-        authLink.textContent = 'Login';
-        authLink.href = '/login.html';
-        userPill.style.display = 'none';
-        linkAdmin.style.display = 'none';
-        return;
-      }
-      const { data: perfil } = await supabase
-        .from('perfiles')
-        .select('role, full_name, email')
-        .eq('id', u.user.id)
-        .maybeSingle();
-      const rol = perfil?.role || 'viewer';
-      const nombre = perfil?.full_name || perfil?.email || u.user.email;
-      userPill.textContent = `${nombre} · ${rol}`;
-      userPill.style.display = 'inline-block';
-      authLink.textContent = 'Salir';
-      authLink.href = '#';
-      linkAdmin.style.display = rol === 'admin' ? 'inline' : 'none';
-    }
-    await refreshAuthUI();
-    authLink.addEventListener('click', async e=>{
-      if(authLink.textContent==='Salir'){
-        e.preventDefault();
-        await supabase.auth.signOut();
-        location.href = '/login.html';
-      }
+    burger.addEventListener('click', () => {
+      menu.classList.toggle('open');
     });
-    supabase.auth.onAuthStateChange(()=> refreshAuthUI());
+    // Cierra el menú al hacer click en un enlace (móvil)
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', ()=>menu.classList.remove('open')));
   </script>
 </body>
 </html>
