@@ -1,42 +1,153 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>AURUM∞ · Inicio</title>
+
+  <!-- Fuente y tema base -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/aurum-theme.css">
+
+  <style>
+    :root{
+      --bg:#0a0f12; --card:#0f151a; --ink:#d8f3dc; --muted:#9bd1bf;
+      --brand:#00f5d4; --brand-2:#15b3a8; --line:rgba(120,255,255,.15)
+    }
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Orbitron,system-ui,Segoe UI,Roboto,sans-serif; color:var(--ink);
+      background:
+        radial-gradient(1200px 800px at 80% -10%, #103239 0%, #0a0f12 55%),
+        radial-gradient(800px 600px at -10% 100%, #092226 0%, #0a0f12 50%),
+        var(--bg);
+    }
+
+    /* Header + Hamburguesa */
+    .top{
+      position:sticky; top:0; z-index:40;
+      backdrop-filter: blur(8px);
+      background: linear-gradient(180deg, rgba(10,15,18,.9), rgba(10,15,18,.6));
+      border-bottom:1px solid var(--line);
+    }
+    .nav{
+      max-width:1100px; margin:0 auto; padding:14px 18px;
+      display:flex; align-items:center; gap:16px;
+    }
+    .brand{font-weight:800; letter-spacing:.02em; color:var(--brand); font-size:22px; text-decoration:none}
+    .spacer{flex:1}
+    .menu{display:flex; gap:14px}
+    .menu a{color:var(--muted); text-decoration:none; font-size:14px; padding:8px 10px; border-radius:10px}
+    .menu a:hover{color:var(--ink); background:rgba(255,255,255,.04); border:1px solid var(--line)}
+
+    .burger{
+      display:none; border:1px solid var(--line); background:transparent; color:var(--ink);
+      padding:8px 10px; border-radius:12px; font-weight:600
+    }
+
+    /* Hero */
+    .hero{max-width:1100px; margin:34px auto 10px; padding:0 18px}
+    .kicker{color:var(--brand); font-size:14px; letter-spacing:.14em}
+    .h1{font-size:clamp(36px,7vw,64px); line-height:1.02; margin:8px 0 10px}
+    .lead{color:#bfe9dc; font-weight:600; font-size:18px; max-width:850px}
+
+    /* Secciones */
+    .wrap{max-width:1100px; margin:20px auto 70px; padding:0 18px}
+    .grid{display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.01));
+      border:1px solid var(--line); border-radius:16px; padding:18px; min-height:180px;
+      box-shadow:0 10px 30px rgba(0,0,0,.35)
+    }
+    .card h3{margin:0 0 8px; font-size:20px; color:#c6f7ee}
+    .card p{margin:0 0 14px; color:#a8d9cb; font-size:14px}
+    .cta{
+      display:inline-block; background:linear-gradient(90deg, var(--brand), var(--brand-2));
+      color:#00120f; text-decoration:none; font-weight:800; letter-spacing:.02em;
+      padding:10px 14px; border-radius:12px; border:0; box-shadow:0 8px 18px rgba(0,245,212,.18)
+    }
+    .cta:active{transform:translateY(1px)}
+
+    /* Footer */
+    footer{border-top:1px solid var(--line); padding:26px 18px; color:#8bbbad}
+    .foot{max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; gap:10px; font-size:12px}
+
+    /* Responsive menú */
+    @media (max-width:880px){
+      .menu{display:none; position:absolute; right:18px; top:60px; flex-direction:column; background:#0b1115; padding:10px; border:1px solid var(--line); border-radius:12px}
+      .menu.open{display:flex}
+      .burger{display:inline-flex; align-items:center; gap:8px}
+    }
+  </style>
 </head>
 <body>
-  <nav class="topbar">
-    <a class="brand" href="/index.html">AURUM∞</a>
-    <ul class="menu">
-      <li><a href="/vision.html">Visión</a></li>
-      <li><a href="/modulos.html">Módulos</a></li>
-      <li><a href="/contacto.html">Contacto</a></li>
-    </ul>
-  </nav>
 
-  <main>
-    <h1>Bienvenido a AURUM∞</h1>
-    <p>Plataforma de trazabilidad industrial y energética.</p>
+  <!-- Header con hamburguesa funcional -->
+  <header class="top">
+    <nav class="nav">
+      <a class="brand" href="/index.html">AURUM∞</a>
+      <div class="spacer"></div>
 
+      <div class="menu" id="menu">
+        <a href="/modulos.html">Módulos</a>
+        <a href="/vision.html">Visión</a>
+        <a href="/contacto.html">Contacto</a>
+      </div>
+
+      <button class="burger" id="burger" aria-label="Abrir menú">☰ Menú</button>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="kicker">TECNOLOGÍA • CONCIENCIA • ENERGÍA</div>
+    <h1 class="h1">Bienvenido a <span style="color:var(--brand)">AURUM∞</span></h1>
+    <p class="lead">
+      Plataforma de trazabilidad industrial y bienestar humano: órdenes de trabajo, checklists 3D, 
+      recursos humanos y guía emocional diaria, con estética futurista y geometría sagrada.
+    </p>
+  </section>
+
+  <!-- Tarjetas principales -->
+  <section class="wrap">
     <div class="grid">
-      <div class="card">
+      <article class="card">
         <h3>Módulos</h3>
-        <p>Accede a todas las funciones.</p>
-        <a class="btn" href="/modulos.html">Ir a Módulos</a>
-      </div>
-      <div class="card">
+        <p>Accede a todas las funciones operativas y de bienestar.</p>
+        <a class="cta" href="/modulos.html">Ir a Módulos</a>
+      </article>
+
+      <article class="card">
         <h3>Visión</h3>
-        <p>Conoce nuestra filosofía Lemuriana.</p>
-        <a class="btn" href="/vision.html">Ver Visión</a>
-      </div>
-      <div class="card">
+        <p>Nuestra inspiración y principios para integrar tecnología y conciencia.</p>
+        <a class="cta" href="/vision.html">Ver Visión</a>
+      </article>
+
+      <article class="card">
         <h3>Contacto</h3>
-        <p>Habla con nosotros.</p>
-        <a class="btn" href="/contacto.html">Ir a Contacto</a>
-      </div>
+        <p>¿Preguntas o ideas? Conversemos y diseñemos juntos tu operación ideal.</p>
+        <a class="cta" href="/contacto.html">Ir a Contacto</a>
+      </article>
     </div>
-  </main>
+  </section>
+
+  <footer>
+    <div class="foot">
+      <span>© 2025 AURUM∞ · Todos los derechos reservados.</span>
+      <span>v1.0 • aurum8.cl</span>
+    </div>
+  </footer>
+
+  <script>
+    // Menú hamburguesa
+    const burger = document.getElementById('burger');
+    const menu = document.getElementById('menu');
+    burger.addEventListener('click', () => {
+      menu.classList.toggle('open');
+    });
+    // Cierra el menú al hacer click en un enlace (móvil)
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', ()=>menu.classList.remove('open')));
+  </script>
 </body>
 </html>
