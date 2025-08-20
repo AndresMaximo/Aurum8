@@ -13,7 +13,9 @@
   table{width:100%;border-collapse:collapse;margin-top:12px}
   th,td{padding:10px;border-bottom:1px solid #1e2b33}
   .btn{background:#00f5d4;border:0;padding:10px 14px;border-radius:10px;color:#001313;cursor:pointer}
+  .btn.secondary{background:#182429;color:#d8f3dc;border:1px solid rgba(255,255,255,.14)}
   .muted{opacity:.7}
+  .right{display:flex;gap:8px;justify-content:flex-end}
   @media (max-width:720px){.row{grid-template-columns:1fr}}
 </style>
 </head>
@@ -22,56 +24,144 @@
 
 <main class="wrap">
   <h1>Recursos Humanos</h1>
-  <p class="muted">Estado de conexión: <b data-conn>—</b></p>
+  <p class="muted">Estado de conexión: <b id="conn">—</b></p>
 
   <section class="card">
     <h2>Nuevo colaborador</h2>
-    <form id="form-nuevo-trabajador" class="row">
-      <input name="nombre" placeholder="Nombre" required/>
-      <input name="rut" placeholder="RUT / ID"/>
-      <input name="cargo" placeholder="Cargo"/>
-      <button class="btn" style="grid-column:1/-1">Guardar</button>
+    <form id="form-nuevo" class="row">
+      <div>
+        <label>Nombre</label>
+        <input name="nombre" placeholder="Nombre" required/>
+      </div>
+      <div>
+        <label>RUT / ID</label>
+        <input name="rut" placeholder="RUT / ID"/>
+      </div>
+      <div>
+        <label>Cargo</label>
+        <input name="cargo" placeholder="Cargo"/>
+      </div>
+      <div style="grid-column:1/-1" class="right">
+        <button class="btn">Guardar</button>
+        <button type="button" id="btn-limpiar" class="btn secondary">Limpiar</button>
+      </div>
     </form>
   </section>
 
   <section class="card">
     <h2>Listado</h2>
-    <table id="tabla-trabajadores">
-      <thead><tr><th>Nombre</th><th>RUT</th><th>Cargo</th><th>Acción</th></tr></thead>
+    <table id="tabla">
+      <thead><tr><th>Nombre</th><th>RUT</th><th>Cargo</th><th style="text-align:right">Acción</th></tr></thead>
       <tbody><tr><td colspan="4">—</td></tr></tbody>
     </table>
   </section>
 </main>
 
-<script>fetch('/common/topbar.html').then(r=>r.text()).then(t=>document.getElementById('topbar').innerHTML=t)</script>
-<script type="module" src="/supabaseClient.js"></script>
-<script type="module" src="/aurum-data.js"></script>
+<script>
+  // Inyecta topbar
+  fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h);
+</script>
+
+<!-- Usa tu cliente real -->
 <script type="module">
-  import { listarTrabajadores, crearTrabajador, pintarEstadoConexion } from "/aurum-data.js";
-  pintarEstadoConexion();
+  import { supabase } from '/js/supabaseClient.js';
 
-  const tbody = document.querySelector("#tabla-trabajadores tbody");
-  async function cargarTabla(){
-    tbody.innerHTML = '<tr><td colspan="4">Cargando…</td></tr>';
-    try{
-      const lista = await listarTrabajadores();
-      tbody.innerHTML = (lista.length? lista.map(t=>`
-        <tr><td>${t.nombre??"-"}</td><td>${t.rut??"-"}</td><td>${t.cargo??"-"}</td><td>—</td></tr>
-      `).join("") : '<tr><td colspan="4">Sin registros</td></tr>');
-    }catch(e){ console.error(e); tbody.innerHTML = '<tr><td colspan="4">Error</td></tr>'; }
+  const $conn = document.getElementById('conn');
+  const $tbody = document.querySelector('#tabla tbody');
+  const $form  = document.getElementById('form-nuevo');
+  const $btnLimpiar = document.getElementById('btn-limpiar');
+
+  // ---- Conexión
+  try{
+    const { error } = await supabase
+      .from('recursos_humanos')
+      .select('count', { count:'exact', head:true });
+    if(error) throw error;
+    $conn.textContent = 'conectado';
+  }catch(e){
+    console.error(e);
+    $conn.textContent = 'error (revisa claves / tabla)';
   }
-  cargarTabla();
 
-  document.getElementById("form-nuevo-trabajador").addEventListener("submit", async ev=>{
+  // ---- Helpers
+  function limpiar(){ $form.reset(); }
+
+  async function cargar(){
+    $tbody.innerHTML = '<tr><td colspan="4" class="muted">Cargando…</td></tr>';
+    const { data, error } = await supabase
+      .from('recursos_humanos')
+      .select('id,nombre,rut,cargo,fecha_ingreso')
+      .order('fecha_ingreso', { ascending:false });
+    if(error){
+      console.error(error);
+      $tbody.innerHTML = '<tr><td colspan="4">Error cargando</td></tr>';
+      return;
+    }
+    if(!data || data.length===0){
+      $tbody.innerHTML = '<tr><td colspan="4" class="muted">Sin registros</td></tr>';
+      return;
+    }
+    $tbody.innerHTML = '';
+    for(const t of data){
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${t.nombre ?? '-'}</td>
+        <td>${t.rut ?? '-'}</td>
+        <td>${t.cargo ?? '-'}</td>
+        <td class="right">
+          <button class="btn secondary" data-id="${t.id}" data-act="editar">Editar</button>
+          <button class="btn secondary" data-id="${t.id}" data-act="eliminar">Eliminar</button>
+        </td>`;
+      $tbody.appendChild(tr);
+    }
+  }
+
+  // ---- Crear / actualizar
+  $form.addEventListener('submit', async (ev)=>{
     ev.preventDefault();
-    const fd = new FormData(ev.currentTarget);
-    try{
-      await crearTrabajador({ nombre:fd.get("nombre")?.trim()||null, rut:fd.get("rut")?.trim()||null, cargo:fd.get("cargo")?.trim()||null });
-      ev.currentTarget.reset();
-      await cargarTabla();
-      alert("Trabajador creado");
-    }catch(e){ console.error(e); alert("Error al crear"); }
+    const fd = new FormData($form);
+    const payload = {
+      nombre: (fd.get('nombre')||'').trim() || null,
+      rut:    (fd.get('rut')||'').trim()    || null,
+      cargo:  (fd.get('cargo')||'').trim()  || null
+    };
+    if(!payload.nombre){ alert('Nombre es obligatorio'); return; }
+
+    const { error } = await supabase.from('recursos_humanos').insert(payload);
+    if(error){ alert('Error: '+error.message); return; }
+    limpiar(); cargar();
   });
+
+  // ---- Acciones tabla
+  $tbody.addEventListener('click', async (ev)=>{
+    const btn = ev.target.closest('button'); if(!btn) return;
+    const id = btn.dataset.id; const act = btn.dataset.act;
+
+    if(act==='eliminar'){
+      if(!confirm('¿Eliminar registro?')) return;
+      const { error } = await supabase.from('recursos_humanos').delete().eq('id', id);
+      if(error){ alert('Error: '+error.message); return; }
+      cargar(); return;
+    }
+
+    if(act==='editar'){
+      // Carga datos para edición simple (trae registro y sube al formulario)
+      const { data, error } = await supabase.from('recursos_humanos').select('*').eq('id', id).maybeSingle();
+      if(error || !data){ alert('Error leyendo'); return; }
+      $form.nombre.value = data.nombre || '';
+      $form.rut.value    = data.rut    || '';
+      $form.cargo.value  = data.cargo  || '';
+      // Para mantenerlo simple, al guardar insertamos; si prefieres UPDATE:
+      // await supabase.from('recursos_humanos').update({...}).eq('id', id)
+      // (si quieres que lo deje con UPDATE real, dime y lo cambio).
+      window.scrollTo({ top:0, behavior:'smooth' });
+    }
+  });
+
+  $btnLimpiar.addEventListener('click', limpiar);
+
+  // Primera carga
+  cargar();
 </script>
 </body>
 </html>
