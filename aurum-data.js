@@ -1,6 +1,5 @@
 <!-- /aurum-data.js -->
 <script type="module">
-  // Requiere que /supabaseClient.js se cargue ANTES en la página
   const sb = window.supabase;
 
   // ===== Recursos Humanos =====
@@ -14,12 +13,16 @@
   }
 
   export async function crearTrabajador(payload) {
-    const { data, error } = await sb.from("trabajadores").insert(payload).select().single();
+    const { data, error } = await sb
+      .from("trabajadores")
+      .insert(payload)
+      .select()
+      .single();
     if (error) throw error;
     return data;
   }
 
-  // ===== Órdenes de Trabajo (OT) =====
+  // ===== Órdenes de Trabajo =====
   export async function listarOTs() {
     const { data, error } = await sb
       .from("ordenes_trabajo")
@@ -40,6 +43,15 @@
   }
 
   // ===== Bodega / Consumos =====
+  export async function listarInventario() {
+    const { data, error } = await sb
+      .from("inventario")
+      .select("id, sku, nombre, stock")
+      .order("nombre", { ascending: true });
+    if (error) throw error;
+    return data ?? [];
+  }
+
   export async function registrarConsumo({ ot_id, sku, nombre, cantidad, trabajador_id }) {
     const { data, error } = await sb
       .from("consumos_almacen")
@@ -50,16 +62,7 @@
     return data;
   }
 
-  export async function listarInventario() {
-    const { data, error } = await sb
-      .from("inventario")
-      .select("id, sku, nombre, stock")
-      .order("nombre", { ascending: true });
-    if (error) throw error;
-    return data ?? [];
-  }
-
-  // ===== Utilidad opcional: setear estado de conexión en la UI =====
+  // ===== Utilidad: mostrar estado conexión =====
   export function pintarEstadoConexion(selector = "[data-conn]") {
     document.querySelectorAll(selector).forEach(el => {
       el.textContent = window.AURUM_BACKEND === "supabase"
