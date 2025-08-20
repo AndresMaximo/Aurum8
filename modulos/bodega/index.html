@@ -45,7 +45,6 @@
   <section class="panel">
     <h2 style="margin:0 0 10px 0">Inventario</h2>
 
-    <!-- Formulario rápido para crear / actualizar un ítem -->
     <div class="grid" style="margin:8px 0 14px 0">
       <input id="sku" placeholder="SKU (único)" />
       <input id="nombre" placeholder="Nombre / Descripción" />
@@ -73,132 +72,120 @@
   </section>
 </main>
 
-<!-- Cliente Supabase (usa tu archivo ya creado en raíz) -->
-<script src="/superbaseClient.js"></script>
-<script>
-(async () => {
-  // Verificar que el cliente exista
-  if (!window.supabase) {
-    document.getElementById('conn').innerHTML = 'local <span class="tag bad">Sin Supabase</span>';
-    console.warn('No se encontró window.supabase. Revisa /superbaseClient.js');
-    return;
-  }
+<!-- Cliente Supabase como módulo -->
+<script type="module">
+  import { supabase } from "/js/supabaseClient.js";
 
-  // Chequeo rápido de conexión
-  try {
-    const { error } = await supabase.from('inventario_items').select('count', { count: 'exact', head: true });
-    if (error) throw error;
-    document.getElementById('conn').innerHTML = 'conectado <span class="tag ok">OK</span>';
-  } catch (e) {
-    document.getElementById('conn').innerHTML = 'error <span class="tag bad">Revisar claves</span>';
-    console.error(e);
-  }
+  (async () => {
+    const $conn   = document.getElementById('conn');
+    const $tbody  = document.getElementById('tbody');
+    const $sku    = document.getElementById('sku');
+    const $nombre = document.getElementById('nombre');
+    const $stock  = document.getElementById('stock');
+    const $btnGuardar = document.getElementById('btnGuardar');
+    const $btnLimpiar = document.getElementById('btnLimpiar');
 
-  const $tbody  = document.getElementById('tbody');
-  const $sku    = document.getElementById('sku');
-  const $nombre = document.getElementById('nombre');
-  const $stock  = document.getElementById('stock');
-  const $btnGuardar = document.getElementById('btnGuardar');
-  const $btnLimpiar = document.getElementById('btnLimpiar');
-
-  function limpiar() { $sku.value = ''; $nombre.value = ''; $stock.value = ''; }
-  $btnLimpiar.addEventListener('click', limpiar);
-
-  async function cargarTabla() {
-    $tbody.innerHTML = '<tr><td colspan="4" class="muted">Cargando…</td></tr>';
-    const { data, error } = await supabase
-      .from('inventario_items')
-      .select('*')
-      .order('sku', { ascending: true });
-
-    if (error) {
-      $tbody.innerHTML = '<tr><td colspan="4" class="muted">Error cargando inventario</td></tr>';
-      console.error(error);
-      return;
+    // Estado conexión
+    try {
+      const { error } = await supabase
+        .from('inventario_items')
+        .select('count', { count: 'exact', head: true });
+      if (error) throw error;
+      $conn.innerHTML = 'conectado <span class="tag ok">OK</span>';
+    } catch (e) {
+      console.error(e);
+      $conn.innerHTML = 'error <span class="tag bad">Revisar claves</span>';
+      return; // cortamos aquí si no conecta
     }
 
-    if (!data || data.length === 0) {
-      $tbody.innerHTML = '<tr><td colspan="4" class="muted">No hay ítems</td></tr>';
-      return;
-    }
+    function limpiar(){ $sku.value=''; $nombre.value=''; $stock.value=''; }
+    $btnLimpiar.addEventListener('click', limpiar);
 
-    $tbody.innerHTML = '';
-    for (const it of data) {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${it.sku ?? '—'}</td>
-        <td>${it.nombre ?? '—'}</td>
-        <td>${it.stock ?? 0}</td>
-        <td class="row-actions">
-          <button class="btn secondary" data-sku="${it.sku}" data-action="menos">–1</button>
-          <button class="btn" data-sku="${it.sku}" data-action="mas">+1</button>
-          <button class="btn secondary" data-sku="${it.sku}" data-action="editar">Editar</button>
-          <button class="btn secondary" data-sku="${it.sku}" data-action="eliminar">Eliminar</button>
-        </td>`;
-      $tbody.appendChild(tr);
-    }
-  }
-
-  // Guardar / actualizar ítem
-  $btnGuardar.addEventListener('click', async () => {
-    const payload = {
-      sku: ($sku.value || '').trim(),
-      nombre: ($nombre.value || '').trim(),
-      stock: Number($stock.value || 0)
-    };
-    if (!payload.sku) { alert('SKU es obligatorio'); return; }
-    if (payload.stock < 0) { alert('Stock no puede ser negativo'); return; }
-
-    // upsert por sku
-    const { error } = await supabase
-      .from('inventario_items')
-      .upsert(payload, { onConflict: 'sku' });
-
-    if (error) { alert('Error guardando: ' + error.message); return; }
-    limpiar(); cargarTabla();
-  });
-
-  // Delegación de eventos en la tabla
-  $tbody.addEventListener('click', async (ev) => {
-    const btn = ev.target.closest('button'); if (!btn) return;
-    const sku = btn.dataset.sku; const action = btn.dataset.action;
-
-    if (action === 'editar') {
-      // Cargar al formulario
-      const row = btn.closest('tr');
-      $sku.value    = sku;
-      $nombre.value = row.children[1].textContent;
-      $stock.value  = row.children[2].textContent;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-
-    if (action === 'eliminar') {
-      if (!confirm('¿Eliminar ítem ' + sku + '?')) return;
-      const { error } = await supabase.from('inventario_items').delete().eq('sku', sku);
-      if (error) { alert('Error: ' + error.message); return; }
-      cargarTabla(); return;
-    }
-
-    // Ajuste +/- 1 (seguro)
-    if (action === 'mas' || action === 'menos') {
-      const delta = action === 'mas' ? 1 : -1;
-      // Trae stock actual para evitar condiciones de carrera simples
+    async function cargarTabla(){
+      $tbody.innerHTML = '<tr><td colspan="4" class="muted">Cargando…</td></tr>';
       const { data, error } = await supabase
-        .from('inventario_items').select('stock').eq('sku', sku).single();
-      if (error) { alert('Error leyendo: ' + error.message); return; }
-
-      const nuevo = Math.max(0, Number(data?.stock || 0) + delta);
-      const { error: e2 } = await supabase
-        .from('inventario_items').update({ stock: nuevo }).eq('sku', sku);
-
-      if (e2) { alert('Error actualizando: ' + e2.message); return; }
-      cargarTabla(); return;
+        .from('inventario_items')
+        .select('*')
+        .order('sku', { ascending:true });
+      if(error){
+        console.error(error);
+        $tbody.innerHTML = '<tr><td colspan="4" class="muted">Error cargando inventario</td></tr>';
+        return;
+      }
+      if(!data || data.length===0){
+        $tbody.innerHTML = '<tr><td colspan="4" class="muted">No hay ítems</td></tr>';
+        return;
+      }
+      $tbody.innerHTML = '';
+      for(const it of data){
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${it.sku ?? '—'}</td>
+          <td>${it.nombre ?? '—'}</td>
+          <td>${it.stock ?? 0}</td>
+          <td class="row-actions">
+            <button class="btn secondary" data-sku="${it.sku}" data-action="menos">–1</button>
+            <button class="btn" data-sku="${it.sku}" data-action="mas">+1</button>
+            <button class="btn secondary" data-sku="${it.sku}" data-action="editar">Editar</button>
+            <button class="btn secondary" data-sku="${it.sku}" data-action="eliminar">Eliminar</button>
+          </td>`;
+        $tbody.appendChild(tr);
+      }
     }
-  });
 
-  cargarTabla();
-})();
+    // Guardar / actualizar ítem
+    $btnGuardar.addEventListener('click', async ()=>{
+      const payload = {
+        sku: ($sku.value||'').trim(),
+        nombre: ($nombre.value||'').trim(),
+        stock: Number($stock.value||0)
+      };
+      if(!payload.sku){ alert('SKU es obligatorio'); return; }
+      if(payload.stock < 0){ alert('Stock no puede ser negativo'); return; }
+
+      const { error } = await supabase
+        .from('inventario_items')
+        .upsert(payload, { onConflict:'sku' });
+      if(error){ alert('Error guardando: '+error.message); return; }
+      limpiar(); cargarTabla();
+    });
+
+    // Acciones de la tabla
+    $tbody.addEventListener('click', async ev=>{
+      const btn = ev.target.closest('button'); if(!btn) return;
+      const sku = btn.dataset.sku; const action = btn.dataset.action;
+
+      if(action==='editar'){
+        const row = btn.closest('tr');
+        $sku.value    = sku;
+        $nombre.value = row.children[1].textContent;
+        $stock.value  = row.children[2].textContent;
+        window.scrollTo({ top:0, behavior:'smooth' });
+        return;
+      }
+
+      if(action==='eliminar'){
+        if(!confirm('¿Eliminar ítem '+sku+'?')) return;
+        const { error } = await supabase.from('inventario_items').delete().eq('sku', sku);
+        if(error){ alert('Error: '+error.message); return; }
+        cargarTabla(); return;
+      }
+
+      if(action==='mas' || action==='menos'){
+        const delta = action==='mas' ? 1 : -1;
+        const { data, error } = await supabase
+          .from('inventario_items').select('stock').eq('sku', sku).single();
+        if(error){ alert('Error leyendo: '+error.message); return; }
+        const nuevo = Math.max(0, Number(data?.stock||0) + delta);
+        const { error: e2 } = await supabase
+          .from('inventario_items').update({ stock:nuevo }).eq('sku', sku);
+        if(e2){ alert('Error actualizando: '+e2.message); return; }
+        cargarTabla();
+      }
+    });
+
+    cargarTabla();
+  })();
 </script>
 </body>
 </html>
