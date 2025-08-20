@@ -1,50 +1,17 @@
 {
   "trailingSlash": false,
-
   "redirects": [
     { "source": "/Contacto", "destination": "/contacto.html", "permanent": true },
-    { "source": "/contacto", "destination": "/contacto.html", "permanent": true },
-
     { "source": "/Vision", "destination": "/vision.html", "permanent": true },
     { "source": "/Visión", "destination": "/vision.html", "permanent": true },
-    { "source": "/vision", "destination": "/vision.html", "permanent": true },
-
     { "source": "/Modulos", "destination": "/modulos.html", "permanent": true },
-    { "source": "/Módulos", "destination": "/modulos.html", "permanent": true },
-    { "source": "/modulos", "destination": "/modulos.html", "permanent": true },
-
-    { "source": "/Modulos/:rest*", "destination": "/modulos/:rest*", "permanent": true }
+    { "source": "/Módulos", "destination": "/modulos.html", "permanent": true }
   ],
-
   "rewrites": [
     { "source": "/numerologia", "destination": "/modulos/numerologia/index.html" },
     { "source": "/ot", "destination": "/modulos/ot/index.html" },
     { "source": "/recursos-humanos", "destination": "/modulos/recursos-humanos/index.html" },
     { "source": "/hilux", "destination": "/modulos/hilux/index.html" },
-    { "source": "/bodega", "destination": "/modulos/bodega/index.html" },
-
-    { "source": "/:page(index|vision|modulos|contacto)", "destination": "/:page.html" }
-  ],
-
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
-        { "key": "X-XSS-Protection", "value": "0" }
-      ]
-    },
-    {
-      "source": "/(.*)\\.(css|js|png|jpg|jpeg|webp|svg|gif|ico|woff2?)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-      ]
-    }
-  ],
-
-  "cleanUrls": true
+    { "source": "/bodega", "destination": "/modulos/bodega/index.html" }
+  ]
 }
