@@ -1,144 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AURUM∞ · Bodega y Almacenamiento</title>
-  <style>
-    body {
-      margin:0; font-family: system-ui, sans-serif;
-      background: radial-gradient(circle at 20% 0%, #101428, #06070b 70%);
-      color: #e6e9f2;
-    }
-    header {
-      background: linear-gradient(90deg, rgba(18,22,42,.9), rgba(6,7,11,.85));
-      padding: 12px 20px;
-      border-bottom: 1px solid rgba(158,231,255,.15);
-      display:flex; justify-content:space-between; align-items:center;
-    }
-    .brand { display:flex; align-items:center; gap:12px; }
-    .logo {
-      width:38px;height:38px;border-radius:10px;
-      background: radial-gradient(circle at 30% 30%, #e4c86a, #6e5a17 70%);
-      display:flex;align-items:center;justify-content:center;
-      font-weight:800; font-size:22px; color:#111;
-    }
-    h1 { margin:18px 0; font-size:1.4rem; }
-    main { max-width:1000px; margin:0 auto; padding:22px; }
-    form {
-      background: rgba(18,22,42,.6);
-      padding:18px; border-radius:14px;
-      border:1px solid rgba(158,231,255,.15);
-      margin-bottom:22px;
-    }
-    input, select {
-      padding:8px; border-radius:6px; border:1px solid rgba(158,231,255,.25);
-      background:#0e1120; color:#e6e9f2;
-    }
-    label { font-size:.9rem; margin-bottom:4px; display:block; }
-    button {
-      padding:8px 14px; border-radius:6px; border:none;
-      background:#e4c86a; color:#111; font-weight:600;
-      cursor:pointer; margin-top:8px;
-    }
-    table {
-      width:100%; border-collapse:collapse; margin-top:18px;
-      background: rgba(18,22,42,.4);
-    }
-    th, td {
-      padding:10px; border:1px solid rgba(158,231,255,.15);
-      text-align:left;
-    }
-    th { background:rgba(158,231,255,.1); }
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Bodega · AURUM∞</title>
+<link rel="stylesheet" href="/aurum-theme.css">
+<link rel="stylesheet" href="/common/topbar.css">
+<style>
+  .wrap{max-width:1100px;margin:24px auto;padding:0 16px}
+  .card{background:#0b0f12;border:1px solid #1e2b33;border-radius:16px;padding:16px;margin-bottom:16px}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:10px;border-bottom:1px solid #1e2b33}
+  .muted{opacity:.7}
+</style>
 </head>
 <body>
-<header>
-  <div class="brand">
-    <div class="logo">∞</div>
-    <div>
-      <div><strong>AURUM∞</strong></div>
-      <small>Bodega y Almacenamiento</small>
-    </div>
-  </div>
-  <nav><a href="/modulos.html" style="color:#9ee7ff">← Volver</a></nav>
-</header>
+<div id="topbar"></div>
 
-<main>
-  <h1>Gestión de Inventario</h1>
+<main class="wrap">
+  <h1>Bodega</h1>
+  <p class="muted">Estado de conexión: <b data-conn>—</b></p>
 
-  <!-- Formulario ingreso producto -->
-  <form id="formIngreso">
-    <h3>Registrar Movimiento</h3>
-    <label>Producto</label>
-    <input type="text" id="producto" required>
-    <label>Cantidad</label>
-    <input type="number" id="cantidad" required>
-    <label>Movimiento</label>
-    <select id="tipo">
-      <option value="entrada">Entrada</option>
-      <option value="salida">Salida</option>
-    </select>
-    <button type="submit">Registrar</button>
-  </form>
-
-  <!-- Tabla inventario -->
-  <h3>Stock Actual</h3>
-  <table>
-    <thead>
-      <tr><th>Producto</th><th>Cantidad</th><th>Última actualización</th></tr>
-    </thead>
-    <tbody id="tablaBodega"></tbody>
-  </table>
+  <section class="card">
+    <h2>Inventario</h2>
+    <table id="tabla-inventario">
+      <thead><tr><th>SKU</th><th>Nombre</th><th>Stock</th></tr></thead>
+      <tbody><tr><td colspan="3">—</td></tr></tbody>
+    </table>
+  </section>
 </main>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script>
-  // ⚡ Configura tu conexión
-  const SUPABASE_URL = "https://TU_PROYECTO.supabase.co";
-  const SUPABASE_KEY = "TU_API_KEY";
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+<script>fetch('/common/topbar.html').then(r=>r.text()).then(t=>document.getElementById('topbar').innerHTML=t)</script>
+<script type="module" src="/supabaseClient.js"></script>
+<script type="module" src="/aurum-data.js"></script>
+<script type="module">
+  import { listarInventario, pintarEstadoConexion } from "/aurum-data.js";
+  pintarEstadoConexion();
 
-  // Función cargar inventario
-  async function cargarInventario(){
-    const { data, error } = await supabase
-      .from("bodega")
-      .select("*")
-      .order("updated_at", { ascending: false });
-    if(error){ console.error(error); return; }
-    const tbody = document.getElementById("tablaBodega");
-    tbody.innerHTML = "";
-    data.forEach(item=>{
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${item.producto}</td><td>${item.cantidad}</td><td>${new Date(item.updated_at).toLocaleString()}</td>`;
-      tbody.appendChild(tr);
-    });
+  const tbody = document.querySelector("#tabla-inventario tbody");
+  async function cargar(){
+    tbody.innerHTML = '<tr><td colspan="3">Cargando…</td></tr>';
+    try{
+      const items = await listarInventario();
+      tbody.innerHTML = items.length
+        ? items.map(i=>`<tr><td>${i.sku}</td><td>${i.nombre}</td><td>${i.stock}</td></tr>`).join("")
+        : '<tr><td colspan="3">Sin stock</td></tr>';
+    }catch(e){ console.error(e); tbody.innerHTML = '<tr><td colspan="3">Error</td></tr>'; }
   }
-
-  // Formulario registrar
-  document.getElementById("formIngreso").addEventListener("submit", async(e)=>{
-    e.preventDefault();
-    const producto = document.getElementById("producto").value;
-    const cantidad = parseInt(document.getElementById("cantidad").value);
-    const tipo = document.getElementById("tipo").value;
-
-    let movimiento = cantidad;
-    if(tipo==="salida"){ movimiento = -cantidad; }
-
-    // Verificar stock actual
-    let { data: existente } = await supabase.from("bodega").select("*").eq("producto", producto).single();
-
-    if(existente){
-      const nuevoStock = (existente.cantidad || 0) + movimiento;
-      await supabase.from("bodega").update({ cantidad: nuevoStock }).eq("id", existente.id);
-    } else {
-      await supabase.from("bodega").insert({ producto: producto, cantidad: cantidad });
-    }
-    e.target.reset();
-    cargarInventario();
-  });
-
-  cargarInventario();
+  cargar();
 </script>
 </body>
 </html>
