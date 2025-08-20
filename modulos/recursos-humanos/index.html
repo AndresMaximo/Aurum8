@@ -1,152 +1,157 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AURUM∞ · Recursos Humanos</title>
 
-  <link rel="stylesheet" href="/aurum-theme.css" />
-  <link rel="stylesheet" href="/Modulos/common/topbar.css" />
+  <!-- Estilos mínimos embebidos para evitar dependencias rotas -->
   <style>
-    .page{max-width:1100px;margin:120px auto 64px;padding:0 16px}
-    .panel{background:rgba(8,22,33,.6);border:1px solid rgba(120,255,233,.22);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25),inset 0 0 40px rgba(120,255,233,.06);padding:20px;margin-bottom:24px}
-    .panel h2{margin:0 0 8px;color:#b8fff5;text-shadow:0 0 10px rgba(120,255,233,.25);letter-spacing:.04em;font-weight:700}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
-    label{font-size:.9rem;color:#cfeff0;display:block;margin-bottom:8px}
-    input,select{width:100%;background:rgba(0,0,0,.35);border:1px solid rgba(120,255,233,.18);color:#e9fffb;padding:10px 12px;border-radius:10px;outline:none}
-    .btn{display:inline-block;padding:10px 16px;border-radius:12px;border:1px solid rgba(120,255,233,.25);color:#001f25;background:linear-gradient(135deg,#86ffe9,#18f8c2 55%,#34ffd6);font-weight:700;letter-spacing:.02em;cursor:pointer;transition:transform .12s,filter .12s}
-    .btn:hover{transform:translateY(-1px);filter:saturate(1.1)}
-    table{width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden}
-    thead th{text-align:left;font-size:.85rem;color:#8feee0;padding:12px;background:rgba(120,255,233,.075);border-bottom:1px solid rgba(120,255,233,.15)}
-    tbody td{padding:12px;border-bottom:1px solid rgba(120,255,233,.08);color:#e6fffb}
-    .muted{color:#a6c9cb;font-size:.9rem}
-    .row-actions{display:flex;gap:8px;flex-wrap:wrap}
-    .row-actions .btn{background:transparent;color:#9bf3e7;border-color:rgba(120,255,233,.35);padding:6px 10px}
+    :root{
+      --bg:#05070d; --panel:#0e1526; --line:#1f2a44; --txt:#d9e7ff; --acc:#00f5d4;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--txt)}
+    header{position:sticky;top:0;background:rgba(5,7,13,.8);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+    .topbar{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:12px 16px}
+    .brand{font-weight:700;letter-spacing:.5px;text-decoration:none;color:var(--txt)}
+    .menu{list-style:none;display:flex;gap:12px;margin:0;padding:0}
+    .menu a{color:var(--txt);text-decoration:none;opacity:.9}
+    .menu a:hover{color:var(--acc)}
+    main{max-width:1100px;margin:24px auto;padding:0 16px}
+    h1{margin:8px 0 16px;font-size:22px}
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .panel{grid-column:span 12;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+    @media(min-width:900px){ .panel.col6{grid-column:span 6} }
+    label{display:block;font-size:13px;margin:8px 0 4px;opacity:.9}
+    input,select,button{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0a1020;color:var(--txt)}
+    button{cursor:pointer;background:linear-gradient(90deg,#00f5d4,#7cffb2);color:#051016;border:none;font-weight:700}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{border-bottom:1px solid var(--line);padding:10px;text-align:left;font-size:14px}
+    .ok{color:#7cffb2}
+    .muted{opacity:.7;font-size:13px}
+    .note{border-left:3px solid var(--acc);padding-left:10px;margin:8px 0}
+    .pill{display:inline-block;padding:2px 8px;border:1px solid var(--line);border-radius:999px;font-size:12px;opacity:.85}
   </style>
 </head>
 <body>
-  <div id="topbar"></div>
 
-  <main class="page">
-    <section class="panel">
-      <h2>Agregar trabajador</h2>
-      <form id="form" class="grid">
-        <div>
-          <label>Nombre completo</label>
-          <input id="nombre" required placeholder="Ej: Ana Pérez" />
-        </div>
-        <div>
-          <label>RUT / ID</label>
-          <input id="rut" required placeholder="Ej: 12.345.678-9" />
-        </div>
-        <div>
-          <label>Cargo</label>
-          <input id="cargo" required placeholder="Ej: Mecánico" />
-        </div>
-        <div>
-          <label>Fecha de ingreso</label>
-          <input id="fecha" type="date" />
-        </div>
-        <div style="grid-column:1/-1;display:flex;gap:12px;align-items:end">
-          <button class="btn" type="submit">Guardar</button>
-          <span id="msg" class="muted"></span>
-        </div>
-      </form>
+<header>
+  <nav class="topbar">
+    <a class="brand" href="/index.html">AURUM∞</a>
+    <ul class="menu">
+      <li><a href="/index.html">Inicio</a></li>
+      <li><a href="/vision.html">Visión</a></li>
+      <li><a href="/modulos.html">Módulos</a></li>
+      <li><a href="/modulos/ot/index.html">OT</a></li>
+      <li><a href="/modulos/hilux/index.html">Hilux</a></li>
+      <li><a href="/modulos/recursos-humanos/index.html">RR.HH.</a></li>
+      <li><a href="/modulos/bodega/index.html">Bodega</a></li>
+      <li><a href="/contacto.html">Contacto</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <h1>Recursos Humanos <span class="pill">BETA</span></h1>
+  <p class="muted">Si ves esta pantalla, la ruta está OK. Si faltan datos, es porque aún no conectamos Supabase en este módulo.</p>
+
+  <div class="grid">
+    <!-- Alta rápida -->
+    <section class="panel col6">
+      <h2 style="margin-top:0">Alta de colaborador</h2>
+      <div class="note">Este formulario guarda localmente para que puedas probar la UI sin backend.</div>
+      <label>Nombre completo</label>
+      <input id="rh_nombre" placeholder="Ej: Juan Pérez" />
+      <label>RUT / ID</label>
+      <input id="rh_rut" placeholder="Ej: 12.345.678-9" />
+      <label>Cargo</label>
+      <input id="rh_cargo" placeholder="Ej: Mecánico Mantención" />
+      <label>Fecha de ingreso</label>
+      <input id="rh_fecha" type="date" />
+      <button id="btn_alta" style="margin-top:12px">Registrar</button>
+      <p class="muted" id="msg_alta"></p>
     </section>
 
-    <section class="panel">
-      <h2>Listado</h2>
-      <div class="muted" style="margin-bottom:8px">Últimos 200 registros.</div>
-      <div style="overflow-x:auto">
-        <table>
-          <thead>
-            <tr>
-              <th>Nombre</th><th>RUT</th><th>Cargo</th><th>Ingreso</th><th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tbody"><tr><td class="muted" colspan="5">Cargando…</td></tr></tbody>
-        </table>
-      </div>
+    <!-- Listado -->
+    <section class="panel col6">
+      <h2 style="margin-top:0">Listado</h2>
+      <table id="tabla_rh">
+        <thead>
+          <tr><th>Nombre</th><th>RUT</th><th>Cargo</th><th>Ingreso</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <p class="muted">Más tarde esto leerá/escribirá en <strong>Supabase · recursos_humanos</strong>.</p>
     </section>
-  </main>
 
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  <script src="/aurum.js"></script>
-  <script>
-    // Topbar
-    (async()=>{try{const h=await fetch('/Modulos/common/topbar.html',{cache:'no-store'}).then(r=>r.text());document.getElementById('topbar').innerHTML=h;}catch(e){}})();
+    <!-- Asignación a OT -->
+    <section class="panel col6">
+      <h2 style="margin-top:0">Asignar a OT</h2>
+      <div class="note">Demostración local. La versión conectada usará la tabla <em>ot_trabajadores</em>.</div>
+      <label>Selecciona trabajador</label>
+      <select id="sel_trabajador"></select>
+      <label>ID de OT</label>
+      <input id="ot_id" placeholder="UUID o código interno" />
+      <label>Función en OT</label>
+      <input id="ot_funcion" placeholder="Ej: Jefe de turno" />
+      <button id="btn_asignar" style="margin-top:12px">Asignar</button>
+      <p class="muted" id="msg_asignar"></p>
+    </section>
 
-    const $tbody = document.getElementById('tbody');
-    const $msg = document.getElementById('msg');
-    const $form = document.getElementById('form');
-    const $nombre = document.getElementById('nombre');
-    const $rut = document.getElementById('rut');
-    const $cargo = document.getElementById('cargo');
-    const $fecha = document.getElementById('fecha');
+    <!-- Estado -->
+    <section class="panel col6">
+      <h2 style="margin-top:0">Estado de conexión</h2>
+      <p><strong>Backend:</strong> <span id="estado_backend" class="ok">Modo local (sin Supabase)</span></p>
+      <p class="muted">Cuando me pases la <em>URL</em> y <em>anon key</em> de Supabase, activo el modo conectado.</p>
+    </section>
+  </div>
+</main>
 
-    const toast = (t)=>{ $msg.textContent=t; setTimeout(()=> $msg.textContent='', 2200); };
+<script>
+  // Datos locales en memoria para probar UI sin backend:
+  const lista = [];
+  const tbody = document.querySelector('#tabla_rh tbody');
+  const sel = document.getElementById('sel_trabajador');
+  const msgAlta = document.getElementById('msg_alta');
+  const msgAsig = document.getElementById('msg_asignar');
 
-    async function cargar() {
-      $tbody.innerHTML = `<tr><td class="muted" colspan="5">Cargando…</td></tr>`;
-      const { data, error } = await window.db
-        .from('recursos_humanos')
-        .select('*')
-        .order('fecha_ingreso', { ascending:false })
-        .limit(200);
-      if (error) return $tbody.innerHTML = `<tr><td colspan="5">Error: ${error.message}</td></tr>`;
-      if (!data?.length) return $tbody.innerHTML = `<tr><td class="muted" colspan="5">Sin datos aún.</td></tr>`;
-      $tbody.innerHTML = data.map(r => `
-        <tr data-id="${r.id}">
-          <td>${r.nombre??''}</td>
-          <td>${r.rut??''}</td>
-          <td>${r.cargo??''}</td>
-          <td>${r.fecha_ingreso? new Date(r.fecha_ingreso).toLocaleDateString():'—'}</td>
-          <td class="row-actions">
-            <button class="btn" data-a="editar">Editar</button>
-            <button class="btn" data-a="borrar">Borrar</button>
-          </td>
-        </tr>
-      `).join('');
+  function pintarTabla(){
+    tbody.innerHTML = '';
+    sel.innerHTML = '<option value="">-- Selecciona --</option>';
+    for(const r of lista){
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td>'+r.nombre+'</td><td>'+r.rut+'</td><td>'+r.cargo+'</td><td>'+r.fecha+'</td>';
+      tbody.appendChild(tr);
+
+      const opt = document.createElement('option');
+      opt.value = r.rut;
+      opt.textContent = r.nombre+' ('+r.rut+')';
+      sel.appendChild(opt);
     }
+  }
 
-    $form.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const payload = {
-        nombre: $nombre.value.trim(),
-        rut: $rut.value.trim(),
-        cargo: $cargo.value.trim(),
-        fecha_ingreso: $fecha.value || null
-      };
-      const { error } = await window.db.from('recursos_humanos').insert(payload);
-      if (error) return toast('Error: '+error.message);
-      $form.reset(); toast('Guardado'); cargar();
-    });
+  document.getElementById('btn_alta').addEventListener('click', ()=>{
+    const nombre = document.getElementById('rh_nombre').value.trim();
+    const rut    = document.getElementById('rh_rut').value.trim();
+    const cargo  = document.getElementById('rh_cargo').value.trim();
+    const fecha  = document.getElementById('rh_fecha').value || new Date().toISOString().slice(0,10);
+    if(!nombre || !rut || !cargo){ msgAlta.textContent='Completa nombre, RUT e cargo.'; return; }
+    lista.push({nombre,rut,cargo,fecha});
+    pintarTabla();
+    msgAlta.textContent='Colaborador registrado localmente (demo).';
+  });
 
-    $tbody.addEventListener('click', async (e)=>{
-      const b = e.target.closest('button'); if(!b) return;
-      const tr = e.target.closest('tr'); const id = tr?.dataset?.id; if(!id) return;
-      const act = b.dataset.a;
+  document.getElementById('btn_asignar').addEventListener('click', ()=>{
+    const trabajador = sel.value;
+    const ot = document.getElementById('ot_id').value.trim();
+    const fun = document.getElementById('ot_funcion').value.trim();
+    if(!trabajador || !ot || !fun){ msgAsig.textContent='Completa trabajador, OT y función.'; return; }
+    msgAsig.textContent='Asignación registrada localmente (demo).';
+  });
 
-      if (act==='borrar') {
-        if (!confirm('¿Eliminar registro?')) return;
-        const { error } = await window.db.from('recursos_humanos').delete().eq('id', id);
-        if (error) return toast('Error: '+error.message);
-        toast('Eliminado'); cargar();
-      }
+  pintarTabla();
+</script>
 
-      if (act==='editar') {
-        const nombre = prompt('Nombre:', tr.children[0].textContent) ?? '';
-        const rut    = prompt('RUT/ID:', tr.children[1].textContent) ?? '';
-        const cargo  = prompt('Cargo:', tr.children[2].textContent) ?? '';
-        if (!nombre.trim() || !rut.trim() || !cargo.trim()) return;
-        const { error } = await window.db.from('recursos_humanos')
-          .update({ nombre, rut, cargo }).eq('id', id);
-        if (error) return toast('Error: '+error.message);
-        toast('Actualizado'); cargar();
-      }
-    });
-
-    cargar();
-  </script>
 </body>
 </html>
