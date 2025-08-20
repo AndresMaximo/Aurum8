@@ -1,34 +1,21 @@
-<nav class="topbar">
+<nav class="topbar" role="navigation">
   <a class="brand" href="/index.html">AURUM∞</a>
 
-  <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false">
+  <!-- Botón hamburguesa -->
+  <button class="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="main-menu">
     <span></span><span></span><span></span>
   </button>
 
-  <ul class="menu" id="menu">
-    <li><a href="/index.html">Inicio</a></li>
-    <li><a href="/vision.html">Visión</a></li>
-    <li><a href="/modulos.html">Módulos</a></li>
-    <li><a href="/modulos/numerologia/index.html">Numerología</a></li>
-    <li><a href="/modulos/ot/index.html">Órdenes de Trabajo</a></li>
-    <li><a href="/modulos/recursos-humanos/index.html">Recursos Humanos</a></li>
-    <li><a href="/modulos/hilux/index.html">Hilux</a></li>
-    <li><a href="/modulos/bodega/index.html">Bodega</a></li>
-    <li><a href="/login.html" id="lkAuth">Entrar</a></li>
+  <!-- Menú principal -->
+  <ul id="main-menu" class="menu">
+    <li><a href="/index.html">inicio</a></li>
+    <li><a href="/vision.html">visión</a></li>
+    <li><a href="/modulos.html">modulos</a></li>
+    <li><a href="/modulos/numerologia/index.html">numerología</a></li>
+    <li><a href="/modulos/ot/index.html">órdenes de trabajo</a></li>
+    <li><a href="/modulos/recursos-humanos/index.html">recursos humanos</a></li>
+    <li><a href="/modulos/hilux/index.html">hilux</a></li>
+    <li><a href="/modulos/bodega/index.html">bodega</a></li>
+    <li><a href="/contacto.html">contacto</a></li>
   </ul>
 </nav>
-
-<script>
-  const burger = document.getElementById('burger');
-  const menu   = document.getElementById('menu');
-
-  burger?.addEventListener('click', ()=>{
-    const opened = menu.classList.toggle('open');
-    burger.setAttribute('aria-expanded', opened ? 'true' : 'false');
-  });
-
-  // Cerrar al hacer click en un link (móvil)
-  menu?.querySelectorAll('a').forEach(a=>{
-    a.addEventListener('click', ()=> menu.classList.remove('open'));
-  });
-</script>
