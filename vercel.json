@@ -4,8 +4,11 @@
     { "source": "/Contacto", "destination": "/contacto.html", "permanent": true },
     { "source": "/Vision", "destination": "/vision.html", "permanent": true },
     { "source": "/Visión", "destination": "/vision.html", "permanent": true },
+    { "source": "/visión", "destination": "/vision.html", "permanent": true },
     { "source": "/Modulos", "destination": "/modulos.html", "permanent": true },
-    { "source": "/Módulos", "destination": "/modulos.html", "permanent": true }
+    { "source": "/Módulos", "destination": "/modulos.html", "permanent": true },
+    { "source": "/modulos", "destination": "/modulos.html", "permanent": true },
+    { "source": "/módulos", "destination": "/modulos.html", "permanent": true }
   ],
   "rewrites": [
     { "source": "/numerologia", "destination": "/modulos/numerologia/index.html" },
