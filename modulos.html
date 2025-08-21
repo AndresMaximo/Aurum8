@@ -1,89 +1,106 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>AURUM∞ · módulos</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AURUM∞ · Módulos</title>
 
-<!-- Tema base + topbar -->
-<link rel="stylesheet" href="/aurum-theme.css">
-<link rel="stylesheet" href="/common/topbar.css">
+  <!-- Estilos compartidos -->
+  <link rel="stylesheet" href="/aurum-theme.css">
+  <link rel="stylesheet" href="/common/topbar.css">
 
-<style>
-  body{margin:0;font-family:Orbitron,sans-serif;background:#0a0f12;color:#d8f3dc}
-  main{max-width:1100px;margin:24px auto;padding:0 18px}
-  h2{margin:10px 0 16px}
-  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-  .card{
-    background:linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.01));
-    border:1px solid rgba(120,255,255,.18);
-    border-radius:16px;padding:18px;min-height:180px;
-    box-shadow:0 10px 30px rgba(0,0,0,.35)
-  }
-  .card h3{margin:0 0 8px 0;color:#c6f7ee}
-  .card p{margin:0 0 12px 0;opacity:.9}
-  .card a{
-    display:inline-block;margin-top:4px;
-    color:#00f5d4;text-decoration:none;font-weight:800;letter-spacing:.02em;
-    padding:8px 12px;border-radius:12px;border:1px solid rgba(120,255,255,.18);
-    background:rgba(255,255,255,.03)
-  }
-  .card a:hover{background:rgba(255,255,255,.06)}
-</style>
+  <style>
+    body{margin:0;font-family:Orbitron,sans-serif;background:#000;color:#d8f3dc}
+    main{max-width:1100px;margin:24px auto;padding:0 20px}
+    h1{font-size:clamp(28px,4vw,36px);margin:0 0 12px}
+    .intro{opacity:.85;margin-bottom:14px}
+
+    .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+    .card{
+      border:1px solid rgba(120,255,255,.2);
+      border-radius:14px;
+      padding:16px;
+      background:rgba(255,255,255,.03);
+      transition:transform .08s ease, box-shadow .12s ease, border-color .12s ease;
+    }
+    .card:focus-within, .card:hover{
+      transform:translateY(-1px);
+      box-shadow:0 8px 24px rgba(0,0,0,.35);
+      border-color:rgba(0,245,212,.35);
+      outline: none;
+    }
+    .card h3{margin:0 0 8px 0;font-size:18px;color:#c7fff2}
+    .card p{margin:0 0 12px 0;opacity:.88;line-height:1.45}
+    .card a{
+      display:inline-block;
+      margin-top:2px;
+      color:#00f5d4;
+      text-decoration:none;
+      font-weight:700;
+      border:1px solid rgba(0,245,212,.25);
+      padding:8px 12px;
+      border-radius:12px;
+      background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+    }
+    .card a:hover{border-color:#00f5d4}
+    .muted{opacity:.75;font-size:.95rem}
+  </style>
 </head>
 <body>
+  <!-- Topbar compartido -->
+  <div id="topbar"></div>
+  <script>
+    // Carga del topbar; si falla, pone un fallback simple
+    fetch('/common/topbar.html')
+      .then(r=>r.ok ? r.text() : Promise.reject())
+      .then(html=>{ document.getElementById('topbar').innerHTML = html; })
+      .catch(()=>{
+        document.getElementById('topbar').innerHTML =
+          '<nav class="topbar"><a class="brand" href="/index.html">AURUM∞</a></nav>';
+      });
+  </script>
 
-<!-- Header unificado (carga /common/topbar.html con login/roles) -->
-<div id="topbar"></div>
+  <main>
+    <h1>Módulos</h1>
+    <p class="intro muted">Accede a cada componente operativo y de bienestar. (Los módulos 3D activan visualización al subir sus modelos <code>.glb</code>).</p>
 
-<main>
-  <h2>Módulos</h2>
-  <div class="grid">
+    <div class="grid">
+      <section class="card" tabindex="0">
+        <h3>Hilux · Checklist 3D</h3>
+        <p>50 puntos, QR y evidencias. Activa el 3D al subir <code>hilux.glb</code>.</p>
+        <a href="/modulos/hilux/index.html" aria-label="Abrir módulo Hilux Checklist 3D">Abrir módulo</a>
+      </section>
 
-    <article class="card">
-      <h3>Hilux · Checklist 3D</h3>
-      <p>50 puntos, QR y evidencias. (3D activo al subir <code>hilux.glb</code>).</p>
-      <a href="/modulos/hilux/index.html">Abrir módulo</a>
-    </article>
+      <section class="card" tabindex="0">
+        <h3>Órdenes de Trabajo</h3>
+        <p>Crear OT y asignar personal desde RR.HH. con trazabilidad.</p>
+        <a href="/modulos/ot/index.html" aria-label="Abrir módulo Órdenes de Trabajo">Abrir módulo</a>
+      </section>
 
-    <article class="card">
-      <h3>Órdenes de Trabajo</h3>
-      <p>Crear OT, asignar personal (vinculado a RR.HH.).</p>
-      <a href="/modulos/ot/index.html">Abrir módulo</a>
-    </article>
+      <section class="card" tabindex="0">
+        <h3>Numerología Integral</h3>
+        <p>Pitagórica + Tántrica + Luna. Genera diagnóstico y guarda informe.</p>
+        <a href="/modulos/numerologia/index.html" aria-label="Abrir módulo Numerología Integral">Abrir módulo</a>
+      </section>
 
-    <article class="card">
-      <h3>Numerología Integral</h3>
-      <p>Pitagórica + Tántrica + Luna (guardar informe opcional).</p>
-      <a href="/modulos/numerologia/index.html">Abrir módulo</a>
-    </article>
+      <section class="card" tabindex="0">
+        <h3>Recursos Humanos</h3>
+        <p>Altas de colaboradores por faena, roles y asignaciones.</p>
+        <a href="/modulos/recursos-humanos/index.html" aria-label="Abrir módulo Recursos Humanos">Abrir módulo</a>
+      </section>
 
-    <article class="card">
-      <h3>Recursos Humanos</h3>
-      <p>Alta de colaboradores por faena y roles.</p>
-      <a href="/modulos/recursos-humanos/index.html">Abrir módulo</a>
-    </article>
+      <section class="card" tabindex="0">
+        <h3>Bodega y Almacenamiento</h3>
+        <p>Inventario, ingresos/egresos y consumos asociados a OT.</p>
+        <a href="/modulos/bodega/index.html" aria-label="Abrir módulo Bodega y Almacenamiento">Abrir módulo</a>
+      </section>
 
-    <article class="card">
-      <h3>Bodega y Almacenamiento</h3>
-      <p>Stock, ingresos/egresos y trazabilidad por OT.</p>
-      <a href="/modulos/bodega/index.html">Abrir módulo</a>
-    </article>
-
-    <article class="card">
-      <h3>Administración de Usuarios</h3>
-      <p>Asignación de roles (solo visible para admin).</p>
-      <a href="/modulos/admin-usuarios/index.html">Abrir módulo</a>
-    </article>
-
-  </div>
-</main>
-
-<script>
-  // Inyecta el topbar con login/roles/hamburguesa
-  fetch('/common/topbar.html')
-    .then(r=>r.text())
-    .then(h=>{ document.getElementById('topbar').innerHTML=h; });
-</script>
+      <section class="card" tabindex="0">
+        <h3>Administración de Usuarios</h3>
+        <p>Asigna roles a cuentas registradas (solo <b>admin</b>).</p>
+        <a href="/modulos/admin/index.html" aria-label="Abrir módulo Administración de Usuarios">Abrir módulo</a>
+      </section>
+    </div>
+  </main>
 </body>
 </html>
