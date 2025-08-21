@@ -42,10 +42,11 @@
         <input name="cargo" placeholder="Cargo"/>
       </div>
       <div style="grid-column:1/-1" class="right">
-        <button class="btn">Guardar</button>
+        <button class="btn" id="btn-guardar">Guardar</button>
         <button type="button" id="btn-limpiar" class="btn secondary">Limpiar</button>
       </div>
     </form>
+    <p class="muted" id="modo">Modo: crear</p>
   </section>
 
   <section class="card">
@@ -62,7 +63,7 @@
   fetch('/common/topbar.html').then(r=>r.text()).then(h=>document.getElementById('topbar').innerHTML=h);
 </script>
 
-<!-- Usa tu cliente real -->
+<!-- CONEXIÓN A SUPABASE -->
 <script type="module">
   import { supabase } from '/js/supabaseClient.js';
 
@@ -70,28 +71,38 @@
   const $tbody = document.querySelector('#tabla tbody');
   const $form  = document.getElementById('form-nuevo');
   const $btnLimpiar = document.getElementById('btn-limpiar');
+  const $modo = document.getElementById('modo');
+  const $btnGuardar = document.getElementById('btn-guardar');
 
-  // ---- Conexión
+  // variable para editar
+  let editingId = null;
+
+  // ---- Conexión (chequea que exista la tabla `trabajadores`)
   try{
     const { error } = await supabase
-      .from('recursos_humanos')
+      .from('trabajadores')
       .select('count', { count:'exact', head:true });
     if(error) throw error;
     $conn.textContent = 'conectado';
   }catch(e){
     console.error(e);
-    $conn.textContent = 'error (revisa claves / tabla)';
+    $conn.textContent = 'error (revisa claves / tabla trabajadores)';
   }
 
   // ---- Helpers
-  function limpiar(){ $form.reset(); }
+  function limpiar(){
+    $form.reset();
+    editingId = null;
+    $modo.textContent = 'Modo: crear';
+    $btnGuardar.textContent = 'Guardar';
+  }
 
   async function cargar(){
     $tbody.innerHTML = '<tr><td colspan="4" class="muted">Cargando…</td></tr>';
     const { data, error } = await supabase
-      .from('recursos_humanos')
-      .select('id,nombre,rut,cargo,fecha_ingreso')
-      .order('fecha_ingreso', { ascending:false });
+      .from('trabajadores')
+      .select('id,nombre,rut,cargo,created_at')
+      .order('created_at', { ascending:false });
     if(error){
       console.error(error);
       $tbody.innerHTML = '<tr><td colspan="4">Error cargando</td></tr>';
@@ -116,7 +127,7 @@
     }
   }
 
-  // ---- Crear / actualizar
+  // ---- Crear / actualizar (INSERT o UPDATE según editingId)
   $form.addEventListener('submit', async (ev)=>{
     ev.preventDefault();
     const fd = new FormData($form);
@@ -127,9 +138,16 @@
     };
     if(!payload.nombre){ alert('Nombre es obligatorio'); return; }
 
-    const { error } = await supabase.from('recursos_humanos').insert(payload);
-    if(error){ alert('Error: '+error.message); return; }
-    limpiar(); cargar();
+    if(editingId){
+      const { error } = await supabase.from('trabajadores').update(payload).eq('id', editingId);
+      if(error){ alert('Error: '+error.message); return; }
+    }else{
+      const { error } = await supabase.from('trabajadores').insert(payload);
+      if(error){ alert('Error: '+error.message); return; }
+    }
+
+    limpiar();
+    cargar();
   });
 
   // ---- Acciones tabla
@@ -139,21 +157,20 @@
 
     if(act==='eliminar'){
       if(!confirm('¿Eliminar registro?')) return;
-      const { error } = await supabase.from('recursos_humanos').delete().eq('id', id);
+      const { error } = await supabase.from('trabajadores').delete().eq('id', id);
       if(error){ alert('Error: '+error.message); return; }
       cargar(); return;
     }
 
     if(act==='editar'){
-      // Carga datos para edición simple (trae registro y sube al formulario)
-      const { data, error } = await supabase.from('recursos_humanos').select('*').eq('id', id).maybeSingle();
+      const { data, error } = await supabase.from('trabajadores').select('*').eq('id', id).maybeSingle();
       if(error || !data){ alert('Error leyendo'); return; }
       $form.nombre.value = data.nombre || '';
       $form.rut.value    = data.rut    || '';
       $form.cargo.value  = data.cargo  || '';
-      // Para mantenerlo simple, al guardar insertamos; si prefieres UPDATE:
-      // await supabase.from('recursos_humanos').update({...}).eq('id', id)
-      // (si quieres que lo deje con UPDATE real, dime y lo cambio).
+      editingId = data.id;
+      $modo.textContent = 'Modo: editar';
+      $btnGuardar.textContent = 'Actualizar';
       window.scrollTo({ top:0, behavior:'smooth' });
     }
   });
