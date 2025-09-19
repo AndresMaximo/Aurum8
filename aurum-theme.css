@@ -1,34 +1,35 @@
 /* ---------------------------------- */
-/* VARIABLES ÁUREAS GLOBALES */
+/* VARIABLES CÓSMICAS Y ÁUREAS */
 /* ---------------------------------- */
 :root {
-  /* Proporción áurea y base */
+  /* Proporción áurea */
   --phi: 1.618;
-  --base-size: 16px; /* Tamaño base para escalas */
+  --base-size: 16px;
 
-  /* Escala de tamaños de fuente áureos */
-  --text-sm: calc(var(--base-size) / var(--phi)); /* ≈10px */
-  --text-md: var(--base-size); /* 16px */
-  --text-lg: calc(var(--base-size) * var(--phi)); /* ≈26px */
-  --text-xl: calc(var(--text-lg) * var(--phi)); /* ≈42px */
-  --text-xxl: calc(var(--text-xl) * var(--phi)); /* ≈68px */
+  /* Escala de fuentes áurea */
+  --text-sm: calc(var(--base-size) / var(--phi));   /* ≈10px */
+  --text-md: var(--base-size);                      /* 16px */
+  --text-lg: calc(var(--base-size) * var(--phi));   /* ≈26px */
+  --text-xl: calc(var(--text-lg) * var(--phi));     /* ≈42px */
+  --text-xxl: calc(var(--text-xl) * var(--phi));    /* ≈68px */
 
   /* Espaciado áureo */
-  --space-sm: calc(var(--base-size) / var(--phi)); /* ≈10px */
-  --space-md: var(--base-size); /* 16px */
-  --space-lg: calc(var(--base-size) * var(--phi)); /* ≈26px */
-  --space-xl: calc(var(--space-lg) * var(--phi)); /* ≈42px */
-  --space-xxl: calc(var(--space-xl) * var(--phi)); /* ≈68px */
+  --space-sm: calc(var(--base-size) / var(--phi));  /* ≈10px */
+  --space-md: var(--base-size);                     /* 16px */
+  --space-lg: calc(var(--base-size) * var(--phi));  /* ≈26px */
+  --space-xl: calc(var(--space-lg) * var(--phi));   /* ≈42px */
+  --space-xxl: calc(var(--space-xl) * var(--phi));  /* ≈68px */
 
-  /* Colores (ajusta según tu paleta) */
-  --color-primary: #c8a97e; /* Dorado armónico */
-  --color-secondary: #2c3e50; /* Azul oscuro */
-  --color-background: #fdf6e3; /* Beige claro */
-  --color-text: #333333;
+  /* Paleta cósmica */
+  --color-bg: #0A0A18;              /* Fondo espacial oscuro */
+  --color-primary: #FFD700;         /* Dorado brillante */
+  --color-secondary: #C8A97E;       /* Dorado antiguo */
+  --color-accent: #4A00E0;          /* Púrpura nebulosa */
+  --color-text: #FFFFFF;            /* Texto blanco */
 }
 
 /* ---------------------------------- */
-/* RESET Y BASE */
+/* ESTILOS GENERALES */
 /* ---------------------------------- */
 * {
   margin: 0;
@@ -39,137 +40,140 @@
 body {
   font-family: 'Helvetica', 'Arial', sans-serif;
   font-size: var(--text-md);
-  line-height: var(--phi); /* Line-height áureo */
+  line-height: var(--phi);
   color: var(--color-text);
-  background-color: var(--color-background);
+  background-color: var(--color-bg);
+  overflow-x: hidden;
+  position: relative;
 }
 
 /* ---------------------------------- */
-/* LAYOUT ÁUREO: CONTENEDOR PRINCIPAL */
+/* FONDO CÓSMICO: ESTRELLAS ANIMADAS */
+/* ---------------------------------- */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 30%, var(--color-accent) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, #1E3A8A 0%, transparent 40%),
+    var(--color-bg);
+  z-index: -2;
+}
+
+/* Estrellas (partículas) */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 5s infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+/* Generar estrellas aleatorias con JS (se agrega en aurum.js) */
+
+/* ---------------------------------- */
+/* GEOMETRÍA SAGRADA (Mandalas/Flor de la Vida) */
+/* ---------------------------------- */
+.geometry-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('assets/mandala-pattern.svg'); /* SVG de mandala */
+  opacity: 0.05;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ---------------------------------- */
+/* COMPONENTES CON PROPORCIÓN ÁUREA */
 /* ---------------------------------- */
 .container {
-  width: 100%;
-  max-width: 1200px; /* Ancho máximo */
+  width: 90%;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: var(--space-lg);
-  display: grid;
-  grid-template-columns: 1fr calc(100% / var(--phi)); /* División áurea */
-  gap: var(--space-lg);
+  padding: var(--space-xl);
+}
+
+/* Botones áureos */
+.btn {
+  display: inline-block;
+  padding: var(--space-md) var(--space-xl);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: var(--color-bg);
+  text-decoration: none;
+  border-radius: calc(var(--space-md) / var(--phi));
+  font-size: var(--text-lg);
+  font-weight: bold;
+  transition: transform 0.618s, box-shadow 0.618s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 calc(var(--space-lg) * var(--phi)) var(--color-primary);
+}
+
+/* Tarjetas (para informes, módulos) */
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--color-primary);
+  border-radius: calc(var(--space-md) * var(--phi));
+  padding: var(--space-xl);
+  margin-bottom: var(--space-lg);
+}
+
+.card h3 {
+  font-size: var(--text-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
 }
 
 /* ---------------------------------- */
-/* HEADER */
+/* HEADER Y NAVEGACIÓN */
 /* ---------------------------------- */
 header {
-  grid-column: 1 / -1;
   text-align: center;
-  padding: var(--space-xl) 0;
+  padding: var(--space-xxl) 0;
 }
 
 .logo {
   width: calc(100px * var(--phi)); /* ≈162px */
   height: 100px;
   margin: 0 auto;
+  background: url('assets/logo-aurum.svg') no-repeat center; /* SVG del logo */
+  background-size: contain;
 }
 
 /* ---------------------------------- */
-/* SECCIÓN HERO (PORTADA) */
-/* ---------------------------------- */
-.hero {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: var(--space-xxl) 0;
-}
-
-.hero h1 {
-  font-size: var(--text-xxl);
-  margin-bottom: var(--space-lg);
-  color: var(--color-primary);
-}
-
-.hero p {
-  font-size: var(--text-lg);
-  margin-bottom: var(--space-xl);
-}
-
-.cta-button {
-  display: inline-block;
-  padding: var(--space-md) var(--space-xl);
-  background-color: var(--color-primary);
-  color: white;
-  text-decoration: none;
-  border-radius: calc(var(--space-md) / var(--phi)); /* Bordes redondeados áureos */
-  font-size: var(--text-lg);
-  transition: transform 0.618s; /* Animación áurea */
-}
-
-.cta-button:hover {
-  transform: scale(1.05);
-}
-
-/* ---------------------------------- */
-/* SECCIÓN DE CÓDIGOS NUMÉRICOS */
-/* ---------------------------------- */
-.codes-section {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--space-lg);
-}
-
-.code-card {
-  background: white;
-  padding: var(--space-lg);
-  border-radius: calc(var(--space-md) / var(--phi));
-  text-align: center;
-  box-shadow: 0 0 calc(var(--space-md) * var(--phi)) rgba(0,0,0,0.1);
-}
-
-.code-card h3 {
-  font-size: var(--text-xl);
-  color: var(--color-primary);
-  margin-bottom: var(--space-md);
-}
-
-.code-card p {
-  font-size: var(--text-md);
-}
-
-/* ---------------------------------- */
-/* FOOTER ÁUREO */
-/* ---------------------------------- */
-footer {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 1fr calc(100% / var(--phi));
-  gap: var(--space-lg);
-  padding: var(--space-xl) 0;
-  border-top: 1px solid #ddd;
-}
-
-.footer-info {
-  text-align: left;
-}
-
-.footer-links {
-  text-align: right;
-}
-
-/* ---------------------------------- */
-/* RESPONSIVE (Móviles) */
+/* RESPONSIVE */
 /* ---------------------------------- */
 @media (max-width: 768px) {
+  :root {
+    --base-size: 14px; /* Ajuste base para móviles */
+  }
+
   .container {
-    grid-template-columns: 1fr;
     padding: var(--space-md);
-  }
-
-  footer {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-
-  .footer-links {
-    text-align: center;
   }
 }
