@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspecciones Diarias - Aurum8</title>
+    <link rel="stylesheet" href="../aurum-theme.css">
+    <link rel="stylesheet" href="inspecciones.css">
+</head>
+<body>
+    <div class="container">
+        <header class="module-header">
+            <h1>Inspecciones Diarias</h1>
+            <button id="nuevaInspeccionBtn" class="btn-primary">Nueva Inspección</button>
+        </header>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label for="filtroPlanta">Planta:</label>
+                <select id="filtroPlanta">
+                    <option value="">Todas</option>
+                    <option value="las-luces">Las Luces</option>
+                    <option value="las-cenizas">Las Cenizas</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="filtroEstado">Estado:</label>
+                <select id="filtroEstado">
+                    <option value="">Todos</option>
+                    <option value="generada">Generada</option>
+                    <option value="en-progreso">En Progreso</option>
+                    <option value="completada">Completada</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="filtroFecha">Fecha:</label>
+                <input type="date" id="filtroFecha">
+            </div>
+        </div>
+
+        <div class="inspecciones-list">
+            <table id="tablaInspecciones">
+                <thead>
+                    <tr>
+                        <th>OT N°</th>
+                        <th>Planta</th>
+                        <th>Equipo</th>
+                        <th>Fecha Programada</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Los datos se cargarán dinámicamente con JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../common/auth.js"></script>
+    <script src="../aurum-data.js"></script>
+    <script src="inspecciones.js"></script>
+</body>
+</html>
